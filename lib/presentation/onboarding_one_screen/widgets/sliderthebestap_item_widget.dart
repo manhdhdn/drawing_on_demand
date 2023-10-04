@@ -64,10 +64,10 @@ class SliderthebestapItemWidget extends StatelessWidget {
               ),
             ),
             CustomElevatedButton(
-              width: getHorizontalSize(101),
+              width: getHorizontalSize(102),
               text: "Next",
               margin: getMargin(
-                top: 69,
+                top: 68,
               ),
               buttonStyle: CustomButtonStyles.fillPrimary,
               onTap: () {
