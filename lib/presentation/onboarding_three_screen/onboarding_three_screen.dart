@@ -104,6 +104,6 @@ class OnboardingThreeScreen extends StatelessWidget {
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the signUpCreateAcountScreen.
   onTapLabel(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.signUpCreateAcountScreen);
+    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
   }
 }

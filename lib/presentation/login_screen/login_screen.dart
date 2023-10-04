@@ -4,6 +4,8 @@ import 'package:drawing_on_demand/widgets/custom_outlined_button.dart';
 import 'package:drawing_on_demand/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -193,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the enterOtpScreen.
   onTapContinuewith(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.enterOtpScreen);
+    signIn();
   }
 
   /// Navigates to the signUpCreateAcountScreen when the action is triggered.
@@ -203,5 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
   /// to push the named route for the signUpCreateAcountScreen.
   onTapTxtLargelabelmediu(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.signUpCreateAcountScreen);
+  }
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
   }
 }
