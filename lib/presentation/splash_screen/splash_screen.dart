@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -32,6 +29,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+
     super.dispose();
   }
 
