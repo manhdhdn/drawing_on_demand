@@ -1,14 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:drawing_on_demand/presentation/onboarding_one_screen/widgets/sliderthebestap_item_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore_for_file: must_be_immutable
+@RoutePage()
 class OnboardingOneScreen extends StatelessWidget {
-  OnboardingOneScreen({Key? key}) : super(key: key);
+  const OnboardingOneScreen({Key? key}) : super(key: key);
 
-  int sliderIndex = 0;
+  final int sliderIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +66,9 @@ class OnboardingOneScreen extends StatelessWidget {
                                   viewportFraction: 1.0,
                                   enableInfiniteScroll: false,
                                   scrollDirection: Axis.horizontal,
-                                  onPageChanged: (index, reason) {
-                                    sliderIndex = index;
-                                  },
+                                  // onPageChanged: (index, reason) {
+                                  //   sliderIndex = index;
+                                  // },
                                 ),
                                 itemCount: 1,
                                 itemBuilder: (context, index, realIndex) {

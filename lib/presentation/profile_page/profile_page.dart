@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../profile_page/widgets/chipviewskills_item_widget.dart';
 import '../profile_page/widgets/profile_item_widget.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
@@ -9,6 +11,7 @@ import 'package:drawing_on_demand/widgets/custom_checkbox_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 // ignore_for_file: must_be_immutable
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);

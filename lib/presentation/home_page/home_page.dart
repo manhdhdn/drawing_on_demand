@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../home_page/widgets/home_item_widget.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_circleimage.dart';
@@ -9,14 +11,11 @@ import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:drawing_on_demand/widgets/custom_search_view.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: must_be_immutable
+@RoutePage()
 class HomePage extends StatelessWidget {
-  HomePage({Key? key})
-      : super(
-          key: key,
-        );
+  HomePage({Key? key}) : super(key: key);
 
-  TextEditingController searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +26,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: appTheme.whiteA70001,
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
+          height: getVerticalSize(69),
           leadingWidth: getHorizontalSize(74),
           leading: AppbarCircleimage(
             imagePath: ImageConstant.imgImage50x50,
@@ -439,7 +439,7 @@ class HomePage extends StatelessWidget {
                       right: 24,
                     ),
                     child: ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       separatorBuilder: (
                         context,
@@ -451,7 +451,7 @@ class HomePage extends StatelessWidget {
                       },
                       itemCount: 2,
                       itemBuilder: (context, index) {
-                        return HomeItemWidget();
+                        return const HomeItemWidget();
                       },
                     ),
                   ),

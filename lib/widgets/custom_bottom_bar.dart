@@ -2,9 +2,9 @@ import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  CustomBottomBar({this.onChanged});
+  const CustomBottomBar({super.key, this.onChanged});
 
-  Function(BottomBarEnum)? onChanged;
+  final Function(BottomBarEnum)? onChanged;
 
   @override
   CustomBottomBarState createState() => CustomBottomBarState();
@@ -51,7 +51,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
             color: theme.colorScheme.primary.withOpacity(0.08),
             spreadRadius: getHorizontalSize(2),
             blurRadius: getHorizontalSize(2),
-            offset: Offset(
+            offset: const Offset(
               0,
               -4,
             ),
@@ -130,9 +130,13 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 enum BottomBarEnum {
+  // ignore: constant_identifier_names
   Home,
+  // ignore: constant_identifier_names
   Message,
+  // ignore: constant_identifier_names
   Saved,
+  // ignore: constant_identifier_names
   Profile,
 }
 
@@ -154,12 +158,14 @@ class BottomMenuModel {
 }
 
 class DefaultWidget extends StatelessWidget {
+  const DefaultWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(10),
-      child: Center(
+      padding: const EdgeInsets.all(10),
+      child: const Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

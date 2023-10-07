@@ -16,7 +16,7 @@ class HomeItemWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: Container(
         padding: getPadding(
-          all: 16,
+          all: 15,
         ),
         decoration: AppDecoration.outlineIndigo.copyWith(
           borderRadius: BorderRadiusStyle.roundedBorder16,
@@ -32,7 +32,7 @@ class HomeItemWidget extends StatelessWidget {
                   height: getSize(48),
                   width: getSize(48),
                   padding: getPadding(
-                    all: 8,
+                    all: 10,
                   ),
                   child: CustomImageView(
                     svgPath: ImageConstant.imgGroupPrimary,
@@ -41,7 +41,6 @@ class HomeItemWidget extends StatelessWidget {
                 Padding(
                   padding: getPadding(
                     left: 12,
-                    top: 4,
                     bottom: 2,
                   ),
                   child: Column(
@@ -49,7 +48,7 @@ class HomeItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "",
+                        "Digital Marketing",
                         style: CustomTextStyles.titleMediumBold_1,
                       ),
                       Padding(
@@ -64,7 +63,7 @@ class HomeItemWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 CustomImageView(
                   svgPath: ImageConstant.imgBookmark,
                   height: getSize(24),

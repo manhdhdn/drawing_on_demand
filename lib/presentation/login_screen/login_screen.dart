@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_outlined_button.dart';
@@ -6,8 +7,11 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
+@RoutePage()
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final Function(bool?) onResult;
+
+  const LoginScreen({Key? key, required this.onResult}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -212,5 +216,11 @@ class _LoginScreenState extends State<LoginScreen> {
       email: emailController.text,
       password: passwordController.text,
     );
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        widget.onResult(true);
+      }
+    });
   }
 }

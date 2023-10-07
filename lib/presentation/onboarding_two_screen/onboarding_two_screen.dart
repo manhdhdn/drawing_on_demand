@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../onboarding_two_screen/widgets/sliderbetterfut_item_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore_for_file: must_be_immutable
+@RoutePage()
 class OnboardingTwoScreen extends StatelessWidget {
-  OnboardingTwoScreen({Key? key}) : super(key: key);
+  const OnboardingTwoScreen({Key? key}) : super(key: key);
 
-  int sliderIndex = 1;
+  final int sliderIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +61,16 @@ class OnboardingTwoScreen extends StatelessWidget {
                             children: [
                               CarouselSlider.builder(
                                   options: CarouselOptions(
-                                      height: getVerticalSize(335),
-                                      initialPage: 0,
-                                      autoPlay: true,
-                                      viewportFraction: 1.0,
-                                      enableInfiniteScroll: false,
-                                      scrollDirection: Axis.horizontal,
-                                      onPageChanged: (index, reason) {
-                                        sliderIndex = index;
-                                      }),
+                                    height: getVerticalSize(335),
+                                    initialPage: 0,
+                                    autoPlay: true,
+                                    viewportFraction: 1.0,
+                                    enableInfiniteScroll: false,
+                                    scrollDirection: Axis.horizontal,
+                                    // onPageChanged: (index, reason) {
+                                    //   sliderIndex = index;
+                                    // },
+                                  ),
                                   itemCount: 1,
                                   itemBuilder: (context, index, realIndex) {
                                     return SliderbetterfutItemWidget(

@@ -106,7 +106,7 @@ class AppRoutes {
   static const String appNavigationScreen = '/app_navigation_screen';
 
   static Map<String, WidgetBuilder> routes = {
-    splashScreen: (context) => SplashScreen(),
+    splashScreen: (context) => const SplashScreen(),
     onboardingOneScreen: (context) => OnboardingOneScreen(),
     onboardingTwoScreen: (context) => OnboardingTwoScreen(),
     onboardingThreeScreen: (context) => OnboardingThreeScreen(),
@@ -115,7 +115,7 @@ class AppRoutes {
     jobTypeScreen: (context) => JobTypeScreen(),
     speciallizationScreen: (context) => SpeciallizationScreen(),
     selectACountryScreen: (context) => SelectACountryScreen(),
-    loginScreen: (context) => LoginScreen(),
+    // loginScreen: (context) => LoginScreen(),
     enterOtpScreen: (context) => EnterOtpScreen(),
     homeContainerScreen: (context) => HomeContainerScreen(),
     searchScreen: (context) => SearchScreen(),

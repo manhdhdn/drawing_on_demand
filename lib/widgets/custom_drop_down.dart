@@ -9,7 +9,7 @@ class CustomDropDown extends StatelessWidget {
     this.margin,
     this.focusNode,
     this.icon,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.items,
     this.hintText,
