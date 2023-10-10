@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
     this.margin,
     this.controller,
     this.focusNode,
-    this.autofocus = false,
+    this.autofocus = true,
     this.textStyle,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,

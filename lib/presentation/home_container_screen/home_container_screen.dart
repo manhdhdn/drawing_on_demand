@@ -1,18 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+import 'controller/home_container_controller.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/presentation/home_page/home_page.dart';
 import 'package:drawing_on_demand/presentation/message_page/message_page.dart';
 import 'package:drawing_on_demand/presentation/profile_page/profile_page.dart';
 import 'package:drawing_on_demand/presentation/saved_page/saved_page.dart';
-import 'package:drawing_on_demand/routes/app_router.dart';
 import 'package:drawing_on_demand/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
-class HomeContainerScreen extends StatelessWidget {
-  HomeContainerScreen({Key? key}) : super(key: key);
-
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+class HomeContainerScreen extends GetWidget<HomeContainerController> {
+  const HomeContainerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +17,16 @@ class HomeContainerScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: appTheme.whiteA70001,
         body: Navigator(
-          key: navigatorKey,
+          key: Get.nestedKey(1),
           initialRoute: AppRoutes.homePage,
-          onGenerateRoute: (routeSetting) => PageRouteBuilder(
-            pageBuilder: (ctx, ani, ani1) => getCurrentPage(routeSetting.name!),
-            transitionDuration: const Duration(seconds: 1),
+          onGenerateRoute: (routeSetting) => GetPageRoute(
+            page: () => getCurrentPage(routeSetting.name!),
+            transition: Transition.noTransition,
           ),
         ),
         bottomNavigationBar: CustomBottomBar(
           onChanged: (BottomBarEnum type) {
-            AutoRouter.of(context).push(getCurrentRoute(type));
+            Get.toNamed(getCurrentRoute(type), id: 1);
           },
         ),
       ),
@@ -38,16 +34,16 @@ class HomeContainerScreen extends StatelessWidget {
   }
 
   ///Handling route based on bottom click actions
-  dynamic getCurrentRoute(BottomBarEnum type) {
+  String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.Home:
-        return HomeRoute();
+        return AppRoutes.homePage;
       case BottomBarEnum.Message:
         return AppRoutes.messagePage;
       case BottomBarEnum.Saved:
         return AppRoutes.savedPage;
       case BottomBarEnum.Profile:
-        return ProfileRoute();
+        return AppRoutes.profilePage;
       default:
         return "/";
     }
@@ -65,7 +61,7 @@ class HomeContainerScreen extends StatelessWidget {
       case AppRoutes.profilePage:
         return ProfilePage();
       default:
-        return const DefaultWidget();
+        return DefaultWidget();
     }
   }
 }

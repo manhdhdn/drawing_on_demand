@@ -1,44 +1,44 @@
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 
-class CustomBottomBar extends StatefulWidget {
-  const CustomBottomBar({super.key, this.onChanged});
+class CustomBottomBar extends StatelessWidget {
+  CustomBottomBar({
+    Key? key,
+    this.onChanged,
+  }) : super(
+          key: key,
+        );
 
-  final Function(BottomBarEnum)? onChanged;
-
-  @override
-  CustomBottomBarState createState() => CustomBottomBarState();
-}
-
-class CustomBottomBarState extends State<CustomBottomBar> {
-  int selectedIndex = 0;
+  RxInt selectedIndex = 0.obs;
 
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
       icon: ImageConstant.imgNavhome,
       activeIcon: ImageConstant.imgNavhome,
-      title: "Home",
+      title: "lbl_home".tr,
       type: BottomBarEnum.Home,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgNavmessage,
       activeIcon: ImageConstant.imgNavmessage,
-      title: "Message",
+      title: "lbl_message".tr,
       type: BottomBarEnum.Message,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgNavsaved,
       activeIcon: ImageConstant.imgNavsaved,
-      title: "Saved",
+      title: "lbl_saved".tr,
       type: BottomBarEnum.Saved,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgNavprofile,
       activeIcon: ImageConstant.imgNavprofile,
-      title: "Profile",
+      title: "lbl_profile".tr,
       type: BottomBarEnum.Profile,
     )
   ];
+
+  Function(BottomBarEnum)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -51,92 +51,90 @@ class CustomBottomBarState extends State<CustomBottomBar> {
             color: theme.colorScheme.primary.withOpacity(0.08),
             spreadRadius: getHorizontalSize(2),
             blurRadius: getHorizontalSize(2),
-            offset: const Offset(
+            offset: Offset(
               0,
               -4,
             ),
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedFontSize: 0,
-        elevation: 0,
-        currentIndex: selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        items: List.generate(bottomMenuList.length, (index) {
-          return BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomImageView(
-                  svgPath: bottomMenuList[index].icon,
-                  height: getSize(24),
-                  width: getSize(24),
-                  color: appTheme.blueGray300,
-                ),
-                Padding(
-                  padding: getPadding(
-                    top: 3,
+      child: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedFontSize: 0,
+          elevation: 0,
+          currentIndex: selectedIndex.value,
+          type: BottomNavigationBarType.fixed,
+          items: List.generate(bottomMenuList.length, (index) {
+            return BottomNavigationBarItem(
+              icon: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomImageView(
+                    svgPath: bottomMenuList[index].icon,
+                    height: getSize(24),
+                    width: getSize(24),
+                    color: appTheme.blueGray300,
                   ),
-                  child: Text(
-                    bottomMenuList[index].title ?? "",
-                    style: CustomTextStyles.labelLargeInterBluegray300.copyWith(
-                      color: appTheme.blueGray300,
+                  Padding(
+                    padding: getPadding(
+                      top: 3,
+                    ),
+                    child: Text(
+                      bottomMenuList[index].title ?? "",
+                      style:
+                          CustomTextStyles.labelLargeInterBluegray300.copyWith(
+                        color: appTheme.blueGray300,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            activeIcon: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomImageView(
-                  svgPath: bottomMenuList[index].activeIcon,
-                  height: getSize(24),
-                  width: getSize(24),
-                  color: theme.colorScheme.primary,
-                ),
-                Padding(
-                  padding: getPadding(
-                    top: 2,
+                ],
+              ),
+              activeIcon: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomImageView(
+                    svgPath: bottomMenuList[index].activeIcon,
+                    height: getSize(24),
+                    width: getSize(24),
+                    color: theme.colorScheme.primary,
                   ),
-                  child: Text(
-                    bottomMenuList[index].title ?? "",
-                    style: CustomTextStyles.labelLargeInterPrimary.copyWith(
-                      color: theme.colorScheme.primary,
+                  Padding(
+                    padding: getPadding(
+                      top: 2,
+                    ),
+                    child: Text(
+                      bottomMenuList[index].title ?? "",
+                      style: CustomTextStyles.labelLargeInterPrimary.copyWith(
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            label: '',
-          );
-        }),
-        onTap: (index) {
-          selectedIndex = index;
-          widget.onChanged?.call(bottomMenuList[index].type);
-          setState(() {});
-        },
+                ],
+              ),
+              label: '',
+            );
+          }),
+          onTap: (index) {
+            selectedIndex.value = index;
+            onChanged?.call(bottomMenuList[index].type);
+          },
+        ),
       ),
     );
   }
 }
 
 enum BottomBarEnum {
-  // ignore: constant_identifier_names
   Home,
-  // ignore: constant_identifier_names
   Message,
-  // ignore: constant_identifier_names
   Saved,
-  // ignore: constant_identifier_names
   Profile,
 }
 
@@ -158,14 +156,12 @@ class BottomMenuModel {
 }
 
 class DefaultWidget extends StatelessWidget {
-  const DefaultWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(10),
-      child: const Center(
+      padding: EdgeInsets.all(10),
+      child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

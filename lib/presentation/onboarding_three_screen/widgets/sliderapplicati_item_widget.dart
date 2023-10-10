@@ -1,15 +1,22 @@
+import '../controller/onboarding_three_controller.dart';
+import '../models/sliderapplicati_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SliderapplicatiItemWidget extends StatelessWidget {
-  SliderapplicatiItemWidget({
+  SliderapplicatiItemWidget(
+    this.sliderapplicatiItemModelObj, {
     Key? key,
     this.onTapLabel,
   }) : super(
           key: key,
         );
+
+  SliderapplicatiItemModel sliderapplicatiItemModelObj;
+
+  var controller = Get.find<OnboardingThreeController>();
 
   VoidCallback? onTapLabel;
 
@@ -41,11 +48,11 @@ class SliderapplicatiItemWidget extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Application surely viewed by ",
+                      text: "msg_application_surely2".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: "each company",
+                      text: "lbl_each_company".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                   ],
@@ -58,7 +65,7 @@ class SliderapplicatiItemWidget extends StatelessWidget {
                 top: 14,
               ),
               child: Text(
-                "Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem . ",
+                "msg_semper_in_cursus".tr,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -69,7 +76,7 @@ class SliderapplicatiItemWidget extends StatelessWidget {
             ),
             CustomElevatedButton(
               width: getHorizontalSize(156),
-              text: "Get Started",
+              text: "lbl_get_started".tr,
               margin: getMargin(
                 top: 69,
               ),

@@ -1,14 +1,21 @@
+import '../controller/message_controller.dart';
+import '../models/message_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class MessageItemWidget extends StatelessWidget {
-  MessageItemWidget({
+  MessageItemWidget(
+    this.messageItemModelObj, {
     Key? key,
     this.onTapRowesther,
   }) : super(
           key: key,
         );
+
+  MessageItemModel messageItemModelObj;
+
+  var controller = Get.find<MessageController>();
 
   VoidCallback? onTapRowesther;
 
@@ -88,16 +95,18 @@ class MessageItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          "",
-                          style: CustomTextStyles.titleMediumBold,
+                        Obx(
+                          () => Text(
+                            messageItemModelObj.estherhowardTxt.value,
+                            style: CustomTextStyles.titleMediumBold,
+                          ),
                         ),
                         Padding(
                           padding: getPadding(
                             top: 9,
                           ),
                           child: Text(
-                            "Lorem ipsum dolor sit amet...",
+                            "msg_lorem_ipsum_dolor4".tr,
                             style: CustomTextStyles.titleSmallBluegray400_1,
                           ),
                         ),
@@ -114,7 +123,7 @@ class MessageItemWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "10:20",
+                          "lbl_10_20".tr,
                           style: CustomTextStyles.labelLargeSemiBold,
                         ),
                         Container(
@@ -130,9 +139,11 @@ class MessageItemWidget extends StatelessWidget {
                           decoration: AppDecoration.fillPrimary.copyWith(
                             borderRadius: BorderRadiusStyle.circleBorder12,
                           ),
-                          child: Text(
-                            "",
-                            style: theme.textTheme.labelMedium,
+                          child: Obx(
+                            () => Text(
+                              messageItemModelObj.group162722Txt.value,
+                              style: theme.textTheme.labelMedium,
+                            ),
                           ),
                         ),
                       ],

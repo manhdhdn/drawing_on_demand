@@ -1,3 +1,5 @@
+import '../controller/notifications_my_proposals_controller.dart';
+import '../models/listlocation_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
@@ -5,10 +7,16 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ListlocationItemWidget extends StatelessWidget {
-  const ListlocationItemWidget({Key? key})
-      : super(
+  ListlocationItemWidget(
+    this.listlocationItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ListlocationItemModel listlocationItemModelObj;
+
+  var controller = Get.find<NotificationsMyProposalsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +47,24 @@ class ListlocationItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Senior UI/UX Designer",
+                  "msg_senior_ui_ux_designer".tr,
                   style: CustomTextStyles.titleSmallPrimaryBold,
                 ),
                 Padding(
                   padding: getPadding(
                     top: 6,
                   ),
-                  child: Text(
-                    "",
-                    style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                  child: Obx(
+                    () => Text(
+                      listlocationItemModelObj.smalllabelregulTxt.value,
+                      style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                    ),
                   ),
                 ),
                 CustomElevatedButton(
                   height: getVerticalSize(28),
                   width: getHorizontalSize(78),
-                  text: "Opened",
+                  text: "lbl_opened".tr,
                   margin: getMargin(
                     top: 17,
                   ),

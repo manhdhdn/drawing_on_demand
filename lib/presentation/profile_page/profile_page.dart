@@ -1,7 +1,9 @@
-import 'package:auto_route/auto_route.dart';
-
 import '../profile_page/widgets/chipviewskills_item_widget.dart';
 import '../profile_page/widgets/profile_item_widget.dart';
+import 'controller/profile_controller.dart';
+import 'models/chipviewskills_item_model.dart';
+import 'models/profile_item_model.dart';
+import 'models/profile_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_image.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_image_1.dart';
@@ -11,12 +13,11 @@ import 'package:drawing_on_demand/widgets/custom_checkbox_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
 // ignore_for_file: must_be_immutable
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
 
-  bool opentowork = false;
+  ProfileController controller = Get.put(ProfileController(ProfileModel().obs));
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +31,17 @@ class ProfilePage extends StatelessWidget {
                     svgPath: ImageConstant.imgGroup162799,
                     margin: getMargin(left: 24, top: 13, bottom: 13),
                     onTap: () {
-                      onTapArrowbackone(context);
+                      onTapArrowbackone();
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Profile"),
+                title: AppbarTitle(text: "lbl_profile".tr),
                 actions: [
                   AppbarImage1(
                       svgPath: ImageConstant.imgGroup162903,
                       margin:
                           getMargin(left: 24, top: 13, right: 24, bottom: 13),
                       onTap: () {
-                        onTapImage(context);
+                        onTapImage();
                       })
                 ]),
             body: SizedBox(
@@ -90,28 +91,36 @@ class ProfilePage extends StatelessWidget {
                                                           padding: getPadding(
                                                               top: 9),
                                                           child: Text(
-                                                              "Gustavo Lipshutz",
+                                                              "msg_gustavo_lipshutz"
+                                                                  .tr,
                                                               style: CustomTextStyles
                                                                   .titleMediumErrorContainer)),
-                                                      CustomCheckboxButton(
-                                                          text: "Open to work",
-                                                          value: opentowork,
-                                                          margin:
-                                                              getMargin(top: 5),
-                                                          textStyle:
-                                                              CustomTextStyles
-                                                                  .titleSmallPoppinsBluegray300,
-                                                          onChange: (value) {
-                                                            opentowork = value;
-                                                          })
+                                                      Obx(() =>
+                                                          CustomCheckboxButton(
+                                                              text:
+                                                                  "lbl_open_to_work"
+                                                                      .tr,
+                                                              value: controller
+                                                                  .opentowork
+                                                                  .value,
+                                                              margin: getMargin(
+                                                                  top: 5),
+                                                              textStyle:
+                                                                  CustomTextStyles
+                                                                      .titleSmallPoppinsBluegray300,
+                                                              onChange:
+                                                                  (value) {
+                                                                controller
+                                                                    .opentowork
+                                                                    .value = value;
+                                                              }))
                                                     ])))
                                       ])),
                               Container(
                                   width: getHorizontalSize(272),
                                   margin:
                                       getMargin(left: 52, top: 15, right: 50),
-                                  child: Text(
-                                      "UI/UX Designer, Web Design, Mobile App Design",
+                                  child: Text("msg_ui_ux_designer".tr,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
@@ -146,13 +155,14 @@ class ProfilePage extends StatelessWidget {
                                                   Padding(
                                                       padding:
                                                           getPadding(top: 2),
-                                                      child: Text("25",
+                                                      child: Text("lbl_25".tr,
                                                           style: CustomTextStyles
                                                               .titleMediumBold_1)),
                                                   Padding(
                                                       padding: getPadding(
                                                           left: 8, top: 5),
-                                                      child: Text("Applied",
+                                                      child: Text(
+                                                          "lbl_applied".tr,
                                                           style: theme.textTheme
                                                               .labelLarge))
                                                 ])),
@@ -177,7 +187,7 @@ class ProfilePage extends StatelessWidget {
                                                   Padding(
                                                       padding:
                                                           getPadding(top: 2),
-                                                      child: Text("10",
+                                                      child: Text("lbl_10".tr,
                                                           style: CustomTextStyles
                                                               .titleMediumBold_1)),
                                                   Padding(
@@ -185,7 +195,8 @@ class ProfilePage extends StatelessWidget {
                                                           left: 8,
                                                           top: 2,
                                                           bottom: 3),
-                                                      child: Text("Reviewed",
+                                                      child: Text(
+                                                          "lbl_reviewed".tr,
                                                           style: theme.textTheme
                                                               .labelLarge))
                                                 ]))
@@ -216,7 +227,7 @@ class ProfilePage extends StatelessWidget {
                                               Padding(
                                                   padding: getPadding(
                                                       top: 2, bottom: 1),
-                                                  child: Text("About Me",
+                                                  child: Text("lbl_about_me".tr,
                                                       style: CustomTextStyles
                                                           .titleMediumInter)),
                                               CustomImageView(
@@ -230,7 +241,7 @@ class ProfilePage extends StatelessWidget {
                                             margin:
                                                 getMargin(top: 14, right: 22),
                                             child: Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Libero, cursus molestie nullam ac pharetra est nec enim. Vel eleifend semper nunc faucibus donec pretium.",
+                                                "msg_lorem_ipsum_dolor8".tr,
                                                 maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: CustomTextStyles
@@ -262,7 +273,8 @@ class ProfilePage extends StatelessWidget {
                                                   Padding(
                                                       padding: getPadding(
                                                           top: 1, bottom: 2),
-                                                      child: Text("Skills",
+                                                      child: Text(
+                                                          "lbl_skills".tr,
                                                           style: CustomTextStyles
                                                               .titleMediumInter)),
                                                   CustomImageView(
@@ -274,13 +286,25 @@ class ProfilePage extends StatelessWidget {
                                         Padding(
                                             padding:
                                                 getPadding(top: 12, bottom: 17),
-                                            child: Wrap(
+                                            child: Obx(() => Wrap(
                                                 runSpacing: getVerticalSize(12),
                                                 spacing: getHorizontalSize(12),
                                                 children: List<Widget>.generate(
-                                                    8,
-                                                    (index) =>
-                                                        ChipviewskillsItemWidget())))
+                                                    controller
+                                                        .profileModelObj
+                                                        .value
+                                                        .chipviewskillsItemList
+                                                        .value
+                                                        .length, (index) {
+                                                  ChipviewskillsItemModel
+                                                      model = controller
+                                                          .profileModelObj
+                                                          .value
+                                                          .chipviewskillsItemList
+                                                          .value[index];
+                                                  return ChipviewskillsItemWidget(
+                                                      model);
+                                                }))))
                                       ])),
                               Container(
                                   margin:
@@ -302,7 +326,8 @@ class ProfilePage extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Experience",
+                                                  child: Text(
+                                                      "lbl_experience".tr,
                                                       style: CustomTextStyles
                                                           .titleMediumBold)),
                                               CustomImageView(
@@ -313,7 +338,7 @@ class ProfilePage extends StatelessWidget {
                                             ]),
                                         Padding(
                                             padding: getPadding(top: 22),
-                                            child: ListView.separated(
+                                            child: Obx(() => ListView.separated(
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
@@ -337,10 +362,22 @@ class ProfilePage extends StatelessWidget {
                                                               color: appTheme
                                                                   .indigo50)));
                                                 },
-                                                itemCount: 3,
+                                                itemCount: controller
+                                                    .profileModelObj
+                                                    .value
+                                                    .profileItemList
+                                                    .value
+                                                    .length,
                                                 itemBuilder: (context, index) {
-                                                  return ProfileItemWidget();
-                                                }))
+                                                  ProfileItemModel model =
+                                                      controller
+                                                          .profileModelObj
+                                                          .value
+                                                          .profileItemList
+                                                          .value[index];
+                                                  return ProfileItemWidget(
+                                                      model);
+                                                })))
                                       ])),
                               Container(
                                   margin:
@@ -363,7 +400,8 @@ class ProfilePage extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Education",
+                                                  child: Text(
+                                                      "lbl_education".tr,
                                                       style: CustomTextStyles
                                                           .titleMediumBold_1)),
                                               CustomImageView(
@@ -396,7 +434,8 @@ class ProfilePage extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                "University of Oxford",
+                                                                "msg_university_of_oxford"
+                                                                    .tr,
                                                                 style: CustomTextStyles
                                                                     .titleSmallPrimarySemiBold),
                                                             Padding(
@@ -410,7 +449,7 @@ class ProfilePage extends StatelessWidget {
                                                                               top:
                                                                                   1),
                                                                           child: Text(
-                                                                              "Computer Science",
+                                                                              "msg_computer_science".tr,
                                                                               style: theme.textTheme.labelLarge)),
                                                                       Padding(
                                                                           padding: getPadding(
@@ -419,14 +458,14 @@ class ProfilePage extends StatelessWidget {
                                                                               top:
                                                                                   1),
                                                                           child: Text(
-                                                                              "•",
+                                                                              "lbl".tr,
                                                                               style: theme.textTheme.labelLarge)),
                                                                       Padding(
                                                                           padding: getPadding(
                                                                               left:
                                                                                   4),
                                                                           child: Text(
-                                                                              "2019",
+                                                                              "lbl_2019".tr,
                                                                               style: theme.textTheme.labelLarge))
                                                                     ]))
                                                           ])))
@@ -435,20 +474,21 @@ class ProfilePage extends StatelessWidget {
                             ]))))));
   }
 
-  /// Navigates back to the previous screen.
+  /// Navigates to the previous screen.
   ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
-  onTapArrowbackone(BuildContext context) {
-    Navigator.pop(context);
+  /// When the action is triggered, this function uses the [Get] package to
+  /// navigate to the previous screen in the navigation stack.
+  onTapArrowbackone() {
+    Get.back();
   }
 
   /// Navigates to the settingsScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the settingsScreen.
-  onTapImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.settingsScreen);
+
+  /// When the action is triggered, this function uses the [Get] package to
+  /// push the named route for the settingsScreen.
+  onTapImage() {
+    Get.toNamed(
+      AppRoutes.settingsScreen,
+    );
   }
 }

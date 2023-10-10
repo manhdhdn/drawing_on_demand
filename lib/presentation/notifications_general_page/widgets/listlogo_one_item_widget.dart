@@ -1,13 +1,21 @@
+import '../controller/notifications_general_controller.dart';
+import '../models/listlogo_one_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ListlogoOneItemWidget extends StatelessWidget {
-  const ListlogoOneItemWidget({Key? key})
-      : super(
+  ListlogoOneItemWidget(
+    this.listlogoOneItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ListlogoOneItemModel listlogoOneItemModelObj;
+
+  var controller = Get.find<NotificationsGeneralController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class ListlogoOneItemWidget extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  "32 Min ago",
+                  "lbl_32_min_ago".tr,
                   style: CustomTextStyles.labelLargeBluegray300,
                 ),
               ),
@@ -53,17 +61,21 @@ class ListlogoOneItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "",
-                      style: CustomTextStyles.titleSmallPrimaryBold,
+                    Obx(
+                      () => Text(
+                        listlogoOneItemModelObj.junioruidesigneTxt.value,
+                        style: CustomTextStyles.titleSmallPrimaryBold,
+                      ),
                     ),
                     Padding(
                       padding: getPadding(
                         top: 7,
                       ),
-                      child: Text(
-                        "",
-                        style: theme.textTheme.labelLarge,
+                      child: Obx(
+                        () => Text(
+                          listlogoOneItemModelObj.shopeesgTxt.value,
+                          style: theme.textTheme.labelLarge,
+                        ),
                       ),
                     ),
                     Padding(
@@ -71,7 +83,7 @@ class ListlogoOneItemWidget extends StatelessWidget {
                         top: 10,
                       ),
                       child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "msg_lorem_ipsum_dolor7".tr,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: CustomTextStyles.labelLargePrimary_1.copyWith(

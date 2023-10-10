@@ -1,15 +1,22 @@
+import '../controller/onboarding_two_controller.dart';
+import '../models/sliderbetterfut_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SliderbetterfutItemWidget extends StatelessWidget {
-  SliderbetterfutItemWidget({
+  SliderbetterfutItemWidget(
+    this.sliderbetterfutItemModelObj, {
     Key? key,
     this.onTapLabel,
   }) : super(
           key: key,
         );
+
+  SliderbetterfutItemModel sliderbetterfutItemModelObj;
+
+  var controller = Get.find<OnboardingTwoController>();
 
   VoidCallback? onTapLabel;
 
@@ -40,11 +47,11 @@ class SliderbetterfutItemWidget extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Better ",
+                      text: "lbl_better".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: "future is starting from you",
+                      text: "msg_future_is_starting".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                   ],
@@ -59,7 +66,7 @@ class SliderbetterfutItemWidget extends StatelessWidget {
                 right: 17,
               ),
               child: Text(
-                "Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem . ",
+                "msg_semper_in_cursus".tr,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -70,7 +77,7 @@ class SliderbetterfutItemWidget extends StatelessWidget {
             ),
             CustomElevatedButton(
               width: getHorizontalSize(101),
-              text: "Next",
+              text: "lbl_next".tr,
               margin: getMargin(
                 top: 69,
               ),

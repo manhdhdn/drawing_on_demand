@@ -1,6 +1,7 @@
-import 'package:auto_route/auto_route.dart';
-
 import '../home_page/widgets/home_item_widget.dart';
+import 'controller/home_controller.dart';
+import 'models/home_item_model.dart';
+import 'models/home_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_circleimage.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_image_1.dart';
@@ -11,11 +12,13 @@ import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:drawing_on_demand/widgets/custom_search_view.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key})
+      : super(
+          key: key,
+        );
 
-  final TextEditingController searchController = TextEditingController();
+  HomeController controller = Get.put(HomeController(HomeModel().obs));
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +26,9 @@ class HomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: appTheme.whiteA70001,
         resizeToAvoidBottomInset: false,
+        backgroundColor: appTheme.whiteA70001,
         appBar: CustomAppBar(
-          height: getVerticalSize(69),
           leadingWidth: getHorizontalSize(74),
           leading: AppbarCircleimage(
             imagePath: ImageConstant.imgImage50x50,
@@ -42,10 +44,10 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 AppbarSubtitle(
-                  text: "Hi, Welcome Back! 👋",
+                  text: "msg_hi_welcome_back".tr,
                 ),
                 AppbarSubtitle2(
-                  text: "Find your dream job",
+                  text: "msg_find_your_dream2".tr,
                   margin: getMargin(
                     top: 9,
                     right: 33,
@@ -80,8 +82,8 @@ class HomePage extends StatelessWidget {
                     top: 30,
                     right: 24,
                   ),
-                  controller: searchController,
-                  hintText: "Search...",
+                  controller: controller.searchController,
+                  hintText: "lbl_search".tr,
                   hintStyle: CustomTextStyles.titleMediumBluegray400,
                   alignment: Alignment.center,
                   prefix: Container(
@@ -120,7 +122,7 @@ class HomePage extends StatelessWidget {
                   top: 25,
                 ),
                 child: Text(
-                  "Recommendation",
+                  "lbl_recommendation".tr,
                   style: CustomTextStyles.titleMedium18,
                 ),
               ),
@@ -174,7 +176,7 @@ class HomePage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Senior UI/UX Designer",
+                                        "msg_senior_ui_ux_designer".tr,
                                         style: CustomTextStyles
                                             .titleSmallGray5001Bold,
                                       ),
@@ -185,7 +187,7 @@ class HomePage extends StatelessWidget {
                                             top: 7,
                                           ),
                                           child: Text(
-                                            "Shopee",
+                                            "lbl_shopee".tr,
                                             style: CustomTextStyles
                                                 .labelLargeGray5001SemiBold,
                                           ),
@@ -198,7 +200,7 @@ class HomePage extends StatelessWidget {
                                             top: 11,
                                           ),
                                           child: Text(
-                                            "Jakarta, Indonesia (Remote)",
+                                            "msg_jakarta_indonesia".tr,
                                             style: CustomTextStyles
                                                 .labelLargeGray5001_2,
                                           ),
@@ -209,7 +211,7 @@ class HomePage extends StatelessWidget {
                                           top: 9,
                                         ),
                                         child: Text(
-                                          "1100 - 12.000/Month",
+                                          "msg_1100_12_000_month".tr,
                                           style: CustomTextStyles
                                               .labelLargeGray5001_1,
                                         ),
@@ -234,7 +236,7 @@ class HomePage extends StatelessWidget {
                                                     .roundedBorder16,
                                               ),
                                               child: Text(
-                                                "Fulltime",
+                                                "lbl_fulltime".tr,
                                                 style: CustomTextStyles
                                                     .labelLargeGray5001,
                                               ),
@@ -256,7 +258,7 @@ class HomePage extends StatelessWidget {
                                                     .roundedBorder16,
                                               ),
                                               child: Text(
-                                                "Two days ago",
+                                                "lbl_two_days_ago".tr,
                                                 style: CustomTextStyles
                                                     .labelLargeGray5001,
                                               ),
@@ -311,7 +313,7 @@ class HomePage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Senior UI/UX Designer",
+                                        "msg_senior_ui_ux_designer".tr,
                                         style: CustomTextStyles
                                             .titleSmallGray5001Bold,
                                       ),
@@ -322,7 +324,7 @@ class HomePage extends StatelessWidget {
                                             top: 4,
                                           ),
                                           child: Text(
-                                            "Shopee",
+                                            "lbl_shopee".tr,
                                             style: CustomTextStyles
                                                 .labelLargeGray5001SemiBold,
                                           ),
@@ -336,7 +338,7 @@ class HomePage extends StatelessWidget {
                                             top: 8,
                                           ),
                                           child: Text(
-                                            "Jakarta, Indonesia (Remote)",
+                                            "msg_jakarta_indonesia".tr,
                                             maxLines: null,
                                             overflow: TextOverflow.ellipsis,
                                             style: CustomTextStyles
@@ -352,7 +354,7 @@ class HomePage extends StatelessWidget {
                                           top: 4,
                                         ),
                                         child: Text(
-                                          "1100 - 12.000/Month",
+                                          "msg_1100_12_000_month".tr,
                                           style: CustomTextStyles
                                               .labelLargeGray5001_1,
                                         ),
@@ -377,7 +379,7 @@ class HomePage extends StatelessWidget {
                                                     .roundedBorder16,
                                               ),
                                               child: Text(
-                                                "Fulltime",
+                                                "lbl_fulltime".tr,
                                                 style: CustomTextStyles
                                                     .labelLargeGray5001,
                                               ),
@@ -399,7 +401,7 @@ class HomePage extends StatelessWidget {
                                                     .roundedBorder16,
                                               ),
                                               child: Text(
-                                                "Two days ago",
+                                                "lbl_two_days_ago".tr,
                                                 style: CustomTextStyles
                                                     .labelLargeGray5001,
                                               ),
@@ -425,7 +427,7 @@ class HomePage extends StatelessWidget {
                   top: 22,
                 ),
                 child: Text(
-                  "Recent Jobs",
+                  "lbl_recent_jobs".tr,
                   style: CustomTextStyles.titleMediumInter,
                 ),
               ),
@@ -438,21 +440,28 @@ class HomePage extends StatelessWidget {
                       top: 16,
                       right: 24,
                     ),
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (
-                        context,
-                        index,
-                      ) {
-                        return SizedBox(
-                          height: getVerticalSize(16),
-                        );
-                      },
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return const HomeItemWidget();
-                      },
+                    child: Obx(
+                      () => ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        separatorBuilder: (
+                          context,
+                          index,
+                        ) {
+                          return SizedBox(
+                            height: getVerticalSize(16),
+                          );
+                        },
+                        itemCount: controller
+                            .homeModelObj.value.homeItemList.value.length,
+                        itemBuilder: (context, index) {
+                          HomeItemModel model = controller
+                              .homeModelObj.value.homeItemList.value[index];
+                          return HomeItemWidget(
+                            model,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

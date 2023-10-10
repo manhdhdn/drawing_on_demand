@@ -1,15 +1,22 @@
+import '../controller/onboarding_one_controller.dart';
+import '../models/sliderthebestap_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SliderthebestapItemWidget extends StatelessWidget {
-  SliderthebestapItemWidget({
+  SliderthebestapItemWidget(
+    this.sliderthebestapItemModelObj, {
     Key? key,
     this.onTapLabel,
   }) : super(
           key: key,
         );
+
+  SliderthebestapItemModel sliderthebestapItemModelObj;
+
+  var controller = Get.find<OnboardingOneController>();
 
   VoidCallback? onTapLabel;
 
@@ -37,11 +44,11 @@ class SliderthebestapItemWidget extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "The best app for ",
+                      text: "msg_the_best_app_for2".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: "Find Your Dream Job",
+                      text: "msg_find_your_dream".tr,
                       style: theme.textTheme.headlineSmall,
                     ),
                   ],
@@ -54,7 +61,7 @@ class SliderthebestapItemWidget extends StatelessWidget {
                 top: 19,
               ),
               child: Text(
-                "Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem . ",
+                "msg_semper_in_cursus".tr,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -64,10 +71,10 @@ class SliderthebestapItemWidget extends StatelessWidget {
               ),
             ),
             CustomElevatedButton(
-              width: getHorizontalSize(102),
-              text: "Next",
+              width: getHorizontalSize(101),
+              text: "lbl_next".tr,
               margin: getMargin(
-                top: 68,
+                top: 69,
               ),
               buttonStyle: CustomButtonStyles.fillPrimary,
               onTap: () {

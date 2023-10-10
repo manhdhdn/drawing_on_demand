@@ -1,3 +1,5 @@
+import '../controller/home_controller.dart';
+import '../models/home_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
@@ -5,10 +7,16 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class HomeItemWidget extends StatelessWidget {
-  const HomeItemWidget({Key? key})
-      : super(
+  HomeItemWidget(
+    this.homeItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  HomeItemModel homeItemModelObj;
+
+  var controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class HomeItemWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: Container(
         padding: getPadding(
-          all: 15,
+          all: 16,
         ),
         decoration: AppDecoration.outlineIndigo.copyWith(
           borderRadius: BorderRadiusStyle.roundedBorder16,
@@ -32,7 +40,7 @@ class HomeItemWidget extends StatelessWidget {
                   height: getSize(48),
                   width: getSize(48),
                   padding: getPadding(
-                    all: 10,
+                    all: 8,
                   ),
                   child: CustomImageView(
                     svgPath: ImageConstant.imgGroupPrimary,
@@ -41,29 +49,32 @@ class HomeItemWidget extends StatelessWidget {
                 Padding(
                   padding: getPadding(
                     left: 12,
+                    top: 4,
                     bottom: 2,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Digital Marketing",
-                        style: CustomTextStyles.titleMediumBold_1,
+                      Obx(
+                        () => Text(
+                          homeItemModelObj.digitalmarketinTxt.value,
+                          style: CustomTextStyles.titleMediumBold_1,
+                        ),
                       ),
                       Padding(
                         padding: getPadding(
                           top: 5,
                         ),
                         child: Text(
-                          "Motorola",
+                          "lbl_motorola".tr,
                           style: CustomTextStyles.labelLargeBluegray300SemiBold,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Spacer(),
+                Spacer(),
                 CustomImageView(
                   svgPath: ImageConstant.imgBookmark,
                   height: getSize(24),
@@ -80,7 +91,7 @@ class HomeItemWidget extends StatelessWidget {
                 top: 9,
               ),
               child: Text(
-                "560 - 12.000/Month",
+                "msg_560_12_000_month".tr,
                 style: CustomTextStyles.labelLargeGray600_1,
               ),
             ),
@@ -96,13 +107,13 @@ class HomeItemWidget extends StatelessWidget {
                     CustomElevatedButton(
                       height: getVerticalSize(28),
                       width: getHorizontalSize(70),
-                      text: "Fulltime",
+                      text: "lbl_fulltime".tr,
                       buttonTextStyle: theme.textTheme.labelLarge!,
                     ),
                     CustomElevatedButton(
                       height: getVerticalSize(28),
                       width: getHorizontalSize(103),
-                      text: "Two days ago",
+                      text: "lbl_two_days_ago".tr,
                       margin: getMargin(
                         left: 8,
                       ),
