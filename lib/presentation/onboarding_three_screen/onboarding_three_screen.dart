@@ -1,14 +1,13 @@
 import '../onboarding_three_screen/widgets/sliderapplicati_item_widget.dart';
+import 'controller/onboarding_three_controller.dart';
+import 'models/sliderapplicati_item_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore_for_file: must_be_immutable
-class OnboardingThreeScreen extends StatelessWidget {
-  OnboardingThreeScreen({Key? key}) : super(key: key);
-
-  int sliderIndex = 2;
+class OnboardingThreeScreen extends GetWidget<OnboardingThreeController> {
+  const OnboardingThreeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class OnboardingThreeScreen extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
-                          CarouselSlider.builder(
+                          Obx(() => CarouselSlider.builder(
                               options: CarouselOptions(
                                   height: getVerticalSize(367),
                                   initialPage: 0,
@@ -56,31 +55,44 @@ class OnboardingThreeScreen extends StatelessWidget {
                                   enableInfiniteScroll: false,
                                   scrollDirection: Axis.horizontal,
                                   onPageChanged: (index, reason) {
-                                    sliderIndex = index;
+                                    controller.sliderIndex.value = index;
                                   }),
-                              itemCount: 1,
+                              itemCount: controller.onboardingThreeModelObj
+                                  .value.sliderapplicatiItemList.value.length,
                               itemBuilder: (context, index, realIndex) {
-                                return SliderapplicatiItemWidget(
+                                SliderapplicatiItemModel model = controller
+                                    .onboardingThreeModelObj
+                                    .value
+                                    .sliderapplicatiItemList
+                                    .value[index];
+                                return SliderapplicatiItemWidget(model,
                                     onTapLabel: () {
-                                  onTapLabel(context);
+                                  onTapLabel();
                                 });
-                              }),
+                              })),
                           Align(
                             alignment: Alignment.bottomCenter,
-                            child: Container(
-                              height: getVerticalSize(10),
-                              margin: getMargin(bottom: 112),
-                              child: AnimatedSmoothIndicator(
-                                activeIndex: sliderIndex,
-                                count: 3,
-                                axisDirection: Axis.horizontal,
-                                effect: ScrollingDotsEffect(
-                                  spacing: 12,
-                                  activeDotColor: theme.colorScheme.primary,
-                                  dotColor: theme.colorScheme.primary
-                                      .withOpacity(0.41),
-                                  dotHeight: getVerticalSize(10),
-                                  dotWidth: getHorizontalSize(10),
+                            child: Obx(
+                              () => Container(
+                                height: getVerticalSize(10),
+                                margin: getMargin(bottom: 112),
+                                child: AnimatedSmoothIndicator(
+                                  activeIndex: controller.sliderIndex.value,
+                                  count: controller
+                                      .onboardingThreeModelObj
+                                      .value
+                                      .sliderapplicatiItemList
+                                      .value
+                                      .length,
+                                  axisDirection: Axis.horizontal,
+                                  effect: ScrollingDotsEffect(
+                                    spacing: 12,
+                                    activeDotColor: theme.colorScheme.primary,
+                                    dotColor: theme.colorScheme.primary
+                                        .withOpacity(0.41),
+                                    dotHeight: getVerticalSize(10),
+                                    dotWidth: getHorizontalSize(10),
+                                  ),
                                 ),
                               ),
                             ),
@@ -99,11 +111,12 @@ class OnboardingThreeScreen extends StatelessWidget {
   }
 
   /// Navigates to the signUpCreateAcountScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the signUpCreateAcountScreen.
-  onTapLabel(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.signUpCreateAcountScreen);
+
+  /// When the action is triggered, this function uses the [Get] package to
+  /// push the named route for the signUpCreateAcountScreen.
+  onTapLabel() {
+    Get.toNamed(
+      AppRoutes.homeContainerScreen,
+    );
   }
 }

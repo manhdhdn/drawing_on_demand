@@ -1,3 +1,5 @@
+import '../controller/search_controller.dart';
+import '../models/search_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
@@ -5,10 +7,16 @@ import 'package:flutter/material.dart' hide SearchController;
 
 // ignore: must_be_immutable
 class SearchItemWidget extends StatelessWidget {
-  const SearchItemWidget({Key? key})
-      : super(
+  SearchItemWidget(
+    this.searchItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  SearchItemModel searchItemModelObj;
+
+  var controller = Get.find<SearchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +54,18 @@ class SearchItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Senior UI/UX Designer",
+                  "msg_senior_ui_ux_designer".tr,
                   style: CustomTextStyles.titleMediumBold_1,
                 ),
                 Padding(
                   padding: getPadding(
                     top: 5,
                   ),
-                  child: Text(
-                    "",
-                    style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                  child: Obx(
+                    () => Text(
+                      searchItemModelObj.shellTxt.value,
+                      style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                    ),
                   ),
                 ),
                 Padding(
@@ -63,7 +73,7 @@ class SearchItemWidget extends StatelessWidget {
                     top: 12,
                   ),
                   child: Text(
-                    "560 - 12.000/Month",
+                    "msg_560_12_000_month".tr,
                     style: CustomTextStyles.labelLargeGray600_1,
                   ),
                 ),
@@ -76,13 +86,13 @@ class SearchItemWidget extends StatelessWidget {
                       CustomElevatedButton(
                         height: getVerticalSize(28),
                         width: getHorizontalSize(70),
-                        text: "Fulltime",
+                        text: "lbl_fulltime".tr,
                         buttonTextStyle: theme.textTheme.labelLarge!,
                       ),
                       CustomElevatedButton(
                         height: getVerticalSize(28),
                         width: getHorizontalSize(103),
-                        text: "Two days ago",
+                        text: "lbl_two_days_ago".tr,
                         margin: getMargin(
                           left: 8,
                         ),

@@ -1,44 +1,13 @@
+import 'controller/splash_controller.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
-import 'package:drawing_on_demand/presentation/onboarding_one_screen/onboarding_one_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends GetWidget<SplashController> {
   const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    Future.delayed(
-      const Duration(seconds: 2),
-      () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => OnboardingOneScreen(),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.primary,
@@ -49,9 +18,7 @@ class _SplashScreenState extends State<SplashScreen>
             height: getVerticalSize(153),
             width: getHorizontalSize(102),
             alignment: Alignment.center,
-            margin: getMargin(
-              bottom: 5,
-            ),
+            margin: getMargin(bottom: 5),
           ),
         ),
       ),

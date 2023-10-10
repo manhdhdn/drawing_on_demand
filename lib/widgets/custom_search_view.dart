@@ -2,14 +2,14 @@ import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomSearchView extends StatelessWidget {
-  CustomSearchView({
+  const CustomSearchView({
     Key? key,
     this.alignment,
     this.width,
     this.margin,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.textInputType = TextInputType.text,
     this.maxLines,

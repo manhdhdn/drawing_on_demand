@@ -1,13 +1,21 @@
+import '../controller/experience_setting_controller.dart';
+import '../models/experience_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ExperienceItemWidget extends StatelessWidget {
-  const ExperienceItemWidget({Key? key})
-      : super(
+  ExperienceItemWidget(
+    this.experienceItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ExperienceItemModel experienceItemModelObj;
+
+  var controller = Get.find<ExperienceSettingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +41,11 @@ class ExperienceItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "",
-                  style: CustomTextStyles.titleSmallPrimarySemiBold,
+                Obx(
+                  () => Text(
+                    experienceItemModelObj.internshipuiuxTxt.value,
+                    style: CustomTextStyles.titleSmallPrimarySemiBold,
+                  ),
                 ),
                 Padding(
                   padding: getPadding(
@@ -48,7 +58,7 @@ class ExperienceItemWidget extends StatelessWidget {
                           top: 1,
                         ),
                         child: Text(
-                          "Shopee Sg",
+                          "lbl_shopee_sg".tr,
                           style: theme.textTheme.labelLarge,
                         ),
                       ),
@@ -58,7 +68,7 @@ class ExperienceItemWidget extends StatelessWidget {
                           top: 1,
                         ),
                         child: Text(
-                          "•",
+                          "lbl".tr,
                           style: theme.textTheme.labelLarge,
                         ),
                       ),
@@ -66,9 +76,11 @@ class ExperienceItemWidget extends StatelessWidget {
                         padding: getPadding(
                           left: 4,
                         ),
-                        child: Text(
-                          "",
-                          style: theme.textTheme.labelLarge,
+                        child: Obx(
+                          () => Text(
+                            experienceItemModelObj.zipcodeTxt.value,
+                            style: theme.textTheme.labelLarge,
+                          ),
                         ),
                       ),
                     ],
