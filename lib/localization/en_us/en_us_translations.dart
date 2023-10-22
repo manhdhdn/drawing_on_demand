@@ -20,10 +20,13 @@ final Map<String, String> enUs = {
 
   // Sign Up - Complete Account  Screen
   "lbl_password": "Password",
+  "lbl_gender": "Gender",
+  "txt_male": "Male",
+  "txt_female": "Female",
   "msg_complete_your_account": "Complete your account",
   "msg_create_a_password": "Create a password",
-  "msg_enter_your_first": "Enter your first name",
-  "msg_enter_your_last": "Enter your last name",
+  "msg_enter_your_name": "Enter your name",
+  "msg_enter_your_phone": "Enter your phone number",
   "msg_select_a_country": "Select a country",
 
   // Job Type Screen
@@ -267,7 +270,7 @@ final Map<String, String> enUs = {
   "lbl_experience": "Experience",
   "lbl_filter": "Filter",
   "lbl_finance": "Finance",
-  "lbl_first_name": "First Name",
+  "lbl_name": "Name",
   "lbl_fulltime": "Fulltime",
   "lbl_general": "General",
   "lbl_home": "Home",
@@ -309,6 +312,7 @@ final Map<String, String> enUs = {
   "msg_by_signing_up_you2": "By signing up you agree to our ",
   "msg_computer_science": "Computer Science",
   "msg_conditions_of_use": "Conditions of Use",
+  "msg_continue": "Login",
   "msg_continue_with_apple": "Continue with Apple",
   "msg_continue_with_email": "Continue with Email",
   "msg_continue_with_google": "Continue with Google",
@@ -316,6 +320,7 @@ final Map<String, String> enUs = {
   "msg_development_it": "Development & IT",
   "msg_engineering_architecture": "Engineering & Architecture",
   "msg_enter_your_email": "Enter your email address",
+  "msg_enter_your_password": "Enter your password",
   "msg_hi_welcome_back": "Hi, Welcome Back! 👋",
   "msg_internship_ui_ux": "Internship UI/UX Designer",
   "msg_junior_ui_designer2": "Junior UI Designer",
@@ -359,4 +364,7 @@ final Map<String, String> enUs = {
 // Network Error String
   "msg_network_err": "Network Error",
   "msg_something_went_wrong": "Something Went Wrong!",
+
+// Error Messages
+  "msg_email_already_exist": "Email already registered",
 };

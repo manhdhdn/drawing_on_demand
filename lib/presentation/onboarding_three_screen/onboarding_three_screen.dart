@@ -78,12 +78,13 @@ class OnboardingThreeScreen extends GetWidget<OnboardingThreeController> {
                                 margin: getMargin(bottom: 112),
                                 child: AnimatedSmoothIndicator(
                                   activeIndex: controller.sliderIndex.value,
-                                  count: controller
-                                      .onboardingThreeModelObj
-                                      .value
-                                      .sliderapplicatiItemList
-                                      .value
-                                      .length,
+                                  count: 3,
+                                  // count: controller
+                                  //     .onboardingThreeModelObj
+                                  //     .value
+                                  //     .sliderapplicatiItemList
+                                  //     .value
+                                  //     .length,
                                   axisDirection: Axis.horizontal,
                                   effect: ScrollingDotsEffect(
                                     spacing: 12,
@@ -115,7 +116,7 @@ class OnboardingThreeScreen extends GetWidget<OnboardingThreeController> {
   /// When the action is triggered, this function uses the [Get] package to
   /// push the named route for the signUpCreateAcountScreen.
   onTapLabel() {
-    Get.toNamed(
+    Get.offAllNamed(
       AppRoutes.homeContainerScreen,
     );
   }

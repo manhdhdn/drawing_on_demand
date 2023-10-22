@@ -8,5 +8,5 @@ import 'package:drawing_on_demand/presentation/onboarding_three_screen/models/on
 class OnboardingThreeController extends GetxController {
   Rx<OnboardingThreeModel> onboardingThreeModelObj = OnboardingThreeModel().obs;
 
-  Rx<int> sliderIndex = 0.obs;
+  Rx<int> sliderIndex = 2.obs;
 }

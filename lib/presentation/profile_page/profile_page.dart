@@ -412,7 +412,7 @@ class ProfilePage extends StatelessWidget {
                                             ]),
                                         Padding(
                                             padding:
-                                                getPadding(top: 24, right: 83),
+                                                getPadding(top: 24, right: 78),
                                             child: Row(children: [
                                               CustomIconButton(
                                                   height: getSize(48),
