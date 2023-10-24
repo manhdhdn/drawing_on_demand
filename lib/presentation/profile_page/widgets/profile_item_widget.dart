@@ -1,13 +1,21 @@
+import '../controller/profile_controller.dart';
+import '../models/profile_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProfileItemWidget extends StatelessWidget {
-  const ProfileItemWidget({Key? key})
-      : super(
+  ProfileItemWidget(
+    this.profileItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ProfileItemModel profileItemModelObj;
+
+  var controller = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +58,11 @@ class ProfileItemWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "",
-                        style: CustomTextStyles.titleSmallPrimarySemiBold,
+                      Obx(
+                        () => Text(
+                          profileItemModelObj.internshipuiuxTxt.value,
+                          style: CustomTextStyles.titleSmallPrimarySemiBold,
+                        ),
                       ),
                       Padding(
                         padding: getPadding(
@@ -65,7 +75,7 @@ class ProfileItemWidget extends StatelessWidget {
                                 top: 1,
                               ),
                               child: Text(
-                                "Shopee Sg",
+                                "lbl_shopee_sg".tr,
                                 style: theme.textTheme.labelLarge,
                               ),
                             ),
@@ -75,7 +85,7 @@ class ProfileItemWidget extends StatelessWidget {
                                 top: 1,
                               ),
                               child: Text(
-                                "•",
+                                "lbl".tr,
                                 style: theme.textTheme.labelLarge,
                               ),
                             ),
@@ -83,9 +93,11 @@ class ProfileItemWidget extends StatelessWidget {
                               padding: getPadding(
                                 left: 4,
                               ),
-                              child: Text(
-                                "",
-                                style: theme.textTheme.labelLarge,
+                              child: Obx(
+                                () => Text(
+                                  profileItemModelObj.zipcodeTxt.value,
+                                  style: theme.textTheme.labelLarge,
+                                ),
                               ),
                             ),
                           ],

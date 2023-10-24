@@ -1,13 +1,21 @@
+import '../controller/job_details_tab_container_controller.dart';
+import '../models/listwallet_one_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ListwalletOneItemWidget extends StatelessWidget {
-  const ListwalletOneItemWidget({Key? key})
-      : super(
+  ListwalletOneItemWidget(
+    this.listwalletOneItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ListwalletOneItemModel listwalletOneItemModelObj;
+
+  var controller = Get.find<JobDetailsTabContainerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +39,22 @@ class ListwalletOneItemWidget extends StatelessWidget {
             padding: getPadding(
               top: 9,
             ),
-            child: Text(
-              "",
-              style: CustomTextStyles.labelLargeBluegray300,
+            child: Obx(
+              () => Text(
+                listwalletOneItemModelObj.salaryTxt.value,
+                style: CustomTextStyles.labelLargeBluegray300,
+              ),
             ),
           ),
           Padding(
             padding: getPadding(
               top: 9,
             ),
-            child: Text(
-              "",
-              style: CustomTextStyles.titleSmallPrimarySemiBold,
+            child: Obx(
+              () => Text(
+                listwalletOneItemModelObj.priceTxt.value,
+                style: CustomTextStyles.titleSmallPrimarySemiBold,
+              ),
             ),
           ),
         ],

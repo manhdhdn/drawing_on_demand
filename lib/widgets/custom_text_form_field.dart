@@ -2,14 +2,14 @@ import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField({
+  const CustomTextFormField({
     Key? key,
     this.alignment,
     this.width,
     this.margin,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
@@ -91,7 +91,7 @@ class CustomTextFormField extends StatelessWidget {
           controller: controller,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
-          style: textStyle ?? CustomTextStyles.labelLargeGray600,
+          style: textStyle ?? CustomTextStyles.titleMediumPoppins,
           obscureText: obscureText!,
           textInputAction: textInputAction,
           keyboardType: textInputType,
@@ -103,6 +103,9 @@ class CustomTextFormField extends StatelessWidget {
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
         hintStyle: hintStyle ?? CustomTextStyles.titleMediumBluegray400,
+        errorStyle: const TextStyle(
+          color: Colors.red,
+        ),
         prefixIcon: prefix,
         prefixIconConstraints: prefixConstraints,
         suffixIcon: suffix,

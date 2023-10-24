@@ -1,14 +1,15 @@
-import 'package:drawing_on_demand/presentation/onboarding_one_screen/widgets/sliderthebestap_item_widget.dart';
+import '../onboarding_one_screen/widgets/sliderthebestap_item_widget.dart';
+import 'controller/onboarding_one_controller.dart';
+import 'models/sliderthebestap_item_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
+import 'package:drawing_on_demand/widgets/app_bar/appbar_subtitle_1.dart';
+import 'package:drawing_on_demand/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore_for_file: must_be_immutable
-class OnboardingOneScreen extends StatelessWidget {
-  OnboardingOneScreen({Key? key}) : super(key: key);
-
-  int sliderIndex = 0;
+class OnboardingOneScreen extends GetWidget<OnboardingOneController> {
+  const OnboardingOneScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,92 +18,93 @@ class OnboardingOneScreen extends StatelessWidget {
       child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
+        appBar: CustomAppBar(height: getVerticalSize(49), actions: [
+          AppbarSubtitle1(
+              text: "lbl_skip".tr,
+              margin: getMargin(left: 24, top: 13, right: 24, bottom: 13),
+              onTap: () {
+                onTapMediumlabelmedi();
+              })
+        ]),
         body: Container(
           width: mediaQueryData.size.width,
           height: mediaQueryData.size.height,
+          padding: getPadding(top: 45),
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(ImageConstant.imgOnboardingone),
                   fit: BoxFit.cover)),
           child: Container(
+            height: getVerticalSize(718),
             width: double.maxFinite,
-            padding: getPadding(left: 24, top: 18, right: 24, bottom: 18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.start,
+            padding: getPadding(left: 24, right: 24),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                GestureDetector(
-                    onTap: () {
-                      onTapTxtMediumlabelmedi(context);
-                    },
-                    child: Text("Skip",
-                        style: CustomTextStyles.titleSmallGray5001)),
-                Container(
-                  height: getVerticalSize(672),
-                  width: getHorizontalSize(327),
-                  margin: getMargin(top: 19, bottom: 5),
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      CustomImageView(
-                          imagePath: ImageConstant.imgImage,
-                          height: getVerticalSize(362),
-                          width: getHorizontalSize(267),
-                          alignment: Alignment.topCenter),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SizedBox(
-                          height: getVerticalSize(335),
-                          width: getHorizontalSize(327),
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              CarouselSlider.builder(
-                                options: CarouselOptions(
-                                  height: getVerticalSize(335),
-                                  initialPage: 0,
-                                  autoPlay: true,
-                                  viewportFraction: 1.0,
-                                  enableInfiniteScroll: false,
-                                  scrollDirection: Axis.horizontal,
-                                  onPageChanged: (index, reason) {
-                                    sliderIndex = index;
-                                  },
-                                ),
-                                itemCount: 1,
-                                itemBuilder: (context, index, realIndex) {
-                                  return SliderthebestapItemWidget(
-                                    onTapLabel: () {
-                                      onTapLabel(context);
-                                    },
-                                  );
-                                },
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: getVerticalSize(10),
-                                  margin: getMargin(bottom: 112),
-                                  child: AnimatedSmoothIndicator(
-                                    activeIndex: sliderIndex,
-                                    count: 3,
-                                    axisDirection: Axis.horizontal,
-                                    effect: ScrollingDotsEffect(
-                                      spacing: 12,
-                                      activeDotColor: theme.colorScheme.primary,
-                                      dotColor: theme.colorScheme.primary
-                                          .withOpacity(0.41),
-                                      dotHeight: getVerticalSize(10),
-                                      dotWidth: getHorizontalSize(10),
-                                    ),
-                                  ),
+                CustomImageView(
+                    imagePath: ImageConstant.imgImage,
+                    height: getVerticalSize(361),
+                    width: getHorizontalSize(283),
+                    alignment: Alignment.topCenter),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: getVerticalSize(335),
+                    width: getHorizontalSize(327),
+                    margin: getMargin(bottom: 5),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Obx(() => CarouselSlider.builder(
+                            options: CarouselOptions(
+                                height: getVerticalSize(335),
+                                initialPage: 0,
+                                autoPlay: true,
+                                viewportFraction: 1.0,
+                                enableInfiniteScroll: false,
+                                scrollDirection: Axis.horizontal,
+                                onPageChanged: (index, reason) {
+                                  controller.sliderIndex.value = index;
+                                }),
+                            itemCount: controller.onboardingOneModelObj.value
+                                .sliderthebestapItemList.value.length,
+                            itemBuilder: (context, index, realIndex) {
+                              SliderthebestapItemModel model = controller
+                                  .onboardingOneModelObj
+                                  .value
+                                  .sliderthebestapItemList
+                                  .value[index];
+                              return SliderthebestapItemWidget(model,
+                                  onTapLabel: () {
+                                onTapLabel();
+                              });
+                            })),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Obx(
+                            () => Container(
+                              height: getVerticalSize(10),
+                              margin: getMargin(bottom: 112),
+                              child: AnimatedSmoothIndicator(
+                                activeIndex: controller.sliderIndex.value,
+                                count: 3,
+                                // count: controller.onboardingOneModelObj.value
+                                //     .sliderthebestapItemList.value.length,
+                                axisDirection: Axis.horizontal,
+                                effect: ScrollingDotsEffect(
+                                  spacing: 12,
+                                  activeDotColor: theme.colorScheme.primary,
+                                  dotColor: theme.colorScheme.primary
+                                      .withOpacity(0.41),
+                                  dotHeight: getVerticalSize(10),
+                                  dotWidth: getHorizontalSize(10),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -113,21 +115,20 @@ class OnboardingOneScreen extends StatelessWidget {
     );
   }
 
-  /// Navigates to the onboardingThreeScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the onboardingThreeScreen.
-  onTapLabel(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.onboardingTwoScreen);
+  /// Navigates to the onboardingTwoScreen when the action is triggered.
+  /// When the action is triggered, this function uses the [Get] package to
+  /// push the named route for the onboardingTwoScreen.
+  onTapLabel() {
+    Get.toNamed(AppRoutes.onboardingTwoScreen);
   }
 
   /// Navigates to the signUpCreateAcountScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the signUpCreateAcountScreen.
-  onTapTxtMediumlabelmedi(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.signUpCreateAcountScreen);
+
+  /// When the action is triggered, this function uses the [Get] package to
+  /// push the named route for the signUpCreateAcountScreen.
+  onTapMediumlabelmedi() {
+    Get.toNamed(
+      AppRoutes.signUpCreateAcountScreen,
+    );
   }
 }

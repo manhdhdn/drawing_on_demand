@@ -1,53 +1,36 @@
+import 'controller/home_container_controller.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/presentation/home_page/home_page.dart';
-import 'package:drawing_on_demand/presentation/login_screen/login_screen.dart';
 import 'package:drawing_on_demand/presentation/message_page/message_page.dart';
 import 'package:drawing_on_demand/presentation/profile_page/profile_page.dart';
 import 'package:drawing_on_demand/presentation/saved_page/saved_page.dart';
 import 'package:drawing_on_demand/widgets/custom_bottom_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: must_be_immutable
-class HomeContainerScreen extends StatelessWidget {
-  HomeContainerScreen({Key? key}) : super(key: key);
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+class HomeContainerScreen extends GetWidget<HomeContainerController> {
+  const HomeContainerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: appTheme.whiteA70001,
-            body: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: appTheme.blueGray50,
-                  ));
-                } else if (snapshot.hasData) {
-                  return Navigator(
-                    key: navigatorKey,
-                    initialRoute: AppRoutes.homePage,
-                    onGenerateRoute: (routeSetting) => PageRouteBuilder(
-                      pageBuilder: (ctx, ani, ani1) =>
-                          getCurrentPage(routeSetting.name!),
-                      transitionDuration: const Duration(seconds: 1),
-                    ),
-                  );
-                } else {
-                  return const LoginScreen();
-                }
-              },
-            ),
-            bottomNavigationBar:
-                CustomBottomBar(onChanged: (BottomBarEnum type) {
-              Navigator.pushNamed(
-                  navigatorKey.currentContext!, getCurrentRoute(type));
-            })));
+      child: Scaffold(
+        backgroundColor: appTheme.whiteA70001,
+        body: Navigator(
+          key: Get.nestedKey(1),
+          initialRoute: AppRoutes.homePage,
+          onGenerateRoute: (routeSetting) => GetPageRoute(
+            page: () => getCurrentPage(routeSetting.name!),
+            transition: Transition.noTransition,
+          ),
+        ),
+        bottomNavigationBar: CustomBottomBar(
+          onChanged: (BottomBarEnum type) {
+            Get.toNamed(getCurrentRoute(type), id: 1);
+          },
+        ),
+      ),
+    );
   }
 
   ///Handling route based on bottom click actions

@@ -1,13 +1,17 @@
+import 'controller/apply_job_popup_controller.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: must_be_immutable
 class ApplyJobPopupDialog extends StatelessWidget {
-  const ApplyJobPopupDialog({Key? key})
-      : super(
+  ApplyJobPopupDialog(
+    this.controller, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  ApplyJobPopupController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class ApplyJobPopupDialog extends StatelessWidget {
               top: 25,
             ),
             child: Text(
-              "Success",
+              "lbl_success".tr,
               style: CustomTextStyles.titleMediumBold,
             ),
           ),
@@ -44,14 +48,14 @@ class ApplyJobPopupDialog extends StatelessWidget {
               top: 9,
             ),
             child: Text(
-              "Your Application is succesfully sent",
+              "msg_your_application".tr,
               style: CustomTextStyles.titleSmallBluegray400,
             ),
           ),
           CustomElevatedButton(
             height: getVerticalSize(46),
             width: getHorizontalSize(127),
-            text: "Continue",
+            text: "lbl_continue".tr,
             margin: getMargin(
               top: 23,
             ),

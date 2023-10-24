@@ -1,3 +1,5 @@
+import '../controller/saved_controller.dart';
+import '../models/saved_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_icon_button.dart';
@@ -5,10 +7,16 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SavedItemWidget extends StatelessWidget {
-  const SavedItemWidget({Key? key})
-      : super(
+  SavedItemWidget(
+    this.savedItemModelObj, {
+    Key? key,
+  }) : super(
           key: key,
         );
+
+  SavedItemModel savedItemModelObj;
+
+  var controller = Get.find<SavedController>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,17 +53,21 @@ class SavedItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "",
-                  style: CustomTextStyles.titleMediumBold_1,
+                Obx(
+                  () => Text(
+                    savedItemModelObj.uxdesignerTxt.value,
+                    style: CustomTextStyles.titleMediumBold_1,
+                  ),
                 ),
                 Padding(
                   padding: getPadding(
                     top: 6,
                   ),
-                  child: Text(
-                    "",
-                    style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                  child: Obx(
+                    () => Text(
+                      savedItemModelObj.dummystudioTxt.value,
+                      style: CustomTextStyles.labelLargeBluegray300SemiBold,
+                    ),
                   ),
                 ),
                 Padding(
@@ -63,7 +75,7 @@ class SavedItemWidget extends StatelessWidget {
                     top: 10,
                   ),
                   child: Text(
-                    "560 - 12.000/Month",
+                    "msg_560_12_000_month".tr,
                     style: CustomTextStyles.labelLargeGray600_1,
                   ),
                 ),
@@ -76,13 +88,13 @@ class SavedItemWidget extends StatelessWidget {
                       CustomElevatedButton(
                         height: getVerticalSize(28),
                         width: getHorizontalSize(70),
-                        text: "Fulltime",
+                        text: "lbl_fulltime".tr,
                         buttonTextStyle: theme.textTheme.labelLarge!,
                       ),
                       CustomElevatedButton(
                         height: getVerticalSize(28),
                         width: getHorizontalSize(103),
-                        text: "Two days ago",
+                        text: "lbl_two_days_ago".tr,
                         margin: getMargin(
                           left: 8,
                         ),

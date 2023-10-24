@@ -1,4 +1,6 @@
 import '../job_details_tab_container_screen/widgets/listwallet_one_item_widget.dart';
+import 'controller/job_details_tab_container_controller.dart';
+import 'models/listwallet_one_item_model.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/presentation/applied_job_page/applied_job_page.dart';
 import 'package:drawing_on_demand/widgets/app_bar/appbar_image.dart';
@@ -8,26 +10,13 @@ import 'package:drawing_on_demand/widgets/app_bar/custom_app_bar.dart';
 import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
-class JobDetailsTabContainerScreen extends StatefulWidget {
+// ignore_for_file: must_be_immutable
+class JobDetailsTabContainerScreen
+    extends GetWidget<JobDetailsTabContainerController> {
   const JobDetailsTabContainerScreen({Key? key})
       : super(
           key: key,
         );
-
-  @override
-  JobDetailsTabContainerScreenState createState() =>
-      JobDetailsTabContainerScreenState();
-}
-
-class JobDetailsTabContainerScreenState
-    extends State<JobDetailsTabContainerScreen> with TickerProviderStateMixin {
-  late TabController tabviewController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabviewController = TabController(length: 3, vsync: this);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +37,7 @@ class JobDetailsTabContainerScreenState
           ),
           centerTitle: true,
           title: AppbarTitle(
-            text: "Job Details",
+            text: "lbl_job_details".tr,
           ),
           actions: [
             AppbarImage1(
@@ -121,7 +110,7 @@ class JobDetailsTabContainerScreenState
                                   top: 16,
                                 ),
                                 child: Text(
-                                  "Senior UI/UX Designer",
+                                  "msg_senior_ui_ux_designer".tr,
                                   style: CustomTextStyles.titleSmallBold,
                                 ),
                               ),
@@ -130,7 +119,7 @@ class JobDetailsTabContainerScreenState
                                   top: 7,
                                 ),
                                 child: Text(
-                                  "Shopee Sg",
+                                  "lbl_shopee_sg".tr,
                                   style: theme.textTheme.labelLarge,
                                 ),
                               ),
@@ -145,14 +134,14 @@ class JobDetailsTabContainerScreenState
                                     CustomElevatedButton(
                                       height: getVerticalSize(28),
                                       width: getHorizontalSize(69),
-                                      text: "Fulltime",
+                                      text: "lbl_fulltime".tr,
                                       buttonTextStyle:
                                           theme.textTheme.bodySmall!,
                                     ),
                                     CustomElevatedButton(
                                       height: getVerticalSize(28),
                                       width: getHorizontalSize(104),
-                                      text: "Two days ago",
+                                      text: "lbl_two_days_ago".tr,
                                       margin: getMargin(
                                         left: 9,
                                       ),
@@ -168,25 +157,39 @@ class JobDetailsTabContainerScreenState
                         Expanded(
                           child: SizedBox(
                             height: getVerticalSize(124),
-                            child: ListView.separated(
-                              padding: getPadding(
-                                left: 15,
-                                top: 24,
-                                right: 49,
+                            child: Obx(
+                              () => ListView.separated(
+                                padding: getPadding(
+                                  left: 15,
+                                  top: 24,
+                                  right: 49,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                separatorBuilder: (
+                                  context,
+                                  index,
+                                ) {
+                                  return SizedBox(
+                                    width: getHorizontalSize(54),
+                                  );
+                                },
+                                itemCount: controller
+                                    .jobDetailsTabContainerModelObj
+                                    .value
+                                    .listwalletOneItemList
+                                    .value
+                                    .length,
+                                itemBuilder: (context, index) {
+                                  ListwalletOneItemModel model = controller
+                                      .jobDetailsTabContainerModelObj
+                                      .value
+                                      .listwalletOneItemList
+                                      .value[index];
+                                  return ListwalletOneItemWidget(
+                                    model,
+                                  );
+                                },
                               ),
-                              scrollDirection: Axis.horizontal,
-                              separatorBuilder: (
-                                context,
-                                index,
-                              ) {
-                                return SizedBox(
-                                  width: getHorizontalSize(54),
-                                );
-                              },
-                              itemCount: 3,
-                              itemBuilder: (context, index) {
-                                return ListwalletOneItemWidget();
-                              },
                             ),
                           ),
                         ),
@@ -197,7 +200,7 @@ class JobDetailsTabContainerScreenState
                             top: 26,
                           ),
                           child: TabBar(
-                            controller: tabviewController,
+                            controller: controller.tabviewController,
                             isScrollable: true,
                             labelColor: theme.colorScheme.primary,
                             labelStyle: TextStyle(
@@ -220,17 +223,17 @@ class JobDetailsTabContainerScreenState
                             tabs: [
                               Tab(
                                 child: Text(
-                                  "Description",
+                                  "lbl_description".tr,
                                 ),
                               ),
                               Tab(
                                 child: Text(
-                                  "Requirement",
+                                  "lbl_requirement".tr,
                                 ),
                               ),
                               Tab(
                                 child: Text(
-                                  "Responsibilities",
+                                  "msg_responsibilities".tr,
                                 ),
                               ),
                             ],
@@ -247,7 +250,7 @@ class JobDetailsTabContainerScreenState
                 ),
                 height: getVerticalSize(269),
                 child: TabBarView(
-                  controller: tabviewController,
+                  controller: controller.tabviewController,
                   children: [
                     AppliedJobPage(),
                     AppliedJobPage(),
