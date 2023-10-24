@@ -85,8 +85,6 @@ class ApiAccount extends GetConnect {
     try {
       await isNetworkConnected();
 
-      Map accountMap = account.toJson();
-
       Response response = await httpClient.post(
         Uri.https(ApiConfig.baseUrl,
                 "${ApiConfig.odata}/${ApiConfig.paths['account']}")
