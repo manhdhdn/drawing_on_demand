@@ -191,14 +191,12 @@ class SignUpCreateAcountScreen extends GetWidget<SignUpCreateAcountController> {
   /// Performs a Google sign-in and returns a [GoogleUser] object.
   ///
   /// If the sign-in is successful, the [onSuccess] callback will be called with
-  /// a TODO comment needed to be modified by you.
   /// If the sign-in fails, the [onError] callback will be called with the error message.
   ///
   /// Throws an exception if the Google sign-in process fails.
   onTapContinuewith() async {
     await GoogleAuthHelper().googleSignInProcess().then((googleUser) {
       if (googleUser != null) {
-        //TODO Actions to be performed after signin
       } else {
         Get.snackbar('Error', 'user data is empty');
       }

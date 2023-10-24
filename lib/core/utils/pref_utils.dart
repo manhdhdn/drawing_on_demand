@@ -1,6 +1,8 @@
+import 'dart:convert';
+
+import 'package:drawing_on_demand/data/models/account.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore_for_file: must_be_immutable
 class PrefUtils {
   PrefUtils() {
     SharedPreferences.getInstance().then((value) {
@@ -12,7 +14,6 @@ class PrefUtils {
 
   Future<void> init() async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
-    print('SharedPreference Initialized');
   }
 
   ///will clear all the data stored in preference
@@ -32,13 +33,13 @@ class PrefUtils {
     }
   }
 
-  Future<void> setId(String value) {
-    return _sharedPreferences!.setString('id', value);
+  Future<void> setAccount(Account account) {
+    return _sharedPreferences!.setString('account', jsonEncode(account));
   }
 
-  String getId() {
+  String getAccount() {
     try {
-      return _sharedPreferences!.getString('id') ?? '';
+      return _sharedPreferences!.getString('account') ?? '';
     } catch (e) {
       return '';
     }

@@ -21,7 +21,7 @@ bool isValidEmail(
   return isInputStringValid;
 }
 
-/// Checks if string consist only Alphabet. (No Whitespace)
+/// Checks if string consist only Alphabet. (With whitespace accepted)
 bool isText(
   String? inputString, {
   bool isRequired = false,
@@ -33,7 +33,29 @@ bool isText(
   }
 
   if (inputString != null && inputString.isNotEmpty) {
-    const pattern = r'^[a-zA-Z]+$';
+    const pattern = r'^[A-Za-z\s]+$';
+
+    final regExp = RegExp(pattern);
+
+    isInputStringValid = regExp.hasMatch(inputString);
+  }
+
+  return isInputStringValid;
+}
+
+/// Checks if valid vietnamese phone  number
+bool isPhone(
+  String? inputString, {
+  bool isRequired = false,
+}) {
+  bool isInputStringValid = false;
+
+  if (!isRequired && (inputString == null ? true : inputString.isEmpty)) {
+    isInputStringValid = true;
+  }
+
+  if (inputString != null && inputString.isNotEmpty) {
+    const pattern = r'^(03|05|07|08|09|01[2689])+([0-9]{8})$';
 
     final regExp = RegExp(pattern);
 

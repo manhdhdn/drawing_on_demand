@@ -85,9 +85,14 @@ class ApiAccount extends GetConnect {
     try {
       await isNetworkConnected();
 
+      Map accountMap = account.toJson();
+
       Response response = await httpClient.post(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}")
+            .toString(),
         headers: ApiConfig.headers,
+        body: account.toJson(),
       );
 
       if (_isSuccessCall(response)) {
@@ -117,6 +122,37 @@ class ApiAccount extends GetConnect {
       Response response = await httpClient.put(
         "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
         headers: ApiConfig.headers,
+        body: account.toJson(),
+      );
+
+      if (_isSuccessCall(response)) {
+        return Account.fromJson(response.body);
+      } else {
+        throw response.body != null
+            ? Account.fromJson(response.body)
+            : 'Something Went Wrong!';
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    } finally {
+      ProgressDialogUtils.hideProgressDialog();
+    }
+  }
+
+  Future<Account> patchOne(String id, Map body) async {
+    ProgressDialogUtils.showProgressDialog();
+
+    try {
+      await isNetworkConnected();
+
+      Response response = await httpClient.patch(
+        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
+        headers: ApiConfig.headers,
+        body: body,
       );
 
       if (_isSuccessCall(response)) {

@@ -1,4 +1,5 @@
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:intl/intl.dart';
 
 class Accounts {
   Set<Account> value;
@@ -13,32 +14,32 @@ class Accounts {
 }
 
 class Account {
-  Guid id;
-  String email;
-  String phone;
-  String name;
-  String gender;
+  Guid? id;
+  String? email;
+  String? phone;
+  String? name;
+  String? gender;
   String? avartar;
   String? address;
   String? bio;
-  DateTime createdDate;
+  DateTime? createdDate;
   DateTime? lastModifiedDate;
-  String status;
-  Guid rankId;
+  String? status;
+  Guid? rankId;
 
   Account({
-    required this.id,
-    required this.email,
-    required this.phone,
-    required this.name,
-    required this.gender,
+    this.id,
+    this.email,
+    this.phone,
+    this.name,
+    this.gender,
     this.avartar,
     this.address,
     this.bio,
-    required this.createdDate,
+    this.createdDate,
     this.lastModifiedDate,
-    required this.status,
-    required this.rankId,
+    this.status,
+    this.rankId,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) {
@@ -62,7 +63,7 @@ class Account {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id,
+      'Id': id.toString(),
       'Email': email,
       'Phone': phone,
       'Name': name,
@@ -70,10 +71,14 @@ class Account {
       'Avartar': avartar,
       'Address': address,
       'Bio': bio,
-      'CreatedDate': createdDate,
-      'LastModifiedDate': lastModifiedDate,
+      'CreatedDate':
+          DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
+      // ignore: prefer_null_aware_operators
+      'LastModifiedDate': lastModifiedDate != null
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
+          : null,
       'Status': status,
-      'RankId': rankId,
+      'RankId': rankId.toString(),
     };
   }
 }

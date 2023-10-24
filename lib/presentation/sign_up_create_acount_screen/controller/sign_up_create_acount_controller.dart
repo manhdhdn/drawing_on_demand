@@ -27,12 +27,16 @@ class SignUpCreateAcountController extends GetxController {
           .filter("email", emailController.text.trim());
 
       if (accounts.isNotEmpty) {
-        Fluttertoast.showToast(msg: "mgs_email_already_exists".tr);
+        Fluttertoast.showToast(msg: "msg_email_already_exist".tr);
 
         return true;
       } else {
         return false;
       }
+    } on NoInternetException catch (e) {
+      Get.rawSnackbar(message: e.toString());
+
+      return true;
     } catch (error, stackTrace) {
       Logger.log(
         error,

@@ -1,3 +1,6 @@
+import 'package:drawing_on_demand/data/models/account.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+
 import 'controller/sign_up_complete_account_controller.dart';
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/core/utils/validation_functions.dart';
@@ -5,10 +8,6 @@ import 'package:drawing_on_demand/widgets/custom_elevated_button.dart';
 import 'package:drawing_on_demand/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:drawing_on_demand/data/models/registerDeviceAuth/post_register_device_auth_req.dart';
-import 'package:drawing_on_demand/data/models/registerDeviceAuth/post_register_device_auth_resp.dart';
-import 'package:drawing_on_demand/core/constants/user.dart';
-import 'package:drawing_on_demand/core/constants/role.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore_for_file: must_be_immutable
 class SignUpCompleteAccountScreen
@@ -67,7 +66,7 @@ class SignUpCompleteAccountScreen
                     textInputType: TextInputType.name,
                     validator: (value) {
                       if (!isText(value, isRequired: true)) {
-                        return "Please enter your name";
+                        return "Please enter your valid name";
                       }
                       return null;
                     },
@@ -86,7 +85,7 @@ class SignUpCompleteAccountScreen
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.phone,
                       validator: (value) {
-                        if (!isText(value, isRequired: true)) {
+                        if (!isPhone(value, isRequired: true)) {
                           return "Please enter valid phone number";
                         }
                         return null;
@@ -249,43 +248,19 @@ class SignUpCompleteAccountScreen
   /// Throws a `NoInternetException` if there is no internet connection.
   Future<void> onTapContinuewith() async {
     if (_formKey.currentState!.validate()) {
-      PostRegisterDeviceAuthReq postRegisterDeviceAuthReq =
-          PostRegisterDeviceAuthReq(
-        username: controller.phoneController.text,
-        password: controller.passwordController.text,
-        email: User.email,
-        name: controller.nameController.text,
-        role: Role.user,
+      Account account = Account(
+        id: Guid.generate(),
+        email: Get.arguments,
+        phone: controller.phoneController.text.trim(),
+        name: controller.nameController.text.trim(),
+        gender: controller.gender.value,
+        createdDate: DateTime.now(),
+        status: "Active",
+        rankId: Guid("7681ee23-7b59-4962-a7d1-d72d9118ad31"),
       );
-      try {
-        await controller.callRegisterDeviceAuth(
-          postRegisterDeviceAuthReq.toJson(),
-        );
-        _onOnTapSignUpSuccess();
-      } on PostRegisterDeviceAuthResp {
-        _onOnTapSignUpError();
-      } on NoInternetException catch (e) {
-        Get.rawSnackbar(message: e.toString());
-      } catch (e) {
-        //TODO: Handle generic errors
-      }
+
+      await controller.callRegisterDeviceAuth(account);
     }
-  }
-
-  /// Navigates to the jobTypeScreen when the action is triggered.
-
-  /// When the action is triggered, this function uses the [Get] package to
-  /// push the named route for the jobTypeScreen.
-  void _onOnTapSignUpSuccess() {
-    Get.offNamed(
-      AppRoutes.jobTypeScreen,
-    );
-  }
-
-  /// Displays a toast message using the Fluttertoast library.
-  void _onOnTapSignUpError() {
-    Fluttertoast.showToast(
-        msg: controller.postRegisterDeviceAuthResp.message.toString());
   }
 
   /// Navigates to the loginScreen when the action is triggered.
