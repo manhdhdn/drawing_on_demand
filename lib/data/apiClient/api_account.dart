@@ -28,7 +28,9 @@ class ApiAccount extends GetConnect {
       await isNetworkConnected();
 
       Response response = await httpClient.get(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}")
+            .toString(),
         headers: ApiConfig.headers,
       );
 
@@ -57,7 +59,9 @@ class ApiAccount extends GetConnect {
       await isNetworkConnected();
 
       Response response = await httpClient.get(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id")
+            .toString(),
         headers: ApiConfig.headers,
       );
 
@@ -118,7 +122,9 @@ class ApiAccount extends GetConnect {
       await isNetworkConnected();
 
       Response response = await httpClient.put(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id")
+            .toString(),
         headers: ApiConfig.headers,
         body: account.toJson(),
       );
@@ -148,7 +154,9 @@ class ApiAccount extends GetConnect {
       await isNetworkConnected();
 
       Response response = await httpClient.patch(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id")
+            .toString(),
         headers: ApiConfig.headers,
         body: body,
       );
@@ -178,7 +186,9 @@ class ApiAccount extends GetConnect {
       await isNetworkConnected();
 
       Response response = await httpClient.delete(
-        "${ApiConfig.baseUrl}/${ApiConfig.paths['account']}/$id",
+        Uri.https(ApiConfig.baseUrl,
+                "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id")
+            .toString(),
         headers: ApiConfig.headers,
       );
 
