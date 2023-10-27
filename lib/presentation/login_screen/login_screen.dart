@@ -132,17 +132,19 @@ class LoginScreen extends GetWidget<LoginController> {
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.visiblePassword,
                       suffix: InkWell(
-                          onTap: () {
-                            controller.isShowPassword.value =
-                                !controller.isShowPassword.value;
-                          },
-                          child: Container(
-                              margin: getMargin(
-                                  left: 30, top: 14, right: 16, bottom: 14),
-                              child: CustomImageView(
-                                  svgPath: controller.isShowPassword.value
-                                      ? ImageConstant.imgCheckmark
-                                      : ImageConstant.imgCheckmarkPrimary))),
+                        onTap: () {
+                          controller.isShowPassword.value =
+                              !controller.isShowPassword.value;
+                        },
+                        child: Container(
+                          margin: getMargin(
+                              left: 30, top: 14, right: 16, bottom: 14),
+                          child: CustomImageView(
+                              svgPath: controller.isShowPassword.value
+                                  ? ImageConstant.imgCheckmark
+                                  : ImageConstant.imgCheckmarkPrimary),
+                        ),
+                      ),
                       suffixConstraints:
                           BoxConstraints(maxHeight: getVerticalSize(52)),
                       obscureText: controller.isShowPassword.value,

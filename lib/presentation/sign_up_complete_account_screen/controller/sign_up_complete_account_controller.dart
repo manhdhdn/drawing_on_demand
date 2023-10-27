@@ -1,9 +1,14 @@
 import 'package:drawing_on_demand/core/app_export.dart';
 import 'package:drawing_on_demand/data/apiClient/api_account.dart';
+import 'package:drawing_on_demand/data/apiClient/api_account_role.dart';
+import 'package:drawing_on_demand/data/apiClient/api_role.dart';
 import 'package:drawing_on_demand/data/models/account.dart';
+import 'package:drawing_on_demand/data/models/account_role.dart';
+import 'package:drawing_on_demand/data/models/role.dart';
 import 'package:drawing_on_demand/presentation/sign_up_complete_account_screen/models/sign_up_complete_account_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// A controller class for the SignUpCompleteAccountScreen.
@@ -36,8 +41,20 @@ class SignUpCompleteAccountController extends GetxController {
   /// The [Map] parameter represents request body
   Future<void> callRegisterDeviceAuth(Account account) async {
     try {
-      accountRep = await Get.find<ApiAccount>().postOne(account);
       await register(Get.arguments, passwordController.text.trim());
+
+      accountRep = await Get.find<ApiAccount>().postOne(account);
+      Set<Role> roles = await Get.find<ApiRole>().filter("name", "Customer");
+
+      AccountRole accountRole = AccountRole(
+        id: Guid.generate(),
+        accountId: accountRep.id,
+        addedDate: DateTime.now(),
+        status: "Active",
+        roleId: roles.first.id,
+      );
+
+      await Get.find<ApiAccountRole>().postOne(accountRole);
       _handleRegisterDeviceAuthSuccess();
 
       Get.offAllNamed(AppRoutes.jobTypeScreen);
