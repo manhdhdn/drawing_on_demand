@@ -1,6 +1,6 @@
 {
-    "name": "drawing_on_demand",
-    "short_name": "drawing_on_demand",
+    "name": "freelancer",
+    "short_name": "freelancer",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
