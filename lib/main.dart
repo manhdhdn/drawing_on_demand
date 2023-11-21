@@ -1,19 +1,8 @@
-import 'package:drawing_on_demand/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:drawing_on_demand/theme/theme_helper.dart';
-import 'package:drawing_on_demand/routes/app_routes.dart';
+import 'package:freelancer/screen/splash%20screen/mt_splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
-
-  ///Please update theme as per your need if required.
-  ThemeHelper().changeTheme('primary');
   runApp(const MyApp());
 }
 
@@ -23,11 +12,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: theme,
-      title: 'Drawing On Demand',
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splashScreen,
-      routes: AppRoutes.routes,
+      title: 'Freelancer App',
+      theme: ThemeData(fontFamily: 'Display'),
+      home: const SplashScreen(),
     );
   }
 }
