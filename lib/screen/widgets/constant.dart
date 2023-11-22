@@ -58,8 +58,8 @@ final otpInputDecoration = InputDecoration(
   enabledBorder: outlineInputBorder(),
 );
 
-bool isClient = false;
-bool isFreelancer = false;
+bool isCustomer = false;
+bool isArtist = false;
 bool isFavorite = false;
 const String currencySign = '\$';
 
@@ -90,12 +90,12 @@ List<String> catIcon = [
   'images/l.png'
 ];
 
-
 //__________Language List_______________________________________________
 List<String> language = [
   'English',
   'Bengali',
 ];
+
 String selectedLanguage = 'English';
 
 //__________Language Level_______________________________________________
@@ -124,6 +124,7 @@ List<String> staticsPeriod = [
   'Last Month',
   'This Month',
 ];
+
 String selectedStaticsPeriod = 'Last Month';
 
 //__________statistics_period___________________________________________________
@@ -246,7 +247,6 @@ List<String> currency = [
 ];
 
 String selectedCurrency = 'USD';
-
 
 List<Color> colorList = [
   const Color(0xFF69B22A),

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.maantheme.freelancer">
+    package="com.fa23se047.drawingondemand">
    <application
-        android:label="freelancer"
+        android:label="Drawing on demand"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
