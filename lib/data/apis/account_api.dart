@@ -21,8 +21,8 @@ class AccountApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Set<Account>> gets(int skip, int top, String? filter, String? orderBy,
-      String? select, String? expand) async {
+  Future<Set<Account>> gets(int skip, int top, String? filter, String? count,
+      String? orderBy, String? select, String? expand) async {
     Set<Account> accounts = {};
 
     try {
@@ -35,6 +35,10 @@ class AccountApi {
 
       if (filter != null) {
         query['filter'] = filter;
+      }
+
+      if (count != null) {
+        query['count'] = count;
       }
 
       if (orderBy != null) {
