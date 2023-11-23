@@ -24,7 +24,7 @@ class Account {
   String? phone;
   String? name;
   String? gender;
-  String? avartar;
+  String? avatar;
   String? address;
   String? bio;
   DateTime? createdDate;
@@ -39,7 +39,7 @@ class Account {
     this.phone,
     this.name,
     this.gender,
-    this.avartar,
+    this.avatar,
     this.address,
     this.bio,
     this.createdDate,
@@ -55,7 +55,7 @@ class Account {
     phone = json['Phone'];
     name = json['Name'];
     gender = json['Gender'];
-    avartar = json['Avartar'];
+    avatar = json['Avatar'];
     address = json['Address'];
     bio = json['Bio'];
     createdDate = json['CreatedDate'] != null
@@ -82,7 +82,7 @@ class Account {
       'phone': phone,
       'name': name,
       'gender': gender,
-      'avartar': avartar,
+      'avartar': avatar,
       'address': address,
       'bio': bio,
       'createdDate':
