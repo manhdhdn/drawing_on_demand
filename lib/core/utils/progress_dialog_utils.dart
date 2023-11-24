@@ -1,30 +1,29 @@
+import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ProgressDialogUtils {
-  static bool isProgressVisible = false;
+  static bool isProgressShowing = false;
 
-  ///common method for showing progress dialog
-  static void showProgressDialog({isCancellable = false}) async {
-    if (!isProgressVisible) {
-      Get.dialog(
-        const Center(
-          child: CircularProgressIndicator.adaptive(
-            strokeWidth: 4,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Colors.white,
-            ),
+  static void showProgress(BuildContext context) {
+    if (!isProgressShowing) {
+      isProgressShowing = true;
+
+      showDialog(
+        context: context,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(
+            color: kPrimaryColor,
           ),
         ),
-        barrierDismissible: isCancellable,
       );
-      isProgressVisible = true;
     }
   }
 
-  ///common method for hiding progress dialog
-  static void hideProgressDialog() {
-    if (isProgressVisible) Get.back();
-    isProgressVisible = false;
+  static void hideProgress(BuildContext context) {
+    if (isProgressShowing) {
+      isProgressShowing = false;
+
+      Navigator.pop(context);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:drawing_on_demand/data/models/account_role.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +9,11 @@ class Accounts {
 
   factory Accounts.fromJson(Map<String, dynamic> json) {
     return Accounts(
-      value: Set<Account>.from(json['value'].map((x) => Account.fromJson(x))),
+      value: Set<Account>.from(
+        json['value'].map(
+          (x) => Account.fromJson(x),
+        ),
+      ),
     );
   }
 }
@@ -19,13 +24,14 @@ class Account {
   String? phone;
   String? name;
   String? gender;
-  String? avartar;
+  String? avatar;
   String? address;
   String? bio;
   DateTime? createdDate;
   DateTime? lastModifiedDate;
   String? status;
   Guid? rankId;
+  Set<AccountRole>? accountRoles;
 
   Account({
     this.id,
@@ -33,52 +39,59 @@ class Account {
     this.phone,
     this.name,
     this.gender,
-    this.avartar,
+    this.avatar,
     this.address,
     this.bio,
     this.createdDate,
     this.lastModifiedDate,
     this.status,
     this.rankId,
+    this.accountRoles,
   });
 
-  factory Account.fromJson(Map<String, dynamic> json) {
-    return Account(
-      id: Guid(json['Id']),
-      email: json['Email'],
-      phone: json['Phone'],
-      name: json['Name'],
-      gender: json['Gender'],
-      avartar: json['Avartar'],
-      address: json['Address'],
-      bio: json['Bio'],
-      createdDate: DateTime.parse(json['CreatedDate']),
-      lastModifiedDate: json['lastModifiedDate'] != null
-          ? DateTime.parse(json['lastModifiedDate'])
-          : null,
-      status: json['Status'],
-      rankId: Guid(json['RankId']),
-    );
+  Account.fromJson(Map<String, dynamic> json) {
+    id = Guid(json['Id']);
+    email = json['Email'];
+    phone = json['Phone'];
+    name = json['Name'];
+    gender = json['Gender'];
+    avatar = json['Avatar'];
+    address = json['Address'];
+    bio = json['Bio'];
+    createdDate = json['CreatedDate'] != null
+        ? DateTime.parse(json['CreatedDate'])
+        : null;
+    lastModifiedDate = json['LastModifiedDate'] != null
+        ? DateTime.parse(json['LastModifiedDate'])
+        : null;
+    status = json['Status'];
+    rankId = Guid(json['RankId']);
+    accountRoles = json['AccountRoles'] != null
+        ? Set<AccountRole>.from(
+            json['AccountRoles'].map(
+              (x) => AccountRole.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id.toString(),
-      'Email': email,
-      'Phone': phone,
-      'Name': name,
-      'Gender': gender,
-      'Avartar': avartar,
-      'Address': address,
-      'Bio': bio,
-      'CreatedDate':
+      'id': id.toString(),
+      'email': email,
+      'phone': phone,
+      'name': name,
+      'gender': gender,
+      'avartar': avatar,
+      'address': address,
+      'bio': bio,
+      'createdDate':
           DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
-      // ignore: prefer_null_aware_operators
-      'LastModifiedDate': lastModifiedDate != null
+      'lastModifiedDate': lastModifiedDate != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
           : null,
-      'Status': status,
-      'RankId': rankId.toString(),
+      'status': status,
+      'rankId': rankId.toString(),
     };
   }
 }

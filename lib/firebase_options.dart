@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart'
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
-/// ```dart
+/// ```dartz
 /// import 'firebase_options.dart';
 /// // ...
 /// await Firebase.initializeApp(
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAeVpMnAQBfqIZxX3035QH7wNJMm9ijQ-w',
-    appId: '1:680472686977:android:ea38b74b4b6552f146b880',
+    appId: '1:680472686977:android:d58e3fce1bde6aa246b880',
     messagingSenderId: '680472686977',
     projectId: 'drawing-on-demand',
     storageBucket: 'drawing-on-demand.appspot.com',
@@ -66,10 +66,14 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBB7Y9PE5HsENd4RRvwO5337HADHTPlNMk',
-    appId: '1:680472686977:ios:0b589ae28a7a6c1d46b880',
+    appId: '1:680472686977:ios:cf7ae30529d4cfd446b880',
     messagingSenderId: '680472686977',
     projectId: 'drawing-on-demand',
     storageBucket: 'drawing-on-demand.appspot.com',
-    iosBundleId: 'com.example.drawingOnDemand',
+    androidClientId:
+        '680472686977-hmugit8n98v950pitflr06m32evvkag2.apps.googleusercontent.com',
+    iosClientId:
+        '680472686977-j393ccufmj3vq6mb7opjj11jo3ok7o3d.apps.googleusercontent.com',
+    iosBundleId: 'com.fa23se047.drawingondemand',
   );
 }
