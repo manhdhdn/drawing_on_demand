@@ -6,12 +6,12 @@ import 'package:drawing_on_demand/data/apis/account_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:drawing_on_demand/screen/common/forgot_password.dart';
+import 'package:drawing_on_demand/screen/common/authentication/forgot_password.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../widgets/button_global.dart';
-import '../widgets/constant.dart';
-import '../widgets/icons.dart';
+import '../../widgets/button_global.dart';
+import '../../widgets/constant.dart';
+import '../../widgets/icons.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);

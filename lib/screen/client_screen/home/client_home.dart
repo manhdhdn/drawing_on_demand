@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/widgets/constant.dart';
 
-import '../../seller_screen/messgae/chat_list.dart';
+import '../../common/messgae/chat_list.dart';
 import '../job_post/client_job_post.dart';
 import '../orders/client_orders.dart';
 import '../profile/client_profile.dart';

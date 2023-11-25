@@ -1,10 +1,10 @@
-import 'package:drawing_on_demand/screen/common/log_in.dart';
+import 'package:drawing_on_demand/screen/common/authentication/log_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
-import 'package:drawing_on_demand/screen/common/opt_verification.dart';
+import 'package:drawing_on_demand/screen/common/authentication/opt_verification.dart';
 import 'package:drawing_on_demand/screen/seller_screen/home/seller_home.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';

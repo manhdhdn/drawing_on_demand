@@ -1,4 +1,5 @@
 import 'package:drawing_on_demand/core/common/common_features.dart';
+import 'package:drawing_on_demand/screen/common/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -9,9 +10,6 @@ import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
 import '../invite/client_invite.dart';
 import '../report/client_report.dart';
-import '../setting/client_setting.dart';
-import '../deposit/add_deposit.dart';
-import '../deposit/deposit_history.dart';
 import '../transaction/transaction.dart';
 import 'client_profile_details.dart';
 
@@ -28,13 +26,14 @@ class _ClientProfileState extends State<ClientProfile> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         titleSpacing: 0,
         title: ListTile(
           visualDensity: const VisualDensity(vertical: -4),
-          contentPadding: EdgeInsets.zero,
+          contentPadding: const EdgeInsets.only(left: 20.0),
           leading: Container(
             height: 45,
             width: 45,
@@ -70,6 +69,7 @@ class _ClientProfileState extends State<ClientProfile> {
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           width: context.width(),
           decoration: const BoxDecoration(
@@ -138,68 +138,68 @@ class _ClientProfileState extends State<ClientProfile> {
                     color: kLightNeutralColor,
                   ),
                 ),
-                Theme(
-                  data: ThemeData(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    childrenPadding: EdgeInsets.zero,
-                    tilePadding: const EdgeInsets.only(bottom: 10),
-                    collapsedIconColor: kLightNeutralColor,
-                    iconColor: kLightNeutralColor,
-                    title: Text(
-                      'Deposit',
-                      style: kTextStyle.copyWith(color: kNeutralColor),
-                    ),
-                    leading: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFFFEFE0),
-                      ),
-                      child: const Icon(
-                        IconlyBold.wallet,
-                        color: Color(0xFFFF7A00),
-                      ),
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronDown,
-                      color: kLightNeutralColor,
-                    ),
-                    children: [
-                      ListTile(
-                        visualDensity: const VisualDensity(vertical: -3),
-                        horizontalTitleGap: 10,
-                        contentPadding: const EdgeInsets.only(left: 60),
-                        title: Text(
-                          'Add Deposit',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: kTextStyle.copyWith(color: kNeutralColor),
-                        ),
-                        trailing: const Icon(
-                          FeatherIcons.chevronRight,
-                          color: kLightNeutralColor,
-                        ),
-                        onTap: () => const AddDeposit().launch(context),
-                      ),
-                      ListTile(
-                        onTap: () => const DepositHistory().launch(context),
-                        visualDensity: const VisualDensity(vertical: -3),
-                        horizontalTitleGap: 10,
-                        contentPadding: const EdgeInsets.only(left: 60),
-                        title: Text(
-                          'Deposit History',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: kTextStyle.copyWith(color: kNeutralColor),
-                        ),
-                        trailing: const Icon(
-                          FeatherIcons.chevronRight,
-                          color: kLightNeutralColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Theme(
+                //   data: ThemeData(dividerColor: Colors.transparent),
+                //   child: ExpansionTile(
+                //     childrenPadding: EdgeInsets.zero,
+                //     tilePadding: const EdgeInsets.only(bottom: 10),
+                //     collapsedIconColor: kLightNeutralColor,
+                //     iconColor: kLightNeutralColor,
+                //     title: Text(
+                //       'Deposit',
+                //       style: kTextStyle.copyWith(color: kNeutralColor),
+                //     ),
+                //     leading: Container(
+                //       padding: const EdgeInsets.all(10.0),
+                //       decoration: const BoxDecoration(
+                //         shape: BoxShape.circle,
+                //         color: Color(0xFFFFEFE0),
+                //       ),
+                //       child: const Icon(
+                //         IconlyBold.wallet,
+                //         color: Color(0xFFFF7A00),
+                //       ),
+                //     ),
+                //     trailing: const Icon(
+                //       FeatherIcons.chevronDown,
+                //       color: kLightNeutralColor,
+                //     ),
+                //     children: [
+                //       ListTile(
+                //         visualDensity: const VisualDensity(vertical: -3),
+                //         horizontalTitleGap: 10,
+                //         contentPadding: const EdgeInsets.only(left: 60),
+                //         title: Text(
+                //           'Add Deposit',
+                //           overflow: TextOverflow.ellipsis,
+                //           maxLines: 1,
+                //           style: kTextStyle.copyWith(color: kNeutralColor),
+                //         ),
+                //         trailing: const Icon(
+                //           FeatherIcons.chevronRight,
+                //           color: kLightNeutralColor,
+                //         ),
+                //         onTap: () => const AddDeposit().launch(context),
+                //       ),
+                //       ListTile(
+                //         onTap: () => const DepositHistory().launch(context),
+                //         visualDensity: const VisualDensity(vertical: -3),
+                //         horizontalTitleGap: 10,
+                //         contentPadding: const EdgeInsets.only(left: 60),
+                //         title: Text(
+                //           'Deposit History',
+                //           overflow: TextOverflow.ellipsis,
+                //           maxLines: 1,
+                //           style: kTextStyle.copyWith(color: kNeutralColor),
+                //         ),
+                //         trailing: const Icon(
+                //           FeatherIcons.chevronRight,
+                //           color: kLightNeutralColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 ListTile(
                   onTap: () => const ClientTransaction().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
@@ -282,7 +282,7 @@ class _ClientProfileState extends State<ClientProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const ClientSetting().launch(context),
+                  onTap: () => const Setting().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),

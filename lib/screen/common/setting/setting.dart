@@ -1,22 +1,31 @@
+import 'package:drawing_on_demand/screen/common/setting/policy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/setting/privacy_policy.dart';
-import 'package:drawing_on_demand/screen/seller_screen/setting/seller_about.dart';
+import 'package:drawing_on_demand/screen/common/setting/about_us.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widgets/constant.dart';
 import 'language.dart';
 
-class SellerSetting extends StatefulWidget {
-  const SellerSetting({Key? key}) : super(key: key);
+class Setting extends StatefulWidget {
+  const Setting({Key? key}) : super(key: key);
 
   @override
-  State<SellerSetting> createState() => _SellerSettingState();
+  State<Setting> createState() => _SettingState();
 }
 
-class _SellerSettingState extends State<SellerSetting> {
+class _SettingState extends State<Setting> {
   bool isOn = false;
+  String selectedLanguage = '';
+
+  @override
+  void initState() {
+    getCurrentLanguage();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,7 @@ class _SellerSettingState extends State<SellerSetting> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Setting',
+          AppLocalizations.of(context)!.setting,
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -67,7 +76,7 @@ class _SellerSettingState extends State<SellerSetting> {
                   ),
                 ),
                 title: Text(
-                  'Push Notifications',
+                  AppLocalizations.of(context)!.pushNotifications,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: kTextStyle.copyWith(color: kNeutralColor),
@@ -82,7 +91,10 @@ class _SellerSettingState extends State<SellerSetting> {
                 ),
               ),
               ListTile(
-                onTap: () => const Language().launch(context),
+                onTap: () => Language(
+                  selectedLanguage: selectedLanguage,
+                  setLanguage: setLanguage,
+                ).launch(context),
                 visualDensity: const VisualDensity(vertical: -3),
                 horizontalTitleGap: 10,
                 contentPadding: const EdgeInsets.only(bottom: 15),
@@ -98,13 +110,15 @@ class _SellerSettingState extends State<SellerSetting> {
                   ),
                 ),
                 title: Text(
-                  'Language',
+                  AppLocalizations.of(context)!.language,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
                 trailing: Text(
-                  'English',
+                  selectedLanguage == 'English'
+                      ? AppLocalizations.of(context)!.english
+                      : AppLocalizations.of(context)!.vietnamese,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -127,14 +141,14 @@ class _SellerSettingState extends State<SellerSetting> {
                   ),
                 ),
                 title: Text(
-                  'Privacy Policy',
+                  AppLocalizations.of(context)!.privacyPolicy,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
               ),
               ListTile(
-                onTap: () => const SellerAbout().launch(context),
+                onTap: () => const AboutUs().launch(context),
                 visualDensity: const VisualDensity(vertical: -3),
                 horizontalTitleGap: 10,
                 contentPadding: const EdgeInsets.only(bottom: 15),
@@ -150,7 +164,7 @@ class _SellerSettingState extends State<SellerSetting> {
                   ),
                 ),
                 title: Text(
-                  'Terms of Service',
+                  AppLocalizations.of(context)!.termsOfService,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: kTextStyle.copyWith(color: kNeutralColor),
@@ -161,5 +175,19 @@ class _SellerSettingState extends State<SellerSetting> {
         ),
       ),
     );
+  }
+
+  Future<void> getCurrentLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      selectedLanguage = prefs.getString('language')!;
+    });
+  }
+
+  void setLanguage(String language) {
+    setState(() {
+      selectedLanguage = language;
+    });
   }
 }

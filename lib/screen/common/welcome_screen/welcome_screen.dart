@@ -58,6 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       color: kNeutralColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 20.0),

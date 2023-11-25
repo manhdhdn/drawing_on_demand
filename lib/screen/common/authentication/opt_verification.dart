@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:pinput/pinput.dart';
 
-import '../widgets/constant.dart';
+import '../../widgets/constant.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({Key? key}) : super(key: key);

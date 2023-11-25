@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:drawing_on_demand/screen/common/opt_verification.dart';
+import 'package:drawing_on_demand/screen/common/authentication/opt_verification.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../widgets/constant.dart';
+import '../../widgets/constant.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);

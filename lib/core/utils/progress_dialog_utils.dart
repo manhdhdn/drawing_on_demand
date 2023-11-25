@@ -9,6 +9,7 @@ class ProgressDialogUtils {
       isProgressShowing = true;
 
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) => const Center(
           child: CircularProgressIndicator(

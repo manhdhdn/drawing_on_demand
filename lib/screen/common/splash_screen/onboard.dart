@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../widgets/constant.dart';
+import '../../widgets/constant.dart';
 
 class OnBoard extends StatefulWidget {
   const OnBoard({

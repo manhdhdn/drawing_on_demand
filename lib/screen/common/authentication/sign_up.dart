@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 
-import '../widgets/constant.dart';
-import '../widgets/icons.dart';
+import '../../widgets/constant.dart';
+import '../../widgets/icons.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

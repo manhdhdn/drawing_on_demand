@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
         body: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: Container(
+            height: context.height(),
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             decoration: const BoxDecoration(
               color: kWhite,

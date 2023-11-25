@@ -7,14 +7,14 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 
-class SellerInvite extends StatefulWidget {
-  const SellerInvite({Key? key}) : super(key: key);
+class Invite extends StatefulWidget {
+  const Invite({Key? key}) : super(key: key);
 
   @override
-  State<SellerInvite> createState() => _SellerInviteState();
+  State<Invite> createState() => _InviteState();
 }
 
-class _SellerInviteState extends State<SellerInvite> {
+class _InviteState extends State<Invite> {
   Future<void> _copyToClipboard(String code) async {
     await Clipboard.setData(ClipboardData(text: code));
     // ignore: use_build_context_synchronously

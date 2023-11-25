@@ -5,7 +5,7 @@ import 'package:drawing_on_demand/screen/widgets/constant.dart';
 
 import '../orders/seller_orders.dart';
 import '../profile/seller_profile.dart';
-import '../messgae/chat_list.dart';
+import '../../common/messgae/chat_list.dart';
 import '../services/create_service.dart';
 
 class SellerHome extends StatefulWidget {

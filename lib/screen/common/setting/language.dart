@@ -1,25 +1,33 @@
+import 'package:drawing_on_demand/main.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widgets/constant.dart';
 
 class Language extends StatefulWidget {
-  const Language({Key? key}) : super(key: key);
+  final String selectedLanguage;
+  final void Function(String language) setLanguage;
+
+  const Language({
+    Key? key,
+    required this.selectedLanguage,
+    required this.setLanguage,
+  }) : super(key: key);
 
   @override
   State<Language> createState() => _LanguageState();
 }
 
 class _LanguageState extends State<Language> {
-  List<String> languageList = [
-    'English',
-    'Bengali',
-    'Hindi',
-    'Francais',
-    'Italiano',
-  ];
+  String selectedLanguage = '';
 
-  String selectedLanguage = 'English';
+  @override
+  void initState() {
+    selectedLanguage = widget.selectedLanguage;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +38,7 @@ class _LanguageState extends State<Language> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Language',
+          AppLocalizations.of(context)!.language,
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -55,28 +63,28 @@ class _LanguageState extends State<Language> {
             children: [
               const SizedBox(height: 30.0),
               ListView.builder(
-                itemCount: languageList.length,
+                itemCount: language.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemBuilder: (_, i) {
                   return ListTile(
                     onTap: () {
-                      setState(() {
-                        selectedLanguage = languageList[i];
-                      });
+                      onChangeLanguage(language[i]);
                     },
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
                     contentPadding: const EdgeInsets.only(bottom: 15),
                     title: Text(
-                      languageList[i],
+                      language[i] == 'English'
+                          ? AppLocalizations.of(context)!.english
+                          : AppLocalizations.of(context)!.vietnamese,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
                     ),
                     trailing: Icon(
-                      selectedLanguage == languageList[i] ? Icons.check : null,
+                      selectedLanguage == language[i] ? Icons.check : null,
                       color: kPrimaryColor,
                     ),
                   );
@@ -87,5 +95,28 @@ class _LanguageState extends State<Language> {
         ),
       ),
     );
+  }
+
+  Future<void> onChangeLanguage(String language) async {
+    setState(() {
+      selectedLanguage = language;
+    });
+
+    widget.setLanguage(language);
+
+    switch (language) {
+      case 'English':
+        MyApp.setLocale(context, const Locale('en'));
+        break;
+
+      case 'Vietnamese':
+        MyApp.setLocale(context, const Locale('vi'));
+        break;
+
+      default:
+    }
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language', language);
   }
 }

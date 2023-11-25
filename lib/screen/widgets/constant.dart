@@ -93,10 +93,10 @@ List<String> catIcon = [
 //__________Language List_______________________________________________
 List<String> language = [
   'English',
-  'Bengali',
+  'Vietnamese',
 ];
 
-String selectedLanguage = 'English';
+String selectedLanguage = 'Vietnamese';
 
 //__________Language Level_______________________________________________
 List<String> languageLevel = [

@@ -3,14 +3,14 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 
-class SellerAbout extends StatefulWidget {
-  const SellerAbout({Key? key}) : super(key: key);
+class AboutUs extends StatefulWidget {
+  const AboutUs({Key? key}) : super(key: key);
 
   @override
-  State<SellerAbout> createState() => _SellerAboutState();
+  State<AboutUs> createState() => _AboutUsState();
 }
 
-class _SellerAboutState extends State<SellerAbout> {
+class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
