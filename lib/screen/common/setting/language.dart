@@ -7,7 +7,7 @@ import '../../widgets/constant.dart';
 
 class Language extends StatefulWidget {
   final String selectedLanguage;
-  final void Function(String language) setLanguage;
+  final Function(String language) setLanguage;
 
   const Language({
     Key? key,

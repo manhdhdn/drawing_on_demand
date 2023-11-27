@@ -3,20 +3,42 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:drawing_on_demand/screen/client_screen/service_details/requirements.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../profile/seller_profile.dart';
+import '../popup/client_popup.dart';
 
-class AddCreditCard extends StatefulWidget {
-  const AddCreditCard({Key? key}) : super(key: key);
+class AddNewCard extends StatefulWidget {
+  const AddNewCard({Key? key}) : super(key: key);
 
   @override
-  State<AddCreditCard> createState() => _AddCreditCardState();
+  State<AddNewCard> createState() => _AddNewCardState();
 }
 
-class _AddCreditCardState extends State<AddCreditCard> {
+class _AddNewCardState extends State<AddNewCard> {
+  //__________Show_Processing_popup________________________________________________
+  void showProcessingPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: const ProcessingPopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cardNumber = '';
   String expiryDate = '';
@@ -51,11 +73,15 @@ class _AddCreditCardState extends State<AddCreditCard> {
         centerTitle: true,
       ),
       bottomNavigationBar: ButtonGlobalWithoutIcon(
-          buttontext: 'Save',
+          buttontext: 'Pay Now ($currencySign${35.50})',
           buttonDecoration: kButtonDecoration.copyWith(
               borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
           onPressed: () {
-            const SellerProfile().launch(context);
+            setState(() {
+              showProcessingPopUp();
+              finish(context);
+              const Requirements().launch(context);
+            });
           },
           buttonTextColor: kWhite),
       body: Padding(
@@ -78,6 +104,8 @@ class _AddCreditCardState extends State<AddCreditCard> {
             child: Column(
               children: [
                 CreditCardWidget(
+                  cardType: CardType.mastercard,
+                  backgroundImage: 'images/cardbg.png',
                   textStyle:
                       kTextStyle.copyWith(fontSize: 10.0, color: Colors.white),
                   cardNumber: cardNumber,
@@ -110,13 +138,13 @@ class _AddCreditCardState extends State<AddCreditCard> {
                   themeColor: kNeutralColor,
                   textColor: kNeutralColor,
                   cardNumberDecoration: kInputDecoration.copyWith(
-                    labelText: 'Number',
-                    hintText: 'XXXX XXXX XXXX XXXX',
-                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                    focusColor: kNeutralColor,
-                    border: const OutlineInputBorder(),
-                  ),
+                      labelText: 'Number',
+                      hintText: '6037 9975 2941 7165',
+                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                      focusColor: kNeutralColor,
+                      border: const OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
                   expiryDateDecoration: kInputDecoration.copyWith(
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),

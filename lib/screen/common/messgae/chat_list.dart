@@ -38,6 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         backgroundColor: kDarkWhite,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           iconTheme: const IconThemeData(color: kNeutralColor),
           backgroundColor: kDarkWhite,
           elevation: 0.0,

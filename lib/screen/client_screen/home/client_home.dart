@@ -1,8 +1,13 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+
+import 'package:drawing_on_demand/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../common/messgae/chat_list.dart';
+import '../../widgets/constant.dart';
 import '../job_post/client_job_post.dart';
 import '../orders/client_orders.dart';
 import '../profile/client_profile.dart';
@@ -16,28 +21,30 @@ class ClientHome extends StatefulWidget {
 }
 
 class _ClientHomeState extends State<ClientHome> {
-  int _currentPage = 0;
+  int currentIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    ClientHomeScreen(),
-    ChatScreen(),
-    JobPost(),
-    ClientOrderList(),
-    ClientProfile(),
+  static const List<String> _pageAddresses = <String>[
+    AppRoutes.clientHome,
+    AppRoutes.chat,
+    AppRoutes.clientJobPost,
+    AppRoutes.clientOrder,
+    AppRoutes.clientProfile,
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhite,
-      body: _widgetOptions.elementAt(_currentPage),
+      body: getCurrentPage(
+        isWeb ? window.location.pathname! : _pageAddresses[currentIndex],
+      ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
             ),
             boxShadow: [
               BoxShadow(
@@ -64,7 +71,7 @@ class _ClientHomeState extends State<ClientHome> {
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.paperPlus),
-              label: "Job Apply",
+              label: "Job Post",
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.document),
@@ -76,11 +83,38 @@ class _ClientHomeState extends State<ClientHome> {
             ),
           ],
           onTap: (int index) {
-            setState(() => _currentPage = index);
+            window.history.pushState(null, '', _pageAddresses[index]);
+
+            setState(() {
+              currentIndex = index;
+            });
           },
-          currentIndex: _currentPage,
+          currentIndex: isWeb ? getCurrentIndex() : currentIndex,
         ),
       ),
     );
+  }
+
+  int getCurrentIndex() {
+    return _pageAddresses.indexWhere(
+      (address) => address.contains(window.location.pathname!),
+    );
+  }
+
+  Widget getCurrentPage(String currentRoute) {
+    switch (currentRoute) {
+      case AppRoutes.clientHome:
+        return const ClientHomeScreen();
+      case AppRoutes.chat:
+        return const ChatScreen();
+      case AppRoutes.clientJobPost:
+        return const JobPost();
+      case AppRoutes.clientOrder:
+        return const ClientOrderList();
+      case AppRoutes.clientProfile:
+        return const ClientProfile();
+      default:
+        return const ClientHomeScreen();
+    }
   }
 }

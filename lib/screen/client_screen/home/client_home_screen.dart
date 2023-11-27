@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/client_screen/home/popular_services.dart';
-import 'package:drawing_on_demand/screen/client_screen/home/recently_view.dart';
-import 'package:drawing_on_demand/screen/client_screen/home/top_seller.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import '../notification/client_notification.dart';
-import '../service details/client_service_details.dart';
+import '../service_details/client_service_details.dart';
 import '../search/search.dart';
 import 'client_all_categories.dart';
+import 'popular_services.dart';
+import 'recently_view.dart';
+import 'top_seller.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: GestureDetector(
-                // onTap: ()=>const SellerProfile().launch(context),
+                // onTap: () => const ClientProfile().launch(context),
                 child: Container(
                   height: 44,
                   width: 44,

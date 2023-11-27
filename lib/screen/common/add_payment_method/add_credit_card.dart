@@ -3,42 +3,20 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:drawing_on_demand/screen/client_screen/service%20details/requirements.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../seller_screen/profile/seller_profile.dart';
 
-class AddNewCard extends StatefulWidget {
-  const AddNewCard({Key? key}) : super(key: key);
+class AddCreditCard extends StatefulWidget {
+  const AddCreditCard({Key? key}) : super(key: key);
 
   @override
-  State<AddNewCard> createState() => _AddNewCardState();
+  State<AddCreditCard> createState() => _AddCreditCardState();
 }
 
-class _AddNewCardState extends State<AddNewCard> {
-  //__________Show_Processing_popup________________________________________________
-  void showProcessingPopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              child: const ProcessingPopUp(),
-            );
-          },
-        );
-      },
-    );
-  }
-
+class _AddCreditCardState extends State<AddCreditCard> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cardNumber = '';
   String expiryDate = '';
@@ -73,20 +51,17 @@ class _AddNewCardState extends State<AddNewCard> {
         centerTitle: true,
       ),
       bottomNavigationBar: ButtonGlobalWithoutIcon(
-          buttontext: 'Pay Now ($currencySign${35.50})',
+          buttontext: 'Save',
           buttonDecoration: kButtonDecoration.copyWith(
               borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
           onPressed: () {
-            setState(() {
-              showProcessingPopUp();
-              finish(context);
-              const Requirements().launch(context);
-            });
+            const SellerProfile().launch(context);
           },
           buttonTextColor: kWhite),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(
             left: 15.0,
             right: 15.0,
@@ -104,8 +79,6 @@ class _AddNewCardState extends State<AddNewCard> {
             child: Column(
               children: [
                 CreditCardWidget(
-                  cardType: CardType.mastercard,
-                  backgroundImage: 'images/cardbg.png',
                   textStyle:
                       kTextStyle.copyWith(fontSize: 10.0, color: Colors.white),
                   cardNumber: cardNumber,
@@ -138,13 +111,13 @@ class _AddNewCardState extends State<AddNewCard> {
                   themeColor: kNeutralColor,
                   textColor: kNeutralColor,
                   cardNumberDecoration: kInputDecoration.copyWith(
-                      labelText: 'Number',
-                      hintText: '6037 9975 2941 7165',
-                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                      focusColor: kNeutralColor,
-                      border: const OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                    labelText: 'Number',
+                    hintText: 'XXXX XXXX XXXX XXXX',
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                    focusColor: kNeutralColor,
+                    border: const OutlineInputBorder(),
+                  ),
                   expiryDateDecoration: kInputDecoration.copyWith(
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),

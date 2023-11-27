@@ -1,14 +1,18 @@
-import 'package:drawing_on_demand/app_routes.dart';
-import 'package:drawing_on_demand/firebase_options.dart';
-import 'package:drawing_on_demand/l10n/l10n.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import 'app_routes.dart';
+import 'firebase_options.dart';
+import 'l10n/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

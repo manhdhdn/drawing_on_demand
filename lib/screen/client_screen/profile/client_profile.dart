@@ -1,10 +1,11 @@
-import 'package:drawing_on_demand/core/common/common_features.dart';
-import 'package:drawing_on_demand/screen/common/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
+import '../../common/setting/setting.dart';
+import '../../common/add_payment_method/add_payment_method.dart';
 import '../../widgets/constant.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
@@ -33,7 +34,7 @@ class _ClientProfileState extends State<ClientProfile> {
         titleSpacing: 0,
         title: ListTile(
           visualDensity: const VisualDensity(vertical: -4),
-          contentPadding: const EdgeInsets.only(left: 20.0),
+          contentPadding: const EdgeInsets.only(left: 20),
           leading: Container(
             height: 45,
             width: 45,
@@ -200,6 +201,33 @@ class _ClientProfileState extends State<ClientProfile> {
                 //     ],
                 //   ),
                 // ),
+                ListTile(
+                  onTap: () => const AddPaymentMethod().launch(context),
+                  visualDensity: const VisualDensity(vertical: -3),
+                  horizontalTitleGap: 10,
+                  contentPadding: const EdgeInsets.only(bottom: 12),
+                  leading: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFFFE5E3),
+                    ),
+                    child: const Icon(
+                      IconlyBold.ticketStar,
+                      color: Color(0xFFFF3B30),
+                    ),
+                  ),
+                  title: Text(
+                    'Add Payment method',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: kTextStyle.copyWith(color: kNeutralColor),
+                  ),
+                  trailing: const Icon(
+                    FeatherIcons.chevronRight,
+                    color: kLightNeutralColor,
+                  ),
+                ),
                 ListTile(
                   onTap: () => const ClientTransaction().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),

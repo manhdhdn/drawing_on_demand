@@ -3,16 +3,16 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../seller_screen/popUp/seller_popup.dart';
 
-class SellerAssPaypal extends StatefulWidget {
-  const SellerAssPaypal({Key? key}) : super(key: key);
+class AddPaypal extends StatefulWidget {
+  const AddPaypal({Key? key}) : super(key: key);
 
   @override
-  State<SellerAssPaypal> createState() => _SellerAssPaypalState();
+  State<AddPaypal> createState() => _AddPaypalState();
 }
 
-class _SellerAssPaypalState extends State<SellerAssPaypal> {
+class _AddPaypalState extends State<AddPaypal> {
   bool isCheck = true;
 
   //__________verifyPopUp________________________________________________

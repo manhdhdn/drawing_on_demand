@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../widgets/constant.dart';
 import 'create_new_job_post.dart';
 import 'job_details.dart';
 
@@ -19,11 +19,12 @@ class _JobPostState extends State<JobPost> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Create Service',
+          'Requirements',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),

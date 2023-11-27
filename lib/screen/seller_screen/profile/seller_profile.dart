@@ -6,7 +6,7 @@ import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile_de
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../add_payment_method/seller_add_payment_method.dart';
+import '../../common/add_payment_method/add_payment_method.dart';
 import '../request/seller_buyer_request.dart';
 import '../favourite/seller_favourite_list.dart';
 import '../report/seller_report.dart';
@@ -142,7 +142,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const SellerAddPaymentMethod().launch(context),
+                  onTap: () => const AddPaymentMethod().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 12),

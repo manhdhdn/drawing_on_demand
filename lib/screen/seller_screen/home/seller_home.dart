@@ -36,8 +36,8 @@ class _SellerHomeState extends State<SellerHome> {
         decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
             ),
             boxShadow: [
               BoxShadow(

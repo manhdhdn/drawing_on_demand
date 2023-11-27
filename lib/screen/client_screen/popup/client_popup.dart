@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:drawing_on_demand/screen/client_screen/home/client_home.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import '../home/client_home_screen.dart';
 
 class ProcessingPopUp extends StatefulWidget {
   const ProcessingPopUp({Key? key}) : super(key: key);
@@ -184,7 +184,7 @@ class _UploadCompletePopUpState extends State<UploadCompletePopUp> {
               buttonText: 'Done',
               textColor: kWhite,
               onPressed: () {
-                const ClientHome().launch(context);
+                const ClientHomeScreen().launch(context);
               },
             )
           ],

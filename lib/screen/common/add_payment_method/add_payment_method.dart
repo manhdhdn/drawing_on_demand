@@ -1,34 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:drawing_on_demand/screen/seller_screen/add_payment_method/seller_add_paypal.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import 'add_credit_card.dart';
 
-class SellerAddPaymentMethod extends StatefulWidget {
-  const SellerAddPaymentMethod({Key? key}) : super(key: key);
+class AddPaymentMethod extends StatefulWidget {
+  const AddPaymentMethod({Key? key}) : super(key: key);
 
   @override
-  State<SellerAddPaymentMethod> createState() => _SellerAddPaymentMethodState();
+  State<AddPaymentMethod> createState() => _AddPaymentMethodState();
 }
 
-class _SellerAddPaymentMethodState extends State<SellerAddPaymentMethod> {
+class _AddPaymentMethodState extends State<AddPaymentMethod> {
   List<String> accList = [
-    'PayPal',
     'Credit or Debit Card',
-    'bkash',
   ];
 
   List<String> imageList = [
-    'images/paypal.png',
     'images/card.png',
-    'images/bkash.png',
   ];
 
   List<Widget> linkList = [
-    const SellerAssPaypal(),
     const AddCreditCard(),
-    const SellerAssPaypal(),
   ];
 
   @override
@@ -68,7 +61,7 @@ class _SellerAddPaymentMethodState extends State<SellerAddPaymentMethod> {
               children: [
                 const SizedBox(height: 20.0),
                 ListView.builder(
-                  itemCount: 3,
+                  itemCount: accList.length,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(bottom: 10.0),

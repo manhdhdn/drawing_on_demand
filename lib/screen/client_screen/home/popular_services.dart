@@ -4,7 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../service details/client_service_details.dart';
+import '../service_details/client_service_details.dart';
 
 class PopularServices extends StatefulWidget {
   const PopularServices({Key? key}) : super(key: key);
