@@ -7,7 +7,7 @@ import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../common/messgae/chat_list.dart';
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../common/popUp/popup_2.dart';
 import '../review/client_review.dart';
 
 class ClientOrderDetails extends StatefulWidget {

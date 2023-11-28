@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
-import '../../seller_screen/popUp/seller_popup.dart';
+import '../popUp/popup_1.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
 

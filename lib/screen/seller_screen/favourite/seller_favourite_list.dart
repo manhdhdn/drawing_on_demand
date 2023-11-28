@@ -3,7 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerFavList extends StatefulWidget {
   const SellerFavList({Key? key}) : super(key: key);

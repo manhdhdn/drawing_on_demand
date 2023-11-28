@@ -227,7 +227,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                 ),
                 const SizedBox(height: 20.0),
                 TextFormField(
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.number,
                   cursorColor: kNeutralColor,
                   textInputAction: TextInputAction.next,
                   decoration: kInputDecoration.copyWith(
@@ -272,6 +272,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                     suffixIcon: const Icon(FeatherIcons.upload,
                         color: kLightNeutralColor),
                   ),
+                  // onTap: () => ,
                 ),
                 const SizedBox(height: 10.0),
               ],

@@ -4,7 +4,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 
-import '../../seller_screen/popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
 
 class ClientCreateProfile extends StatefulWidget {

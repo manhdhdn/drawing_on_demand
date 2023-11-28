@@ -3,7 +3,7 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../../seller_screen/popUp/seller_popup.dart';
+import '../popUp/popup_1.dart';
 
 class AddPaypal extends StatefulWidget {
   const AddPaypal({Key? key}) : super(key: key);

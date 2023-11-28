@@ -8,7 +8,7 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../common/popUp/popup_2.dart';
 
 class AddNewCard extends StatefulWidget {
   const AddNewCard({Key? key}) : super(key: key);

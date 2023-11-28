@@ -6,7 +6,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../common/popUp/popup_2.dart';
 
 class Requirements extends StatefulWidget {
   const Requirements({Key? key}) : super(key: key);

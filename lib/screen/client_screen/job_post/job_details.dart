@@ -9,7 +9,7 @@ import '../../../data/apis/requirement_api.dart';
 // import '../../widgets/button_global.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../common/popUp/popup_2.dart';
 
 class JobDetails extends StatefulWidget {
   final Guid requirementId;
