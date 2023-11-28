@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/account.dart';
+import 'package:drawing_on_demand/data/models/surface.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class AccountApi {
+class SurfaceApi {
   Future<void> isNetworkConnected() async {
     try {
       if (!isWeb) {
@@ -21,7 +21,7 @@ class AccountApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Accounts> gets(int skip,
+  Future<Surfaces> gets(int skip,
       {int? top,
       String? filter,
       String? count,
@@ -29,7 +29,7 @@ class AccountApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Account> accounts = {};
+    Set<Surface> surfaces = {};
 
     try {
       await isNetworkConnected();
@@ -65,17 +65,17 @@ class AccountApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['account']}",
+          "${ApiConfig.odata}/${ApiConfig.paths['surface']}",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        var data = Accounts.fromJson(jsonDecode(response.body));
+        var data = Surfaces.fromJson(jsonDecode(response.body));
 
         counter = data.count ?? 0;
-        accounts = data.value;
+        surfaces = data.value;
       } else {
         throw errorSomethingWentWrong;
       }
@@ -83,11 +83,11 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return Accounts(value: accounts, count: counter);
+    return Surfaces(value: surfaces, count: counter);
   }
 
-  Future<Account> getOne(String id, String? expand) async {
-    Account account = Account();
+  Future<Surface> getOne(String id, String? expand) async {
+    Surface surface = Surface();
 
     try {
       Map<String, String> query = {};
@@ -99,14 +99,14 @@ class AccountApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id",
+          "${ApiConfig.odata}/${ApiConfig.paths['surface']}/$id",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        account = Account.fromJson(jsonDecode(response.body));
+        surface = Surface.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -114,16 +114,16 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return account;
+    return surface;
   }
 
-  Future postOne(Account account) async {
+  Future postOne(Surface surface) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}"),
+            "${ApiConfig.odata}/${ApiConfig.paths['surface']}"),
         headers: ApiConfig.headers,
-        body: account.toJson(),
+        body: surface.toJson(),
       );
 
       if (!_isSuccessCall(response)) {
@@ -134,19 +134,19 @@ class AccountApi {
     }
   }
 
-  Future<Account> patchOne(String id, Map body) async {
-    Account account = Account();
+  Future<Surface> patchOne(String id, Map body) async {
+    Surface surface = Surface();
 
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['surface']}/$id"),
         headers: ApiConfig.headers,
         body: body,
       );
 
       if (_isSuccessCall(response)) {
-        account = Account.fromJson(jsonDecode(response.body));
+        surface = Surface.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -154,14 +154,14 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return account;
+    return surface;
   }
 
   Future deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['surface']}/$id"),
         headers: ApiConfig.headers,
       );
 

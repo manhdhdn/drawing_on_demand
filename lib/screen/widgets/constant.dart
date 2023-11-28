@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'data.dart';
 
@@ -247,6 +248,9 @@ List<String> currency = [
 ];
 
 String selectedCurrency = 'USD';
+
+List<XFile> phoneImages = [];
+dynamic webImages = [];
 
 List<Color> colorList = [
   const Color(0xFF69B22A),

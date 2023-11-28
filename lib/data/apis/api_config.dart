@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ApiConfig {
-  static const String baseUrl = 'dond.azurewebsites.net';
+  static const String baseUrl = 'localhost:7257';
 
   static Map<String, String> headers = {
     'Content-Type': 'application/json',
@@ -20,11 +20,11 @@ class ApiConfig {
     'artwork': 'artworks',
     'category': 'categories',
     'certificate': 'certificates',
-    'discountByNumber': 'discountByNumbers',
-    'discountBySpecial': 'discountBySpecials',
+    'discount': 'discounts',
     'handoverItem': 'handoverItems',
     'handover': 'handovers',
     'invite': 'invites',
+    'material': 'materials',
     'orderDetail': 'orderDetails',
     'order': 'orders',
     'payment': 'payments',
@@ -33,6 +33,7 @@ class ApiConfig {
     'requirement': 'requirements',
     'role': 'roles',
     'size': 'sizes',
-    'timeline': 'timeLines',
+    'step': 'steps',
+    'surface': 'surfaces',
   };
 }

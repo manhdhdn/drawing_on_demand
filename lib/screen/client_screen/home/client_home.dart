@@ -25,8 +25,8 @@ class _ClientHomeState extends State<ClientHome> {
 
   static const List<String> _pageAddresses = <String>[
     AppRoutes.clientHome,
-    AppRoutes.chat,
-    AppRoutes.clientJobPost,
+    AppRoutes.clientChat,
+    AppRoutes.jobPost,
     AppRoutes.clientOrder,
     AppRoutes.clientProfile,
   ];
@@ -105,9 +105,9 @@ class _ClientHomeState extends State<ClientHome> {
     switch (currentRoute) {
       case AppRoutes.clientHome:
         return const ClientHomeScreen();
-      case AppRoutes.chat:
+      case AppRoutes.clientChat:
         return const ChatScreen();
-      case AppRoutes.clientJobPost:
+      case AppRoutes.jobPost:
         return const JobPost();
       case AppRoutes.clientOrder:
         return const ClientOrderList();

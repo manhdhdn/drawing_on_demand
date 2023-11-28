@@ -7,12 +7,12 @@ import '../../widgets/constant.dart';
 
 class Language extends StatefulWidget {
   final String selectedLanguage;
-  final Function(String language) setLanguage;
+  final Future<dynamic> getCurrentLanguage;
 
   const Language({
     Key? key,
     required this.selectedLanguage,
-    required this.setLanguage,
+    required this.getCurrentLanguage,
   }) : super(key: key);
 
   @override
@@ -34,6 +34,11 @@ class _LanguageState extends State<Language> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, widget.getCurrentLanguage);
+            }),
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
@@ -97,12 +102,10 @@ class _LanguageState extends State<Language> {
     );
   }
 
-  Future<void> onChangeLanguage(String language) async {
+  void onChangeLanguage(String language) async {
     setState(() {
       selectedLanguage = language;
     });
-
-    widget.setLanguage(language);
 
     switch (language) {
       case 'English':

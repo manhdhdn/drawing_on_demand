@@ -1,23 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:drawing_on_demand/screen/client_screen/job_post/client_job_post.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../data/apis/category_api.dart';
+import '../../../data/apis/material_api.dart';
+import '../../../data/apis/surface_api.dart';
+import '../../../data/models/requirement.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 
 class CreateNewJobPost extends StatefulWidget {
-  const CreateNewJobPost({Key? key}) : super(key: key);
+  final Future<Requirements> getData;
+
+  const CreateNewJobPost({
+    Key? key,
+    required this.getData,
+  }) : super(key: key);
 
   @override
   State<CreateNewJobPost> createState() => _CreateNewJobPostState();
 }
 
 class _CreateNewJobPostState extends State<CreateNewJobPost> {
-  //__________Category____________________________________________________________
+  Set<String> categories = {};
+  Set<String> materials = {};
+  Set<String> surfaces = {};
+
+  String selectedCategory = "";
+  String selectedMaterial = "";
+  String selectedSurface = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
   DropdownButton<String> getCategory() {
     List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in category) {
+    for (String des in categories) {
       var item = DropdownMenuItem(
         value: des,
         child: Text(des),
@@ -37,10 +59,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     );
   }
 
-  //__________SubCategory_________________________________________________________
-  DropdownButton<String> getSubCategory() {
+  DropdownButton<String> getMaterial() {
     List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in subcategory) {
+    for (String des in materials) {
       var item = DropdownMenuItem(
         value: des,
         child: Text(des),
@@ -50,20 +71,19 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
-      value: selectedSubCategory,
+      value: selectedMaterial,
       style: kTextStyle.copyWith(color: kSubTitleColor),
       onChanged: (value) {
         setState(() {
-          selectedSubCategory = value!;
+          selectedMaterial = value!;
         });
       },
     );
   }
 
-  //__________DeliveryTime________________________________________________________
-  DropdownButton<String> getDeliveryTime() {
+  DropdownButton<String> getSurface() {
     List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in deliveryTimeList) {
+    for (String des in surfaces) {
       var item = DropdownMenuItem(
         value: des,
         child: Text(des),
@@ -73,19 +93,14 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
-      value: selectedDeliveryTimeList,
+      value: selectedSurface,
       style: kTextStyle.copyWith(color: kSubTitleColor),
       onChanged: (value) {
         setState(() {
-          selectedDeliveryTimeList = value!;
+          selectedSurface = value!;
         });
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -93,11 +108,17 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, widget.getData);
+          },
+        ),
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Create New Job Post',
+          'Create New Job',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -107,6 +128,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
           width: context.width(),
+          height: context.height(),
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           decoration: const BoxDecoration(
             color: kWhite,
@@ -175,11 +197,10 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         ),
                         contentPadding: const EdgeInsets.all(7.0),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Choose a Subcategory',
+                        labelText: 'Choose a Material',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child:
-                          DropdownButtonHideUnderline(child: getSubCategory()),
+                      child: DropdownButtonHideUnderline(child: getMaterial()),
                     );
                   },
                 ),
@@ -197,11 +218,10 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         ),
                         contentPadding: const EdgeInsets.all(7.0),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Delivery Time',
+                        labelText: 'Choose a Surface',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child:
-                          DropdownButtonHideUnderline(child: getDeliveryTime()),
+                      child: DropdownButtonHideUnderline(child: getSurface()),
                     );
                   },
                 ),
@@ -211,9 +231,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                   cursorColor: kNeutralColor,
                   textInputAction: TextInputAction.next,
                   decoration: kInputDecoration.copyWith(
-                    labelText: 'Service Price',
+                    labelText: 'Budget',
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: '\$ 5 minimum',
+                    hintText: 'Price you can pay',
                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                     focusColor: kNeutralColor,
                     border: const OutlineInputBorder(),
@@ -226,9 +246,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                   textInputAction: TextInputAction.next,
                   maxLines: 3,
                   decoration: kInputDecoration.copyWith(
-                    labelText: 'Describe The Service',
+                    labelText: 'Describe',
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'I need a ui ux designer...',
+                    hintText: 'I need an artist for...',
                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                     focusColor: kNeutralColor,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -243,9 +263,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                   cursorColor: kNeutralColor,
                   textInputAction: TextInputAction.next,
                   decoration: kInputDecoration.copyWith(
-                    labelText: 'Upload File & Image',
+                    labelText: 'Upload Image',
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'Upload file and image',
+                    hintText: 'Upload image here',
                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                     focusColor: kNeutralColor,
                     border: const OutlineInputBorder(),
@@ -262,16 +282,38 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
-            buttontext: 'Post',
+            buttontext: 'Done',
             buttonDecoration: kButtonDecoration.copyWith(
               color: kPrimaryColor,
               borderRadius: BorderRadius.circular(30.0),
             ),
             onPressed: () {
-              const JobPost().launch(context);
+              onDone();
             },
             buttonTextColor: kWhite),
       ),
     );
+  }
+
+  void getData() async {
+    var dataCategories = (await CategoryApi().gets(0)).value;
+    var dataMaterials = (await MaterialApi().gets(0)).value;
+    var dataSurfaces = (await SurfaceApi().gets(0)).value;
+
+    setState(() {
+      categories = Set<String>.from(dataCategories.map((e) => e.name));
+      materials = Set<String>.from(dataMaterials.map((e) => e.name));
+      surfaces = Set<String>.from(dataSurfaces.map((e) => e.name));
+    });
+
+    setState(() {
+      selectedCategory = categories.first;
+      selectedMaterial = materials.first;
+      selectedSurface = surfaces.first;
+    });
+  }
+
+  void onDone() {
+    Navigator.pop(context, widget.getData);
   }
 }

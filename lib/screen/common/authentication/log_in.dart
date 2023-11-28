@@ -238,30 +238,30 @@ class _LogInState extends State<LogIn> {
 
       var account = await AccountApi().gets(
         0,
-        1,
-        "email eq '${emailController.text.trim()}'",
-        null,
-        null,
-        null,
-        'accountRoles(expand=role)',
+        filter: "email eq '${emailController.text.trim()}'",
+        expand: 'accountRoles(expand=role)',
       );
 
       // Save account information
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('account', jsonEncode(account.first));
+      await prefs.setString('account', jsonEncode(account.value.first));
 
       // Navigator
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
 
-      var roles = account.first.accountRoles!
+      var roles = account.value.first.accountRoles!
           .map((accountRole) => accountRole.role!.name)
           .toSet();
       if (roles.contains('Artist')) {
+        await prefs.setString('role', 'Artist');
+
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.sellerHome, (route) => false);
       } else if (roles.contains('Customer')) {
+        await prefs.setString('role', 'Customer');
+
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.clientHome, (route) => false);

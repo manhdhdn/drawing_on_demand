@@ -7,6 +7,8 @@ import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.da
 import 'package:drawing_on_demand/screen/common/authentication/opt_verification.dart';
 import 'package:drawing_on_demand/screen/seller_screen/home/seller_home.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
@@ -271,6 +273,8 @@ class ImportImagePopUp extends StatefulWidget {
 }
 
 class _ImportImagePopUpState extends State<ImportImagePopUp> {
+  String choosedType = '';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -284,7 +288,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
             Row(
               children: [
                 Text(
-                  'Select Profile Image',
+                  'Select Image',
                   style: kTextStyle.copyWith(
                       color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
@@ -299,34 +303,48 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.images,
-                      color: kPrimaryColor,
-                      size: 40,
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      'Photo Gallery',
-                      style: kTextStyle.copyWith(color: kPrimaryColor),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    onGallery();
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.images,
+                        color: choosedType == 'gallery'
+                            ? kPrimaryColor
+                            : kLightNeutralColor,
+                        size: 40,
+                      ),
+                      const SizedBox(height: 10.0),
+                      Text(
+                        'Photo Gallery',
+                        style: kTextStyle.copyWith(color: kLightNeutralColor),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 20.0),
-                Column(
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.camera,
-                      color: kLightNeutralColor,
-                      size: 40,
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      'Take Photo',
-                      style: kTextStyle.copyWith(color: kLightNeutralColor),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    onCamera();
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.camera,
+                        color: choosedType == 'camera'
+                            ? kPrimaryColor
+                            : kLightNeutralColor,
+                        size: 40,
+                      ),
+                      const SizedBox(height: 10.0),
+                      Text(
+                        'Take Photo',
+                        style: kTextStyle.copyWith(color: kLightNeutralColor),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -335,6 +353,46 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
         ),
       ),
     );
+  }
+
+  void onGallery() async {
+    setState(() {
+      choosedType = 'gallery';
+    });
+
+    if (isWeb) {
+      final image = await ImagePickerWeb.getMultiImagesAsFile();
+
+      if (image != null) {
+        webImages.addAll(image);
+      }
+    } else {
+      final image = await ImagePicker().pickMultiImage();
+
+      if (image.isNotEmpty) {
+        phoneImages.addAll(image);
+      }
+    }
+  }
+
+  void onCamera() async {
+    setState(() {
+      choosedType = 'camera';
+    });
+
+    if (isWeb) {
+      final image = await ImagePickerWeb.getMultiImagesAsFile();
+
+      if (image != null) {
+        webImages.addAll(image);
+      }
+    } else {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image != null) {
+        phoneImages.add(image);
+      }
+    }
   }
 }
 

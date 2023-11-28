@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/account.dart';
+import 'package:drawing_on_demand/data/models/category.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class AccountApi {
+class CategoryApi {
   Future<void> isNetworkConnected() async {
     try {
       if (!isWeb) {
@@ -21,7 +21,7 @@ class AccountApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Accounts> gets(int skip,
+  Future<Categories> gets(int skip,
       {int? top,
       String? filter,
       String? count,
@@ -29,7 +29,7 @@ class AccountApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Account> accounts = {};
+    Set<Category> categories = {};
 
     try {
       await isNetworkConnected();
@@ -65,17 +65,17 @@ class AccountApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['account']}",
+          "${ApiConfig.odata}/${ApiConfig.paths['category']}",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        var data = Accounts.fromJson(jsonDecode(response.body));
+        var data = Categories.fromJson(jsonDecode(response.body));
 
         counter = data.count ?? 0;
-        accounts = data.value;
+        categories = data.value;
       } else {
         throw errorSomethingWentWrong;
       }
@@ -83,11 +83,11 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return Accounts(value: accounts, count: counter);
+    return Categories(value: categories, count: counter);
   }
 
-  Future<Account> getOne(String id, String? expand) async {
-    Account account = Account();
+  Future<Category> getOne(String id, String? expand) async {
+    Category category = Category();
 
     try {
       Map<String, String> query = {};
@@ -99,14 +99,14 @@ class AccountApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id",
+          "${ApiConfig.odata}/${ApiConfig.paths['category']}/$id",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        account = Account.fromJson(jsonDecode(response.body));
+        category = Category.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -114,16 +114,16 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return account;
+    return category;
   }
 
-  Future postOne(Account account) async {
+  Future postOne(Category category) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}"),
+            "${ApiConfig.odata}/${ApiConfig.paths['category']}"),
         headers: ApiConfig.headers,
-        body: account.toJson(),
+        body: category.toJson(),
       );
 
       if (!_isSuccessCall(response)) {
@@ -134,19 +134,19 @@ class AccountApi {
     }
   }
 
-  Future<Account> patchOne(String id, Map body) async {
-    Account account = Account();
+  Future<Category> patchOne(String id, Map body) async {
+    Category category = Category();
 
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['category']}/$id"),
         headers: ApiConfig.headers,
         body: body,
       );
 
       if (_isSuccessCall(response)) {
-        account = Account.fromJson(jsonDecode(response.body));
+        category = Category.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -154,14 +154,14 @@ class AccountApi {
       Fluttertoast.showToast(msg: error.toString());
     }
 
-    return account;
+    return category;
   }
 
   Future deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['category']}/$id"),
         headers: ApiConfig.headers,
       );
 

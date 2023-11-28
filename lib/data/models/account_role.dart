@@ -1,6 +1,7 @@
-import 'package:drawing_on_demand/data/models/role.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
+
+import 'role.dart';
 
 class AccountRoles {
   Set<AccountRole> value;
@@ -51,14 +52,14 @@ class AccountRole {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
-      'addedDate': DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(addedDate!),
-      'lastModifiedDate': lastModifiedDate != null
+      'Id': id.toString(),
+      'AddedDate': DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(addedDate!),
+      'LastModifiedDate': lastModifiedDate != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
           : null,
-      'status': status,
-      'accountId': accountId.toString(),
-      'roleId': roleId.toString(),
+      'Status': status,
+      'AccountId': accountId.toString(),
+      'RoleId': roleId.toString(),
     };
   }
 }

@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       locale: _locale,
       theme: ThemeData(fontFamily: 'Display'),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash,
+      initialRoute: isWeb ? AppRoutes.welcome : AppRoutes.splash,
       routes: AppRoutes.routes,
     );
   }
