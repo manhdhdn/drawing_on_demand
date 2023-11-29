@@ -80,7 +80,7 @@ class MaterialApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return Materials(value: materials, count: counter);
@@ -111,7 +111,7 @@ class MaterialApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return material;
@@ -123,14 +123,14 @@ class MaterialApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['material']}"),
         headers: ApiConfig.headers,
-        body: material.toJson(),
+        body: jsonEncode(material.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 
@@ -142,7 +142,7 @@ class MaterialApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['material']}/$id"),
         headers: ApiConfig.headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
@@ -151,7 +151,7 @@ class MaterialApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return material;
@@ -169,7 +169,7 @@ class MaterialApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 }

@@ -80,7 +80,7 @@ class RequirementApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return Requirements(value: requirements, count: counter);
@@ -111,7 +111,7 @@ class RequirementApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return requirement;
@@ -123,14 +123,14 @@ class RequirementApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['requirement']}"),
         headers: ApiConfig.headers,
-        body: requirement.toJson(),
+        body: jsonEncode(requirement.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 
@@ -142,7 +142,7 @@ class RequirementApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['requirement']}/$id"),
         headers: ApiConfig.headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
@@ -151,7 +151,7 @@ class RequirementApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return requirement;
@@ -169,7 +169,7 @@ class RequirementApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 }

@@ -80,7 +80,7 @@ class CategoryApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return Categories(value: categories, count: counter);
@@ -111,7 +111,7 @@ class CategoryApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return category;
@@ -123,14 +123,14 @@ class CategoryApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['category']}"),
         headers: ApiConfig.headers,
-        body: category.toJson(),
+        body: jsonEncode(category.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 
@@ -142,7 +142,7 @@ class CategoryApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['category']}/$id"),
         headers: ApiConfig.headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
@@ -151,7 +151,7 @@ class CategoryApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return category;
@@ -169,7 +169,7 @@ class CategoryApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 }

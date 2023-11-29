@@ -22,9 +22,9 @@ class _SettingState extends State<Setting> {
 
   @override
   void initState() {
-    selectedLanguage = getCurrentLanguage();
-
     super.initState();
+
+    selectedLanguage = getCurrentLanguage();
   }
 
   @override
@@ -99,9 +99,10 @@ class _SettingState extends State<Setting> {
                         setState(() {
                           selectedLanguage = Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: ((context) => Language(
-                                  selectedLanguage: snapshot.data!,
-                                  getCurrentLanguage: getCurrentLanguage())),
+                              builder: (context) => Language(
+                                selectedLanguage: snapshot.data!,
+                                getCurrentLanguage: getCurrentLanguage(),
+                              ),
                             ),
                           );
                         });

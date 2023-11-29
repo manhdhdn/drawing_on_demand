@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'screen/client_screen/authentication/client_create_profile.dart';
-import 'screen/client_screen/home/client_home.dart';
-import 'screen/common/authentication/log_in.dart';
-import 'screen/common/authentication/opt_verification.dart';
-import 'screen/common/authentication/sign_up.dart';
-import 'screen/common/splash_screen/mt_splash_screen.dart';
-import 'screen/common/splash_screen/onboard.dart';
-import 'screen/common/welcome_screen/welcome_screen.dart';
-import 'screen/seller_screen/authentication/seller_create_profile.dart';
-import 'screen/seller_screen/home/seller_home.dart';
+import '../screen/client_screen/authentication/client_create_profile.dart';
+import '../screen/client_screen/home/client_home.dart';
+import '../screen/common/authentication/log_in.dart';
+import '../screen/common/authentication/opt_verification.dart';
+import '../screen/common/authentication/sign_up.dart';
+import '../screen/common/splash_screen/mt_splash_screen.dart';
+import '../screen/common/splash_screen/onboard.dart';
+import '../screen/common/welcome_screen/welcome_screen.dart';
+import '../screen/seller_screen/authentication/seller_create_profile.dart';
+import '../screen/seller_screen/home/seller_home.dart';
 
 class AppRoutes {
   static const String splash = '/splash';

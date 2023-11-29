@@ -21,6 +21,7 @@ class JobPost extends StatefulWidget {
 
 class _JobPostState extends State<JobPost> {
   late Future<dynamic> requirements;
+
   int skip = 0;
   int top = 9;
 
@@ -55,17 +56,17 @@ class _JobPostState extends State<JobPost> {
               padding: const EdgeInsets.only(bottom: 20.0),
               child: FloatingActionButton(
                 onPressed: () {
-                  setState(
-                    () {
-                      requirements = Navigator.of(context).push(
+                  Navigator.of(context)
+                      .push(
                         MaterialPageRoute(
-                          builder: (context) => CreateNewJobPost(
-                            getData: getData(),
-                          ),
+                          builder: (context) => const CreateNewJobPost(),
                         ),
-                      );
-                    },
-                  );
+                      )
+                      .then((value) => setState(
+                            () {
+                              requirements = getData();
+                            },
+                          ));
                 },
                 backgroundColor: kPrimaryColor,
                 child: const Icon(
@@ -118,7 +119,7 @@ class _JobPostState extends State<JobPost> {
                         ],
                       ).visible(snapshot.data!.value.isEmpty),
                       Text(
-                        'Total Job Post (${snapshot.data!.count})',
+                        'Total requirement post (${snapshot.data!.count})',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
@@ -132,11 +133,23 @@ class _JobPostState extends State<JobPost> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10.0),
                             child: GestureDetector(
-                              onTap: () => JobDetails(
-                                      requirementId: snapshot.data!.value
-                                          .elementAt(index)
-                                          .id!)
-                                  .launch(context),
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(
+                                      MaterialPageRoute(
+                                        builder: (context) => JobDetails(
+                                          requirementId: snapshot.data!.value
+                                              .elementAt(index)
+                                              .id!,
+                                        ),
+                                      ),
+                                    )
+                                    .then((value) => setState(
+                                          () {
+                                            requirements = getData();
+                                          },
+                                        ));
+                              },
                               child: Container(
                                 width: context.width(),
                                 padding: const EdgeInsets.all(10.0),
@@ -238,19 +251,25 @@ class _JobPostState extends State<JobPost> {
     );
   }
 
-  Future<Requirements> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<Requirements?> getData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var accountId =
-        Account.fromJson(jsonDecode(prefs.getString('account')!)).id;
+      var accountId =
+          Account.fromJson(jsonDecode(prefs.getString('account')!)).id;
 
-    return RequirementApi().gets(
-      skip,
-      top: top,
-      filter: 'createdBy eq $accountId',
-      expand: 'category',
-      orderBy: 'createdDate desc',
-      count: 'true',
-    );
+      return RequirementApi().gets(
+        skip,
+        top: top,
+        filter: 'createdBy eq $accountId',
+        expand: 'category',
+        orderBy: 'createdDate desc',
+        count: 'true',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: errorSomethingWentWrong);
+    }
+
+    return null;
   }
 }

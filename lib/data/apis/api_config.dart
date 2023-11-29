@@ -1,13 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ApiConfig {
-  static const String baseUrl = 'localhost:7257';
+  static const String baseUrl = 'dond.azurewebsites.net';
+  static String token = '';
 
-  static Map<String, String> headers = {
-    'Content-Type': 'application/json',
-    'Authorization':
-        'Bearer ${FirebaseAuth.instance.currentUser?.getIdToken().toString()}',
-  };
+  static Map<String, String> get headers {
+    getToken();
+
+    return {
+      'accept': '*/*',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
 
   static const String odata = 'Odata';
 
@@ -36,4 +41,8 @@ class ApiConfig {
     'step': 'steps',
     'surface': 'surfaces',
   };
+
+  static void getToken() async {
+    token = await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
+  }
 }

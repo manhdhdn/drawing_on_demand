@@ -80,7 +80,7 @@ class SurfaceApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return Surfaces(value: surfaces, count: counter);
@@ -111,7 +111,7 @@ class SurfaceApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return surface;
@@ -123,14 +123,14 @@ class SurfaceApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['surface']}"),
         headers: ApiConfig.headers,
-        body: surface.toJson(),
+        body: jsonEncode(surface.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 
@@ -142,7 +142,7 @@ class SurfaceApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['surface']}/$id"),
         headers: ApiConfig.headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
@@ -151,7 +151,7 @@ class SurfaceApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return surface;
@@ -169,7 +169,7 @@ class SurfaceApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 }

@@ -249,8 +249,16 @@ List<String> currency = [
 
 String selectedCurrency = 'USD';
 
-List<XFile> phoneImages = [];
-dynamic webImages = [];
+Set<int> pieces = {
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+};
+
+List<XFile> images = [];
 
 List<Color> colorList = [
   const Color(0xFF69B22A),

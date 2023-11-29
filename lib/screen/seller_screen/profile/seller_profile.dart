@@ -431,6 +431,6 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   void onLogout() {
-    CommonFeatures().logout(context);
+    logout(context);
   }
 }

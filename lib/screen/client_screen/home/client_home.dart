@@ -1,7 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 
-import 'package:drawing_on_demand/app_routes.dart';
+import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';

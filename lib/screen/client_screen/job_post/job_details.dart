@@ -21,7 +21,7 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  late Future<Requirement> requirement;
+  late Future<dynamic> requirement;
 
   @override
   void initState() {
@@ -31,8 +31,8 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   //__________cancel_order_reason_popup________________________________________________
-  void cancelOrderPopUp() {
-    showDialog(
+  void cancelJobPopUp(Guid id) async {
+    await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -43,7 +43,9 @@ class _JobDetailsState extends State<JobDetails> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: const CancelJobPopUp(),
+              child: CancelJobPopUp(
+                id: id,
+              ),
             );
           },
         );
@@ -74,18 +76,25 @@ class _JobDetailsState extends State<JobDetails> {
                   padding: EdgeInsets.zero,
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
-                      // onTap: (){
-                      //   cancelOrderPopUp();
-                      // },
+                      value: 'edit',
+                      child: Text(
+                        'Edit',
+                        style: kTextStyle.copyWith(color: kNeutralColor),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'cancel',
                       child: Text(
                         'Cancel',
                         style: kTextStyle.copyWith(color: kNeutralColor),
-                      ).onTap(
-                        () => cancelOrderPopUp(),
                       ),
-                    )
+                    ),
                   ],
-                  onSelected: (value) {},
+                  onSelected: (value) {
+                    value == 'edit'
+                        ? null
+                        : cancelJobPopUp(widget.requirementId);
+                  },
                   child: const Padding(
                     padding: EdgeInsets.only(right: 10.0),
                     child: Icon(
@@ -285,6 +294,44 @@ class _JobDetailsState extends State<JobDetails> {
                               Expanded(
                                 flex: 2,
                                 child: Text(
+                                  'Pieces',
+                                  style: kTextStyle.copyWith(
+                                      color: kSubTitleColor),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ':',
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Flexible(
+                                      child: Text(
+                                        snapshot.data!.pieces!.toString(),
+                                        style: kTextStyle.copyWith(
+                                            color: kSubTitleColor),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8.0),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(
                                   'Budget',
                                   style: kTextStyle.copyWith(
                                       color: kSubTitleColor),
@@ -453,8 +500,14 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Future<Requirement> getData() async {
-    return RequirementApi().getOne(widget.requirementId.toString(),
-        'category,surface,material,createdByNavigation,proposals,sizes,steps');
+  Future<Requirement?> getData() async {
+    try {
+      return RequirementApi().getOne(widget.requirementId.toString(),
+          'category,surface,material,createdByNavigation,proposals,sizes,steps');
+    } catch (error) {
+      Fluttertoast.showToast(msg: errorSomethingWentWrong);
+    }
+
+    return null;
   }
 }

@@ -177,8 +177,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                CommonFeatures()
-                                    .showImportPicturePopUp(context);
+                                showImportPicturePopUp(context);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(5),

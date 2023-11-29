@@ -1,4 +1,4 @@
-import 'package:drawing_on_demand/app_routes.dart';
+import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:is_first_run/is_first_run.dart';

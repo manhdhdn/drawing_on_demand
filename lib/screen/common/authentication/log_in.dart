@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/app_routes.dart';
+import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:drawing_on_demand/core/utils/progress_dialog_utils.dart';
 import 'package:drawing_on_demand/data/apis/account_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,10 +21,10 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  bool hidePassword = true;
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  bool hidePassword = true;
 
   @override
   Widget build(BuildContext context) {

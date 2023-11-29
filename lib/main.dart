@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import 'app_routes.dart';
+import 'app_routes/app_routes.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
 
@@ -36,9 +36,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    initLanguageSetting();
-
     super.initState();
+
+    initLanguageSetting();
   }
 
   @override
@@ -64,9 +64,10 @@ class _MyAppState extends State<MyApp> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.containsKey('language')) {
-      _locale = Locale(prefs.getString('language')! == 'English' ? 'en' : 'vi');
+      setLocale(
+          Locale(prefs.getString('language')! == 'English' ? 'en' : 'vi'));
     } else {
-      _locale = const Locale('vi');
+      setLocale(const Locale('vi'));
       await prefs.setString('language', 'Vietnamese');
     }
   }

@@ -1,4 +1,4 @@
-import 'package:drawing_on_demand/app_routes.dart';
+import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

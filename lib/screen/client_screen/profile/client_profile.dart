@@ -25,7 +25,7 @@ class ClientProfile extends StatefulWidget {
 }
 
 class _ClientProfileState extends State<ClientProfile> {
-  late Future<Account> account;
+  late Future<dynamic> account;
 
   @override
   void initState() {
@@ -460,6 +460,6 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onLogout() {
-    CommonFeatures().logout(context);
+    logout(context);
   }
 }

@@ -2,35 +2,35 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
-import 'category.dart';
-import 'material.dart';
-import 'surface.dart';
+import 'account.dart';
+import 'art.dart';
+import 'artwork_review.dart';
 
-class Requirements {
+class Artworks {
   int? count;
-  Set<Requirement> value;
+  Set<Artwork> value;
 
-  Requirements({this.count, required this.value});
+  Artworks({this.count, required this.value});
 
-  factory Requirements.fromJson(Map<String, dynamic> json) {
-    return Requirements(
+  factory Artworks.fromJson(Map<String, dynamic> json) {
+    return Artworks(
       count: json['@odata.count'],
-      value: Set<Requirement>.from(
+      value: Set<Artwork>.from(
         json['value'].map(
-          (x) => Requirement.fromJson(x),
+          (x) => Artwork.fromJson(x),
         ),
       ),
     );
   }
 }
 
-class Requirement {
+class Artwork {
   Guid? id;
   String? title;
   String? description;
-  String? image;
+  Decimal? price;
   int? pieces;
-  Decimal? budget;
+  int? inStock;
   DateTime? createdDate;
   DateTime? lastModifiedDate;
   String? status;
@@ -38,17 +38,17 @@ class Requirement {
   Guid? surfaceId;
   Guid? materialId;
   Guid? createdBy;
-  Category? category;
-  Surface? surface;
-  Material? material;
+  Set<ArtworkReview>? artworkReviews;
+  Set<Art>? arts;
+  Account? createdByNavigation;
 
-  Requirement({
+  Artwork({
     this.id,
     this.title,
     this.description,
-    this.image,
+    this.price,
     this.pieces,
-    this.budget,
+    this.inStock,
     this.createdDate,
     this.lastModifiedDate,
     this.status,
@@ -56,18 +56,18 @@ class Requirement {
     this.surfaceId,
     this.materialId,
     this.createdBy,
-    this.category,
-    this.surface,
-    this.material,
+    this.artworkReviews,
+    this.arts,
+    this.createdByNavigation,
   });
 
-  Requirement.fromJson(Map<String, dynamic> json) {
+  Artwork.fromJson(Map<String, dynamic> json) {
     id = Guid(json['Id']);
     title = json['Title'];
     description = json['Description'];
-    image = json['Image'];
+    price = Decimal.fromInt(json['Price']);
     pieces = json['Pieces'];
-    budget = Decimal.fromInt(json['Budget']);
+    inStock = json['InStock'];
     createdDate = DateTime.parse(json['CreatedDate']);
     lastModifiedDate = json['LastModifiedDate'] != null
         ? DateTime.parse(json['LastModifiedDate'])
@@ -77,32 +77,39 @@ class Requirement {
     surfaceId = Guid(json['SurfaceId']);
     materialId = Guid(json['MaterialId']);
     createdBy = Guid(json['CreatedBy']);
-    category =
-        json['Category'] != null ? Category.fromJson(json['Category']) : null;
-    surface =
-        json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
-    material =
-        json['Material'] != null ? Material.fromJson(json['Material']) : null;
+    artworkReviews = json['ArtworkReviews'] != null
+        ? Set<ArtworkReview>.from(json['ArtworkReviews'].map(
+            (x) => ArtworkReview.fromJson(x),
+          ))
+        : null;
+    arts = json['Arts'] != null
+        ? Set<Art>.from(json['Arts'].map(
+            (x) => Art.fromJson(x),
+          ))
+        : null;
+    createdByNavigation = json['CreatedByNavigation'] != null
+        ? Account.fromJson(json['CreatedByNavigation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id.toString(),
+      'Id': id,
       'Title': title,
       'Description': description,
-      'Image': image,
+      'Price': int.parse(price.toString()),
       'Pieces': pieces,
-      'Budget': int.parse(budget.toString()),
+      'InStock': inStock,
       'CreatedDate':
           DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
           : null,
       'Status': status,
-      'CategoryId': categoryId.toString(),
-      'SurfaceId': surfaceId.toString(),
-      'MaterialId': materialId.toString(),
-      'CreatedBy': createdBy.toString(),
+      'CategoryId': categoryId,
+      'SurfaceId': surfaceId,
+      'MaterialId': materialId,
+      'CreatedBy': createdBy,
     };
   }
 }

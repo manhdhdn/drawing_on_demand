@@ -24,9 +24,9 @@ class _LanguageState extends State<Language> {
 
   @override
   void initState() {
-    selectedLanguage = widget.selectedLanguage;
-
     super.initState();
+
+    selectedLanguage = widget.selectedLanguage;
   }
 
   @override
@@ -35,10 +35,11 @@ class _LanguageState extends State<Language> {
       backgroundColor: kDarkWhite,
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context, widget.getCurrentLanguage);
-            }),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, widget.getCurrentLanguage);
+          },
+        ),
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/requirement_api.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../client_screen/home/client_home_screen.dart';
@@ -195,7 +198,9 @@ class _UploadCompletePopUpState extends State<UploadCompletePopUp> {
 }
 
 class CancelJobPopUp extends StatefulWidget {
-  const CancelJobPopUp({Key? key}) : super(key: key);
+  final Guid id;
+
+  const CancelJobPopUp({Key? key, required this.id}) : super(key: key);
 
   @override
   State<CancelJobPopUp> createState() => _CancelJobPopUpState();
@@ -232,7 +237,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'Lorem ipsum dolor sit amet conse ctetur. Nunc habitant felis pharetra nibh elementum ut.',
+              'This action will be permanent. Do you want to continue?',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.start,
             ),
@@ -246,9 +251,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                     buttonText: 'No',
                     textColor: Colors.red,
                     onPressed: () {
-                      setState(() {
-                        finish(context);
-                      });
+                      onNo();
                     },
                   ),
                 ),
@@ -260,7 +263,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                     textColor: kWhite,
                     onPressed: () {
                       setState(() {
-                        finish(context);
+                        onYes();
                       });
                     },
                   ),
@@ -271,6 +274,33 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
         ),
       ),
     );
+  }
+
+  void onNo() {
+    setState(() {
+      finish(context);
+    });
+  }
+
+  void onYes() async {
+    try {
+      ProgressDialogUtils.showProgress(context);
+      await RequirementApi().deleteOne(widget.id.toString());
+
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+
+      setState(() {
+        finish(context);
+      });
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+
+      Fluttertoast.showToast(msg: errorSomethingWentWrong);
+    }
   }
 }
 

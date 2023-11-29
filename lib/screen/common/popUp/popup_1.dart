@@ -1,19 +1,18 @@
-import 'package:drawing_on_demand/screen/common/authentication/log_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
-import 'package:drawing_on_demand/screen/common/authentication/opt_verification.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/seller_home.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
+import '../../seller_screen/home/seller_home.dart';
+import '../../seller_screen/profile/seller_profile.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../seller_screen/request/create_customer_offer.dart';
+import '../authentication/log_in.dart';
+import '../authentication/opt_verification.dart';
 
 class SellerAddLanguagePopUp extends StatefulWidget {
   const SellerAddLanguagePopUp({Key? key}) : super(key: key);
@@ -360,19 +359,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
       choosedType = 'gallery';
     });
 
-    if (isWeb) {
-      final image = await ImagePickerWeb.getMultiImagesAsFile();
-
-      if (image != null) {
-        webImages.addAll(image);
-      }
-    } else {
-      final image = await ImagePicker().pickMultiImage();
-
-      if (image.isNotEmpty) {
-        phoneImages.addAll(image);
-      }
-    }
+    pickImage();
   }
 
   void onCamera() async {
@@ -380,19 +367,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
       choosedType = 'camera';
     });
 
-    if (isWeb) {
-      final image = await ImagePickerWeb.getMultiImagesAsFile();
-
-      if (image != null) {
-        webImages.addAll(image);
-      }
-    } else {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-      if (image != null) {
-        phoneImages.add(image);
-      }
-    }
+    openCamera();
   }
 }
 

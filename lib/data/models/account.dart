@@ -2,6 +2,7 @@ import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
 import 'account_role.dart';
+import 'rank.dart';
 
 class Accounts {
   int? count;
@@ -35,6 +36,7 @@ class Account {
   String? status;
   Guid? rankId;
   Set<AccountRole>? accountRoles;
+  Rank? rank;
 
   Account({
     this.id,
@@ -50,6 +52,7 @@ class Account {
     this.status,
     this.rankId,
     this.accountRoles,
+    this.rank,
   });
 
   Account.fromJson(Map<String, dynamic> json) {
@@ -74,6 +77,7 @@ class Account {
             ),
           )
         : null;
+    rank = json['Rank'] != null ? Rank.fromJson(json['Rank']) : null;
   }
 
   Map<String, dynamic> toJson() {
