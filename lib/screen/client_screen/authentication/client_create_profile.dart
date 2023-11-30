@@ -1,13 +1,15 @@
-// import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import '../home/client_home.dart';
 
 class ClientCreateProfile extends StatefulWidget {
+  static const String tag = '${ClientHome.tag}/create_profile';
+
   const ClientCreateProfile({Key? key}) : super(key: key);
 
   @override
@@ -331,15 +333,16 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
         ),
       ),
       bottomNavigationBar: ButtonGlobalWithoutIcon(
-          buttontext: 'Save Profile',
-          buttonDecoration: kButtonDecoration.copyWith(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          onPressed: () {
-            saveProfilePopUp();
-          },
-          buttonTextColor: kWhite),
+        buttontext: 'Save Profile',
+        buttonDecoration: kButtonDecoration.copyWith(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        onPressed: () {
+          saveProfilePopUp();
+        },
+        buttonTextColor: kWhite,
+      ),
     );
   }
 }

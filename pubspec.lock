@@ -121,14 +121,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.8"
-  decimal:
-    dependency: "direct main"
-    description:
-      name: decimal
-      sha256: "24a261d5d5c87e86c7651c417a5dbdf8bcd7080dd592533910e8d0505a279f21"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.3"
   fake_async:
     dependency: transitive
     description:
@@ -307,6 +299,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_phoenix:
+    dependency: "direct main"
+    description:
+      name: flutter_phoenix
+      sha256: "39589dac934ea476d0e43fb60c1ddfba58f14960743640c8250dea11c4333378"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -621,14 +621,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      sha256: ba58e9e18df9abde280e8b10051e4bce85091e41e8e7e411b6cde2e738d357cf
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.2"
   shared_preferences:
     dependency: "direct main"
     description:

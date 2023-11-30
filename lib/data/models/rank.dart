@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -23,8 +22,8 @@ class Ranks {
 class Rank {
   Guid? id;
   String? name;
-  Decimal? income;
-  Decimal? spend;
+  double? income;
+  double? spend;
   double? fee;
   int? connect;
   DateTime? createdDate;
@@ -44,9 +43,9 @@ class Rank {
   Rank.fromJson(Map<String, dynamic> json) {
     id = Guid(json['Id']);
     name = json['Name'];
-    income = Decimal.fromInt(json['Income']);
-    spend = Decimal.fromInt(json['Spend']);
-    fee = json['Fee'];
+    income = double.tryParse(json['Income'].toString());
+    spend = double.tryParse(json['Spend'].toString());
+    fee = double.tryParse(json['Fee'].toString());
     connect = json['Connect'];
     createdDate = DateTime.parse(json['CreatedDate']);
     lastModifiedDate = json['LastModifiedDate'] != null
@@ -58,8 +57,8 @@ class Rank {
     return {
       'Id': id.toString(),
       'Name': name,
-      'Income': double.parse(income.toString()),
-      'Spend': double.parse(spend.toString()),
+      'Income': income,
+      'Spend': spend,
       'Fee': fee,
       'Connect': connect,
       'CreatedDate':

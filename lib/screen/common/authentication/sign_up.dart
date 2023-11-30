@@ -1,13 +1,14 @@
-// import 'package:country_code_picker/country_code_picker.dart';
-import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import 'opt_verification.dart';
 
 class SignUp extends StatefulWidget {
+  static const String tag = '/signup';
+
   const SignUp({Key? key}) : super(key: key);
 
   @override
@@ -301,6 +302,9 @@ class _SignUpState extends State<SignUp> {
 
   void onSignUp() {
     Navigator.pushNamedAndRemoveUntil(
-        context, AppRoutes.verify, (route) => false);
+      context,
+      OtpVerification.tag,
+      (route) => false,
+    );
   }
 }

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../data/apis/category_api.dart';
 import '../../../data/apis/material_api.dart';
@@ -388,9 +388,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
         images.clear();
       }
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var accountId =
-          Account.fromJson(jsonDecode(prefs.getString('account')!)).id;
+      var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
 
       var requirement = Requirement(
         id: Guid.newGuid,
@@ -398,7 +396,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
         description: descriptionController.text,
         image: image,
         pieces: selectedPieces,
-        budget: Decimal.parse(budgetController.text),
+        budget: double.tryParse(budgetController.text),
         createdDate: DateTime.now(),
         status: 'Public',
         categoryId: selectedCategory,

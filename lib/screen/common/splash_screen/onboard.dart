@@ -1,14 +1,14 @@
-import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../widgets/constant.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class OnBoard extends StatefulWidget {
-  const OnBoard({
-    Key? key,
-  }) : super(key: key);
+  static const String tag = '/onboard';
+
+  const OnBoard({Key? key}) : super(key: key);
 
   @override
   State<OnBoard> createState() => _OnBoardState();
@@ -122,8 +122,7 @@ class _OnBoardState extends State<OnBoard> {
                                       duration:
                                           const Duration(microseconds: 3000),
                                       curve: Curves.bounceInOut)
-                                  : Navigator.pushNamedAndRemoveUntil(context,
-                                      AppRoutes.welcome, (route) => false);
+                                  : onEnd();
                             },
                           );
                         },
@@ -157,6 +156,14 @@ class _OnBoardState extends State<OnBoard> {
           },
         ),
       ),
+    );
+  }
+
+  void onEnd() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      WelcomeScreen.tag,
+      (route) => false,
     );
   }
 }

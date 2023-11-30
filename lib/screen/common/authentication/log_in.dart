@@ -1,26 +1,29 @@
-import 'dart:convert';
-
-import 'package:drawing_on_demand/app_routes/app_routes.dart';
-import 'package:drawing_on_demand/core/utils/progress_dialog_utils.dart';
-import 'package:drawing_on_demand/data/apis/account_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:drawing_on_demand/screen/common/authentication/forgot_password.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/app_routes.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/account_api.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import '../welcome_screen/welcome_screen.dart';
+import 'forgot_password.dart';
 
-class LogIn extends StatefulWidget {
-  const LogIn({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  static const String tag = '/login';
+
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<LogIn> createState() => _LogInState();
+  State<Login> createState() => _LoginState();
 }
 
-class _LogInState extends State<LogIn> {
+class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -79,7 +82,7 @@ class _LogInState extends State<LogIn> {
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: kNeutralColor,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
                 decoration: kInputDecoration.copyWith(
                   labelText: 'Email',
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
@@ -203,7 +206,9 @@ class _LogInState extends State<LogIn> {
               const SizedBox(height: 20.0),
               Center(
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, AppRoutes.welcome),
+                  onTap: () {
+                    onCreateNewAccount();
+                  },
                   child: RichText(
                     text: TextSpan(
                       text: 'Don’t have an account? ',
@@ -243,8 +248,7 @@ class _LogInState extends State<LogIn> {
       );
 
       // Save account information
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('account', jsonEncode(account.value.first));
+      PrefUtils().setAccount(account.value.first);
 
       // Navigator
       // ignore: use_build_context_synchronously
@@ -254,24 +258,32 @@ class _LogInState extends State<LogIn> {
           .map((accountRole) => accountRole.role!.name)
           .toSet();
       if (roles.contains('Artist')) {
-        await prefs.setString('role', 'Artist');
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.seller, (route) => false);
+        PrefUtils().setRole('Artist');
       } else if (roles.contains('Customer')) {
-        await prefs.setString('role', 'Customer');
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.client, (route) => false);
+        PrefUtils().setRole('Customer');
       } else {
         throw 'Account is not supported';
       }
+
+      onLogedIn();
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
       Fluttertoast.showToast(msg: 'Invalid email or password');
     }
+  }
+
+  void onCreateNewAccount() {
+    Navigator.pushNamed(context, WelcomeScreen.tag);
+  }
+
+  void onLogedIn() {
+    Phoenix.rebirth(context);
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.defaultTag,
+      (route) => false,
+    );
   }
 }

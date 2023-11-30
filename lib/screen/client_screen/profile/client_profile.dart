@@ -6,6 +6,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/models/account.dart';
 import '../../common/setting/setting.dart';
 import '../../common/add_payment_method/add_payment_method.dart';
@@ -454,12 +455,10 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   Future<Account> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return Account.fromJson(jsonDecode(prefs.getString('account')!));
+    return Account.fromJson(jsonDecode(PrefUtils().getAccount()));
   }
 
-  void onLogout() {
+  void onLogout() async {
     logout(context);
   }
 }

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:decimal/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
@@ -461,12 +461,12 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                               text: NumberFormat
                                                                       .decimalPattern(
                                                                           'vi_VN')
-                                                                  .format(DecimalIntl(snapshot
+                                                                  .format(snapshot
                                                                       .data!
                                                                       .value
                                                                       .elementAt(
                                                                           i)
-                                                                      .price!)),
+                                                                      .price!),
                                                               style: kTextStyle.copyWith(
                                                                   color:
                                                                       kPrimaryColor,
@@ -920,12 +920,12 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                               text: NumberFormat
                                                                       .decimalPattern(
                                                                           'vi_VN')
-                                                                  .format(DecimalIntl(snapshot
+                                                                  .format(snapshot
                                                                       .data!
                                                                       .value
                                                                       .elementAt(
                                                                           i)
-                                                                      .price!)),
+                                                                      .price!),
                                                               style: kTextStyle.copyWith(
                                                                   color:
                                                                       kPrimaryColor,
@@ -1036,9 +1036,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   }
 
   Future<Account> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return Account.fromJson(jsonDecode(prefs.getString('account')!));
+    return Account.fromJson(jsonDecode(PrefUtils().getAccount()));
   }
 
   Future<Artworks?> getPoppularArtworks() async {

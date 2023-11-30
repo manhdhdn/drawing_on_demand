@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../app_routes/app_routes.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
+import '../utils/pref_utils.dart';
 
 void logout(BuildContext context) async {
   try {
@@ -14,16 +16,21 @@ void logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
 
     // Clear pref data
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('account');
-    prefs.remove('role');
+    PrefUtils().clearPreferencesData();
 
     // Navigate to login
+
+    // ignore: use_build_context_synchronously
+    Phoenix.rebirth(context);
+
     // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
-        context, AppRoutes.login, (route) => false);
+      context,
+      AppRoutes.defaultTag,
+      (route) => false,
+    );
   } catch (error) {
-    Fluttertoast.showToast(msg: errorSomethingWentWrong);
+    Fluttertoast.showToast(msg: error.toString());
   }
 }
 
