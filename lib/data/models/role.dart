@@ -32,8 +32,8 @@ class Role {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
-      'name': name,
+      'Id': id.toString(),
+      'Name': name,
     };
   }
 }

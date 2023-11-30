@@ -5,9 +5,9 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-import '../../seller_screen/messgae/chat_list.dart';
+import '../../common/messgae/chat_list.dart';
 import '../../widgets/constant.dart';
-import '../popup/client_popup.dart';
+import '../../common/popUp/popup_2.dart';
 import '../review/client_review.dart';
 
 class ClientOrderDetails extends StatefulWidget {

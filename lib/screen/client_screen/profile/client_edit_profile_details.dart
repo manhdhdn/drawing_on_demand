@@ -1,11 +1,12 @@
 // import 'package:country_code_picker/country_code_picker.dart';
+import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../seller_screen/popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
 import 'client_profile_details.dart';
 
@@ -17,7 +18,6 @@ class ClientEditProfile extends StatefulWidget {
 }
 
 class _ClientEditProfileState extends State<ClientEditProfile> {
-  //__________Language List____________________________________________________
   DropdownButton<String> getLanguage() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in language) {
@@ -40,7 +40,6 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
     );
   }
 
-  //__________gender___________________________________________________________
   DropdownButton<String> getGender() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in gender) {
@@ -63,7 +62,6 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
     );
   }
 
-  //__________Add_Language popup________________________________________________
   void showLanguagePopUp() {
     showDialog(
       barrierDismissible: false,
@@ -84,7 +82,6 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
     );
   }
 
-  //__________Add_Skill popup________________________________________________
   void showSkillPopUp() {
     showDialog(
       barrierDismissible: false,
@@ -105,28 +102,6 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
     );
   }
 
-  //__________Import_Profile_picture_popup_____________________________________
-  void showImportProfilePopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: const ImportImagePopUp(),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  //__________Save_Profile_success_popup_______________________________________
   void saveProfilePopUp() {
     showDialog(
       barrierDismissible: false,
@@ -202,7 +177,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showImportProfilePopUp();
+                                showImportPicturePopUp(context);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(5),
@@ -404,15 +379,16 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
-            buttontext: 'Update Profile',
-            buttonDecoration: kButtonDecoration.copyWith(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            onPressed: () {
-              const ClientProfileDetails().launch(context);
-            },
-            buttonTextColor: kWhite),
+          buttontext: 'Update Profile',
+          buttonDecoration: kButtonDecoration.copyWith(
+            color: kPrimaryColor,
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          onPressed: () {
+            const ClientProfileDetails().launch(context);
+          },
+          buttonTextColor: kWhite,
+        ),
       ),
     );
   }

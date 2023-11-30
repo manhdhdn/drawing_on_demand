@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fa23se047.drawingondemand">
-   <application
-        android:label="Drawing on demand"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="drawing_on_demand"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

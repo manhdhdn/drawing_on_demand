@@ -5,10 +5,12 @@ import 'package:drawing_on_demand/screen/widgets/constant.dart';
 
 import '../orders/seller_orders.dart';
 import '../profile/seller_profile.dart';
-import '../messgae/chat_list.dart';
+import '../../common/messgae/chat_list.dart';
 import '../services/create_service.dart';
 
 class SellerHome extends StatefulWidget {
+  static const String tag = '/artist';
+
   const SellerHome({Key? key}) : super(key: key);
 
   @override
@@ -36,8 +38,8 @@ class _SellerHomeState extends State<SellerHome> {
         decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
             ),
             boxShadow: [
               BoxShadow(

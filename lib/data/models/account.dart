@@ -1,14 +1,18 @@
-import 'package:drawing_on_demand/data/models/account_role.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account_role.dart';
+import 'rank.dart';
+
 class Accounts {
+  int? count;
   Set<Account> value;
 
-  Accounts({required this.value});
+  Accounts({this.count, required this.value});
 
   factory Accounts.fromJson(Map<String, dynamic> json) {
     return Accounts(
+      count: json['@odata.count'],
       value: Set<Account>.from(
         json['value'].map(
           (x) => Account.fromJson(x),
@@ -32,6 +36,7 @@ class Account {
   String? status;
   Guid? rankId;
   Set<AccountRole>? accountRoles;
+  Rank? rank;
 
   Account({
     this.id,
@@ -47,6 +52,7 @@ class Account {
     this.status,
     this.rankId,
     this.accountRoles,
+    this.rank,
   });
 
   Account.fromJson(Map<String, dynamic> json) {
@@ -58,9 +64,7 @@ class Account {
     avatar = json['Avatar'];
     address = json['Address'];
     bio = json['Bio'];
-    createdDate = json['CreatedDate'] != null
-        ? DateTime.parse(json['CreatedDate'])
-        : null;
+    createdDate = DateTime.parse(json['CreatedDate']);
     lastModifiedDate = json['LastModifiedDate'] != null
         ? DateTime.parse(json['LastModifiedDate'])
         : null;
@@ -73,25 +77,26 @@ class Account {
             ),
           )
         : null;
+    rank = json['Rank'] != null ? Rank.fromJson(json['Rank']) : null;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
-      'email': email,
-      'phone': phone,
-      'name': name,
-      'gender': gender,
-      'avartar': avatar,
-      'address': address,
-      'bio': bio,
-      'createdDate':
+      'Id': id.toString(),
+      'Email': email,
+      'Phone': phone,
+      'Name': name,
+      'Gender': gender,
+      'Avartar': avatar,
+      'Address': address,
+      'Bio': bio,
+      'CreatedDate':
           DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
-      'lastModifiedDate': lastModifiedDate != null
+      'LastModifiedDate': lastModifiedDate != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
           : null,
-      'status': status,
-      'rankId': rankId.toString(),
+      'Status': status,
+      'RankId': rankId.toString(),
     };
   }
 }

@@ -3,7 +3,7 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 import 'buyer_request_details.dart';
 
 class SellerBuyerReq extends StatefulWidget {

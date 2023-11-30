@@ -18,6 +18,7 @@ class _ClientOrderListState extends State<ClientOrderList> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),

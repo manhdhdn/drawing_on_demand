@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
 
-import '../../seller_screen/messgae/chat_list.dart';
-import '../job_post/client_job_post.dart';
+import '../../common/messgae/chat_list.dart';
+import '../../widgets/constant.dart';
+import '../job_post/job_post.dart';
 import '../orders/client_orders.dart';
 import '../profile/client_profile.dart';
 import 'client_home_screen.dart';
 
 class ClientHome extends StatefulWidget {
+  static const String tag = '/customer';
+
   const ClientHome({Key? key}) : super(key: key);
 
   @override
@@ -16,7 +18,7 @@ class ClientHome extends StatefulWidget {
 }
 
 class _ClientHomeState extends State<ClientHome> {
-  int _currentPage = 0;
+  int currentIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     ClientHomeScreen(),
@@ -30,14 +32,14 @@ class _ClientHomeState extends State<ClientHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhite,
-      body: _widgetOptions.elementAt(_currentPage),
+      body: _widgetOptions.elementAt(currentIndex),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
             ),
             boxShadow: [
               BoxShadow(
@@ -64,7 +66,7 @@ class _ClientHomeState extends State<ClientHome> {
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.paperPlus),
-              label: "Job Apply",
+              label: "Job Post",
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.document),
@@ -76,9 +78,11 @@ class _ClientHomeState extends State<ClientHome> {
             ),
           ],
           onTap: (int index) {
-            setState(() => _currentPage = index);
+            setState(() {
+              currentIndex = index;
+            });
           },
-          currentIndex: _currentPage,
+          currentIndex: currentIndex,
         ),
       ),
     );

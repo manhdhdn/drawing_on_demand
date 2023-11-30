@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../seller_screen/popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
 
 class ClientFavList extends StatefulWidget {

@@ -21,8 +21,14 @@ class AccountApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Set<Account>> gets(int skip, int top, String? filter, String? count,
-      String? orderBy, String? select, String? expand) async {
+  Future<Accounts> gets(int skip,
+      {int? top,
+      String? filter,
+      String? count,
+      String? orderBy,
+      String? select,
+      String? expand}) async {
+    int? counter;
     Set<Account> accounts = {};
 
     try {
@@ -30,8 +36,11 @@ class AccountApi {
 
       Map<String, String> query = {
         'skip': '$skip',
-        'top': '$top',
       };
+
+      if (top != null) {
+        query['top'] = '$top';
+      }
 
       if (filter != null) {
         query['filter'] = filter;
@@ -63,15 +72,18 @@ class AccountApi {
       );
 
       if (_isSuccessCall(response)) {
-        accounts = Accounts.fromJson(jsonDecode(response.body)).value.toSet();
+        var data = Accounts.fromJson(jsonDecode(response.body));
+
+        counter = data.count ?? 0;
+        accounts = data.value;
       } else {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
-    return accounts;
+    return Accounts(value: accounts, count: counter);
   }
 
   Future<Account> getOne(String id, String? expand) async {
@@ -99,7 +111,7 @@ class AccountApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return account;
@@ -111,14 +123,14 @@ class AccountApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['account']}"),
         headers: ApiConfig.headers,
-        body: account.toJson(),
+        body: jsonEncode(account.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 
@@ -130,7 +142,7 @@ class AccountApi {
         Uri.https(ApiConfig.baseUrl,
             "${ApiConfig.odata}/${ApiConfig.paths['account']}/$id"),
         headers: ApiConfig.headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
@@ -139,7 +151,7 @@ class AccountApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
 
     return account;
@@ -157,7 +169,7 @@ class AccountApi {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: error.toString());
+      rethrow;
     }
   }
 }
