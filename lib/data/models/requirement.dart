@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +29,7 @@ class Requirement {
   String? description;
   String? image;
   int? pieces;
-  Decimal? budget;
+  double? budget;
   DateTime? createdDate;
   DateTime? lastModifiedDate;
   String? status;
@@ -67,7 +66,7 @@ class Requirement {
     description = json['Description'];
     image = json['Image'];
     pieces = json['Pieces'];
-    budget = Decimal.fromInt(json['Budget']);
+    budget = double.tryParse(json['Budget'].toString());
     createdDate = DateTime.parse(json['CreatedDate']);
     lastModifiedDate = json['LastModifiedDate'] != null
         ? DateTime.parse(json['LastModifiedDate'])
@@ -92,7 +91,7 @@ class Requirement {
       'Description': description,
       'Image': image,
       'Pieces': pieces,
-      'Budget': int.parse(budget.toString()),
+      'Budget': budget,
       'CreatedDate':
           DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:decimal/intl.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -21,7 +20,7 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  late Future<dynamic> requirement;
+  late Future<Requirement?> requirement;
 
   @override
   void initState() {
@@ -350,8 +349,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     Flexible(
                                       child: Text(
                                         NumberFormat.decimalPattern('vi_VN')
-                                            .format(DecimalIntl(
-                                                snapshot.data!.budget!)),
+                                            .format(snapshot.data!.budget),
                                         style: kTextStyle.copyWith(
                                             color: kSubTitleColor),
                                         overflow: TextOverflow.ellipsis,
@@ -503,7 +501,7 @@ class _JobDetailsState extends State<JobDetails> {
       return RequirementApi().getOne(widget.requirementId.toString(),
           'category,surface,material,createdByNavigation,proposals,sizes,steps');
     } catch (error) {
-      Fluttertoast.showToast(msg: errorSomethingWentWrong);
+      Fluttertoast.showToast(msg: 'Get requirement failed');
     }
 
     return null;

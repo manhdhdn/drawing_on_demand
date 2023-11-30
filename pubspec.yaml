@@ -60,10 +60,10 @@ dependencies:
   firebase_auth: ^4.14.0
   shared_preferences: ^2.2.2
   url_strategy: ^0.2.0
-  decimal: ^2.3.3
   image_picker: ^1.0.4
   firebase_storage: ^11.5.2
   http: ^1.1.0
+  flutter_phoenix: ^1.1.1
 
 dev_dependencies:
   flutter_test:

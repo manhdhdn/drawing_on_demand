@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -28,7 +27,7 @@ class Artwork {
   Guid? id;
   String? title;
   String? description;
-  Decimal? price;
+  double? price;
   int? pieces;
   int? inStock;
   DateTime? createdDate;
@@ -65,7 +64,7 @@ class Artwork {
     id = Guid(json['Id']);
     title = json['Title'];
     description = json['Description'];
-    price = Decimal.fromInt(json['Price']);
+    price = double.tryParse(json['Price'].toString());
     pieces = json['Pieces'];
     inStock = json['InStock'];
     createdDate = DateTime.parse(json['CreatedDate']);
@@ -97,7 +96,7 @@ class Artwork {
       'Id': id,
       'Title': title,
       'Description': description,
-      'Price': int.parse(price.toString()),
+      'Price': price,
       'Pieces': pieces,
       'InStock': inStock,
       'CreatedDate':

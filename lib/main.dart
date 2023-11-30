@@ -2,21 +2,28 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 import 'app_routes/app_routes.dart';
+import 'core/utils/pref_utils.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   usePathUrlStrategy();
+  PrefUtils();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  runApp(
+    Phoenix(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -25,20 +32,22 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 
-  static void setLocale(BuildContext context, Locale locale) {
+  static void reLoadLocale(BuildContext context) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.setLocale(locale);
+    state?.initLanguage();
   }
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('vi');
+  Locale locale = const Locale('vi');
+  Map<String, WidgetBuilder> routes =
+      AppRoutes.getRoutes(PrefUtils().getRole());
 
   @override
   void initState() {
     super.initState();
 
-    initLanguageSetting();
+    initLanguage();
   }
 
   @override
@@ -52,29 +61,30 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: L10n.all,
-      locale: _locale,
+      locale: locale,
       theme: ThemeData(fontFamily: 'Display'),
       debugShowCheckedModeBanner: false,
-      initialRoute: isWeb ? AppRoutes.welcome : AppRoutes.splash,
-      routes: AppRoutes.routes,
+      initialRoute: AppRoutes.defaultTag,
+      routes: routes,
     );
   }
 
-  Future<void> initLanguageSetting() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.containsKey('language')) {
-      setLocale(
-          Locale(prefs.getString('language')! == 'English' ? 'en' : 'vi'));
-    } else {
-      setLocale(const Locale('vi'));
-      await prefs.setString('language', 'Vietnamese');
+  Future<void> initLanguage() async {
+    switch (PrefUtils().getLanguage()) {
+      case 'English':
+        setState(() {
+          locale = const Locale('en');
+        });
+        break;
+      case 'Vietnamese':
+        setState(() {
+          locale = const Locale('vi');
+        });
+        break;
+      default:
+        setState(() {
+          locale = const Locale('vi');
+        });
     }
-  }
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
   }
 }

@@ -422,8 +422,8 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
                 setState(() {
                   finish(context);
                   isArtist
-                      ? const LogIn().launch(context)
-                      : const LogIn().launch(context);
+                      ? const Login().launch(context)
+                      : const Login().launch(context);
                 });
               },
             )

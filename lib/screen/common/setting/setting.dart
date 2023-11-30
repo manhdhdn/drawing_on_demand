@@ -1,13 +1,14 @@
-import 'package:drawing_on_demand/screen/common/setting/policy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/common/setting/about_us.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
+import 'about_us.dart';
 import 'language.dart';
+import 'policy.dart';
 
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);
@@ -199,8 +200,6 @@ class _SettingState extends State<Setting> {
   }
 
   Future<String> getCurrentLanguage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return prefs.getString('language')!;
+    return PrefUtils().getLanguage();
   }
 }

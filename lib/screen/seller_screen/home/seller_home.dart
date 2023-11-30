@@ -9,6 +9,8 @@ import '../../common/messgae/chat_list.dart';
 import '../services/create_service.dart';
 
 class SellerHome extends StatefulWidget {
+  static const String tag = '/artist';
+
   const SellerHome({Key? key}) : super(key: key);
 
   @override

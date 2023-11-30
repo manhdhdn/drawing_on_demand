@@ -1,9 +1,14 @@
-import 'package:drawing_on_demand/app_routes/app_routes.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:flutter/material.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../widgets/button_global.dart';
+import '../../widgets/constant.dart';
+import '../authentication/log_in.dart';
+import '../authentication/sign_up.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  static const String tag = '/welcome';
+
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -53,7 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               Center(
                 child: Text(
-                  'Join as a Customer or Artist',
+                  AppLocalizations.of(context)!.joinAs,
                   style: kTextStyle.copyWith(
                       color: kNeutralColor,
                       fontWeight: FontWeight.bold,
@@ -201,7 +206,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.login);
+                    onLogin();
                   },
                   child: RichText(
                     text: TextSpan(
@@ -227,6 +232,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void onCreateAccount() {
-    Navigator.pushNamed(context, AppRoutes.signUp);
+    Navigator.pushNamed(context, SignUp.tag);
+  }
+
+  void onLogin() {
+    Navigator.pushNamed(context, Login.tag);
   }
 }

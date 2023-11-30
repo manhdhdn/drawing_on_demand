@@ -6,6 +6,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
@@ -253,10 +254,7 @@ class _JobPostState extends State<JobPost> {
 
   Future<Requirements?> getData() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      var accountId =
-          Account.fromJson(jsonDecode(prefs.getString('account')!)).id;
+      var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
 
       return RequirementApi().gets(
         skip,
@@ -267,7 +265,7 @@ class _JobPostState extends State<JobPost> {
         count: 'true',
       );
     } catch (error) {
-      Fluttertoast.showToast(msg: errorSomethingWentWrong);
+      Fluttertoast.showToast(msg: 'Get requirement failed');
     }
 
     return null;

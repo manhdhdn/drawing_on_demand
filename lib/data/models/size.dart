@@ -35,8 +35,8 @@ class Size {
 
   Size.fromJson(Map<String, dynamic> json) {
     id = Guid(json['Id']);
-    width = json['Width'];
-    length = json['Length'];
+    width = double.tryParse(json['Width'].toString());
+    length = double.tryParse(json['Length'].toString());
     requirementId = Guid(json['RequirementId']);
     artworkId = Guid(json['ArtworkId']);
   }

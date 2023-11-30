@@ -1,8 +1,9 @@
-import 'package:drawing_on_demand/main.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/utils/pref_utils.dart';
+import '../../../main.dart';
 import '../../widgets/constant.dart';
 
 class Language extends StatefulWidget {
@@ -108,19 +109,9 @@ class _LanguageState extends State<Language> {
       selectedLanguage = language;
     });
 
-    switch (language) {
-      case 'English':
-        MyApp.setLocale(context, const Locale('en'));
-        break;
+    PrefUtils().setLanguage(language);
 
-      case 'Vietnamese':
-        MyApp.setLocale(context, const Locale('vi'));
-        break;
-
-      default:
-    }
-
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+    // ignore: use_build_context_synchronously
+    MyApp.reLoadLocale(context);
   }
 }

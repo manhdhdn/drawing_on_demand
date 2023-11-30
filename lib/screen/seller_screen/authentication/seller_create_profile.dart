@@ -2,15 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../../common/popUp/popup_1.dart';
 
 class SellerCreateProfile extends StatefulWidget {
+  static const String tag = "/create_profile";
+
   const SellerCreateProfile({Key? key}) : super(key: key);
 
   @override
@@ -591,20 +593,21 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
         },
       ),
       bottomNavigationBar: ButtonGlobalWithoutIcon(
-          buttontext: currentIndexPage < 2 ? 'Continue' : 'Save Profile',
-          buttonDecoration: kButtonDecoration.copyWith(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          onPressed: () {
-            currentIndexPage < 2;
-            currentIndexPage < 2
-                ? pageController.nextPage(
-                    duration: const Duration(microseconds: 3000),
-                    curve: Curves.bounceInOut)
-                : saveProfilePopUp();
-          },
-          buttonTextColor: kWhite),
+        buttontext: currentIndexPage < 2 ? 'Continue' : 'Save Profile',
+        buttonDecoration: kButtonDecoration.copyWith(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        onPressed: () {
+          currentIndexPage < 2;
+          currentIndexPage < 2
+              ? pageController.nextPage(
+                  duration: const Duration(microseconds: 3000),
+                  curve: Curves.bounceInOut)
+              : saveProfilePopUp();
+        },
+        buttonTextColor: kWhite,
+      ),
     );
   }
 }

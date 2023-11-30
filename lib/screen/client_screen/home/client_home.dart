@@ -1,19 +1,16 @@
-// ignore: avoid_web_libraries_in_flutter
-// import 'dart:html';
-
-import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 import '../../common/messgae/chat_list.dart';
 import '../../widgets/constant.dart';
-import '../job_post/client_job_post.dart';
+import '../job_post/job_post.dart';
 import '../orders/client_orders.dart';
 import '../profile/client_profile.dart';
 import 'client_home_screen.dart';
 
 class ClientHome extends StatefulWidget {
+  static const String tag = '/customer';
+
   const ClientHome({Key? key}) : super(key: key);
 
   @override
@@ -23,22 +20,19 @@ class ClientHome extends StatefulWidget {
 class _ClientHomeState extends State<ClientHome> {
   int currentIndex = 0;
 
-  static const List<String> _pageAddresses = <String>[
-    AppRoutes.clientHome,
-    AppRoutes.clientChat,
-    AppRoutes.jobPost,
-    AppRoutes.clientOrder,
-    AppRoutes.clientProfile,
+  static const List<Widget> _widgetOptions = <Widget>[
+    ClientHomeScreen(),
+    ChatScreen(),
+    JobPost(),
+    ClientOrderList(),
+    ClientProfile(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhite,
-      body: getCurrentPage(
-        // isWeb ? window.location.pathname! :
-        _pageAddresses[currentIndex],
-      ),
+      body: _widgetOptions.elementAt(currentIndex),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
@@ -84,40 +78,13 @@ class _ClientHomeState extends State<ClientHome> {
             ),
           ],
           onTap: (int index) {
-            // window.history.pushState(null, '', _pageAddresses[index]);
-
             setState(() {
               currentIndex = index;
             });
           },
-          currentIndex: isWeb ? getCurrentIndex() : currentIndex,
+          currentIndex: currentIndex,
         ),
       ),
     );
-  }
-
-  int getCurrentIndex() {
-    // return _pageAddresses.indexWhere(
-    //   (address) => address.contains(window.location.pathname!),
-    // );
-
-    return currentIndex;
-  }
-
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.clientHome:
-        return const ClientHomeScreen();
-      case AppRoutes.clientChat:
-        return const ChatScreen();
-      case AppRoutes.jobPost:
-        return const JobPost();
-      case AppRoutes.clientOrder:
-        return const ClientOrderList();
-      case AppRoutes.clientProfile:
-        return const ClientProfile();
-      default:
-        return const ClientHomeScreen();
-    }
   }
 }
