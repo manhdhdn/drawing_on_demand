@@ -3,7 +3,7 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class BuyerRequestDetails extends StatefulWidget {
   const BuyerRequestDetails({Key? key}) : super(key: key);

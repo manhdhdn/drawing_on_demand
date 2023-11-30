@@ -3,7 +3,7 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerOrderReview extends StatefulWidget {
   const SellerOrderReview({Key? key}) : super(key: key);

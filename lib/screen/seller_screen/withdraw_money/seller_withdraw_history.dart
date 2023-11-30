@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerWithDrawHistory extends StatefulWidget {
   const SellerWithDrawHistory({Key? key}) : super(key: key);

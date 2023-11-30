@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerOrderDetails extends StatefulWidget {
   const SellerOrderDetails({Key? key}) : super(key: key);

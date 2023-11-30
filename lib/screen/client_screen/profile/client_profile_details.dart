@@ -29,23 +29,27 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: ButtonGlobalWithIcon(
-        buttontext: 'Edit Profile',
-        buttonDecoration: kButtonDecoration.copyWith(
-          color: kPrimaryColor,
-          borderRadius: BorderRadius.circular(30.0),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(color: kWhite),
+        child: ButtonGlobalWithIcon(
+          buttontext: 'Edit Profile',
+          buttonDecoration: kButtonDecoration.copyWith(
+            color: kPrimaryColor,
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          onPressed: () {
+            setState(() {
+              const ClientEditProfile().launch(context);
+            });
+          },
+          buttonTextColor: kWhite,
+          buttonIcon: IconlyBold.edit,
         ),
-        onPressed: () {
-          setState(() {
-            const ClientEditProfile().launch(context);
-          });
-        },
-        buttonTextColor: kWhite,
-        buttonIcon: IconlyBold.edit,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
           width: context.width(),
           decoration: const BoxDecoration(

@@ -6,12 +6,12 @@ import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile_de
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
-import '../add_payment_method/seller_add_payment_method.dart';
+import '../../common/add_payment_method/add_payment_method.dart';
 import '../request/seller_buyer_request.dart';
 import '../favourite/seller_favourite_list.dart';
 import '../report/seller_report.dart';
-import '../setting/seller_invite.dart';
-import '../setting/seller_setting.dart';
+import '../../common/setting/invite.dart';
+import '../../common/setting/setting.dart';
 import '../transaction/seller_transaction.dart';
 import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
@@ -29,13 +29,14 @@ class _SellerProfileState extends State<SellerProfile> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         titleSpacing: 0,
         title: ListTile(
           visualDensity: const VisualDensity(vertical: -4),
-          contentPadding: EdgeInsets.zero,
+          contentPadding: const EdgeInsets.only(left: 20.0),
           leading: Container(
             height: 45,
             width: 45,
@@ -71,6 +72,7 @@ class _SellerProfileState extends State<SellerProfile> {
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           width: context.width(),
           decoration: const BoxDecoration(
@@ -140,7 +142,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const SellerAddPaymentMethod().launch(context),
+                  onTap: () => const AddPaymentMethod().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 12),
@@ -312,7 +314,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const SellerInvite().launch(context),
+                  onTap: () => const Invite().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -339,7 +341,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const SellerSetting().launch(context),
+                  onTap: () => const Setting().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -429,6 +431,6 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   void onLogout() {
-    CommonFeatures().logout(context);
+    logout(context);
   }
 }

@@ -4,7 +4,7 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerWithdrawMoney extends StatefulWidget {
   const SellerWithdrawMoney({Key? key}) : super(key: key);

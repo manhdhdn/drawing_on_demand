@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'data.dart';
 
@@ -93,10 +94,10 @@ List<String> catIcon = [
 //__________Language List_______________________________________________
 List<String> language = [
   'English',
-  'Bengali',
+  'Vietnamese',
 ];
 
-String selectedLanguage = 'English';
+String selectedLanguage = 'Vietnamese';
 
 //__________Language Level_______________________________________________
 List<String> languageLevel = [
@@ -247,6 +248,17 @@ List<String> currency = [
 ];
 
 String selectedCurrency = 'USD';
+
+Set<int> pieces = {
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+};
+
+List<XFile> images = [];
 
 List<Color> colorList = [
   const Color(0xFF69B22A),

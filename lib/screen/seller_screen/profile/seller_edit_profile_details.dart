@@ -9,7 +9,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
-import '../popUp/seller_popup.dart';
+import '../../common/popUp/popup_1.dart';
 
 class SellerEditProfile extends StatefulWidget {
   const SellerEditProfile({Key? key}) : super(key: key);
