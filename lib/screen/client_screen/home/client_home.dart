@@ -1,5 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:drawing_on_demand/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,8 @@ class _ClientHomeState extends State<ClientHome> {
     return Scaffold(
       backgroundColor: kWhite,
       body: getCurrentPage(
-        isWeb ? window.location.pathname! : _pageAddresses[currentIndex],
+        // isWeb ? window.location.pathname! :
+        _pageAddresses[currentIndex],
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0),
@@ -83,7 +84,7 @@ class _ClientHomeState extends State<ClientHome> {
             ),
           ],
           onTap: (int index) {
-            window.history.pushState(null, '', _pageAddresses[index]);
+            // window.history.pushState(null, '', _pageAddresses[index]);
 
             setState(() {
               currentIndex = index;
@@ -96,9 +97,11 @@ class _ClientHomeState extends State<ClientHome> {
   }
 
   int getCurrentIndex() {
-    return _pageAddresses.indexWhere(
-      (address) => address.contains(window.location.pathname!),
-    );
+    // return _pageAddresses.indexWhere(
+    //   (address) => address.contains(window.location.pathname!),
+    // );
+
+    return currentIndex;
   }
 
   Widget getCurrentPage(String currentRoute) {

@@ -1,4 +1,4 @@
-package com.fa23se047.drawingondemand
+package com.example.drawing_on_demand
 
 import io.flutter.embedding.android.FlutterActivity
 

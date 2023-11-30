@@ -20,7 +20,7 @@ class JobPost extends StatefulWidget {
 }
 
 class _JobPostState extends State<JobPost> {
-  late Future<dynamic> requirements;
+  late Future<Requirements?> requirements;
 
   int skip = 0;
   int top = 9;
@@ -34,62 +34,62 @@ class _JobPostState extends State<JobPost> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: requirements,
-      builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: kDarkWhite,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: kDarkWhite,
-              elevation: 0,
-              iconTheme: const IconThemeData(color: kNeutralColor),
-              title: Text(
-                'Requirements',
-                style: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
-              ),
-              centerTitle: true,
-            ),
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (context) => const CreateNewJobPost(),
-                        ),
-                      )
-                      .then((value) => setState(
-                            () {
-                              requirements = getData();
-                            },
-                          ));
-                },
-                backgroundColor: kPrimaryColor,
-                child: const Icon(
-                  FeatherIcons.plus,
-                  color: kWhite,
-                ),
-              ),
-            ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            body: Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Container(
-                width: context.width(),
-                height: context.height(),
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                decoration: const BoxDecoration(
-                  color: kWhite,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
+    return Scaffold(
+      backgroundColor: kDarkWhite,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: kDarkWhite,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: kNeutralColor),
+        title: Text(
+          'Requirements',
+          style: kTextStyle.copyWith(
+              color: kNeutralColor, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(
+                  MaterialPageRoute(
+                    builder: (context) => const CreateNewJobPost(),
                   ),
-                ),
-                child: SingleChildScrollView(
+                )
+                .then((value) => setState(
+                      () {
+                        requirements = getData();
+                      },
+                    ));
+          },
+          backgroundColor: kPrimaryColor,
+          child: const Icon(
+            FeatherIcons.plus,
+            color: kWhite,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Container(
+          width: context.width(),
+          height: context.height(),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+          decoration: const BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+          ),
+          child: FutureBuilder(
+            future: requirements,
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,18 +236,18 @@ class _JobPostState extends State<JobPost> {
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-          );
-        }
+                );
+              }
 
-        return const Center(
-          child: CircularProgressIndicator(
-            color: kPrimaryColor,
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
+              );
+            }),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 

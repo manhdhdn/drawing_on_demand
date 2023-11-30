@@ -258,13 +258,13 @@ class _LogInState extends State<LogIn> {
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.sellerHome, (route) => false);
+            context, AppRoutes.seller, (route) => false);
       } else if (roles.contains('Customer')) {
         await prefs.setString('role', 'Customer');
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.clientHome, (route) => false);
+            context, AppRoutes.client, (route) => false);
       } else {
         throw 'Account is not supported';
       }

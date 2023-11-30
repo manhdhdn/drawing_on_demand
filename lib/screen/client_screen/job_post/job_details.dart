@@ -55,106 +55,104 @@ class _JobDetailsState extends State<JobDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: requirement,
-      builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: kDarkWhite,
-            appBar: AppBar(
-              backgroundColor: kDarkWhite,
-              elevation: 0,
-              iconTheme: const IconThemeData(color: kNeutralColor),
-              title: Text(
-                'Job Details',
-                style: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+    return Scaffold(
+      backgroundColor: kDarkWhite,
+      appBar: AppBar(
+        backgroundColor: kDarkWhite,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: kNeutralColor),
+        title: Text(
+          'Job Details',
+          style: kTextStyle.copyWith(
+              color: kNeutralColor, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        actions: [
+          PopupMenuButton(
+            padding: EdgeInsets.zero,
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'edit',
+                child: Text(
+                  'Edit',
+                  style: kTextStyle.copyWith(color: kNeutralColor),
+                ),
               ),
-              centerTitle: true,
-              actions: [
-                PopupMenuButton(
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (BuildContext context) => [
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Text(
-                        'Edit',
-                        style: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'cancel',
-                      child: Text(
-                        'Cancel',
-                        style: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
+              PopupMenuItem(
+                value: 'cancel',
+                child: Text(
+                  'Cancel',
+                  style: kTextStyle.copyWith(color: kNeutralColor),
+                ),
+              ),
+            ],
+            onSelected: (value) {
+              value == 'edit' ? null : cancelJobPopUp(widget.requirementId);
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Icon(
+                Icons.more_vert_rounded,
+                color: kNeutralColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+      // bottomNavigationBar: Container(
+      //   decoration: const BoxDecoration(
+      //     color: kWhite,
+      //   ),
+      //   child: ButtonGlobalWithoutIcon(
+      //     buttontext: 'Re-Post',
+      //     buttonDecoration: kButtonDecoration.copyWith(
+      //       color: kPrimaryColor,
+      //     ),
+      //     onPressed: () {
+      //       setState(() {
+      //         cancelOrderPopUp();
+      //       });
+      //     },
+      //     buttonTextColor: kWhite,
+      //   ),
+      // ),
+      body: Container(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+        width: context.width(),
+        height: context.height(),
+        decoration: const BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.0),
+            topRight: Radius.circular(30.0),
+          ),
+        ),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              const SizedBox(height: 15.0),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                width: context.width(),
+                decoration: BoxDecoration(
+                  color: kWhite,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: kBorderColorTextField),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: kDarkWhite,
+                      spreadRadius: 4.0,
+                      blurRadius: 4.0,
+                      offset: Offset(0, 2),
                     ),
                   ],
-                  onSelected: (value) {
-                    value == 'edit'
-                        ? null
-                        : cancelJobPopUp(widget.requirementId);
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(right: 10.0),
-                    child: Icon(
-                      Icons.more_vert_rounded,
-                      color: kNeutralColor,
-                    ),
-                  ),
                 ),
-              ],
-            ),
-            // bottomNavigationBar: Container(
-            //   decoration: const BoxDecoration(
-            //     color: kWhite,
-            //   ),
-            //   child: ButtonGlobalWithoutIcon(
-            //     buttontext: 'Re-Post',
-            //     buttonDecoration: kButtonDecoration.copyWith(
-            //       color: kPrimaryColor,
-            //     ),
-            //     onPressed: () {
-            //       setState(() {
-            //         cancelOrderPopUp();
-            //       });
-            //     },
-            //     buttonTextColor: kWhite,
-            //   ),
-            // ),
-            body: Container(
-              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-              width: context.width(),
-              height: context.height(),
-              decoration: const BoxDecoration(
-                color: kWhite,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 15.0),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      width: context.width(),
-                      decoration: BoxDecoration(
-                        color: kWhite,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: kBorderColorTextField),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: kDarkWhite,
-                            spreadRadius: 4.0,
-                            blurRadius: 4.0,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
+                child: FutureBuilder(
+                  future: requirement,
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -482,21 +480,21 @@ class _JobDetailsState extends State<JobDetails> {
                             ],
                           ),
                         ],
+                      );
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
                       ),
-                    ),
-                  ],
+                    );
+                  }),
                 ),
               ),
-            ),
-          );
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(
-            color: kPrimaryColor,
+            ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 
