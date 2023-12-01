@@ -279,7 +279,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         ),
                         FutureBuilder(
                           future: popularArtworks,
-                          builder: ((context, snapshot) {
+                          builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return HorizontalList(
                                 physics: const BouncingScrollPhysics(),
@@ -556,7 +556,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 color: kPrimaryColor,
                               ),
                             );
-                          }),
+                          },
                         ),
                         Padding(
                           padding:
@@ -583,7 +583,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         ),
                         FutureBuilder(
                           future: topArtists,
-                          builder: ((context, snapshot) {
+                          builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return HorizontalList(
                                 physics: const BouncingScrollPhysics(),
@@ -710,7 +710,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 color: kPrimaryColor,
                               ),
                             );
-                          }),
+                          },
                         ),
                         Padding(
                           padding:
@@ -738,7 +738,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         ),
                         FutureBuilder(
                           future: newArtworks,
-                          builder: ((context, snapshot) {
+                          builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return HorizontalList(
                                 physics: const BouncingScrollPhysics(),
@@ -1015,7 +1015,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 color: kPrimaryColor,
                               ),
                             );
-                          }),
+                          },
                         ),
                       ],
                     ),

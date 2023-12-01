@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/my%20service/service_details.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/rank_api.dart';
+import '../../../data/models/rank.dart';
 import '../../widgets/chart.dart';
+import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
 import 'my service/my_service.dart';
+import 'my service/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);
@@ -19,7 +24,15 @@ class SellerHomeScreen extends StatefulWidget {
 }
 
 class _SellerHomeScreenState extends State<SellerHomeScreen> {
-  //__________performance_time_period_____________________________________________________
+  late Future<Ranks?> ranks;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ranks = getRanks();
+  }
+
   DropdownButton<String> getPerformancePeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in period) {
@@ -45,7 +58,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
-  //__________statistics_time_period_____________________________________________________
   DropdownButton<String> getStatisticsPeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in staticsPeriod) {
@@ -71,7 +83,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
-  //__________earning_time_period_____________________________________________________
   DropdownButton<String> getEarningPeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in earningPeriod) {
@@ -111,26 +122,28 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: GestureDetector(
-                onTap: () => const SellerProfile().launch(context),
+                onTap: () => {},
                 child: Container(
                   height: 44,
                   width: 44,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('images/profilepic.png'),
+                      image: NetworkImage(
+                          jsonDecode(PrefUtils().getAccount())['Avatar']),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
             ),
             title: Text(
-              'Mr. Panda Swamy',
+              jsonDecode(PrefUtils().getAccount())['Name'],
               style: kTextStyle.copyWith(
                   color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              'New Seller',
+              'I\'m a Artist',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             trailing: GestureDetector(
@@ -438,33 +451,67 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                       collapsedIconColor: kLightNeutralColor,
                       iconColor: kLightNeutralColor,
                       title: Text(
-                        'Reach Your Next Level',
+                        'Reach your next level',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
-                      children: const [
-                        LevelSummary(
-                          title: 'Level 1',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '20',
-                          trailing2: '30',
-                        ),
-                        SizedBox(height: 15.0),
-                        LevelSummary(
-                          title: 'Level 2',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '0',
-                          trailing2: '70',
-                        ),
-                        SizedBox(height: 15.0),
-                        LevelSummary(
-                          title: 'Level 3',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '0',
-                          trailing2: '120',
+                      children: [
+                        FutureBuilder(
+                          future: ranks,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              int index = snapshot.data!.value
+                                  .toList()
+                                  .indexWhere((rank) =>
+                                      rank.name == PrefUtils().getRank());
+
+                              return Column(
+                                children: [
+                                  LevelSummary(
+                                    title: snapshot.data!.value
+                                        .elementAt(index)
+                                        .name!,
+                                    subTitle:
+                                        'Fee per order: ${snapshot.data!.value.elementAt(index).fee! * 100}%\n'
+                                        'Connect: ${snapshot.data!.value.elementAt(index).connect!}',
+                                    trailing1:
+                                        NumberFormat.decimalPattern('vi_VN')
+                                            .format(snapshot.data!.value
+                                                .elementAt(index)
+                                                .income),
+                                    trailing2:
+                                        NumberFormat.decimalPattern('vi_VN')
+                                            .format(snapshot.data!.value
+                                                .elementAt(index)
+                                                .income),
+                                  ),
+                                  const SizedBox(height: 15.0),
+                                  LevelSummary(
+                                    title: snapshot.data!.value
+                                        .elementAt(index + 1)
+                                        .name!,
+                                    subTitle:
+                                        'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
+                                        'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
+                                    trailing1: '0',
+                                    trailing2:
+                                        NumberFormat.decimalPattern('vi_VN')
+                                            .format(snapshot.data!.value
+                                                .elementAt(index + 1)
+                                                .income),
+                                  ),
+                                ],
+                              );
+                            }
+
+                            return const Center(
+                              heightFactor: 2.0,
+                              widthFactor: 2.0,
+                              child: CircularProgressIndicator(
+                                color: kPrimaryColor,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -473,7 +520,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   Row(
                     children: [
                       Text(
-                        'My Services',
+                        'My artwork',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
@@ -634,6 +681,16 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<Ranks?> getRanks() async {
+    try {
+      return RankApi().gets(0, count: 'true', orderBy: 'income');
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get ranks failed');
+    }
+
+    return null;
   }
 }
 

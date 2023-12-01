@@ -82,4 +82,16 @@ class PrefUtils {
       return 'Guest';
     }
   }
+
+  Future<void> setRank(String value) {
+    return _sharedPreferences!.setString('rank', value);
+  }
+
+  String getRank() {
+    try {
+      return _sharedPreferences!.getString('rank')!;
+    } catch (e) {
+      return '';
+    }
+  }
 }

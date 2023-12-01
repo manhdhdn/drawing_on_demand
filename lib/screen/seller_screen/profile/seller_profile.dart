@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -5,8 +7,10 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile_details.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
 import '../../common/add_payment_method/add_payment_method.dart';
+import '../notification/seller_notification.dart';
 import '../request/seller_buyer_request.dart';
 import '../favourite/seller_favourite_list.dart';
 import '../report/seller_report.dart';
@@ -29,41 +33,61 @@ class _SellerProfileState extends State<SellerProfile> {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: kDarkWhite,
         elevation: 0,
-        iconTheme: const IconThemeData(color: kNeutralColor),
-        titleSpacing: 0,
+        automaticallyImplyLeading: false,
         title: ListTile(
-          visualDensity: const VisualDensity(vertical: -4),
-          contentPadding: const EdgeInsets.only(left: 20.0),
-          leading: Container(
-            height: 45,
-            width: 45,
-            padding: const EdgeInsets.all(10.0),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: kDarkWhite,
-              image: DecorationImage(
-                  image: AssetImage('images/profile1.png'), fit: BoxFit.cover),
+          contentPadding: EdgeInsets.zero,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: GestureDetector(
+              onTap: () => {},
+              child: Container(
+                height: 44,
+                width: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        jsonDecode(PrefUtils().getAccount())['Avatar']),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
           title: Text(
-            'Shahidul Islam',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: kTextStyle.copyWith(color: kNeutralColor),
+            jsonDecode(PrefUtils().getAccount())['Name'],
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           subtitle: RichText(
             text: TextSpan(
-              text: 'Deposit Balance: ',
+              text: 'Available connect: ',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               children: [
                 TextSpan(
-                  text: '$currencySign 500.00',
+                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect']
+                      .toString(),
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
               ],
+            ),
+          ),
+          trailing: GestureDetector(
+            onTap: () => const SellerNotification().launch(context),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: kPrimaryColor.withOpacity(0.2),
+                ),
+              ),
+              child: const Icon(
+                IconlyLight.notification,
+                color: kNeutralColor,
+              ),
             ),
           ),
         ),
