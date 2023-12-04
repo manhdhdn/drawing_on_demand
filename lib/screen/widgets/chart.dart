@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class RecordStatistics extends StatelessWidget {
@@ -17,7 +18,7 @@ class RecordStatistics extends StatelessWidget {
       dataMap: dataMap,
       animationDuration: const Duration(milliseconds: 800),
       chartLegendSpacing: 32,
-      chartRadius: MediaQuery.of(context).size.width / 3.2,
+      chartRadius: context.width() / 3.2,
       colorList: colorList,
       initialAngleInDegree: 0,
       chartType: ChartType.ring,

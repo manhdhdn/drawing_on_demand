@@ -21,6 +21,7 @@ class PrefUtils {
   void clearPreferencesData() async {
     _sharedPreferences!.remove('account');
     _sharedPreferences!.remove('role');
+    _sharedPreferences!.remove('rank');
   }
 
   Future<void> setThemeData(String value) {

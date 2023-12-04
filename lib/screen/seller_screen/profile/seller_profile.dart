@@ -365,7 +365,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const Setting().launch(context),
+                  onTap: () => onSetting(),
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -452,6 +452,10 @@ class _SellerProfileState extends State<SellerProfile> {
         ),
       ),
     );
+  }
+
+  void onSetting() {
+    Navigator.pushNamed(context, Setting.tag);
   }
 
   void onLogout() {

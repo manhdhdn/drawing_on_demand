@@ -126,7 +126,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                           children: [
                             Container(
                               height: 300,
-                              width: MediaQuery.of(context).size.width,
+                              width: context.width(),
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage('images/bg2.png'),
@@ -153,7 +153,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                 const SizedBox(height: 10.0),
                                 Container(
                                   height: 20,
-                                  width: MediaQuery.of(context).size.width,
+                                  width: context.width(),
                                   decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(30.0),

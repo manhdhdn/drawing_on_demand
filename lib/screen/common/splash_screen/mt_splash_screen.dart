@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:is_first_run/is_first_run.dart';
 
 import '../../../app_routes/app_routes.dart';
 import '../../widgets/constant.dart';
@@ -22,11 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-    bool firstRun = await IsFirstRun.isFirstRun();
+    bool firstRun = true;
 
     await Future.delayed(const Duration(seconds: 2)).then(
-      (value) => Navigator.pushNamedAndRemoveUntil(context,
-          firstRun ? OnBoard.tag : AppRoutes.defaultTag, (route) => false),
+      (value) => Navigator.pushNamedAndRemoveUntil(
+          context,
+          // ignore: dead_code
+          firstRun ? OnBoard.tag : AppRoutes.defaultTag,
+          (route) => false),
     );
   }
 
