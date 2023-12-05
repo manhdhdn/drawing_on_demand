@@ -31,6 +31,7 @@ class Account {
   String? avatar;
   String? address;
   String? bio;
+  int? availableConnect;
   DateTime? createdDate;
   DateTime? lastModifiedDate;
   String? status;
@@ -47,6 +48,7 @@ class Account {
     this.avatar,
     this.address,
     this.bio,
+    this.availableConnect,
     this.createdDate,
     this.lastModifiedDate,
     this.status,
@@ -64,6 +66,7 @@ class Account {
     avatar = json['Avatar'];
     address = json['Address'];
     bio = json['Bio'];
+    availableConnect = json['AvailableConnect'];
     createdDate = DateTime.parse(json['CreatedDate']);
     lastModifiedDate = json['LastModifiedDate'] != null
         ? DateTime.parse(json['LastModifiedDate'])
@@ -90,6 +93,7 @@ class Account {
       'Avatar': avatar,
       'Address': address,
       'Bio': bio,
+      'AvailableConnect': availableConnect,
       'CreatedDate':
           DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null

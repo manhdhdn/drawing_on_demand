@@ -76,7 +76,8 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                           backgroundColor: Colors.transparent,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(width: 30, child: Center(child: Text('12'))),
+                        const SizedBox(
+                            width: 30, child: Center(child: Text('12'))),
                       ],
                     ),
                     Row(
@@ -93,7 +94,8 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                           backgroundColor: Colors.transparent,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(width: 30, child: Center(child: Text('5'))),
+                        const SizedBox(
+                            width: 30, child: Center(child: Text('5'))),
                       ],
                     ),
                     Row(
@@ -109,7 +111,8 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                           backgroundColor: Colors.transparent,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(width: 30, child: Center(child: Text('4'))),
+                        const SizedBox(
+                            width: 30, child: Center(child: Text('4'))),
                       ],
                     ),
                     Row(
@@ -124,7 +127,8 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                           backgroundColor: Colors.transparent,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(width: 30, child: Center(child: Text('2'))),
+                        const SizedBox(
+                            width: 30, child: Center(child: Text('2'))),
                       ],
                     ),
                     Row(
@@ -138,7 +142,8 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                           backgroundColor: Colors.transparent,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(width: 30, child: Center(child: Text('0'))),
+                        const SizedBox(
+                            width: 30, child: Center(child: Text('0'))),
                       ],
                     ),
                   ],
@@ -166,7 +171,13 @@ class ReviewDetails extends StatelessWidget {
           color: kWhite,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: kBorderColorTextField),
-          boxShadow: const [BoxShadow(color: kBorderColorTextField, spreadRadius: 1.0, blurRadius: 5.0, offset: Offset(0, 3))]),
+          boxShadow: const [
+            BoxShadow(
+                color: kBorderColorTextField,
+                spreadRadius: 1.0,
+                blurRadius: 5.0,
+                offset: Offset(0, 3))
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -191,7 +202,8 @@ class ReviewDetails extends StatelessWidget {
                 children: [
                   Text(
                     'Abdul Korim',
-                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
@@ -248,7 +260,13 @@ class ReviewDetails2 extends StatelessWidget {
           color: kWhite,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: kBorderColorTextField),
-          boxShadow: const [BoxShadow(color: kBorderColorTextField, spreadRadius: 1.0, blurRadius: 5.0, offset: Offset(0, 3))]),
+          boxShadow: const [
+            BoxShadow(
+                color: kBorderColorTextField,
+                spreadRadius: 1.0,
+                blurRadius: 5.0,
+                offset: Offset(0, 3))
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -273,7 +291,8 @@ class ReviewDetails2 extends StatelessWidget {
                 children: [
                   Text(
                     'Abdul Korim',
-                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
@@ -314,7 +333,8 @@ class ReviewDetails2 extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
                   border: Border.all(color: kBorderColorTextField),
-                  image: const DecorationImage(image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
+                  image: const DecorationImage(
+                      image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(width: 10.0),
@@ -324,7 +344,8 @@ class ReviewDetails2 extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
                   border: Border.all(color: kBorderColorTextField),
-                  image: const DecorationImage(image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
+                  image: const DecorationImage(
+                      image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
                 ),
               ),
             ],

@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: kNeutralColor,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 decoration: kInputDecoration.copyWith(
                   labelText: 'Email',
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 20.0),
               TextFormField(
-                keyboardType: TextInputType.visiblePassword,
+                keyboardType: TextInputType.text,
                 cursorColor: kNeutralColor,
                 obscureText: hidePassword,
                 textInputAction: TextInputAction.done,
@@ -120,6 +120,9 @@ class _LoginState extends State<Login> {
                 ),
                 controller: passwordController,
                 autofillHints: const [AutofillHints.password],
+                onEditingComplete: () {
+                  onLogin();
+                },
               ),
               const SizedBox(height: 5.0),
               Row(
@@ -244,7 +247,7 @@ class _LoginState extends State<Login> {
       var account = await AccountApi().gets(
         0,
         filter: "email eq '${emailController.text.trim()}'",
-        expand: 'accountRoles(expand=role)',
+        expand: 'accountRoles(expand=role),rank',
       );
 
       // Save account information
@@ -259,6 +262,7 @@ class _LoginState extends State<Login> {
           .toSet();
       if (roles.contains('Artist')) {
         PrefUtils().setRole('Artist');
+        PrefUtils().setRank(account.value.first.rank!.name!);
       } else if (roles.contains('Customer')) {
         PrefUtils().setRole('Customer');
       } else {
@@ -273,10 +277,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void onCreateNewAccount() {
-    Navigator.pushNamed(context, WelcomeScreen.tag);
-  }
-
   void onLogedIn() {
     Phoenix.rebirth(context);
 
@@ -285,5 +285,9 @@ class _LoginState extends State<Login> {
       AppRoutes.defaultTag,
       (route) => false,
     );
+  }
+
+  void onCreateNewAccount() {
+    Navigator.pushNamed(context, WelcomeScreen.tag);
   }
 }

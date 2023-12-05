@@ -21,6 +21,7 @@ class PrefUtils {
   void clearPreferencesData() async {
     _sharedPreferences!.remove('account');
     _sharedPreferences!.remove('role');
+    _sharedPreferences!.remove('rank');
   }
 
   Future<void> setThemeData(String value) {
@@ -83,6 +84,18 @@ class PrefUtils {
     }
   }
 
+  Future<void> setRank(String value) {
+    return _sharedPreferences!.setString('rank', value);
+  }
+
+  String getRank() {
+    try {
+      return _sharedPreferences!.getString('rank')!;
+    } catch (e) {
+      return '';
+    }
+  }
+      
   Future<void> setTermId(String value) {
     return _sharedPreferences!.setString('termId', value);
   }

@@ -25,6 +25,8 @@ Future<void> main() async {
       child: const MyApp(),
     ),
   );
+
+  // RendererBinding.instance.ensureSemantics();
 }
 
 class MyApp extends StatefulWidget {
@@ -87,10 +89,6 @@ class _MyAppState extends State<MyApp> {
           locale = const Locale('vi');
         });
         break;
-      default:
-        setState(() {
-          locale = const Locale('vi');
-        });
     }
   }
 }

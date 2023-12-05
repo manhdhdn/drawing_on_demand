@@ -152,7 +152,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _distanceToField = MediaQuery.of(context).size.width;
+    _distanceToField = context.width();
   }
 
   @override

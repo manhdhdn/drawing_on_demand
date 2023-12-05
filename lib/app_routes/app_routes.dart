@@ -8,10 +8,13 @@ import '../screen/client_screen/profile/client_profile_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/authentication/opt_verification.dart';
 import '../screen/common/authentication/sign_up.dart';
+import '../screen/common/setting/language.dart';
+import '../screen/common/setting/setting.dart';
 import '../screen/common/splash_screen/onboard.dart';
 import '../screen/common/welcome_screen/welcome_screen.dart';
 import '../screen/seller_screen/authentication/seller_create_profile.dart';
 import '../screen/seller_screen/home/seller_home.dart';
+import '../screen/seller_screen/services/create_service.dart';
 
 class AppRoutes {
   static const String defaultTag = '/';
@@ -38,13 +41,23 @@ class AppRoutes {
   static Map<String, WidgetBuilder> artistRoutes = {
     defaultTag: (context) => const SellerHome(),
     SellerHome.tag: (context) => const SellerHome(),
+    CreateService.tag: (context) => const CreateService(),
+  };
+
+  static Map<String, WidgetBuilder> commonRoutes = {
+    Setting.tag: (context) => const Setting(),
+    Language.tag: (context) => const Language(),
   };
 
   static Map<String, WidgetBuilder> getRoutes(String? role) {
     switch (role) {
       case 'Customer':
+        customerRoutes.addAll(commonRoutes);
+
         return customerRoutes;
       case 'Artist':
+        artistRoutes.addAll(commonRoutes);
+
         return artistRoutes;
       default:
         return guestRoutes;
