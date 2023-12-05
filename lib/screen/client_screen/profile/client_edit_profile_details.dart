@@ -1,16 +1,17 @@
-// import 'package:country_code_picker/country_code_picker.dart';
-import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
 import 'client_profile_details.dart';
 
 class ClientEditProfile extends StatefulWidget {
+  static const String tag = '${ClientProfileDetails.tag}/edit';
+
   const ClientEditProfile({Key? key}) : super(key: key);
 
   @override
@@ -385,11 +386,15 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           onPressed: () {
-            const ClientProfileDetails().launch(context);
+            onProfile();
           },
           buttonTextColor: kWhite,
         ),
       ),
     );
+  }
+
+  void onProfile() {
+    Navigator.pushNamed(context, ClientProfileDetails.tag);
   }
 }

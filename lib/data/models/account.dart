@@ -87,7 +87,7 @@ class Account {
       'Phone': phone,
       'Name': name,
       'Gender': gender,
-      'Avartar': avatar,
+      'Avatar': avatar,
       'Address': address,
       'Bio': bio,
       'CreatedDate':

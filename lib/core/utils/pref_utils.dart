@@ -82,4 +82,20 @@ class PrefUtils {
       return 'Guest';
     }
   }
+
+  Future<void> setTermId(String value) {
+    return _sharedPreferences!.setString('termId', value);
+  }
+
+  String getTermId() {
+    try {
+      return _sharedPreferences!.getString('termId')!;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  void clearTermId() {
+    _sharedPreferences!.remove('termId');
+  }
 }
