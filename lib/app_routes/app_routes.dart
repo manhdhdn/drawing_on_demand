@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../screen/client_screen/authentication/client_create_profile.dart';
 import '../screen/client_screen/home/client_home.dart';
+import '../screen/client_screen/job_post/job_details.dart';
+import '../screen/client_screen/job_post/job_post.dart';
+import '../screen/client_screen/profile/client_profile_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/authentication/opt_verification.dart';
 import '../screen/common/authentication/sign_up.dart';
@@ -27,6 +30,9 @@ class AppRoutes {
   static Map<String, WidgetBuilder> customerRoutes = {
     defaultTag: (context) => const ClientHome(),
     ClientHome.tag: (context) => const ClientHome(),
+    JobPost.tag: (context) => const JobPost(),
+    JobDetails.tag: (context) => const JobDetails(),
+    ClientProfileDetails.tag: (context) => const ClientProfileDetails(),
   };
 
   static Map<String, WidgetBuilder> artistRoutes = {

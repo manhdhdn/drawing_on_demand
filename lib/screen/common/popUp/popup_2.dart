@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -198,7 +197,7 @@ class _UploadCompletePopUpState extends State<UploadCompletePopUp> {
 }
 
 class CancelJobPopUp extends StatefulWidget {
-  final Guid id;
+  final String id;
 
   const CancelJobPopUp({Key? key, required this.id}) : super(key: key);
 
@@ -285,7 +284,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
   void onYes() async {
     try {
       ProgressDialogUtils.showProgress(context);
-      await RequirementApi().deleteOne(widget.id.toString());
+      await RequirementApi().deleteOne(widget.id);
 
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);

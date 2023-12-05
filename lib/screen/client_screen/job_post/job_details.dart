@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -9,11 +8,12 @@ import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
+import 'job_post.dart';
 
 class JobDetails extends StatefulWidget {
-  final Guid requirementId;
+  static const String tag = '${JobPost.tag}/:id';
 
-  const JobDetails({Key? key, required this.requirementId}) : super(key: key);
+  const JobDetails({Key? key}) : super(key: key);
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
@@ -30,7 +30,7 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   //__________cancel_order_reason_popup________________________________________________
-  void cancelJobPopUp(Guid id) async {
+  void cancelJobPopUp(String id) async {
     await showDialog(
       barrierDismissible: false,
       context: context,
@@ -86,7 +86,10 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ],
             onSelected: (value) {
-              value == 'edit' ? null : cancelJobPopUp(widget.requirementId);
+              value == 'edit'
+                  ? null
+                  : cancelJobPopUp(
+                      ModalRoute.of(context)!.settings.arguments.toString());
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -498,7 +501,8 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<Requirement?> getData() async {
     try {
-      return RequirementApi().getOne(widget.requirementId.toString(),
+      return RequirementApi().getOne(
+          ModalRoute.of(context)!.settings.arguments.toString(),
           'category,surface,material,createdByNavigation,proposals,sizes,steps');
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement failed');

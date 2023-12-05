@@ -11,9 +11,10 @@ import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import 'create_new_job_post.dart';
-import 'job_details.dart';
 
 class JobPost extends StatefulWidget {
+  static const String tag = '/job_post';
+
   const JobPost({Key? key}) : super(key: key);
 
   @override
@@ -22,9 +23,6 @@ class JobPost extends StatefulWidget {
 
 class _JobPostState extends State<JobPost> {
   late Future<Requirements?> requirements;
-
-  int skip = 0;
-  int top = 9;
 
   @override
   void initState() {
@@ -135,21 +133,10 @@ class _JobPostState extends State<JobPost> {
                             padding: const EdgeInsets.only(bottom: 10.0),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(
-                                      MaterialPageRoute(
-                                        builder: (context) => JobDetails(
-                                          requirementId: snapshot.data!.value
-                                              .elementAt(index)
-                                              .id!,
-                                        ),
-                                      ),
-                                    )
-                                    .then((value) => setState(
-                                          () {
-                                            requirements = getData();
-                                          },
-                                        ));
+                                onDetail(snapshot.data!.value
+                                    .elementAt(index)
+                                    .id!
+                                    .toString());
                               },
                               child: Container(
                                 width: context.width(),
@@ -257,8 +244,7 @@ class _JobPostState extends State<JobPost> {
       var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
 
       return RequirementApi().gets(
-        skip,
-        top: top,
+        0,
         filter: 'createdBy eq $accountId',
         expand: 'category',
         orderBy: 'createdDate desc',
@@ -269,5 +255,9 @@ class _JobPostState extends State<JobPost> {
     }
 
     return null;
+  }
+
+  void onDetail(String id) {
+    Navigator.pushNamed(context, '${JobPost.tag}/:$id');
   }
 }
