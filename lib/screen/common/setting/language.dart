@@ -1,46 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/utils/pref_utils.dart';
 import '../../../main.dart';
 import '../../widgets/constant.dart';
+import 'setting.dart';
 
 class Language extends StatefulWidget {
-  final String selectedLanguage;
-  final Future<dynamic> getCurrentLanguage;
+  static const String tag = '${Setting.tag}/language';
 
-  const Language({
-    Key? key,
-    required this.selectedLanguage,
-    required this.getCurrentLanguage,
-  }) : super(key: key);
+  const Language({Key? key}) : super(key: key);
 
   @override
   State<Language> createState() => _LanguageState();
 }
 
 class _LanguageState extends State<Language> {
-  String selectedLanguage = '';
-
-  @override
-  void initState() {
-    super.initState();
-
-    selectedLanguage = widget.selectedLanguage;
-  }
+  String selectedLanguage = PrefUtils().getLanguage();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context, widget.getCurrentLanguage);
-          },
-        ),
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),

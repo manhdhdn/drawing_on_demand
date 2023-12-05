@@ -1,15 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/my%20service/service_details.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/artwork_api.dart';
+import '../../../data/apis/rank_api.dart';
+import '../../../data/models/artwork.dart';
+import '../../../data/models/artwork_review.dart';
+import '../../../data/models/rank.dart';
 import '../../widgets/chart.dart';
+import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
-import 'my service/my_service.dart';
+import '../services/create_service.dart';
+import 'my_service/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);
@@ -19,7 +27,17 @@ class SellerHomeScreen extends StatefulWidget {
 }
 
 class _SellerHomeScreenState extends State<SellerHomeScreen> {
-  //__________performance_time_period_____________________________________________________
+  late Future<Ranks?> ranks;
+  late Future<Artworks?> artworks;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ranks = getRanks();
+    artworks = getArtworks();
+  }
+
   DropdownButton<String> getPerformancePeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in period) {
@@ -45,7 +63,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
-  //__________statistics_time_period_____________________________________________________
   DropdownButton<String> getStatisticsPeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in staticsPeriod) {
@@ -71,7 +88,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
-  //__________earning_time_period_____________________________________________________
   DropdownButton<String> getEarningPeriod() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in earningPeriod) {
@@ -111,26 +127,28 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: GestureDetector(
-                onTap: () => const SellerProfile().launch(context),
+                onTap: () => {},
                 child: Container(
                   height: 44,
                   width: 44,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('images/profilepic.png'),
+                      image: NetworkImage(
+                          jsonDecode(PrefUtils().getAccount())['Avatar']),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
             ),
             title: Text(
-              'Mr. Panda Swamy',
+              jsonDecode(PrefUtils().getAccount())['Name'],
               style: kTextStyle.copyWith(
                   color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              'New Seller',
+              'I\'m a Artist',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             trailing: GestureDetector(
@@ -438,33 +456,75 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                       collapsedIconColor: kLightNeutralColor,
                       iconColor: kLightNeutralColor,
                       title: Text(
-                        'Reach Your Next Level',
+                        'Reach your next level',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
-                      children: const [
-                        LevelSummary(
-                          title: 'Level 1',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '20',
-                          trailing2: '30',
-                        ),
-                        SizedBox(height: 15.0),
-                        LevelSummary(
-                          title: 'Level 2',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '0',
-                          trailing2: '70',
-                        ),
-                        SizedBox(height: 15.0),
-                        LevelSummary(
-                          title: 'Level 3',
-                          subTitle:
-                              'Receive and complete at least 30 orders (all time)',
-                          trailing1: '0',
-                          trailing2: '120',
+                      children: [
+                        FutureBuilder(
+                          future: ranks,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              int index = snapshot.data!.value
+                                  .toList()
+                                  .indexWhere((rank) =>
+                                      rank.name == PrefUtils().getRank());
+
+                              Column elements = Column(
+                                children: [
+                                  LevelSummary(
+                                    title: snapshot.data!.value
+                                        .elementAt(index)
+                                        .name!,
+                                    subTitle:
+                                        'Fee per order: ${snapshot.data!.value.elementAt(index).fee! * 100}%\n'
+                                        'Connect: ${snapshot.data!.value.elementAt(index).connect!}',
+                                    trailing1:
+                                        NumberFormat.decimalPattern('vi_VN')
+                                            .format(snapshot.data!.value
+                                                .elementAt(index)
+                                                .income),
+                                    trailing2:
+                                        NumberFormat.decimalPattern('vi_VN')
+                                            .format(snapshot.data!.value
+                                                .elementAt(index)
+                                                .income),
+                                  ),
+                                ],
+                              );
+
+                              if (index < snapshot.data!.count! - 1) {
+                                elements.children.addAll(
+                                  [
+                                    const SizedBox(height: 15.0),
+                                    LevelSummary(
+                                      title: snapshot.data!.value
+                                          .elementAt(index + 1)
+                                          .name!,
+                                      subTitle:
+                                          'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
+                                          'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
+                                      trailing1: '0',
+                                      trailing2:
+                                          NumberFormat.decimalPattern('vi_VN')
+                                              .format(snapshot.data!.value
+                                                  .elementAt(index + 1)
+                                                  .income),
+                                    ),
+                                  ],
+                                );
+                              }
+
+                              return elements;
+                            }
+
+                            return const Center(
+                              heightFactor: 2.0,
+                              child: CircularProgressIndicator(
+                                color: kPrimaryColor,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -473,156 +533,196 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   Row(
                     children: [
                       Text(
-                        'My Services',
+                        'My artwork',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () => const MyServices().launch(context),
+                        onTap: () {
+                          onViewAllArtwork();
+                        },
                         child: Text(
-                          'view All',
+                          'View All',
                           style: kTextStyle.copyWith(color: kLightNeutralColor),
                         ),
                       )
                     ],
                   ),
                   const SizedBox(height: 15.0),
-                  HorizontalList(
-                    spacing: 10.0,
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    itemCount: 10,
-                    itemBuilder: (_, i) {
-                      return GestureDetector(
-                        onTap: () => const ServiceDetails().launch(context),
-                        child: Container(
-                          height: 205,
-                          width: 156,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: kBorderColorTextField),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: kDarkWhite,
-                                blurRadius: 5.0,
-                                spreadRadius: 2.0,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Container(
-                                    height: 100,
-                                    width: 156,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(8.0),
-                                        topLeft: Radius.circular(8.0),
-                                      ),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                            'images/shot1.png',
-                                          ),
-                                          fit: BoxFit.cover),
+                  FutureBuilder(
+                    future: artworks,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        int itemCount = snapshot.data!.count! < 10
+                            ? snapshot.data!.count!
+                            : 10;
+
+                        return HorizontalList(
+                          spacing: 10.0,
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          itemCount: itemCount,
+                          itemBuilder: (_, index) {
+                            return GestureDetector(
+                              onTap: () =>
+                                  const ServiceDetails().launch(context),
+                              child: Container(
+                                height: 205,
+                                width: 156,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: kDarkWhite,
+                                      blurRadius: 5.0,
+                                      spreadRadius: 2.0,
+                                      offset: Offset(0, 5),
                                     ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isFavorite = !isFavorite;
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: isFavorite
-                                            ? const Center(
-                                                child: Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red,
-                                                  size: 18.0,
-                                                ),
-                                              )
-                                            : const Center(
-                                                child: Icon(
-                                                  Icons.favorite_border,
-                                                  color: kNeutralColor,
-                                                  size: 18.0,
-                                                ),
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                  ],
+                                ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Mobile UI UX design or app design',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 5.0),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                    Stack(
+                                      alignment: Alignment.topRight,
                                       children: [
-                                        const Icon(
-                                          IconlyBold.star,
-                                          color: Colors.amber,
-                                          size: 18.0,
+                                        Container(
+                                          height: 100,
+                                          width: 156,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(8.0),
+                                              topLeft: Radius.circular(8.0),
+                                            ),
+                                            image: DecorationImage(
+                                              image: NetworkImage(snapshot
+                                                  .data!.value
+                                                  .elementAt(index)
+                                                  .arts!
+                                                  .first
+                                                  .image!),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(width: 2.0),
-                                        Text(
-                                          '5.0',
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor),
-                                        ),
-                                        const SizedBox(width: 2.0),
-                                        Text(
-                                          '(520 review)',
-                                          style: kTextStyle.copyWith(
-                                              color: kLightNeutralColor),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isFavorite = !isFavorite;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: isFavorite
+                                                  ? const Center(
+                                                      child: Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.red,
+                                                        size: 18.0,
+                                                      ),
+                                                    )
+                                                  : const Center(
+                                                      child: Icon(
+                                                        Icons.favorite_border,
+                                                        color: kNeutralColor,
+                                                        size: 18.0,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 5.0),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'Price: ',
-                                        style: kTextStyle.copyWith(
-                                            color: kLightNeutralColor),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          TextSpan(
-                                            text: '$currencySign${30}',
+                                          Text(
+                                            snapshot.data!.value
+                                                .elementAt(index)
+                                                .title!,
                                             style: kTextStyle.copyWith(
-                                                color: kPrimaryColor,
+                                                color: kNeutralColor,
                                                 fontWeight: FontWeight.bold),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 5.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                IconlyBold.star,
+                                                color: Colors.amber,
+                                                size: 18.0,
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                getReviewPoint(snapshot
+                                                    .data!.value
+                                                    .elementAt(index)
+                                                    .artworkReviews!),
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
+                                                style: kTextStyle.copyWith(
+                                                    color: kLightNeutralColor),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5.0),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Price: ',
+                                              style: kTextStyle.copyWith(
+                                                  color: kLightNeutralColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: NumberFormat
+                                                          .decimalPattern(
+                                                              'vi_VN')
+                                                      .format(snapshot
+                                                          .data!.value
+                                                          .elementAt(index)
+                                                          .price),
+                                                  style: kTextStyle.copyWith(
+                                                      color: kPrimaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
+                        );
+                      }
+
+                      return const Center(
+                        heightFactor: 2.0,
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
                         ),
                       );
                     },
@@ -634,6 +734,50 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<Ranks?> getRanks() async {
+    try {
+      return RankApi().gets(0, count: 'true', orderBy: 'income');
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get ranks failed');
+    }
+
+    return null;
+  }
+
+  Future<Artworks?> getArtworks() async {
+    try {
+      return ArtworkApi().gets(
+        0,
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
+        count: 'true',
+        orderBy: 'createdDate',
+        expand: 'arts,artworkReviews',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get artworks failed');
+    }
+
+    return null;
+  }
+
+  String getReviewPoint(Set<ArtworkReview> artworkReviews) {
+    double point = 0;
+
+    if (artworkReviews.isNotEmpty) {
+      for (var artworkReview in artworkReviews) {
+        point += artworkReview.star!;
+      }
+
+      point = point / artworkReviews.length;
+    }
+
+    return NumberFormat('0.0').format(point);
+  }
+
+  void onViewAllArtwork() {
+    Navigator.pushNamed(context, CreateService.tag);
   }
 }
 

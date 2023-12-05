@@ -34,7 +34,7 @@ class ApiConfig {
     'order': 'orders',
     'payment': 'payments',
     'proposal': 'proposals',
-    'ranking': 'rankings',
+    'rank': 'ranks',
     'requirement': 'requirements',
     'role': 'roles',
     'size': 'sizes',
