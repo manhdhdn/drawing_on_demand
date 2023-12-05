@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 // import '../../widgets/button_global.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
+import 'job_post.dart';
 
 class JobDetails extends StatefulWidget {
-  final Guid requirementId;
+  static const String tag = '${JobPost.tag}/detail';
 
-  const JobDetails({Key? key, required this.requirementId}) : super(key: key);
+  const JobDetails({Key? key}) : super(key: key);
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
@@ -29,8 +30,17 @@ class _JobDetailsState extends State<JobDetails> {
     requirement = getData();
   }
 
+  @override
+  void dispose() {
+    if (mounted) {
+      PrefUtils().clearTermId();
+    }
+
+    super.dispose();
+  }
+
   //__________cancel_order_reason_popup________________________________________________
-  void cancelJobPopUp(Guid id) async {
+  void cancelJobPopUp(String id) async {
     await showDialog(
       barrierDismissible: false,
       context: context,
@@ -86,7 +96,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ],
             onSelected: (value) {
-              value == 'edit' ? null : cancelJobPopUp(widget.requirementId);
+              value == 'edit' ? null : cancelJobPopUp(PrefUtils().getTermId());
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -498,8 +508,10 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<Requirement?> getData() async {
     try {
-      return RequirementApi().getOne(widget.requirementId.toString(),
-          'category,surface,material,createdByNavigation,proposals,sizes,steps');
+      return RequirementApi().getOne(
+        PrefUtils().getTermId(),
+        'category,surface,material,createdByNavigation,proposals,sizes,steps',
+      );
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement failed');
     }

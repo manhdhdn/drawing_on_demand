@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/data/models/account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +13,8 @@ import 'create_new_job_post.dart';
 import 'job_details.dart';
 
 class JobPost extends StatefulWidget {
+  static const String tag = '/job_post';
+
   const JobPost({Key? key}) : super(key: key);
 
   @override
@@ -22,9 +23,6 @@ class JobPost extends StatefulWidget {
 
 class _JobPostState extends State<JobPost> {
   late Future<Requirements?> requirements;
-
-  int skip = 0;
-  int top = 9;
 
   @override
   void initState() {
@@ -135,21 +133,10 @@ class _JobPostState extends State<JobPost> {
                             padding: const EdgeInsets.only(bottom: 10.0),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(
-                                      MaterialPageRoute(
-                                        builder: (context) => JobDetails(
-                                          requirementId: snapshot.data!.value
-                                              .elementAt(index)
-                                              .id!,
-                                        ),
-                                      ),
-                                    )
-                                    .then((value) => setState(
-                                          () {
-                                            requirements = getData();
-                                          },
-                                        ));
+                                onDetail(snapshot.data!.value
+                                    .elementAt(index)
+                                    .id!
+                                    .toString());
                               },
                               child: Container(
                                 width: context.width(),
@@ -254,12 +241,9 @@ class _JobPostState extends State<JobPost> {
 
   Future<Requirements?> getData() async {
     try {
-      var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
-
       return RequirementApi().gets(
-        skip,
-        top: top,
-        filter: 'createdBy eq $accountId',
+        0,
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
         expand: 'category',
         orderBy: 'createdDate desc',
         count: 'true',
@@ -269,5 +253,17 @@ class _JobPostState extends State<JobPost> {
     }
 
     return null;
+  }
+
+  void onDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, JobDetails.tag).then(
+      (value) => setState(
+        () {
+          requirements = getData();
+        },
+      ),
+    );
   }
 }
