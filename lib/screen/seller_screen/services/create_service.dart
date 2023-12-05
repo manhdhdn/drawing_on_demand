@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../home/my service/service_details.dart';
+import '../../../data/apis/artwork_api.dart';
+import '../../../data/models/artwork.dart';
+import '../../widgets/constant.dart';
+import '../home/my_service/service_details.dart';
 import 'create_new_service.dart';
 
 class CreateService extends StatefulWidget {
+  static const String tag = '/artwork';
+
   const CreateService({Key? key}) : super(key: key);
 
   @override
@@ -15,6 +19,15 @@ class CreateService extends StatefulWidget {
 }
 
 class _CreateServiceState extends State<CreateService> {
+  late Future<Artworks?> artworks;
+
+  @override
+  void initState() {
+    super.initState();
+
+    artworks = getArtworks();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +69,7 @@ class _CreateServiceState extends State<CreateService> {
         padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           width: context.width(),
+          height: context.height(),
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           decoration: const BoxDecoration(
             color: kWhite,
@@ -244,5 +258,15 @@ class _CreateServiceState extends State<CreateService> {
         ),
       ),
     );
+  }
+
+  Future<Artworks?> getArtworks() async {
+    try {
+      return ArtworkApi().gets(0);
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get artworks failed');
+    }
+
+    return null;
   }
 }

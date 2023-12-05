@@ -7,14 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/rank_api.dart';
+import '../../../data/models/artwork.dart';
+import '../../../data/models/artwork_review.dart';
 import '../../../data/models/rank.dart';
 import '../../widgets/chart.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
-import 'my service/my_service.dart';
-import 'my service/service_details.dart';
+import '../services/create_service.dart';
+import 'my_service/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);
@@ -25,12 +28,14 @@ class SellerHomeScreen extends StatefulWidget {
 
 class _SellerHomeScreenState extends State<SellerHomeScreen> {
   late Future<Ranks?> ranks;
+  late Future<Artworks?> artworks;
 
   @override
   void initState() {
     super.initState();
 
     ranks = getRanks();
+    artworks = getArtworks();
   }
 
   DropdownButton<String> getPerformancePeriod() {
@@ -465,7 +470,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                   .indexWhere((rank) =>
                                       rank.name == PrefUtils().getRank());
 
-                              return Column(
+                              Column elements = Column(
                                 children: [
                                   LevelSummary(
                                     title: snapshot.data!.value
@@ -485,28 +490,36 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                                 .elementAt(index)
                                                 .income),
                                   ),
-                                  const SizedBox(height: 15.0),
-                                  LevelSummary(
-                                    title: snapshot.data!.value
-                                        .elementAt(index + 1)
-                                        .name!,
-                                    subTitle:
-                                        'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
-                                        'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
-                                    trailing1: '0',
-                                    trailing2:
-                                        NumberFormat.decimalPattern('vi_VN')
-                                            .format(snapshot.data!.value
-                                                .elementAt(index + 1)
-                                                .income),
-                                  ),
                                 ],
                               );
+
+                              if (index < snapshot.data!.count! - 1) {
+                                elements.children.addAll(
+                                  [
+                                    const SizedBox(height: 15.0),
+                                    LevelSummary(
+                                      title: snapshot.data!.value
+                                          .elementAt(index + 1)
+                                          .name!,
+                                      subTitle:
+                                          'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
+                                          'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
+                                      trailing1: '0',
+                                      trailing2:
+                                          NumberFormat.decimalPattern('vi_VN')
+                                              .format(snapshot.data!.value
+                                                  .elementAt(index + 1)
+                                                  .income),
+                                    ),
+                                  ],
+                                );
+                              }
+
+                              return elements;
                             }
 
                             return const Center(
                               heightFactor: 2.0,
-                              widthFactor: 2.0,
                               child: CircularProgressIndicator(
                                 color: kPrimaryColor,
                               ),
@@ -526,150 +539,190 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () => const MyServices().launch(context),
+                        onTap: () {
+                          onViewAllArtwork();
+                        },
                         child: Text(
-                          'view All',
+                          'View All',
                           style: kTextStyle.copyWith(color: kLightNeutralColor),
                         ),
                       )
                     ],
                   ),
                   const SizedBox(height: 15.0),
-                  HorizontalList(
-                    spacing: 10.0,
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    itemCount: 10,
-                    itemBuilder: (_, i) {
-                      return GestureDetector(
-                        onTap: () => const ServiceDetails().launch(context),
-                        child: Container(
-                          height: 205,
-                          width: 156,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: kBorderColorTextField),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: kDarkWhite,
-                                blurRadius: 5.0,
-                                spreadRadius: 2.0,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Container(
-                                    height: 100,
-                                    width: 156,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(8.0),
-                                        topLeft: Radius.circular(8.0),
-                                      ),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                            'images/shot1.png',
-                                          ),
-                                          fit: BoxFit.cover),
+                  FutureBuilder(
+                    future: artworks,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        int itemCount = snapshot.data!.count! < 10
+                            ? snapshot.data!.count!
+                            : 10;
+
+                        return HorizontalList(
+                          spacing: 10.0,
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          itemCount: itemCount,
+                          itemBuilder: (_, index) {
+                            return GestureDetector(
+                              onTap: () =>
+                                  const ServiceDetails().launch(context),
+                              child: Container(
+                                height: 205,
+                                width: 156,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: kDarkWhite,
+                                      blurRadius: 5.0,
+                                      spreadRadius: 2.0,
+                                      offset: Offset(0, 5),
                                     ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isFavorite = !isFavorite;
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: isFavorite
-                                            ? const Center(
-                                                child: Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red,
-                                                  size: 18.0,
-                                                ),
-                                              )
-                                            : const Center(
-                                                child: Icon(
-                                                  Icons.favorite_border,
-                                                  color: kNeutralColor,
-                                                  size: 18.0,
-                                                ),
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                  ],
+                                ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Mobile UI UX design or app design',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 5.0),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                    Stack(
+                                      alignment: Alignment.topRight,
                                       children: [
-                                        const Icon(
-                                          IconlyBold.star,
-                                          color: Colors.amber,
-                                          size: 18.0,
+                                        Container(
+                                          height: 100,
+                                          width: 156,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(8.0),
+                                              topLeft: Radius.circular(8.0),
+                                            ),
+                                            image: DecorationImage(
+                                              image: NetworkImage(snapshot
+                                                  .data!.value
+                                                  .elementAt(index)
+                                                  .arts!
+                                                  .first
+                                                  .image!),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(width: 2.0),
-                                        Text(
-                                          '5.0',
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor),
-                                        ),
-                                        const SizedBox(width: 2.0),
-                                        Text(
-                                          '(520 review)',
-                                          style: kTextStyle.copyWith(
-                                              color: kLightNeutralColor),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isFavorite = !isFavorite;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: isFavorite
+                                                  ? const Center(
+                                                      child: Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.red,
+                                                        size: 18.0,
+                                                      ),
+                                                    )
+                                                  : const Center(
+                                                      child: Icon(
+                                                        Icons.favorite_border,
+                                                        color: kNeutralColor,
+                                                        size: 18.0,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 5.0),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'Price: ',
-                                        style: kTextStyle.copyWith(
-                                            color: kLightNeutralColor),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          TextSpan(
-                                            text: '$currencySign${30}',
+                                          Text(
+                                            snapshot.data!.value
+                                                .elementAt(index)
+                                                .title!,
                                             style: kTextStyle.copyWith(
-                                                color: kPrimaryColor,
+                                                color: kNeutralColor,
                                                 fontWeight: FontWeight.bold),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 5.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                IconlyBold.star,
+                                                color: Colors.amber,
+                                                size: 18.0,
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                getReviewPoint(snapshot
+                                                    .data!.value
+                                                    .elementAt(index)
+                                                    .artworkReviews!),
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
+                                                style: kTextStyle.copyWith(
+                                                    color: kLightNeutralColor),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5.0),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Price: ',
+                                              style: kTextStyle.copyWith(
+                                                  color: kLightNeutralColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: NumberFormat
+                                                          .decimalPattern(
+                                                              'vi_VN')
+                                                      .format(snapshot
+                                                          .data!.value
+                                                          .elementAt(index)
+                                                          .price),
+                                                  style: kTextStyle.copyWith(
+                                                      color: kPrimaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
+                        );
+                      }
+
+                      return const Center(
+                        heightFactor: 2.0,
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
                         ),
                       );
                     },
@@ -691,6 +744,40 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     }
 
     return null;
+  }
+
+  Future<Artworks?> getArtworks() async {
+    try {
+      return ArtworkApi().gets(
+        0,
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
+        count: 'true',
+        orderBy: 'createdDate',
+        expand: 'arts,artworkReviews',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get artworks failed');
+    }
+
+    return null;
+  }
+
+  String getReviewPoint(Set<ArtworkReview> artworkReviews) {
+    double point = 0;
+
+    if (artworkReviews.isNotEmpty) {
+      for (var artworkReview in artworkReviews) {
+        point += artworkReview.star!;
+      }
+
+      point = point / artworkReviews.length;
+    }
+
+    return NumberFormat('0.0').format(point);
+  }
+
+  void onViewAllArtwork() {
+    Navigator.pushNamed(context, CreateService.tag);
   }
 }
 

@@ -21,6 +21,8 @@ import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
 
 class SellerProfile extends StatefulWidget {
+  static const String tag = '/profile';
+
   const SellerProfile({Key? key}) : super(key: key);
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/my%20service/service_details.dart';
+import 'package:drawing_on_demand/screen/seller_screen/home/my_service/service_details.dart';
 import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
