@@ -3,6 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 // import '../../widgets/button_global.dart';
 import '../../../data/models/requirement.dart';
@@ -11,7 +12,7 @@ import '../../common/popUp/popup_2.dart';
 import 'job_post.dart';
 
 class JobDetails extends StatefulWidget {
-  static const String tag = '${JobPost.tag}/:id';
+  static const String tag = '${JobPost.tag}/detail';
 
   const JobDetails({Key? key}) : super(key: key);
 
@@ -27,6 +28,15 @@ class _JobDetailsState extends State<JobDetails> {
     super.initState();
 
     requirement = getData();
+  }
+
+  @override
+  void dispose() {
+    if (mounted) {
+      PrefUtils().clearTermId();
+    }
+
+    super.dispose();
   }
 
   //__________cancel_order_reason_popup________________________________________________
@@ -86,10 +96,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ],
             onSelected: (value) {
-              value == 'edit'
-                  ? null
-                  : cancelJobPopUp(
-                      ModalRoute.of(context)!.settings.arguments.toString());
+              value == 'edit' ? null : cancelJobPopUp(PrefUtils().getTermId());
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -502,8 +509,9 @@ class _JobDetailsState extends State<JobDetails> {
   Future<Requirement?> getData() async {
     try {
       return RequirementApi().getOne(
-          ModalRoute.of(context)!.settings.arguments.toString(),
-          'category,surface,material,createdByNavigation,proposals,sizes,steps');
+        PrefUtils().getTermId(),
+        'category,surface,material,createdByNavigation,proposals,sizes,steps',
+      );
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement failed');
     }

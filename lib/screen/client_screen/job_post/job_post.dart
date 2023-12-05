@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/data/models/account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +10,7 @@ import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import 'create_new_job_post.dart';
+import 'job_details.dart';
 
 class JobPost extends StatefulWidget {
   static const String tag = '/job_post';
@@ -241,11 +241,9 @@ class _JobPostState extends State<JobPost> {
 
   Future<Requirements?> getData() async {
     try {
-      var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
-
       return RequirementApi().gets(
         0,
-        filter: 'createdBy eq $accountId',
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
         expand: 'category',
         orderBy: 'createdDate desc',
         count: 'true',
@@ -258,6 +256,14 @@ class _JobPostState extends State<JobPost> {
   }
 
   void onDetail(String id) {
-    Navigator.pushNamed(context, '${JobPost.tag}/:$id');
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, JobDetails.tag).then(
+      (value) => setState(
+        () {
+          requirements = getData();
+        },
+      ),
+    );
   }
 }
