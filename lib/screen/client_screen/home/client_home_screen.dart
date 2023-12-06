@@ -1,13 +1,13 @@
 import 'dart:convert';
 
+import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../../../core/utils/pref_utils.dart';
-import '../../../data/apis/account_api.dart';
+import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
@@ -435,7 +435,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                       const SizedBox(
                                                           width: 2.0),
                                                       Text(
-                                                        '5.0',
+                                                        getReviewPoint(snapshot
+                                                            .data!.value
+                                                            .elementAt(i)
+                                                            .artworkReviews!),
                                                         style: kTextStyle.copyWith(
                                                             color:
                                                                 kNeutralColor),
@@ -443,7 +446,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                       const SizedBox(
                                                           width: 2.0),
                                                       Text(
-                                                        '(2)',
+                                                        '(${snapshot.data!.value.elementAt(i).artworkReviews!.length})',
                                                         style: kTextStyle.copyWith(
                                                             color:
                                                                 kLightNeutralColor),
@@ -665,13 +668,16 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                     ),
                                                     const SizedBox(width: 2.0),
                                                     Text(
-                                                      '5.0',
+                                                      getAccountReviewPoint(snapshot
+                                                          .data!.value
+                                                          .elementAt(i)
+                                                          .accountReviewAccounts!),
                                                       style: kTextStyle.copyWith(
                                                           color: kNeutralColor),
                                                     ),
                                                     const SizedBox(width: 2.0),
                                                     Text(
-                                                      '(2 review)',
+                                                      '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
                                                       style: kTextStyle.copyWith(
                                                           color:
                                                               kLightNeutralColor),
@@ -686,7 +692,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                         color: kNeutralColor),
                                                     children: [
                                                       TextSpan(
-                                                        text: '1',
+                                                        text: snapshot
+                                                            .data!.value
+                                                            .elementAt(i)
+                                                            .rank!
+                                                            .name!,
                                                         style: kTextStyle.copyWith(
                                                             color:
                                                                 kLightNeutralColor),
@@ -894,7 +904,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                       const SizedBox(
                                                           width: 2.0),
                                                       Text(
-                                                        '5.0',
+                                                        getReviewPoint(snapshot
+                                                            .data!.value
+                                                            .elementAt(i)
+                                                            .artworkReviews!),
                                                         style: kTextStyle.copyWith(
                                                             color:
                                                                 kNeutralColor),
@@ -902,7 +915,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                       const SizedBox(
                                                           width: 2.0),
                                                       Text(
-                                                        '(2)',
+                                                        '(${snapshot.data!.value.elementAt(i).artworkReviews!.length})',
                                                         style: kTextStyle.copyWith(
                                                             color:
                                                                 kLightNeutralColor),
@@ -1055,12 +1068,17 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   Future<Accounts?> getTopArtists() async {
     try {
-      return AccountApi().gets(
+      var accountRoles = await AccountRoleApi().gets(
         0,
-        top: 10,
-        expand: 'accountReviewAccounts,rank',
-        filter: "gender eq 'Male'",
+        top: top,
+        filter: "role/name eq 'Artist'",
+        expand: 'account(expand=rank, accountReviewAccounts), role',
       );
+
+      Set<Account> accounts =
+          Set<Account>.from(accountRoles.value.map((ar) => ar.account!));
+
+      return Accounts(value: accounts);
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get top artists failed');
     }
@@ -1072,7 +1090,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     try {
       return ArtworkApi().gets(
         0,
-        top: 10,
+        top: top,
         expand: 'artworkreviews,arts,createdbynavigation(expand=rank)',
         orderBy: 'createdDate desc',
       );

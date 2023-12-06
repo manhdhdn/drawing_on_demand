@@ -3,9 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../app_routes/app_routes.dart';
+import '../../data/models/account_review.dart';
+import '../../data/models/artwork_review.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
 import '../utils/pref_utils.dart';
@@ -93,4 +96,32 @@ Future<String> uploadImage(XFile image) async {
   }
 
   return imageRef.getDownloadURL();
+}
+
+String getReviewPoint(Set<ArtworkReview> artworkReviews) {
+  double point = 0;
+
+  if (artworkReviews.isNotEmpty) {
+    for (var artworkReview in artworkReviews) {
+      point += artworkReview.star!;
+    }
+
+    point = point / artworkReviews.length;
+  }
+
+  return NumberFormat('0.0').format(point);
+}
+
+String getAccountReviewPoint(Set<AccountReview> accountReviews) {
+  double point = 0;
+
+  if (accountReviews.isNotEmpty) {
+    for (var artworkReview in accountReviews) {
+      point += artworkReview.star!;
+    }
+
+    point = point / accountReviews.length;
+  }
+
+  return NumberFormat('0.0').format(point);
 }

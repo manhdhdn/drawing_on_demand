@@ -1,15 +1,18 @@
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account.dart';
 import 'role.dart';
 
 class AccountRoles {
+  int? count;
   Set<AccountRole> value;
 
-  AccountRoles({required this.value});
+  AccountRoles({this.count, required this.value});
 
   factory AccountRoles.fromJson(Map<String, dynamic> json) {
     return AccountRoles(
+      count: json['@odata.count'],
       value: Set<AccountRole>.from(
         json['value'].map(
           (x) => AccountRole.fromJson(x),
@@ -26,6 +29,7 @@ class AccountRole {
   String? status;
   Guid? accountId;
   Guid? roleId;
+  Account? account;
   Role? role;
 
   AccountRole({
@@ -35,6 +39,7 @@ class AccountRole {
     this.status,
     this.accountId,
     this.roleId,
+    this.account,
     this.role,
   });
 
@@ -47,6 +52,8 @@ class AccountRole {
     status = json['Status'];
     accountId = Guid(json['AccountId']);
     roleId = Guid(json['RoleId']);
+    account =
+        json['Account'] != null ? Account.fromJson(json['Account']) : null;
     role = json['Role'] != null ? Role.fromJson(json['Role']) : null;
   }
 
