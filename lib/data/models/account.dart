@@ -1,6 +1,7 @@
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account_review.dart';
 import 'account_role.dart';
 import 'rank.dart';
 
@@ -38,6 +39,7 @@ class Account {
   Guid? rankId;
   Set<AccountRole>? accountRoles;
   Rank? rank;
+  Set<AccountReview>? accountReviewAccounts;
 
   Account({
     this.id,
@@ -55,6 +57,7 @@ class Account {
     this.rankId,
     this.accountRoles,
     this.rank,
+    this.accountReviewAccounts,
   });
 
   Account.fromJson(Map<String, dynamic> json) {
@@ -81,6 +84,13 @@ class Account {
           )
         : null;
     rank = json['Rank'] != null ? Rank.fromJson(json['Rank']) : null;
+    accountReviewAccounts = json['AccountReviewAccounts'] != null
+        ? Set<AccountReview>.from(
+            json['AccountReviewAccounts'].map(
+              (x) => AccountReview.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {
