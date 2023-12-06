@@ -533,7 +533,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   Row(
                     children: [
                       Text(
-                        'My artwork',
+                        'My artworks',
                         style: kTextStyle.copyWith(
                             color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
@@ -752,7 +752,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
         0,
         filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
         count: 'true',
-        orderBy: 'createdDate',
+        orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews',
       );
     } catch (error) {
