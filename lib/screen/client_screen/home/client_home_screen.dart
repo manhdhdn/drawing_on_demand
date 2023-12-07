@@ -13,7 +13,7 @@ import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
 import '../notification/client_notification.dart';
-import '../service_details/client_service_details.dart';
+import '../service_details/client_artwork_details.dart';
 import '../search/search.dart';
 import 'client_all_categories.dart';
 import 'popular_services.dart';
@@ -21,6 +21,8 @@ import 'recently_view.dart';
 import 'top_seller.dart';
 
 class ClientHomeScreen extends StatefulWidget {
+  static const String tag = '/home';
+
   const ClientHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -67,10 +69,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       child: Container(
                         height: 44,
                         width: 44,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: AssetImage('images/profile3.png'),
+                              image: NetworkImage(jsonDecode(
+                                  PrefUtils().getAccount())['Avatar']),
                               fit: BoxFit.cover),
                         ),
                       ),
@@ -266,8 +269,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               ),
                               const Spacer(),
                               GestureDetector(
-                                onTap: () =>
-                                    const PopularServices().launch(context),
+                                onTap: () {
+                                  onPopularArtwork();
+                                },
                                 child: Text(
                                   'View All',
                                   style: kTextStyle.copyWith(
@@ -295,8 +299,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: GestureDetector(
-                                      onTap: () => const ClientServiceDetails()
-                                          .launch(context),
+                                      onTap: () {
+                                        onArtworkDetail();
+                                      },
                                       child: Container(
                                         height: 120,
                                         decoration: BoxDecoration(
@@ -574,7 +579,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               ),
                               const Spacer(),
                               GestureDetector(
-                                onTap: () => const TopSeller().launch(context),
+                                onTap: () {
+                                  onTopArtists();
+                                },
                                 child: Text(
                                   'View All',
                                   style: kTextStyle.copyWith(
@@ -735,8 +742,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               ),
                               const Spacer(),
                               GestureDetector(
-                                onTap: () =>
-                                    const RecentlyView().launch(context),
+                                onTap: () {
+                                  onNewArtworks();
+                                },
                                 child: Text(
                                   'View All',
                                   style: kTextStyle.copyWith(
@@ -764,8 +772,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: GestureDetector(
-                                      onTap: () => const ClientServiceDetails()
-                                          .launch(context),
+                                      onTap: () {
+                                        onArtworkDetail();
+                                      },
                                       child: Container(
                                         height: 120,
                                         decoration: BoxDecoration(
@@ -1099,5 +1108,21 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     }
 
     return null;
+  }
+
+  void onArtworkDetail() {
+    Navigator.pushNamed(context, ClientArtworkDetails.tag);
+  }
+
+  void onPopularArtwork() {
+    Navigator.pushNamed(context, PopularServices.tag);
+  }
+
+  void onNewArtworks() {
+    Navigator.pushNamed(context, RecentlyView.tag);
+  }
+
+  void onTopArtists() {
+    Navigator.pushNamed(context, TopSeller.tag);
   }
 }

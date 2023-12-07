@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../screen/client_screen/authentication/client_create_profile.dart';
 import '../screen/client_screen/home/client_home.dart';
+import '../screen/client_screen/home/client_home_screen.dart';
+import '../screen/client_screen/home/popular_services.dart';
+import '../screen/client_screen/home/recently_view.dart';
+import '../screen/client_screen/home/top_seller.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
+import '../screen/client_screen/service_details/client_artwork_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/authentication/opt_verification.dart';
 import '../screen/common/authentication/sign_up.dart';
@@ -38,6 +43,11 @@ class AppRoutes {
     JobPost.tag: (context) => const JobPost(),
     JobDetails.tag: (context) => const JobDetails(),
     ClientProfileDetails.tag: (context) => const ClientProfileDetails(),
+    ClientHomeScreen.tag: (context) => const ClientHomeScreen(),
+    ClientArtworkDetails.tag: (context) => const ClientArtworkDetails(),
+    PopularServices.tag: (context) => const PopularServices(),
+    RecentlyView.tag: (context) => const RecentlyView(),
+    TopSeller.tag: (context) => const TopSeller(),
   };
 
   static Map<String, WidgetBuilder> artistRoutes = {
