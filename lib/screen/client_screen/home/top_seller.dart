@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
+import '../../../data/apis/account_role_api.dart';
+import '../../../data/models/account.dart';
 import '../../widgets/constant.dart';
+import 'client_home_screen.dart';
 
 class TopSeller extends StatefulWidget {
+  static const String tag = '${ClientHomeScreen.tag}/artists';
+
   const TopSeller({Key? key}) : super(key: key);
 
   @override
@@ -12,6 +18,17 @@ class TopSeller extends StatefulWidget {
 }
 
 class _TopSellerState extends State<TopSeller> {
+  late Future<Accounts?> topArtists;
+
+  int top = 100;
+
+  @override
+  void initState() {
+    super.initState();
+
+    topArtists = gettopArtists();
+  }
+
   List<String> serviceList = [
     'All',
     'Logo Designer',
@@ -31,7 +48,7 @@ class _TopSellerState extends State<TopSeller> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Top Sellers',
+          'Top Artists',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -94,8 +111,8 @@ class _TopSellerState extends State<TopSeller> {
                     childAspectRatio: 0.7,
                     crossAxisCount: 2,
                     children: List.generate(
-                      10,
-                      (index) => Container(
+                      12,
+                      (i) => Container(
                         height: 220,
                         width: 156,
                         decoration: BoxDecoration(
@@ -111,79 +128,102 @@ class _TopSellerState extends State<TopSeller> {
                             ),
                           ],
                         ),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 135,
-                              width: context.width(),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(8.0),
-                                  topLeft: Radius.circular(8.0),
+                        child: FutureBuilder(
+                            future: topArtists,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      height: 135,
+                                      width: context.width(),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8.0),
+                                          topLeft: Radius.circular(8.0),
+                                        ),
+                                        image: DecorationImage(
+                                            image: NetworkImage(snapshot
+                                                .data!.value
+                                                .elementAt(i)
+                                                .avatar!),
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot.data!.value
+                                                .elementAt(i)
+                                                .name!,
+                                            style: kTextStyle.copyWith(
+                                                color: kNeutralColor,
+                                                fontWeight: FontWeight.bold),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 6.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                IconlyBold.star,
+                                                color: Colors.amber,
+                                                size: 18.0,
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                getAccountReviewPoint(snapshot
+                                                    .data!.value
+                                                    .elementAt(i)
+                                                    .accountReviewAccounts!),
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
+                                              ),
+                                              const SizedBox(width: 2.0),
+                                              Text(
+                                                '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
+                                                style: kTextStyle.copyWith(
+                                                    color: kLightNeutralColor),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6.0),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Artist Rank - ',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: snapshot.data!.value
+                                                      .elementAt(i)
+                                                      .rank!
+                                                      .name!,
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: kPrimaryColor,
                                 ),
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      'images/dev1.png',
-                                    ),
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'William Liam',
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor,
-                                        fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 6.0),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Icon(
-                                        IconlyBold.star,
-                                        color: Colors.amber,
-                                        size: 18.0,
-                                      ),
-                                      const SizedBox(width: 2.0),
-                                      Text(
-                                        '5.0',
-                                        style: kTextStyle.copyWith(
-                                            color: kNeutralColor),
-                                      ),
-                                      const SizedBox(width: 2.0),
-                                      Text(
-                                        '(520 review)',
-                                        style: kTextStyle.copyWith(
-                                            color: kLightNeutralColor),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 6.0),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: 'Seller Level - ',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
-                                      children: [
-                                        TextSpan(
-                                          text: '2',
-                                          style: kTextStyle.copyWith(
-                                              color: kLightNeutralColor),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                              );
+                            }),
                       ),
                     ),
                   ),
@@ -194,5 +234,25 @@ class _TopSellerState extends State<TopSeller> {
         ),
       ),
     );
+  }
+
+  Future<Accounts?> gettopArtists() async {
+    try {
+      var accountRoles = await AccountRoleApi().gets(
+        0,
+        top: top,
+        filter: "role/name eq 'Artist'",
+        expand: 'account(expand=rank, accountReviewAccounts), role',
+      );
+
+      Set<Account> accounts =
+          Set<Account>.from(accountRoles.value.map((ar) => ar.account!));
+
+      return Accounts(value: accounts);
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get top artists failed');
+    }
+
+    return null;
   }
 }
