@@ -312,8 +312,8 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails>
                                       trimLines: 3,
                                       colorClickableText: kPrimaryColor,
                                       trimMode: TrimMode.Line,
-                                      trimCollapsedText: '..Read more',
-                                      trimExpandedText: '..Read less',
+                                      trimCollapsedText: '..read more',
+                                      trimExpandedText: ' read less',
                                     ),
                                     const SizedBox(height: 15.0),
                                     Text(

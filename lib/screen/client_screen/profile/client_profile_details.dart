@@ -11,7 +11,7 @@ import 'client_edit_profile_details.dart';
 import 'client_profile.dart';
 
 class ClientProfileDetails extends StatefulWidget {
-  static const String tag = '${ClientProfile.tag}/details';
+  static const String tag = '${ClientProfile.tag}/detail';
 
   const ClientProfileDetails({Key? key}) : super(key: key);
 

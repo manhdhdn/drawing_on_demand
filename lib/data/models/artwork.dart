@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'account.dart';
 import 'art.dart';
 import 'artwork_review.dart';
+import 'category.dart';
+import 'material.dart';
+import 'surface.dart';
 
 class Artworks {
   int? count;
@@ -40,6 +43,9 @@ class Artwork {
   Set<ArtworkReview>? artworkReviews;
   Set<Art>? arts;
   Account? createdByNavigation;
+  Category? category;
+  Surface? surface;
+  Material? material;
 
   Artwork({
     this.id,
@@ -58,6 +64,9 @@ class Artwork {
     this.artworkReviews,
     this.arts,
     this.createdByNavigation,
+    this.category,
+    this.surface,
+    this.material,
   });
 
   Artwork.fromJson(Map<String, dynamic> json) {
@@ -89,6 +98,12 @@ class Artwork {
     createdByNavigation = json['CreatedByNavigation'] != null
         ? Account.fromJson(json['CreatedByNavigation'])
         : null;
+    category =
+        json['Category'] != null ? Category.fromJson(json['Category']) : null;
+    surface =
+        json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
+    material =
+        json['Material'] != null ? Material.fromJson(json['Material']) : null;
   }
 
   Map<String, dynamic> toJson() {

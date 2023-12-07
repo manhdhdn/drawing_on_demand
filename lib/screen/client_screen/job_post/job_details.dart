@@ -177,8 +177,8 @@ class _JobDetailsState extends State<JobDetails> {
                             trimLines: 2,
                             colorClickableText: kPrimaryColor,
                             trimMode: TrimMode.Line,
-                            trimCollapsedText: '..Read more',
-                            trimExpandedText: ' Read less',
+                            trimCollapsedText: '..read more',
+                            trimExpandedText: ' read less',
                           ),
                           const SizedBox(height: 15.0),
                           Row(

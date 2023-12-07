@@ -14,7 +14,9 @@ import '../screen/common/splash_screen/onboard.dart';
 import '../screen/common/welcome_screen/welcome_screen.dart';
 import '../screen/seller_screen/authentication/seller_create_profile.dart';
 import '../screen/seller_screen/home/seller_home.dart';
+import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
+import '../screen/seller_screen/services/service_details.dart';
 
 class AppRoutes {
   static const String defaultTag = '/';
@@ -42,6 +44,8 @@ class AppRoutes {
     defaultTag: (context) => const SellerHome(),
     SellerHome.tag: (context) => const SellerHome(),
     CreateService.tag: (context) => const CreateService(),
+    CreateNewService.tag: (context) => const CreateNewService(),
+    ServiceDetails.tag: (context) => const ServiceDetails(),
   };
 
   static Map<String, WidgetBuilder> commonRoutes = {

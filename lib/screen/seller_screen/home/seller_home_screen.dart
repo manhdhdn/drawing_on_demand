@@ -6,18 +6,18 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/rank_api.dart';
 import '../../../data/models/artwork.dart';
-import '../../../data/models/artwork_review.dart';
 import '../../../data/models/rank.dart';
 import '../../widgets/chart.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
 import '../services/create_service.dart';
-import 'my_service/service_details.dart';
+import '../services/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);
@@ -760,20 +760,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     }
 
     return null;
-  }
-
-  String getReviewPoint(Set<ArtworkReview> artworkReviews) {
-    double point = 0;
-
-    if (artworkReviews.isNotEmpty) {
-      for (var artworkReview in artworkReviews) {
-        point += artworkReview.star!;
-      }
-
-      point = point / artworkReviews.length;
-    }
-
-    return NumberFormat('0.0').format(point);
   }
 
   void onViewAllArtwork() {

@@ -6,15 +6,17 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
-import '../home/my_service/service_details.dart';
+import '../home/seller_home.dart';
+import 'service_details.dart';
 import 'create_new_service.dart';
 
 class CreateService extends StatefulWidget {
-  static const String tag = '/artwork';
+  static const String tag = '${SellerHome.tag}/artworks';
 
   const CreateService({Key? key}) : super(key: key);
 
@@ -51,15 +53,7 @@ class _CreateServiceState extends State<CreateService> {
         padding: const EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
           onPressed: () {
-            setState(
-              () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const CreateNewService(),
-                  ),
-                );
-              },
-            );
+            onCreateArtwork();
           },
           backgroundColor: kPrimaryColor,
           child: const Icon(
@@ -125,9 +119,10 @@ class _CreateServiceState extends State<CreateService> {
                           snapshot.data!.count!,
                           (index) => GestureDetector(
                             onTap: () {
-                              setState(() {
-                                const ServiceDetails().launch(context);
-                              });
+                              onDetail(snapshot.data!.value
+                                  .elementAt(index)
+                                  .id
+                                  .toString());
                             },
                             child: Container(
                               height: 205,
@@ -231,13 +226,16 @@ class _CreateServiceState extends State<CreateService> {
                                             ),
                                             const SizedBox(width: 2.0),
                                             Text(
-                                              '5.0',
+                                              getReviewPoint(snapshot
+                                                  .data!.value
+                                                  .elementAt(index)
+                                                  .artworkReviews!),
                                               style: kTextStyle.copyWith(
                                                   color: kNeutralColor),
                                             ),
                                             const SizedBox(width: 2.0),
                                             Text(
-                                              '(520 review)',
+                                              '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
                                               style: kTextStyle.copyWith(
                                                   color: kLightNeutralColor),
                                             ),
@@ -296,11 +294,39 @@ class _CreateServiceState extends State<CreateService> {
           filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
           count: 'true',
           orderBy: 'createdDate desc',
-          expand: 'arts');
+          expand: 'arts,artworkReviews');
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get artworks failed');
     }
 
     return null;
+  }
+
+  void onCreateArtwork() {
+    Navigator.pushNamed(
+      context,
+      CreateNewService.tag,
+    ).then(
+      (value) => setState(
+        () {
+          artworks = getArtworks();
+        },
+      ),
+    );
+  }
+
+  void onDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(
+      context,
+      ServiceDetails.tag,
+    ).then(
+      (value) => setState(
+        () {
+          artworks = getArtworks();
+        },
+      ),
+    );
   }
 }
