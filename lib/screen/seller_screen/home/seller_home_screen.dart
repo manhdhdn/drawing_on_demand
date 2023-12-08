@@ -564,8 +564,12 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                           itemCount: itemCount,
                           itemBuilder: (_, index) {
                             return GestureDetector(
-                              onTap: () =>
-                                  const ServiceDetails().launch(context),
+                              onTap: () {
+                                onArtworkDetail(snapshot.data!.value
+                                    .elementAt(index)
+                                    .id
+                                    .toString());
+                              },
                               child: Container(
                                 height: 205,
                                 width: 156,
@@ -764,6 +768,12 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
 
   void onViewAllArtwork() {
     Navigator.pushNamed(context, CreateService.tag);
+  }
+
+  void onArtworkDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, ServiceDetails.tag);
   }
 }
 

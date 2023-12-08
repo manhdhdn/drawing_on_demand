@@ -1,6 +1,8 @@
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account.dart';
+
 class ArtworkReviews {
   int? count;
   Set<ArtworkReview> value;
@@ -28,6 +30,7 @@ class ArtworkReview {
   String? status;
   Guid? createdBy;
   Guid? artworkId;
+  Account? createdByNavigation;
 
   ArtworkReview({
     this.id,
@@ -38,6 +41,7 @@ class ArtworkReview {
     this.status,
     this.createdBy,
     this.artworkId,
+    this.createdByNavigation,
   });
 
   ArtworkReview.fromJson(Map<String, dynamic> json) {
@@ -51,6 +55,9 @@ class ArtworkReview {
     status = json['Status'];
     createdBy = Guid(json['CreatedBy']);
     artworkId = Guid(json['ArtworkId']);
+    createdByNavigation = json['CreatedByNavigation'] != null
+        ? Account.fromJson(json['CreatedByNavigation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

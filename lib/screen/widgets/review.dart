@@ -6,7 +6,24 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'constant.dart';
 
 class Review extends StatefulWidget {
-  const Review({Key? key}) : super(key: key);
+  final String? rating;
+  final int? total;
+  final int? five;
+  final int? four;
+  final int? three;
+  final int? two;
+  final int? one;
+
+  const Review({
+    Key? key,
+    this.rating = '4.9',
+    this.total = 100,
+    this.five = 90,
+    this.four = 9,
+    this.three = 2,
+    this.two = 1,
+    this.one = 0,
+  }) : super(key: key);
 
   @override
   State<Review> createState() => _ReviewState();
@@ -38,7 +55,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                     ),
                     child: Center(
                       child: Text(
-                        '4.9',
+                        '${widget.rating}',
                         style: kTextStyle.copyWith(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -49,7 +66,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Total 22 Reviews',
+                    'Total ${widget.total} reviews',
                     style: kTextStyle.copyWith(
                       color: kNeutralColor,
                     ),
@@ -71,13 +88,17 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: 0.8,
+                          percent: widget.five! / (widget.total! + 0.1),
                           progressColor: kPrimaryColor,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(
-                            width: 30, child: Center(child: Text('12'))),
+                        SizedBox(
+                          width: 30,
+                          child: Center(
+                            child: Text('${widget.five}'),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -89,13 +110,17 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: 0.4,
+                          percent: widget.four! / (widget.total! + 0.1),
                           progressColor: kPrimaryColor,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(
-                            width: 30, child: Center(child: Text('5'))),
+                        SizedBox(
+                          width: 30,
+                          child: Center(
+                            child: Text('${widget.four}'),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -106,13 +131,17 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: 0.3,
+                          percent: widget.three! / (widget.total! + 0.1),
                           progressColor: kPrimaryColor,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(
-                            width: 30, child: Center(child: Text('4'))),
+                        SizedBox(
+                          width: 30,
+                          child: Center(
+                            child: Text('${widget.three}'),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -122,13 +151,17 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: 0.2,
+                          percent: widget.two! / (widget.total! + 0.1),
                           progressColor: kPrimaryColor,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(
-                            width: 30, child: Center(child: Text('2'))),
+                        SizedBox(
+                          width: 30,
+                          child: Center(
+                            child: Text('${widget.two}'),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -137,13 +170,17 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: 0.1,
+                          percent: widget.one! / (widget.total! + 0.1),
                           progressColor: kPrimaryColor,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
                         ),
-                        const SizedBox(
-                            width: 30, child: Center(child: Text('0'))),
+                        SizedBox(
+                          width: 30,
+                          child: Center(
+                            child: Text('${widget.one}'),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -158,9 +195,37 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
 }
 
 class ReviewDetails extends StatelessWidget {
+  final String? avatar;
+  final String? name;
+  final int? star;
+  final String? date;
+  final String? comment;
+
   const ReviewDetails({
     Key? key,
+    this.avatar =
+        'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf',
+    this.name = 'Truc Nhu',
+    this.star = 5,
+    this.date = '03-11-2023',
+    this.comment =
+        'Nibh nibh quis dolor in. Etiam cras nisi, turpis quisque diam',
   }) : super(key: key);
+
+  ListView getStars() {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: star,
+      itemBuilder: (context, index) {
+        return const Icon(
+          Icons.star,
+          size: 18.0,
+          color: ratingBarColor,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,15 +248,17 @@ class ReviewDetails extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height: 40.0,
                 width: 40.0,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage('images/profilepic.png'),
+                    image: NetworkImage(avatar!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -201,38 +268,28 @@ class ReviewDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Abdul Korim',
+                    name!,
                     style: kTextStyle.copyWith(
                         color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 4.0),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        IconlyBold.star,
-                        color: ratingBarColor,
-                        size: 18.0,
-                      ),
-                      const SizedBox(width: 5.0),
-                      Text(
-                        '4.9',
-                        style: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                      const SizedBox(width: 120),
-                      Text(
-                        '5, June 2023',
-                        style: kTextStyle.copyWith(color: kLightNeutralColor),
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 5.0),
+                  SizedBox(
+                    height: 18.0,
+                    width: 100.0,
+                    child: getStars(),
+                  )
                 ],
+              ),
+              const Spacer(),
+              Text(
+                date!,
+                style: kTextStyle.copyWith(color: kLightNeutralColor),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
           Text(
-            'Nibh nibh quis dolor in. Etiam cras nisi, turpis quisque diam',
+            comment!,
             style: kTextStyle.copyWith(color: kSubTitleColor),
           ),
           const SizedBox(height: 10.0),

@@ -2,12 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
+import '../../../data/models/artwork_review.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/review.dart';
 import 'create_service.dart';
@@ -28,6 +30,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
   ScrollController? _scrollController;
   TabController? tabController;
   int totalImage = 3;
+  int totalReview = 0;
   int currentIndex = 0;
   bool lastStatus = false;
   double height = 200;
@@ -44,6 +47,31 @@ class _ServiceDetailsState extends State<ServiceDetails>
     return _scrollController != null &&
         _scrollController!.hasClients &&
         _scrollController!.offset > (height - kToolbarHeight);
+  }
+
+  ListView getReviews(Set<ArtworkReview> artworkReviews) {
+    return ListView.builder(
+      itemCount: totalReview,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            ReviewDetails(
+              avatar:
+                  artworkReviews.elementAt(index).createdByNavigation!.avatar,
+              name: artworkReviews.elementAt(index).createdByNavigation!.name,
+              star: artworkReviews.elementAt(index).star,
+              comment: artworkReviews.elementAt(index).comment,
+              date: DateFormat('dd-MM-yyyy')
+                  .format(artworkReviews.elementAt(index).createdDate!)
+                  .toString(),
+            ),
+            const SizedBox(height: 10.0),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -429,6 +457,22 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                       'Price',
                                       maxLines: 1,
                                       style: kTextStyle.copyWith(
+                                          color: kNeutralColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    Text(
+                                      NumberFormat.decimalPattern('vi_VN')
+                                          .format(snapshot.data!.price),
+                                      style: kTextStyle.copyWith(
+                                        color: kLightNeutralColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      'Artwork specifics',
+                                      maxLines: 1,
+                                      style: kTextStyle.copyWith(
                                         color: kNeutralColor,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -617,12 +661,30 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 15.0),
-                                    const Review(),
+                                    Review(
+                                      rating: getReviewPoint(
+                                          snapshot.data!.artworkReviews!),
+                                      total:
+                                          snapshot.data!.artworkReviews!.length,
+                                      five: snapshot.data!.artworkReviews!
+                                          .where((awr) => awr.star == 5)
+                                          .length,
+                                      four: snapshot.data!.artworkReviews!
+                                          .where((awr) => awr.star == 4)
+                                          .length,
+                                      three: snapshot.data!.artworkReviews!
+                                          .where((awr) => awr.star == 3)
+                                          .length,
+                                      two: snapshot.data!.artworkReviews!
+                                          .where((awr) => awr.star == 2)
+                                          .length,
+                                      one: snapshot.data!.artworkReviews!
+                                          .where((awr) => awr.star == 1)
+                                          .length,
+                                    ),
                                     const SizedBox(height: 15.0),
-                                    const ReviewDetails(),
+                                    getReviews(snapshot.data!.artworkReviews!),
                                     const SizedBox(height: 10.0),
-                                    const ReviewDetails2(),
-                                    const SizedBox(height: 20.0),
                                     Container(
                                       height: 40.0,
                                       decoration: BoxDecoration(
@@ -630,23 +692,31 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                               BorderRadius.circular(30.0),
                                           border: Border.all(
                                               color: kSubTitleColor)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'View all reviews',
-                                            maxLines: 1,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                          ),
-                                          const Icon(
-                                            FeatherIcons.chevronDown,
-                                            color: kSubTitleColor,
-                                          ),
-                                        ],
+                                      child: GestureDetector(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'View all reviews',
+                                              maxLines: 1,
+                                              style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor),
+                                            ),
+                                            const Icon(
+                                              FeatherIcons.chevronDown,
+                                              color: kSubTitleColor,
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          onViewAllReview(snapshot
+                                              .data!.artworkReviews!.length);
+                                        },
                                       ),
-                                    )
+                                    ).visible(
+                                        snapshot.data!.artworkReviews!.length >
+                                            totalReview)
                                   ],
                                 ),
                               ),
@@ -676,13 +746,14 @@ class _ServiceDetailsState extends State<ServiceDetails>
       return ArtworkApi()
           .getOne(
         PrefUtils().getTermId(),
-        'arts,artworkReviews,createdByNavigation(expand=rank),category,surface,material',
+        'arts,artworkReviews(expand=createdByNavigation),createdByNavigation(expand=rank),category,surface,material',
       )
           .then(
         (value) {
           setState(
             () {
               totalImage = value.arts!.length;
+              totalReview = value.artworkReviews!.isEmpty ? 0 : 1;
             },
           );
 
@@ -694,5 +765,11 @@ class _ServiceDetailsState extends State<ServiceDetails>
     }
 
     return null;
+  }
+
+  void onViewAllReview(int totalReview) {
+    setState(() {
+      this.totalReview = totalReview;
+    });
   }
 }
