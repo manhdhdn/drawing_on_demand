@@ -17,7 +17,7 @@ import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
 import '../services/create_service.dart';
-import '../services/service_details.dart';
+import '../../common/artwork/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);

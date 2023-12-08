@@ -12,7 +12,7 @@ import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
 import '../home/seller_home.dart';
-import 'service_details.dart';
+import '../../common/artwork/service_details.dart';
 import 'create_new_service.dart';
 
 class CreateService extends StatefulWidget {

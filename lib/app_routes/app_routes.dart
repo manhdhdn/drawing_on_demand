@@ -21,7 +21,7 @@ import '../screen/seller_screen/authentication/seller_create_profile.dart';
 import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
-import '../screen/seller_screen/services/service_details.dart';
+import '../screen/common/artwork/service_details.dart';
 
 class AppRoutes {
   static const String defaultTag = '/';

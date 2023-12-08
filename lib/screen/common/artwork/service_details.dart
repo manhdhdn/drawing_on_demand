@@ -12,7 +12,7 @@ import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/review.dart';
-import 'create_service.dart';
+import '../../seller_screen/services/create_service.dart';
 
 class ServiceDetails extends StatefulWidget {
   static const String tag = '${CreateService.tag}/detail';
