@@ -11,9 +11,9 @@ import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
+import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
 import '../notification/client_notification.dart';
-import '../service_details/client_artwork_details.dart';
 import '../search/search.dart';
 import 'client_all_categories.dart';
 import 'popular_services.dart';
@@ -300,7 +300,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        onArtworkDetail();
+                                        onPopularArtworkDetail(snapshot
+                                            .data!.value
+                                            .elementAt(i)
+                                            .id!
+                                            .toString());
                                       },
                                       child: Container(
                                         height: 120,
@@ -773,7 +777,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        onArtworkDetail();
+                                        onNewArtworkDetail(snapshot.data!.value
+                                            .elementAt(i)
+                                            .id!
+                                            .toString());
                                       },
                                       child: Container(
                                         height: 120,
@@ -1110,10 +1117,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     return null;
   }
 
-  void onArtworkDetail() {
-    Navigator.pushNamed(context, ClientArtworkDetails.tag);
-  }
-
   void onPopularArtwork() {
     Navigator.pushNamed(context, PopularServices.tag);
   }
@@ -1124,5 +1127,29 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   void onTopArtists() {
     Navigator.pushNamed(context, TopSeller.tag);
+  }
+
+  void onPopularArtworkDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, ServiceDetails.tag).then(
+      (value) => setState(
+        () {
+          popularArtworks = getPoppularArtworks();
+        },
+      ),
+    );
+  }
+
+  void onNewArtworkDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, ServiceDetails.tag).then(
+      (value) => setState(
+        () {
+          newArtworks = getNewArtworks();
+        },
+      ),
+    );
   }
 }

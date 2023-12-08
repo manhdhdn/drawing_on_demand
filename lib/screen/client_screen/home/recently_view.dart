@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
+import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
-import '../service_details/client_artwork_details.dart';
 import 'client_home_screen.dart';
 
 class RecentlyView extends StatefulWidget {
@@ -76,7 +77,10 @@ class _RecentlyViewState extends State<RecentlyView> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onArtworkDetail();
+                                  onNewArtworkDetail(snapshot.data!.value
+                                      .elementAt(i)
+                                      .id!
+                                      .toString());
                                 },
                                 child: Container(
                                   height: 120,
@@ -337,7 +341,15 @@ class _RecentlyViewState extends State<RecentlyView> {
     return null;
   }
 
-  void onArtworkDetail() {
-    Navigator.pushNamed(context, ClientArtworkDetails.tag);
+  void onNewArtworkDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, ServiceDetails.tag).then(
+      (value) => setState(
+        () {
+          newArtworks = getNewArtworks();
+        },
+      ),
+    );
   }
 }
