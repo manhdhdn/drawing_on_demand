@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
@@ -455,19 +456,20 @@ class _JobDetailsState extends State<JobDetails> {
                           ),
                           const SizedBox(height: 8.0),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const SizedBox(width: 10.0),
                               snapshot.data!.image != null
-                                  ? Container(
-                                      width: 100,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              snapshot.data!.image!),
-                                          fit: BoxFit.cover,
+                                  ? SizedBox(
+                                      width: context.width() * 0.85,
+                                      height: context.width() * 0.85 * 0.7,
+                                      child: PhotoView(
+                                        backgroundDecoration: BoxDecoration(
+                                          color: kDarkWhite,
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                        ),
+                                        imageProvider: NetworkImage(
+                                          snapshot.data!.image!,
                                         ),
                                       ),
                                     )

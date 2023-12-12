@@ -65,6 +65,7 @@ dependencies:
   firebase_storage: ^11.5.2
   http: ^1.1.0
   flutter_phoenix: ^1.1.1
+  photo_view: ^0.14.0
 
 flutter_launcher_icons:
   image_path: "images/icon.png"
