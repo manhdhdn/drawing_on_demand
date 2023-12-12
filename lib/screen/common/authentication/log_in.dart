@@ -7,6 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../app_routes/app_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/account_api.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -24,6 +25,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -65,170 +68,187 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(10.0),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20.0),
-              Center(
-                child: Text(
-                  'Log In Your Account',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20.0),
+                Center(
+                  child: Text(
+                    'Log In Your Account',
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30.0),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                cursorColor: kNeutralColor,
-                textInputAction: TextInputAction.next,
-                decoration: kInputDecoration.copyWith(
-                  labelText: 'Email',
-                  labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                  hintText: 'Enter your email',
-                  hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                  focusColor: kNeutralColor,
-                  border: const OutlineInputBorder(),
+                const SizedBox(height: 30.0),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: kNeutralColor,
+                  textInputAction: TextInputAction.next,
+                  decoration: kInputDecoration.copyWith(
+                    labelText: 'Email',
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                    hintText: 'Enter your email',
+                    hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                    focusColor: kNeutralColor,
+                    border: const OutlineInputBorder(),
+                  ),
+                  controller: emailController,
+                  validator: (value) {
+                    if (!isValidEmail(value, isRequired: true)) {
+                      return 'Please enter a valid email address';
+                    }
+
+                    return null;
+                  },
+                  autofillHints: const [AutofillHints.username],
                 ),
-                controller: emailController,
-                autofillHints: const [AutofillHints.username],
-              ),
-              const SizedBox(height: 20.0),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                cursorColor: kNeutralColor,
-                obscureText: hidePassword,
-                textInputAction: TextInputAction.done,
-                decoration: kInputDecoration.copyWith(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Password',
-                  labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                  hintText: 'Please enter your password',
-                  hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
-                    icon: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                      color: kLightNeutralColor,
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  cursorColor: kNeutralColor,
+                  obscureText: hidePassword,
+                  textInputAction: TextInputAction.done,
+                  decoration: kInputDecoration.copyWith(
+                    border: const OutlineInputBorder(),
+                    labelText: 'Password',
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                    hintText: 'Please enter your password',
+                    hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      icon: Icon(
+                        hidePassword ? Icons.visibility_off : Icons.visibility,
+                        color: kLightNeutralColor,
+                      ),
                     ),
                   ),
-                ),
-                controller: passwordController,
-                autofillHints: const [AutofillHints.password],
-                onEditingComplete: () {
-                  onLogin();
-                },
-              ),
-              const SizedBox(height: 5.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () => const ForgotPassword().launch(context),
-                    child: Text(
-                      'Forgot Password?',
-                      style: kTextStyle.copyWith(color: kLightNeutralColor),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              ButtonGlobalWithoutIcon(
-                  buttontext: 'Log In',
-                  buttonDecoration: kButtonDecoration.copyWith(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  onPressed: () {
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your password';
+                    }
+
+                    return null;
+                  },
+                  autofillHints: const [AutofillHints.password],
+                  onEditingComplete: () {
                     onLogin();
                   },
-                  buttonTextColor: kWhite),
-              const SizedBox(height: 20.0),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Divider(
-                      thickness: 1.0,
-                      color: kBorderColorTextField,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Text(
-                      'Or Sign up with',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      thickness: 1.0,
-                      color: kBorderColorTextField,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ),
+                const SizedBox(height: 5.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SocialIcon(
-                      bgColor: kNeutralColor,
-                      iconColor: kWhite,
-                      icon: FontAwesomeIcons.facebookF,
-                      borderColor: Colors.transparent,
-                    ),
-                    SocialIcon(
-                      bgColor: kWhite,
-                      iconColor: kNeutralColor,
-                      icon: FontAwesomeIcons.google,
-                      borderColor: kBorderColorTextField,
-                    ),
-                    SocialIcon(
-                      bgColor: kWhite,
-                      iconColor: Color(0xFF76A9EA),
-                      icon: FontAwesomeIcons.twitter,
-                      borderColor: kBorderColorTextField,
-                    ),
-                    SocialIcon(
-                      bgColor: kWhite,
-                      iconColor: Color(0xFFFF554A),
-                      icon: FontAwesomeIcons.instagram,
-                      borderColor: kBorderColorTextField,
+                    GestureDetector(
+                      onTap: () => const ForgotPassword().launch(context),
+                      child: Text(
+                        'Forgot Password?',
+                        style: kTextStyle.copyWith(color: kLightNeutralColor),
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    onCreateNewAccount();
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Don’t have an account? ',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                      children: [
-                        TextSpan(
-                          text: 'Create New Account',
-                          style: kTextStyle.copyWith(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                const SizedBox(height: 20.0),
+                ButtonGlobalWithoutIcon(
+                    buttontext: 'Log In',
+                    buttonDecoration: kButtonDecoration.copyWith(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    onPressed: () {
+                      onLogin();
+                    },
+                    buttonTextColor: kWhite),
+                const SizedBox(height: 20.0),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(
+                        thickness: 1.0,
+                        color: kBorderColorTextField,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Text(
+                        'Or Sign up with',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Divider(
+                        thickness: 1.0,
+                        color: kBorderColorTextField,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SocialIcon(
+                        bgColor: kNeutralColor,
+                        iconColor: kWhite,
+                        icon: FontAwesomeIcons.facebookF,
+                        borderColor: Colors.transparent,
+                      ),
+                      SocialIcon(
+                        bgColor: kWhite,
+                        iconColor: kNeutralColor,
+                        icon: FontAwesomeIcons.google,
+                        borderColor: kBorderColorTextField,
+                      ),
+                      SocialIcon(
+                        bgColor: kWhite,
+                        iconColor: Color(0xFF76A9EA),
+                        icon: FontAwesomeIcons.twitter,
+                        borderColor: kBorderColorTextField,
+                      ),
+                      SocialIcon(
+                        bgColor: kWhite,
+                        iconColor: Color(0xFFFF554A),
+                        icon: FontAwesomeIcons.instagram,
+                        borderColor: kBorderColorTextField,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      onCreateNewAccount();
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Don’t have an account? ',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                        children: [
+                          TextSpan(
+                            text: 'Create New Account',
+                            style: kTextStyle.copyWith(
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -237,6 +257,10 @@ class _LoginState extends State<Login> {
 
   void onLogin() async {
     try {
+      if (!_formKey.currentState!.validate()) {
+        return;
+      }
+
       ProgressDialogUtils.showProgress(context);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(

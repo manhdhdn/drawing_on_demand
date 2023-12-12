@@ -84,7 +84,7 @@ bool isValidPassword(
 
   if (inputString != null && inputString.isNotEmpty) {
     const pattern =
-        r'^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$';
+        r'^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,25}$';
 
     final regExp = RegExp(pattern);
 
