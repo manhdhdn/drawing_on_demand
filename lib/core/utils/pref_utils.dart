@@ -17,9 +17,10 @@ class PrefUtils {
     _sharedPreferences ??= await SharedPreferences.getInstance();
   }
 
-  ///will clear all the data stored in preference
+  /// This will clear some data stored in preference
   void clearPreferencesData() async {
     _sharedPreferences!.remove('account');
+    _sharedPreferences!.remove('token');
     _sharedPreferences!.remove('role');
     _sharedPreferences!.remove('rank');
   }
@@ -43,6 +44,18 @@ class PrefUtils {
   String getAccount() {
     try {
       return _sharedPreferences!.getString('account')!;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  Future<void> setToken(String value) {
+    return _sharedPreferences!.setString('token', value);
+  }
+
+  String getToken() {
+    try {
+      return _sharedPreferences!.getString('token')!;
     } catch (e) {
       return '';
     }
@@ -95,7 +108,7 @@ class PrefUtils {
       return '';
     }
   }
-      
+
   Future<void> setTermId(String value) {
     return _sharedPreferences!.setString('termId', value);
   }

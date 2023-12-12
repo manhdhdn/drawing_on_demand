@@ -13,7 +13,7 @@ import 'create_new_job_post.dart';
 import 'job_details.dart';
 
 class JobPost extends StatefulWidget {
-  static const String tag = '/job_post';
+  static const String tag = '/requirements';
 
   const JobPost({Key? key}) : super(key: key);
 

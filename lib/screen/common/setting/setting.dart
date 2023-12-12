@@ -5,13 +5,14 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/pref_utils.dart';
+import '../../seller_screen/profile/seller_profile.dart';
 import '../../widgets/constant.dart';
 import 'about_us.dart';
 import 'language.dart';
 import 'policy.dart';
 
 class Setting extends StatefulWidget {
-  static const String tag = '/setting';
+  static const String tag = '${SellerProfile.tag}/setting';
 
   const Setting({Key? key}) : super(key: key);
 

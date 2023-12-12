@@ -43,7 +43,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Buyer Request',
+          'Detail',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../client_screen/job_post/job_post.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../common/popUp/popup_1.dart';
 import 'buyer_request_details.dart';
 
 class SellerBuyerReq extends StatefulWidget {
+  static const String tag = JobPost.tag;
+
   const SellerBuyerReq({Key? key}) : super(key: key);
 
   @override
@@ -44,16 +47,15 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Buyer Request',
+          'Requirements',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
           decoration: const BoxDecoration(
             color: kWhite,
@@ -65,15 +67,46 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                HorizontalList(
+                  padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+                  itemCount: titleList.length,
+                  itemBuilder: (_, i) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSelected = titleList[i];
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: isSelected == titleList[i]
+                              ? kPrimaryColor
+                              : kDarkWhite,
+                        ),
+                        child: Text(
+                          titleList[i],
+                          style: kTextStyle.copyWith(
+                              color: isSelected == titleList[i]
+                                  ? kWhite
+                                  : kNeutralColor),
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: 20),
                 ListView.builder(
+                  padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (_, i) {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: GestureDetector(
                         onTap: () =>
                             const BuyerRequestDetails().launch(context),

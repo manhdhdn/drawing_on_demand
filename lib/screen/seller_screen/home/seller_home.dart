@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/seller_home_screen.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
 
+import '../../widgets/constant.dart';
 import '../orders/seller_orders.dart';
 import '../profile/seller_profile.dart';
 import '../../common/messgae/chat_list.dart';
-import '../services/create_service.dart';
+import '../request/seller_buyer_request.dart';
+import 'seller_home_screen.dart';
 
 class SellerHome extends StatefulWidget {
   static const String tag = '/home';
@@ -23,7 +23,7 @@ class _SellerHomeState extends State<SellerHome> {
   static const List<Widget> _widgetOptions = <Widget>[
     SellerHomeScreen(),
     ChatScreen(),
-    CreateService(),
+    SellerBuyerReq(),
     SellerOrderList(),
     SellerProfile(),
   ];
@@ -66,7 +66,7 @@ class _SellerHomeState extends State<SellerHome> {
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.paperPlus),
-              label: "Service",
+              label: "Job Apply",
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyBold.document),

@@ -88,7 +88,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: widget.five! / (widget.total! + 0.1),
+                          percent: widget.five! / (widget.total! + 0.001),
                           progressColor: kPrimaryColor,
                           backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
@@ -110,7 +110,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: widget.four! / (widget.total! + 0.1),
+                          percent: widget.four! / (widget.total! + 0.001),
                           progressColor: kPrimaryColor,
                           backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
@@ -131,7 +131,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: widget.three! / (widget.total! + 0.1),
+                          percent: widget.three! / (widget.total! + 0.001),
                           progressColor: kPrimaryColor,
                           backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
@@ -151,7 +151,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: widget.two! / (widget.total! + 0.1),
+                          percent: widget.two! / (widget.total! + 0.001),
                           progressColor: kPrimaryColor,
                           backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),
@@ -170,7 +170,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                         LinearPercentIndicator(
                           width: 130,
                           lineHeight: 8.0,
-                          percent: widget.one! / (widget.total! + 0.1),
+                          percent: widget.one! / (widget.total! + 0.001),
                           progressColor: kPrimaryColor,
                           backgroundColor: kDarkWhite,
                           barRadius: const Radius.circular(15),

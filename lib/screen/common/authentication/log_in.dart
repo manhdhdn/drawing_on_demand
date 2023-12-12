@@ -253,6 +253,10 @@ class _LoginState extends State<Login> {
       // Save account information
       PrefUtils().setAccount(account.value.first);
 
+      // Save token
+      var token = await FirebaseAuth.instance.currentUser!.getIdToken();
+      PrefUtils().setToken(token!);
+
       // Navigator
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);

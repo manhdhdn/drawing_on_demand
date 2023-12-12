@@ -125,8 +125,6 @@ class _CreateServiceState extends State<CreateService> {
                                   .toString());
                             },
                             child: Container(
-                              height: 205,
-                              width: 156,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 border:
@@ -146,8 +144,7 @@ class _CreateServiceState extends State<CreateService> {
                                     alignment: Alignment.topRight,
                                     children: [
                                       Container(
-                                        height: 100,
-                                        width: 184,
+                                        height: 105,
                                         decoration: BoxDecoration(
                                           borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(8.0),
