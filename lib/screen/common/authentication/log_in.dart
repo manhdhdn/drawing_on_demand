@@ -256,11 +256,11 @@ class _LoginState extends State<Login> {
   }
 
   void onLogin() async {
-    try {
-      if (!_formKey.currentState!.validate()) {
-        return;
-      }
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
+    try {
       ProgressDialogUtils.showProgress(context);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
