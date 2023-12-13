@@ -194,6 +194,14 @@ List<TitleModel> list = [
   TitleModel("Source file", false),
 ];
 
+String selectedServiceList = 'All';
+
+List<String> serviceList = [
+  'All',
+  'Popular',
+  'New',
+];
+
 List<TitleModel> selectedTitle = [];
 
 List<String> titleList = [

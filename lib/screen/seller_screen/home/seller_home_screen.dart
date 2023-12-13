@@ -479,16 +479,16 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                     subTitle:
                                         'Fee per order: ${snapshot.data!.value.elementAt(index).fee! * 100}%\n'
                                         'Connect: ${snapshot.data!.value.elementAt(index).connect!}',
-                                    trailing1:
-                                        NumberFormat.decimalPattern('vi_VN')
-                                            .format(snapshot.data!.value
-                                                .elementAt(index)
-                                                .income),
-                                    trailing2:
-                                        NumberFormat.decimalPattern('vi_VN')
-                                            .format(snapshot.data!.value
-                                                .elementAt(index)
-                                                .income),
+                                    trailing1: NumberFormat.simpleCurrency(
+                                            locale: 'vi_VN')
+                                        .format(snapshot.data!.value
+                                            .elementAt(index)
+                                            .income),
+                                    trailing2: NumberFormat.simpleCurrency(
+                                            locale: 'vi_VN')
+                                        .format(snapshot.data!.value
+                                            .elementAt(index)
+                                            .income),
                                   ),
                                 ],
                               );
@@ -505,11 +505,11 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                           'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
                                           'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
                                       trailing1: '0',
-                                      trailing2:
-                                          NumberFormat.decimalPattern('vi_VN')
-                                              .format(snapshot.data!.value
-                                                  .elementAt(index + 1)
-                                                  .income),
+                                      trailing2: NumberFormat.simpleCurrency(
+                                              locale: 'vi_VN')
+                                          .format(snapshot.data!.value
+                                              .elementAt(index + 1)
+                                              .income),
                                     ),
                                   ],
                                 );
@@ -698,8 +698,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                               children: [
                                                 TextSpan(
                                                   text: NumberFormat
-                                                          .decimalPattern(
-                                                              'vi_VN')
+                                                          .simpleCurrency(
+                                                              locale: 'vi_VN')
                                                       .format(snapshot
                                                           .data!.value
                                                           .elementAt(index)

@@ -14,6 +14,7 @@ import '../../widgets/constant.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
 import '../invite/client_invite.dart';
+import '../notification/client_notification.dart';
 import '../report/client_report.dart';
 import '../transaction/transaction.dart';
 import 'client_profile_details.dart';
@@ -72,8 +73,23 @@ class _ClientProfileState extends State<ClientProfile> {
               ],
             ),
           ),
+          trailing: GestureDetector(
+            onTap: () => const ClientNotification().launch(context),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: kPrimaryColor.withOpacity(0.2),
+                ),
+              ),
+              child: const Icon(
+                IconlyLight.notification,
+                color: kNeutralColor,
+              ),
+            ),
+          ),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0),

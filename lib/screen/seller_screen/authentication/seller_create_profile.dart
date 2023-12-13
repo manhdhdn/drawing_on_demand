@@ -9,10 +9,9 @@ import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../../common/popUp/popup_1.dart';
-import '../home/seller_home.dart';
 
 class SellerCreateProfile extends StatefulWidget {
-  static const String tag = '${SellerHome.tag}/create_profile';
+  static const String tag = 'artist/create_profile';
 
   const SellerCreateProfile({Key? key}) : super(key: key);
 

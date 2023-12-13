@@ -8,7 +8,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../widgets/review.dart';
-import '../home/recently_view.dart';
 import 'client_order.dart';
 
 class ClientServiceDetails extends StatefulWidget {
@@ -61,19 +60,20 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails>
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: ButtonGlobalWithoutIcon(
-            buttontext: 'Order Now',
-            buttonDecoration: kButtonDecoration.copyWith(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            onPressed: () {
-              setState(
-                () {
-                  const ClientOrder().launch(context);
-                },
-              );
-            },
-            buttonTextColor: kWhite),
+          buttontext: 'Order Now',
+          buttonDecoration: kButtonDecoration.copyWith(
+            color: kPrimaryColor,
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          onPressed: () {
+            setState(
+              () {
+                const ClientOrder().launch(context);
+              },
+            );
+          },
+          buttonTextColor: kWhite,
+        ),
         backgroundColor: kWhite,
         body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
@@ -1105,8 +1105,8 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails>
                                     ),
                                     const Spacer(),
                                     GestureDetector(
-                                      onTap: () =>
-                                          const RecentlyView().launch(context),
+                                      // onTap: () =>
+                                      // const RecentlyView().launch(context),
                                       child: Text(
                                         'View All',
                                         style: kTextStyle.copyWith(

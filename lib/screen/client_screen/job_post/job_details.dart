@@ -359,7 +359,8 @@ class _JobDetailsState extends State<JobDetails> {
                                     const SizedBox(width: 10.0),
                                     Flexible(
                                       child: Text(
-                                        NumberFormat.decimalPattern('vi_VN')
+                                        NumberFormat.simpleCurrency(
+                                                locale: 'vi_VN')
                                             .format(snapshot.data!.budget),
                                         style: kTextStyle.copyWith(
                                             color: kSubTitleColor),

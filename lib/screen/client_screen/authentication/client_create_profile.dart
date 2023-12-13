@@ -5,10 +5,9 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import '../home/client_home.dart';
 
 class ClientCreateProfile extends StatefulWidget {
-  static const String tag = '${ClientHome.tag}/create_profile';
+  static const String tag = '/customer/create_profile';
 
   const ClientCreateProfile({Key? key}) : super(key: key);
 

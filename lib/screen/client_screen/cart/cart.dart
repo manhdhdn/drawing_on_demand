@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../common/artwork/service_details.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import 'client_home_screen.dart';
+import '../home/client_home_screen.dart';
+import '../service_details/client_order.dart';
 
-class RecentlyView extends StatefulWidget {
-  static const String tag = '${ClientHomeScreen.tag}/artwork';
+class CartScreen extends StatefulWidget {
+  static const String tag = '${ClientHomeScreen.tag}/cart';
 
-  const RecentlyView({Key? key}) : super(key: key);
+  const CartScreen({Key? key}) : super(key: key);
 
   @override
-  State<RecentlyView> createState() => _RecentlyViewState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class _RecentlyViewState extends State<RecentlyView> {
+class _CartScreenState extends State<CartScreen> {
   late Future<Artworks?> newArtworks;
 
+  double total = 3000000000.0;
   int top = 100;
 
   @override
@@ -42,7 +44,7 @@ class _RecentlyViewState extends State<RecentlyView> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'New Artworks',
+          'Cart',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -50,6 +52,7 @@ class _RecentlyViewState extends State<RecentlyView> {
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
+          height: context.height(),
           decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
@@ -57,13 +60,13 @@ class _RecentlyViewState extends State<RecentlyView> {
               topRight: Radius.circular(30.0),
             ),
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: FutureBuilder(
-              future: newArtworks,
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
+          child: FutureBuilder(
+            future: newArtworks,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -83,7 +86,7 @@ class _RecentlyViewState extends State<RecentlyView> {
                                       .toString());
                                 },
                                 child: Container(
-                                  height: 120,
+                                  height: context.height() * 0.135,
                                   decoration: BoxDecoration(
                                     color: kWhite,
                                     borderRadius: BorderRadius.circular(8.0),
@@ -106,8 +109,8 @@ class _RecentlyViewState extends State<RecentlyView> {
                                         alignment: Alignment.topLeft,
                                         children: [
                                           Container(
-                                            height: 120,
-                                            width: 120,
+                                            height: context.height() * 0.135,
+                                            width: context.height() * 0.135,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   const BorderRadius.only(
@@ -123,48 +126,6 @@ class _RecentlyViewState extends State<RecentlyView> {
                                                       .first
                                                       .image!),
                                                   fit: BoxFit.cover),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                isFavorite = !isFavorite;
-                                              });
-                                            },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Container(
-                                                height: 25,
-                                                width: 25,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.white,
-                                                  shape: BoxShape.circle,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black12,
-                                                      blurRadius: 10.0,
-                                                      spreadRadius: 1.0,
-                                                      offset: Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: isFavorite
-                                                    ? const Center(
-                                                        child: Icon(
-                                                          Icons.favorite,
-                                                          color: Colors.red,
-                                                          size: 16.0,
-                                                        ),
-                                                      )
-                                                    : const Center(
-                                                        child: Icon(
-                                                          Icons.favorite_border,
-                                                          color: kNeutralColor,
-                                                          size: 16.0,
-                                                        ),
-                                                      ),
-                                              ),
                                             ),
                                           ),
                                         ],
@@ -192,61 +153,6 @@ class _RecentlyViewState extends State<RecentlyView> {
                                                       TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 5.0),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Icon(
-                                                  IconlyBold.star,
-                                                  color: Colors.amber,
-                                                  size: 18.0,
-                                                ),
-                                                const SizedBox(width: 2.0),
-                                                Text(
-                                                  getReviewPoint(snapshot
-                                                      .data!.value
-                                                      .elementAt(i)
-                                                      .artworkReviews!),
-                                                  style: kTextStyle.copyWith(
-                                                      color: kNeutralColor),
-                                                ),
-                                                const SizedBox(width: 2.0),
-                                                Text(
-                                                  '(${snapshot.data!.value.elementAt(i).artworkReviews!.length})',
-                                                  style: kTextStyle.copyWith(
-                                                      color:
-                                                          kLightNeutralColor),
-                                                ),
-                                                const SizedBox(width: 40),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    text: 'Price: ',
-                                                    style: kTextStyle.copyWith(
-                                                        color:
-                                                            kLightNeutralColor),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: NumberFormat
-                                                                .decimalPattern(
-                                                                    'vi_VN')
-                                                            .format(snapshot
-                                                                .data!.value
-                                                                .elementAt(i)
-                                                                .price!),
-                                                        style:
-                                                            kTextStyle.copyWith(
-                                                                color:
-                                                                    kPrimaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
                                             ),
                                             const SizedBox(height: 5.0),
                                             Row(
@@ -299,6 +205,78 @@ class _RecentlyViewState extends State<RecentlyView> {
                                                 ),
                                               ],
                                             ),
+                                            const SizedBox(height: 5.0),
+                                            SizedBox(
+                                              width: context.width() * 0.58,
+                                              child: Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: Container(
+                                                      width: 20,
+                                                      height: 20,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            kBorderColorTextField,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          5.0,
+                                                        ),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.remove_outlined,
+                                                        size: 16,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 5.0),
+                                                  Text(
+                                                    '1',
+                                                    style: kTextStyle.copyWith(
+                                                      color: kPrimaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 5.0),
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: Container(
+                                                      width: 20,
+                                                      height: 20,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            kBorderColorTextField,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          5.0,
+                                                        ),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.add_rounded,
+                                                        size: 16,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Spacer(),
+                                                  Text(
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'vi_VN')
+                                                        .format(snapshot
+                                                            .data!.value
+                                                            .elementAt(i)
+                                                            .price!),
+                                                    style: kTextStyle.copyWith(
+                                                      color: kPrimaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -311,16 +289,64 @@ class _RecentlyViewState extends State<RecentlyView> {
                         ),
                       ),
                     ],
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: kPrimaryColor,
                   ),
                 );
-              }),
-            ),
+              }
+
+              return const Center(
+                heightFactor: 2.0,
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
+              );
+            },
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: const BoxDecoration(
+          color: kWhite,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: 'Total:\n',
+                style: kTextStyle.copyWith(color: kNeutralColor, fontSize: 16),
+                children: [
+                  TextSpan(
+                    text: NumberFormat.simpleCurrency(locale: 'vi_VN')
+                        .format(total),
+                    style: kTextStyle.copyWith(
+                        color: kPrimaryColor, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Container(
+                width: context.width() * 0.5,
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                decoration: kButtonDecoration.copyWith(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Order now',
+                      style: GoogleFonts.jost(fontSize: 20.0, color: kWhite),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

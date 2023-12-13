@@ -125,3 +125,7 @@ String getAccountReviewPoint(Set<AccountReview> accountReviews) {
 
   return NumberFormat('0.0').format(point);
 }
+
+void onAddToCart(String id) {
+  // TODO
+}

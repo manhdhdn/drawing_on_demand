@@ -9,7 +9,7 @@ import '../profile/client_profile.dart';
 import 'client_home_screen.dart';
 
 class ClientHome extends StatefulWidget {
-  static const String tag = '/customer';
+  static const String tag = '/';
 
   const ClientHome({Key? key}) : super(key: key);
 

@@ -246,11 +246,13 @@ class _CreateServiceState extends State<CreateService> {
                                                 color: kLightNeutralColor),
                                             children: [
                                               TextSpan(
-                                                text: NumberFormat
-                                                        .decimalPattern('vi_VN')
-                                                    .format(snapshot.data!.value
-                                                        .elementAt(index)
-                                                        .price),
+                                                text:
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'vi_VN')
+                                                        .format(snapshot
+                                                            .data!.value
+                                                            .elementAt(index)
+                                                            .price),
                                                 style: kTextStyle.copyWith(
                                                     color: kPrimaryColor,
                                                     fontWeight:

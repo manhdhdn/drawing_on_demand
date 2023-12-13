@@ -29,16 +29,8 @@ class _PopularServicesState extends State<PopularServices> {
   void initState() {
     super.initState();
 
-    popularArtworks = getPopularArtworks();
+    popularArtworks = getArtworks();
   }
-
-  List<String> serviceList = [
-    'All',
-    'Logo Design',
-    'Brand Style Guide',
-    'Fonts & Typography',
-  ];
-  String selectedServiceList = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +42,7 @@ class _PopularServicesState extends State<PopularServices> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Popular Artworks',
+          'Artworks',
           style: kTextStyle.copyWith(
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
@@ -67,6 +59,7 @@ class _PopularServicesState extends State<PopularServices> {
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
+          height: context.height(),
           decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
@@ -74,13 +67,13 @@ class _PopularServicesState extends State<PopularServices> {
               topRight: Radius.circular(30.0),
             ),
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: FutureBuilder(
-              future: popularArtworks,
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
+          child: FutureBuilder(
+            future: popularArtworks,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
                     children: [
                       const SizedBox(height: 15.0),
                       HorizontalList(
@@ -176,48 +169,96 @@ class _PopularServicesState extends State<PopularServices> {
                                                   fit: BoxFit.cover),
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                isFavorite = !isFavorite;
-                                              });
-                                            },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Container(
-                                                height: 25,
-                                                width: 25,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.white,
-                                                  shape: BoxShape.circle,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black12,
-                                                      blurRadius: 10.0,
-                                                      spreadRadius: 1.0,
-                                                      offset: Offset(0, 2),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isFavorite = !isFavorite;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5.0, left: 5.0),
+                                                  child: Container(
+                                                    height: 25,
+                                                    width: 25,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                      shape: BoxShape.circle,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black12,
+                                                          blurRadius: 10.0,
+                                                          spreadRadius: 1.0,
+                                                          offset: Offset(0, 2),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                    child: isFavorite
+                                                        ? const Center(
+                                                            child: Icon(
+                                                              Icons.favorite,
+                                                              color: Colors.red,
+                                                              size: 16.0,
+                                                            ),
+                                                          )
+                                                        : const Center(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .favorite_border,
+                                                              color:
+                                                                  kNeutralColor,
+                                                              size: 16.0,
+                                                            ),
+                                                          ),
+                                                  ),
                                                 ),
-                                                child: isFavorite
-                                                    ? const Center(
-                                                        child: Icon(
-                                                          Icons.favorite,
-                                                          color: Colors.red,
-                                                          size: 16.0,
-                                                        ),
-                                                      )
-                                                    : const Center(
-                                                        child: Icon(
-                                                          Icons.favorite_border,
-                                                          color: kNeutralColor,
-                                                          size: 16.0,
-                                                        ),
-                                                      ),
                                               ),
-                                            ),
-                                          ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  onAddToCart(snapshot
+                                                      .data!.value
+                                                      .elementAt(i)
+                                                      .id
+                                                      .toString());
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5.0, left: 5.0),
+                                                  child: Container(
+                                                    height: 25,
+                                                    width: 25,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                      shape: BoxShape.circle,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black12,
+                                                          blurRadius: 10.0,
+                                                          spreadRadius: 1.0,
+                                                          offset: Offset(0, 2),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: const Center(
+                                                      child: Icon(
+                                                        Icons
+                                                            .add_shopping_cart_outlined,
+                                                        color: kNeutralColor,
+                                                        size: 16.0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
                                       Padding(
@@ -247,7 +288,8 @@ class _PopularServicesState extends State<PopularServices> {
                                             const SizedBox(height: 5.0),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Icon(
                                                   IconlyBold.star,
@@ -270,7 +312,7 @@ class _PopularServicesState extends State<PopularServices> {
                                                       color:
                                                           kLightNeutralColor),
                                                 ),
-                                                const SizedBox(width: 40),
+                                                const SizedBox(width: 15),
                                                 RichText(
                                                   text: TextSpan(
                                                     text: 'Price: ',
@@ -280,8 +322,9 @@ class _PopularServicesState extends State<PopularServices> {
                                                     children: [
                                                       TextSpan(
                                                         text: NumberFormat
-                                                                .decimalPattern(
-                                                                    'vi_VN')
+                                                                .simpleCurrency(
+                                                                    locale:
+                                                                        'vi_VN')
                                                             .format(snapshot
                                                                 .data!.value
                                                                 .elementAt(i)
@@ -359,25 +402,26 @@ class _PopularServicesState extends State<PopularServices> {
                               ),
                             );
                           },
-                        ).visible(selectedServiceList == 'All'),
+                        ),
                       ),
                     ],
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: kPrimaryColor,
                   ),
                 );
-              }),
-            ),
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Future<Artworks?> getPopularArtworks() async {
+  Future<Artworks?> getArtworks() async {
     try {
       return ArtworkApi().gets(
         0,
@@ -394,12 +438,6 @@ class _PopularServicesState extends State<PopularServices> {
   void onPopularArtworkDetail(String id) {
     PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, ServiceDetails.tag).then(
-      (value) => setState(
-        () {
-          popularArtworks = getPopularArtworks();
-        },
-      ),
-    );
+    Navigator.pushNamed(context, ServiceDetails.tag);
   }
 }

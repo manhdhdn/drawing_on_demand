@@ -96,7 +96,7 @@ class _ClientOrderDetailsState extends State<ClientOrderDetails> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: kWhite,
+          color: Colors.transparent,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

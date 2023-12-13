@@ -10,6 +10,8 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
+import '../../client_screen/service_details/client_order.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/review.dart';
 import '../../seller_screen/services/create_service.dart';
@@ -462,7 +464,8 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                     ),
                                     const SizedBox(height: 5.0),
                                     Text(
-                                      NumberFormat.decimalPattern('vi_VN')
+                                      NumberFormat.simpleCurrency(
+                                              locale: 'vi_VN')
                                           .format(snapshot.data!.price),
                                       style: kTextStyle.copyWith(
                                         color: kLightNeutralColor,
@@ -735,6 +738,50 @@ class _ServiceDetailsState extends State<ServiceDetails>
                 ),
               );
             },
+          ),
+        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: ButtonGlobalWithoutIcon(
+                  buttontext: 'Order now',
+                  buttonDecoration: kButtonDecoration.copyWith(
+                    color: kPrimaryColor,
+                    border: Border.all(color: kPrimaryColor),
+                  ),
+                  onPressed: () {
+                    setState(
+                      () {
+                        const ClientOrder().launch(context);
+                      },
+                    );
+                  },
+                  buttonTextColor: kWhite,
+                ),
+              ),
+              Expanded(
+                child: ButtonGlobalWithoutIcon(
+                  buttontext: 'Add to cart',
+                  buttonDecoration: kButtonDecoration.copyWith(
+                    color: kWhite,
+                    border: Border.all(color: kPrimaryColor),
+                  ),
+                  onPressed: () {
+                    setState(
+                      () {
+                        onAddToCart(PrefUtils().getTermId());
+                      },
+                    );
+                  },
+                  buttonTextColor: kPrimaryColor,
+                ),
+              ),
+            ],
           ),
         ),
       ),

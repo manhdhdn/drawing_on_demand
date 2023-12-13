@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../screen/client_screen/authentication/client_create_profile.dart';
+import '../screen/client_screen/cart/cart.dart';
 import '../screen/client_screen/home/client_home.dart';
 import '../screen/client_screen/home/client_home_screen.dart';
 import '../screen/client_screen/home/popular_services.dart';
-import '../screen/client_screen/home/recently_view.dart';
 import '../screen/client_screen/home/top_seller.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
@@ -39,15 +39,14 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> customerRoutes = {
     defaultTag: (context) => const ClientHome(),
-    ClientHome.tag: (context) => const ClientHome(),
+    ClientHomeScreen.tag: (context) => const ClientHome(),
     JobPost.tag: (context) => const JobPost(),
     JobDetails.tag: (context) => const JobDetails(),
     ClientProfileDetails.tag: (context) => const ClientProfileDetails(),
-    ClientHomeScreen.tag: (context) => const ClientHomeScreen(),
     PopularServices.tag: (context) => const PopularServices(),
-    RecentlyView.tag: (context) => const RecentlyView(),
     TopSeller.tag: (context) => const TopSeller(),
     ServiceDetails.tag: (context) => const ServiceDetails(),
+    CartScreen.tag: (context) => const CartScreen(),
   };
 
   static Map<String, WidgetBuilder> artistRoutes = {
