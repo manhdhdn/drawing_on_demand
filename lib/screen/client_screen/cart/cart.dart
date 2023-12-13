@@ -7,10 +7,8 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../common/artwork/service_details.dart';
-import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../home/client_home_screen.dart';
-import '../service_details/client_order.dart';
 
 class CartScreen extends StatefulWidget {
   static const String tag = '${ClientHomeScreen.tag}/cart';
