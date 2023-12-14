@@ -29,7 +29,7 @@ class AccountApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Account> accounts = {};
+    List<Account> accounts = [];
 
     try {
       await isNetworkConnected();

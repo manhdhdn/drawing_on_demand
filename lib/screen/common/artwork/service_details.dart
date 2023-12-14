@@ -51,7 +51,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
         _scrollController!.offset > (height - kToolbarHeight);
   }
 
-  ListView getReviews(Set<ArtworkReview> artworkReviews) {
+  ListView getReviews(List<ArtworkReview> artworkReviews) {
     return ListView.builder(
       itemCount: totalReview,
       shrinkWrap: true,

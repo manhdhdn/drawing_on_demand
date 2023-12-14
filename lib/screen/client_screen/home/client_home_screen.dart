@@ -508,20 +508,19 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                     children: [
                                                       TextSpan(
                                                         text: NumberFormat
-                                                                .simpleCurrency(
-                                                                    locale:
-                                                                        'vi_VN')
-                                                            .format(snapshot
-                                                                .data!.value
-                                                                .elementAt(i)
-                                                                .price!),
+                                                            .simpleCurrency(
+                                                          locale: 'vi_VN',
+                                                        ).format(
+                                                          snapshot.data!.value
+                                                              .elementAt(i)
+                                                              .price!,
+                                                        ),
                                                         style:
                                                             kTextStyle.copyWith(
-                                                                color:
-                                                                    kPrimaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                          color: kPrimaryColor,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       )
                                                     ],
                                                   ),
@@ -1111,8 +1110,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         expand: 'account(expand=rank, accountReviewAccounts), role',
       );
 
-      Set<Account> accounts =
-          Set<Account>.from(accountRoles.value.map((ar) => ar.account!));
+      List<Account> accounts =
+          List<Account>.from(accountRoles.value.map((ar) => ar.account!));
 
       return Accounts(value: accounts);
     } catch (error) {

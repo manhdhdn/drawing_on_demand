@@ -29,7 +29,7 @@ class RequirementApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Requirement> requirements = {};
+    List<Requirement> requirements = [];
 
     try {
       await isNetworkConnected();

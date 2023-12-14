@@ -2,14 +2,14 @@ import 'package:flutter_guid/flutter_guid.dart';
 
 class Surfaces {
   int? count;
-  Set<Surface> value;
+  List<Surface> value;
 
   Surfaces({this.count, required this.value});
 
   factory Surfaces.fromJson(Map<String, dynamic> json) {
     return Surfaces(
       count: json['@odata.count'],
-      value: Set<Surface>.from(
+      value: List<Surface>.from(
         json['value'].map(
           (x) => Surface.fromJson(x),
         ),

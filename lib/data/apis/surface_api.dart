@@ -29,7 +29,7 @@ class SurfaceApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Surface> surfaces = {};
+    List<Surface> surfaces = [];
 
     try {
       await isNetworkConnected();

@@ -5,14 +5,14 @@ import 'account.dart';
 
 class ArtworkReviews {
   int? count;
-  Set<ArtworkReview> value;
+  List<ArtworkReview> value;
 
   ArtworkReviews({this.count, required this.value});
 
   factory ArtworkReviews.fromJson(Map<String, dynamic> json) {
     return ArtworkReviews(
       count: json['@odata.count'],
-      value: Set<ArtworkReview>.from(
+      value: List<ArtworkReview>.from(
         json['value'].map(
           (x) => ArtworkReview.fromJson(x),
         ),

@@ -29,7 +29,7 @@ class SizeApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Size> sizes = {};
+    List<Size> sizes = [];
 
     try {
       await isNetworkConnected();

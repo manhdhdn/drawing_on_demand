@@ -245,8 +245,8 @@ class _TopSellerState extends State<TopSeller> {
         expand: 'account(expand=rank, accountReviewAccounts), role',
       );
 
-      Set<Account> accounts =
-          Set<Account>.from(accountRoles.value.map((ar) => ar.account!));
+      List<Account> accounts =
+          List<Account>.from(accountRoles.value.map((ar) => ar.account!));
 
       return Accounts(value: accounts);
     } catch (error) {

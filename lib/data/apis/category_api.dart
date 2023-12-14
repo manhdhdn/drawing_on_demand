@@ -29,7 +29,7 @@ class CategoryApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Category> categories = {};
+    List<Category> categories = [];
 
     try {
       await isNetworkConnected();

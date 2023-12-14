@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 
 class Arts {
   int? count;
-  Set<Art> value;
+  List<Art> value;
 
   Arts({this.count, required this.value});
 
   factory Arts.fromJson(Map<String, dynamic> json) {
     return Arts(
       count: json['@odata.count'],
-      value: Set<Art>.from(
+      value: List<Art>.from(
         json['value'].map(
           (x) => Art.fromJson(x),
         ),

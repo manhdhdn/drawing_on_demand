@@ -6,14 +6,14 @@ import 'role.dart';
 
 class AccountRoles {
   int? count;
-  Set<AccountRole> value;
+  List<AccountRole> value;
 
   AccountRoles({this.count, required this.value});
 
   factory AccountRoles.fromJson(Map<String, dynamic> json) {
     return AccountRoles(
       count: json['@odata.count'],
-      value: Set<AccountRole>.from(
+      value: List<AccountRole>.from(
         json['value'].map(
           (x) => AccountRole.fromJson(x),
         ),

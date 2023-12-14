@@ -1,14 +1,19 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../app_routes/app_routes.dart';
+import '../../data/apis/order_api.dart';
 import '../../data/models/account_review.dart';
 import '../../data/models/artwork_review.dart';
+import '../../data/models/order.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
 import '../utils/pref_utils.dart';
@@ -98,7 +103,7 @@ Future<String> uploadImage(XFile image) async {
   return imageRef.getDownloadURL();
 }
 
-String getReviewPoint(Set<ArtworkReview> artworkReviews) {
+String getReviewPoint(List<ArtworkReview> artworkReviews) {
   double point = 0;
 
   if (artworkReviews.isNotEmpty) {
@@ -112,7 +117,7 @@ String getReviewPoint(Set<ArtworkReview> artworkReviews) {
   return NumberFormat('0.0').format(point);
 }
 
-String getAccountReviewPoint(Set<AccountReview> accountReviews) {
+String getAccountReviewPoint(List<AccountReview> accountReviews) {
   double point = 0;
 
   if (accountReviews.isNotEmpty) {
@@ -124,6 +129,30 @@ String getAccountReviewPoint(Set<AccountReview> accountReviews) {
   }
 
   return NumberFormat('0.0').format(point);
+}
+
+Future<Order> checkCartCreated() async {
+  Order order = Order();
+
+  try {
+    order = (await OrderApi().gets(
+      0,
+      filter:
+          "CreatedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and Status eq 'Cart'",
+    ))
+        .value
+        .first;
+  } catch (error) {
+    order = await OrderApi().postOne(
+      Order(
+        id: Guid.newGuid,
+        orderType: 'Artwork',
+        orderDate: DateTime.now(),
+      ),
+    );
+  }
+
+  return order;
 }
 
 void onAddToCart(String id) {

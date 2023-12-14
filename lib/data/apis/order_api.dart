@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/rank.dart';
+import 'package:drawing_on_demand/data/models/order.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class RankApi {
+class OrderApi {
   Future<void> isNetworkConnected() async {
     try {
       if (!isWeb) {
@@ -21,7 +21,7 @@ class RankApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Ranks> gets(int skip,
+  Future<Orders> gets(int skip,
       {int? top,
       String? filter,
       String? count,
@@ -29,7 +29,7 @@ class RankApi {
       String? select,
       String? expand}) async {
     int? counter;
-    List<Rank> ranks = [];
+    List<Order> orders = [];
 
     try {
       await isNetworkConnected();
@@ -65,17 +65,17 @@ class RankApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['rank']}",
+          "${ApiConfig.odata}/${ApiConfig.paths['order']}",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        var data = Ranks.fromJson(jsonDecode(response.body));
+        var data = Orders.fromJson(jsonDecode(response.body));
 
         counter = data.count ?? 0;
-        ranks = data.value;
+        orders = data.value;
       } else {
         throw errorSomethingWentWrong;
       }
@@ -83,11 +83,11 @@ class RankApi {
       rethrow;
     }
 
-    return Ranks(value: ranks, count: counter);
+    return Orders(value: orders, count: counter);
   }
 
-  Future<Rank> getOne(String id, String? expand) async {
-    Rank rank = Rank();
+  Future<Order> getOne(String id, String? expand) async {
+    Order order = Order();
 
     try {
       Map<String, String> query = {};
@@ -99,14 +99,14 @@ class RankApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['rank']}/$id",
+          "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        rank = Rank.fromJson(jsonDecode(response.body));
+        order = Order.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -114,16 +114,16 @@ class RankApi {
       rethrow;
     }
 
-    return rank;
+    return order;
   }
 
-  Future postOne(Rank rank) async {
+  Future postOne(Order order) async {
     try {
       final response = await post(
-        Uri.https(
-            ApiConfig.baseUrl, "${ApiConfig.odata}/${ApiConfig.paths['rank']}"),
+        Uri.https(ApiConfig.baseUrl,
+            "${ApiConfig.odata}/${ApiConfig.paths['order']}"),
         headers: ApiConfig.headers,
-        body: jsonEncode(rank.toJson()),
+        body: jsonEncode(order.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
@@ -134,19 +134,19 @@ class RankApi {
     }
   }
 
-  Future<Rank> patchOne(String id, Map body) async {
-    Rank rank = Rank();
+  Future<Order> patchOne(String id, Map body) async {
+    Order order = Order();
 
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['rank']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id"),
         headers: ApiConfig.headers,
         body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
-        rank = Rank.fromJson(jsonDecode(response.body));
+        order = Order.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -154,14 +154,14 @@ class RankApi {
       rethrow;
     }
 
-    return rank;
+    return order;
   }
 
   Future deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['rank']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id"),
         headers: ApiConfig.headers,
       );
 

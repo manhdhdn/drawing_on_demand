@@ -2,14 +2,14 @@ import 'package:flutter_guid/flutter_guid.dart';
 
 class Sizes {
   int? count;
-  Set<Size> value;
+  List<Size> value;
 
   Sizes({this.count, required this.value});
 
   factory Sizes.fromJson(Map<String, dynamic> json) {
     return Sizes(
       count: json['@odata.count'],
-      value: Set<Size>.from(
+      value: List<Size>.from(
         json['value'].map(
           (x) => Size.fromJson(x),
         ),

@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 
 class Ranks {
   int? count;
-  Set<Rank> value;
+  List<Rank> value;
 
   Ranks({this.count, required this.value});
 
   factory Ranks.fromJson(Map<String, dynamic> json) {
     return Ranks(
       count: json['@odata.count'],
-      value: Set<Rank>.from(
+      value: List<Rank>.from(
         json['value'].map(
           (x) => Rank.fromJson(x),
         ),

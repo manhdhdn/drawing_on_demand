@@ -10,14 +10,14 @@ import 'surface.dart';
 
 class Artworks {
   int? count;
-  Set<Artwork> value;
+  List<Artwork> value;
 
   Artworks({this.count, required this.value});
 
   factory Artworks.fromJson(Map<String, dynamic> json) {
     return Artworks(
       count: json['@odata.count'],
-      value: Set<Artwork>.from(
+      value: List<Artwork>.from(
         json['value'].map(
           (x) => Artwork.fromJson(x),
         ),
@@ -40,8 +40,8 @@ class Artwork {
   Guid? surfaceId;
   Guid? materialId;
   Guid? createdBy;
-  Set<ArtworkReview>? artworkReviews;
-  Set<Art>? arts;
+  List<ArtworkReview>? artworkReviews;
+  List<Art>? arts;
   Account? createdByNavigation;
   Category? category;
   Surface? surface;
@@ -86,12 +86,12 @@ class Artwork {
     materialId = Guid(json['MaterialId']);
     createdBy = Guid(json['CreatedBy']);
     artworkReviews = json['ArtworkReviews'] != null
-        ? Set<ArtworkReview>.from(json['ArtworkReviews'].map(
+        ? List<ArtworkReview>.from(json['ArtworkReviews'].map(
             (x) => ArtworkReview.fromJson(x),
           ))
         : null;
     arts = json['Arts'] != null
-        ? Set<Art>.from(json['Arts'].map(
+        ? List<Art>.from(json['Arts'].map(
             (x) => Art.fromJson(x),
           ))
         : null;
@@ -108,7 +108,7 @@ class Artwork {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id,
+      'Id': id.toString(),
       'Title': title,
       'Description': description,
       'Price': price,
@@ -120,10 +120,10 @@ class Artwork {
           ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
           : null,
       'Status': status,
-      'CategoryId': categoryId,
-      'SurfaceId': surfaceId,
-      'MaterialId': materialId,
-      'CreatedBy': createdBy,
+      'CategoryId': categoryId.toString(),
+      'SurfaceId': surfaceId.toString(),
+      'MaterialId': materialId.toString(),
+      'CreatedBy': createdBy.toString(),
     };
   }
 }

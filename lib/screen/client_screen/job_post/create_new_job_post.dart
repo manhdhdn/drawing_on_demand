@@ -33,9 +33,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
   TextEditingController budgetController = TextEditingController();
   TextEditingController imageController = TextEditingController();
 
-  Set<Category> categories = {};
-  Set<material_model.Material> materials = {};
-  Set<Surface> surfaces = {};
+  List<Category> categories = [];
+  List<material_model.Material> materials = [];
+  List<Surface> surfaces = [];
 
   Guid? selectedCategory;
   Guid? selectedMaterial;

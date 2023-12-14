@@ -2,14 +2,14 @@ import 'package:flutter_guid/flutter_guid.dart';
 
 class Materials {
   int? count;
-  Set<Material> value;
+  List<Material> value;
 
   Materials({this.count, required this.value});
 
   factory Materials.fromJson(Map<String, dynamic> json) {
     return Materials(
       count: json['@odata.count'],
-      value: Set<Material>.from(
+      value: List<Material>.from(
         json['value'].map(
           (x) => Material.fromJson(x),
         ),

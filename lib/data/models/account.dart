@@ -7,14 +7,14 @@ import 'rank.dart';
 
 class Accounts {
   int? count;
-  Set<Account> value;
+  List<Account> value;
 
   Accounts({this.count, required this.value});
 
   factory Accounts.fromJson(Map<String, dynamic> json) {
     return Accounts(
       count: json['@odata.count'],
-      value: Set<Account>.from(
+      value: List<Account>.from(
         json['value'].map(
           (x) => Account.fromJson(x),
         ),
@@ -37,9 +37,9 @@ class Account {
   DateTime? lastModifiedDate;
   String? status;
   Guid? rankId;
-  Set<AccountRole>? accountRoles;
+  List<AccountRole>? accountRoles;
   Rank? rank;
-  Set<AccountReview>? accountReviewAccounts;
+  List<AccountReview>? accountReviewAccounts;
 
   Account({
     this.id,
@@ -77,7 +77,7 @@ class Account {
     status = json['Status'];
     rankId = Guid(json['RankId']);
     accountRoles = json['AccountRoles'] != null
-        ? Set<AccountRole>.from(
+        ? List<AccountRole>.from(
             json['AccountRoles'].map(
               (x) => AccountRole.fromJson(x),
             ),
@@ -85,7 +85,7 @@ class Account {
         : null;
     rank = json['Rank'] != null ? Rank.fromJson(json['Rank']) : null;
     accountReviewAccounts = json['AccountReviewAccounts'] != null
-        ? Set<AccountReview>.from(
+        ? List<AccountReview>.from(
             json['AccountReviewAccounts'].map(
               (x) => AccountReview.fromJson(x),
             ),

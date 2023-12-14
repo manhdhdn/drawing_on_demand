@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 
 class AccountReviews {
   int? count;
-  Set<AccountReview> value;
+  List<AccountReview> value;
 
   AccountReviews({this.count, required this.value});
 
   factory AccountReviews.fromJson(Map<String, dynamic> json) {
     return AccountReviews(
       count: json['@odata.count'],
-      value: Set<AccountReview>.from(
+      value: List<AccountReview>.from(
         json['value'].map(
           (x) => AccountReview.fromJson(x),
         ),

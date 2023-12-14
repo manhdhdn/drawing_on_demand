@@ -29,7 +29,7 @@ class MaterialApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Material> materials = {};
+    List<Material> materials = [];
 
     try {
       await isNetworkConnected();

@@ -7,14 +7,14 @@ import 'surface.dart';
 
 class Requirements {
   int? count;
-  Set<Requirement> value;
+  List<Requirement> value;
 
   Requirements({this.count, required this.value});
 
   factory Requirements.fromJson(Map<String, dynamic> json) {
     return Requirements(
       count: json['@odata.count'],
-      value: Set<Requirement>.from(
+      value: List<Requirement>.from(
         json['value'].map(
           (x) => Requirement.fromJson(x),
         ),

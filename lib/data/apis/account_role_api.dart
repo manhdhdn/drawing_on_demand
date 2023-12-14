@@ -30,7 +30,7 @@ class AccountRoleApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<AccountRole> accountRoles = {};
+    List<AccountRole> accountRoles = [];
 
     try {
       await isNetworkConnected();

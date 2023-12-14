@@ -29,7 +29,7 @@ class ArtworkApi {
       String? select,
       String? expand}) async {
     int? counter;
-    Set<Artwork> artworks = {};
+    List<Artwork> artworks = [];
 
     try {
       await isNetworkConnected();

@@ -257,14 +257,14 @@ List<String> currency = [
 
 String selectedCurrency = 'USD';
 
-Set<int> pieces = {
+List<int> pieces = [
   1,
   2,
   3,
   4,
   5,
   6,
-};
+];
 
 List<XFile> images = [];
 

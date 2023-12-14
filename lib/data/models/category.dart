@@ -2,14 +2,14 @@ import 'package:flutter_guid/flutter_guid.dart';
 
 class Categories {
   int? count;
-  Set<Category> value;
+  List<Category> value;
 
   Categories({this.count, required this.value});
 
   factory Categories.fromJson(Map<String, dynamic> json) {
     return Categories(
       count: json['@odata.count'],
-      value: Set<Category>.from(
+      value: List<Category>.from(
         json['value'].map(
           (x) => Category.fromJson(x),
         ),
