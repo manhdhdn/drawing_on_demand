@@ -9,6 +9,7 @@ import '../screen/client_screen/home/top_seller.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
+import '../screen/client_screen/service_details/client_order.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/authentication/opt_verification.dart';
 import '../screen/common/authentication/sign_up.dart';
@@ -47,6 +48,7 @@ class AppRoutes {
     TopSeller.tag: (context) => const TopSeller(),
     ServiceDetails.tag: (context) => const ServiceDetails(),
     CartScreen.tag: (context) => const CartScreen(),
+    ClientOrder.tag: (context) => const ClientOrder(),
   };
 
   static Map<String, WidgetBuilder> artistRoutes = {

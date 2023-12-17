@@ -1,14 +1,16 @@
+import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/utils/pref_utils.dart';
-import '../../../data/apis/artwork_api.dart';
-import '../../../data/models/artwork.dart';
+import '../../../data/apis/order_detail_api.dart';
+import '../../../data/models/order.dart';
 import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
 import '../home/client_home_screen.dart';
+import '../service_details/client_order.dart';
 
 class CartScreen extends StatefulWidget {
   static const String tag = '${ClientHomeScreen.tag}/cart';
@@ -20,16 +22,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  late Future<Artworks?> newArtworks;
+  late Future<Order?> cart;
 
-  double total = 3000000000.0;
-  int top = 100;
+  double total = 0;
 
   @override
   void initState() {
     super.initState();
 
-    newArtworks = getNewArtworks();
+    refresh();
   }
 
   @override
@@ -59,18 +60,42 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           child: FutureBuilder(
-            future: newArtworks,
+            future: cart,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
+                      Column(
+                        children: [
+                          const SizedBox(height: 50.0),
+                          Container(
+                            height: 213,
+                            width: 269,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/emptyservice.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Text(
+                            'Nothing just yet',
+                            textAlign: TextAlign.center,
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0),
+                          ),
+                        ],
+                      ).visible(snapshot.data!.orderDetails!.isEmpty),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: 10,
+                          itemCount: snapshot.data!.orderDetails!.length,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (_, i) {
@@ -78,9 +103,8 @@ class _CartScreenState extends State<CartScreen> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onNewArtworkDetail(snapshot.data!.value
-                                      .elementAt(i)
-                                      .id!
+                                  onNewArtworkDetail(snapshot
+                                      .data!.orderDetails![i].artworkId
                                       .toString());
                                 },
                                 child: Container(
@@ -118,8 +142,9 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                               image: DecorationImage(
                                                   image: NetworkImage(snapshot
-                                                      .data!.value
-                                                      .elementAt(i)
+                                                      .data!
+                                                      .orderDetails![i]
+                                                      .artwork!
                                                       .arts!
                                                       .first
                                                       .image!),
@@ -139,8 +164,10 @@ class _CartScreenState extends State<CartScreen> {
                                               child: SizedBox(
                                                 width: 190,
                                                 child: Text(
-                                                  snapshot.data!.value
-                                                      .elementAt(i)
+                                                  snapshot
+                                                      .data!
+                                                      .orderDetails![i]
+                                                      .artwork!
                                                       .title!,
                                                   style: kTextStyle.copyWith(
                                                       color: kNeutralColor,
@@ -153,55 +180,60 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                             const SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  height: 32,
-                                                  width: 32,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(snapshot
-                                                            .data!.value
-                                                            .elementAt(i)
-                                                            .createdByNavigation!
-                                                            .avatar!),
-                                                        fit: BoxFit.cover),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 5.0),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      snapshot.data!.value
-                                                          .elementAt(i)
-                                                          .createdByNavigation!
-                                                          .name!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style:
-                                                          kTextStyle.copyWith(
-                                                              color:
-                                                                  kNeutralColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                    Text(
-                                                      'Artist Rank - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: kTextStyle.copyWith(
-                                                          color:
-                                                              kSubTitleColor),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                            // Row(
+                                            //   children: [
+                                            //     Container(
+                                            //       height: 32,
+                                            //       width: 32,
+                                            //       decoration: BoxDecoration(
+                                            //         shape: BoxShape.circle,
+                                            //         image: DecorationImage(
+                                            //             image: NetworkImage(snapshot
+                                            //                 .data!.value
+                                            //                 .elementAt(i)
+                                            //                 .createdByNavigation!
+                                            //                 .avatar!),
+                                            //             fit: BoxFit.cover),
+                                            //       ),
+                                            //     ),
+                                            //     const SizedBox(width: 5.0),
+                                            //     Column(
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.start,
+                                            //       children: [
+                                            //         Text(
+                                            //           snapshot.data!.value
+                                            //               .elementAt(i)
+                                            //               .createdByNavigation!
+                                            //               .name!,
+                                            //           maxLines: 1,
+                                            //           overflow:
+                                            //               TextOverflow.ellipsis,
+                                            //           style:
+                                            //               kTextStyle.copyWith(
+                                            //                   color:
+                                            //                       kNeutralColor,
+                                            //                   fontWeight:
+                                            //                       FontWeight
+                                            //                           .bold),
+                                            //         ),
+                                            //         Text(
+                                            //           'Artist Rank - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
+                                            //           maxLines: 1,
+                                            //           overflow:
+                                            //               TextOverflow.ellipsis,
+                                            //           style: kTextStyle.copyWith(
+                                            //               color:
+                                            //                   kSubTitleColor),
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ],
+                                            // ),
+                                            Text(
+                                              'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![i].price)}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor),
                                             ),
                                             const SizedBox(height: 5.0),
                                             SizedBox(
@@ -209,7 +241,28 @@ class _CartScreenState extends State<CartScreen> {
                                               child: Row(
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      if (snapshot
+                                                              .data!
+                                                              .orderDetails![i]
+                                                              .quantity! >
+                                                          1) {
+                                                        decreaseQuantity(
+                                                                snapshot
+                                                                    .data!
+                                                                    .orderDetails![
+                                                                        i]
+                                                                    .id
+                                                                    .toString(),
+                                                                snapshot
+                                                                    .data!
+                                                                    .orderDetails![
+                                                                        i]
+                                                                    .quantity!)
+                                                            .then((value) =>
+                                                                refresh());
+                                                      }
+                                                    },
                                                     child: Container(
                                                       width: 20,
                                                       height: 20,
@@ -230,7 +283,11 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                   const SizedBox(width: 5.0),
                                                   Text(
-                                                    '1',
+                                                    snapshot
+                                                        .data!
+                                                        .orderDetails![i]
+                                                        .quantity
+                                                        .toString(),
                                                     style: kTextStyle.copyWith(
                                                       color: kPrimaryColor,
                                                       fontWeight:
@@ -239,7 +296,22 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                   const SizedBox(width: 5.0),
                                                   GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      increaseQuantity(
+                                                              snapshot
+                                                                  .data!
+                                                                  .orderDetails![
+                                                                      i]
+                                                                  .id
+                                                                  .toString(),
+                                                              snapshot
+                                                                  .data!
+                                                                  .orderDetails![
+                                                                      i]
+                                                                  .quantity!)
+                                                          .then((value) =>
+                                                              refresh());
+                                                    },
                                                     child: Container(
                                                       width: 20,
                                                       height: 20,
@@ -258,14 +330,49 @@ class _CartScreenState extends State<CartScreen> {
                                                       ),
                                                     ),
                                                   ),
+                                                  const SizedBox(width: 10.0),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      onRemove(snapshot
+                                                              .data!
+                                                              .orderDetails![i]
+                                                              .id
+                                                              .toString())
+                                                          .then((value) =>
+                                                              refresh());
+                                                    },
+                                                    child: Container(
+                                                      height: 27,
+                                                      width: 20,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            kBorderColorTextField,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          5.0,
+                                                        ),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.delete,
+                                                        size: 18,
+                                                      ),
+                                                    ),
+                                                  ),
                                                   const Spacer(),
                                                   Text(
                                                     NumberFormat.simpleCurrency(
                                                             locale: 'vi_VN')
                                                         .format(snapshot
-                                                            .data!.value
-                                                            .elementAt(i)
-                                                            .price!),
+                                                                .data!
+                                                                .orderDetails![
+                                                                    i]
+                                                                .quantity! *
+                                                            snapshot
+                                                                .data!
+                                                                .orderDetails![
+                                                                    i]
+                                                                .price!),
                                                     style: kTextStyle.copyWith(
                                                       color: kPrimaryColor,
                                                       fontWeight:
@@ -325,7 +432,9 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                onOrderNow();
+              },
               child: Container(
                 width: context.width() * 0.5,
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -350,30 +459,35 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Future<Artworks?> getNewArtworks() async {
-    try {
-      return ArtworkApi().gets(
-        0,
-        top: top,
-        expand: 'artworkreviews,arts,createdbynavigation(expand=rank)',
-        orderBy: 'createdDate desc',
-      );
-    } catch (error) {
-      Fluttertoast.showToast(msg: 'Get new artworks failed');
-    }
-
-    return null;
-  }
-
   void onNewArtworkDetail(String id) {
     PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, ServiceDetails.tag).then(
-      (value) => setState(
-        () {
-          newArtworks = getNewArtworks();
-        },
-      ),
-    );
+    Navigator.pushNamed(context, ServiceDetails.tag).then((value) => refresh());
+  }
+
+  void refresh() {
+    setState(() {
+      cart = getCart().then((order) {
+        double total = 0;
+
+        for (var orderDetail in order.orderDetails!) {
+          total += orderDetail.price! * orderDetail.quantity!;
+        }
+
+        setState(() {
+          this.total = total;
+        });
+
+        return order;
+      });
+    });
+  }
+
+  void onOrderNow() {
+    Navigator.pushNamed(context, ClientOrder.tag);
+  }
+
+  Future<void> onRemove(String id) async {
+    await OrderDetailApi().deleteOne(id);
   }
 }

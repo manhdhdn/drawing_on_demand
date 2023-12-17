@@ -105,9 +105,9 @@ class Account {
       'Bio': bio,
       'AvailableConnect': availableConnect,
       'CreatedDate':
-          DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(createdDate!),
+          DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(lastModifiedDate!)
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(lastModifiedDate!)
           : null,
       'Status': status,
       'RankId': rankId.toString(),

@@ -102,8 +102,9 @@ class _JobPostState extends State<JobPost> {
                             width: 269,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('images/emptyservice.png'),
-                                  fit: BoxFit.cover),
+                                image: AssetImage('images/emptyservice.png'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20.0),

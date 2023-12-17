@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/rank.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../models/rank.dart';
+import 'api_config.dart';
 
 class RankApi {
   Future<void> isNetworkConnected() async {
@@ -117,7 +118,7 @@ class RankApi {
     return rank;
   }
 
-  Future postOne(Rank rank) async {
+  Future<void> postOne(Rank rank) async {
     try {
       final response = await post(
         Uri.https(
@@ -157,7 +158,7 @@ class RankApi {
     return rank;
   }
 
-  Future deleteOne(String id) async {
+  Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,

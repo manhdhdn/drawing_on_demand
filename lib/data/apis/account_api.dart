@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/account.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../models/account.dart';
+import 'api_config.dart';
 
 class AccountApi {
   Future<void> isNetworkConnected() async {
@@ -117,7 +118,7 @@ class AccountApi {
     return account;
   }
 
-  Future postOne(Account account) async {
+  Future<void> postOne(Account account) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
@@ -157,7 +158,7 @@ class AccountApi {
     return account;
   }
 
-  Future deleteOne(String id) async {
+  Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,

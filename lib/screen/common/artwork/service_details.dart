@@ -771,12 +771,8 @@ class _ServiceDetailsState extends State<ServiceDetails>
                     color: kWhite,
                     border: Border.all(color: kPrimaryColor),
                   ),
-                  onPressed: () {
-                    setState(
-                      () {
-                        onAddToCart(PrefUtils().getTermId());
-                      },
-                    );
+                  onPressed: () async {
+                    onAddToCart(await artwork.then((value) => value!));
                   },
                   buttonTextColor: kPrimaryColor,
                 ),

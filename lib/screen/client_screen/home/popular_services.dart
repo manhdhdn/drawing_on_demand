@@ -222,9 +222,7 @@ class _PopularServicesState extends State<PopularServices> {
                                                 onTap: () {
                                                   onAddToCart(snapshot
                                                       .data!.value
-                                                      .elementAt(i)
-                                                      .id
-                                                      .toString());
+                                                      .elementAt(i));
                                                 },
                                                 child: Padding(
                                                   padding:

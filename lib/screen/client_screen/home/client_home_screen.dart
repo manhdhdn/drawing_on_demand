@@ -308,7 +308,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onPopularArtworkDetail(snapshot.data!.value
+                                  onArtworkDetail(snapshot.data!.value
                                       .elementAt(i)
                                       .id!
                                       .toString());
@@ -409,9 +409,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                 onTap: () {
                                                   onAddToCart(snapshot
                                                       .data!.value
-                                                      .elementAt(i)
-                                                      .id
-                                                      .toString());
+                                                      .elementAt(i));
                                                 },
                                                 child: Padding(
                                                   padding:
@@ -788,7 +786,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onNewArtworkDetail(snapshot.data!.value
+                                  onArtworkDetail(snapshot.data!.value
                                       .elementAt(i)
                                       .id!
                                       .toString());
@@ -889,9 +887,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                 onTap: () {
                                                   onAddToCart(snapshot
                                                       .data!.value
-                                                      .elementAt(i)
-                                                      .id
-                                                      .toString());
+                                                      .elementAt(i));
                                                 },
                                                 child: Padding(
                                                   padding:
@@ -1136,6 +1132,16 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     return null;
   }
 
+  void onArtworkDetail(String id) {
+    PrefUtils().setTermId(id);
+
+    Navigator.pushNamed(context, ServiceDetails.tag);
+  }
+
+  void onCart() {
+    Navigator.pushNamed(context, CartScreen.tag);
+  }
+
   void onPopularArtwork() {
     setState(() {
       selectedServiceList = 'Popular';
@@ -1154,21 +1160,5 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   void onTopArtists() {
     Navigator.pushNamed(context, TopSeller.tag);
-  }
-
-  void onPopularArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
-
-    Navigator.pushNamed(context, ServiceDetails.tag);
-  }
-
-  void onNewArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
-
-    Navigator.pushNamed(context, ServiceDetails.tag);
-  }
-
-  void onCart() {
-    Navigator.pushNamed(context, CartScreen.tag);
   }
 }

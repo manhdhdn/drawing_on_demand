@@ -118,7 +118,7 @@ class AccountRoleApi {
     return accountRole;
   }
 
-  Future postOne(AccountRole accountRole) async {
+  Future<void> postOne(AccountRole accountRole) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
@@ -158,7 +158,7 @@ class AccountRoleApi {
     return accountRole;
   }
 
-  Future deleteOne(String id) async {
+  Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,

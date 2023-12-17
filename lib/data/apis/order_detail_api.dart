@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../models/order.dart';
+import '../models/order_detail.dart';
 import 'api_config.dart';
 
-class OrderApi {
+class OrderDetailApi {
   Future<void> isNetworkConnected() async {
     try {
       if (!isWeb) {
@@ -22,15 +22,15 @@ class OrderApi {
     return response.statusCode >= 200 && response.statusCode < 400;
   }
 
-  Future<Orders> gets(int skip,
+  Future<OrderDetails> gets(int skip,
       {int? top,
       String? filter,
       String? count,
-      String? orderBy,
+      String? orderDetailBy,
       String? select,
       String? expand}) async {
     int? counter;
-    List<Order> orders = [];
+    List<OrderDetail> orderDetails = [];
 
     try {
       await isNetworkConnected();
@@ -51,8 +51,8 @@ class OrderApi {
         query['count'] = count;
       }
 
-      if (orderBy != null) {
-        query['orderby'] = orderBy;
+      if (orderDetailBy != null) {
+        query['orderDetailby'] = orderDetailBy;
       }
 
       if (select != null) {
@@ -66,17 +66,17 @@ class OrderApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['order']}",
+          "${ApiConfig.odata}/${ApiConfig.paths['orderDetail']}",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        var data = Orders.fromJson(jsonDecode(response.body));
+        var data = OrderDetails.fromJson(jsonDecode(response.body));
 
         counter = data.count ?? 0;
-        orders = data.value;
+        orderDetails = data.value;
       } else {
         throw errorSomethingWentWrong;
       }
@@ -84,11 +84,11 @@ class OrderApi {
       rethrow;
     }
 
-    return Orders(value: orders, count: counter);
+    return OrderDetails(value: orderDetails, count: counter);
   }
 
-  Future<Order> getOne(String id, String? expand) async {
-    Order order = Order();
+  Future<OrderDetail> getOne(String id, String? expand) async {
+    OrderDetail orderDetail = OrderDetail();
 
     try {
       Map<String, String> query = {};
@@ -100,14 +100,14 @@ class OrderApi {
       final response = await get(
         Uri.https(
           ApiConfig.baseUrl,
-          "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id",
+          "${ApiConfig.odata}/${ApiConfig.paths['orderDetail']}/$id",
           query,
         ),
         headers: ApiConfig.headers,
       );
 
       if (_isSuccessCall(response)) {
-        order = Order.fromJson(jsonDecode(response.body));
+        orderDetail = OrderDetail.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -115,16 +115,16 @@ class OrderApi {
       rethrow;
     }
 
-    return order;
+    return orderDetail;
   }
 
-  Future<void> postOne(Order order) async {
+  Future<void> postOne(OrderDetail orderDetail) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['order']}"),
+            "${ApiConfig.odata}/${ApiConfig.paths['orderDetail']}"),
         headers: ApiConfig.headers,
-        body: jsonEncode(order.toJson()),
+        body: jsonEncode(orderDetail.toJson()),
       );
 
       if (!_isSuccessCall(response)) {
@@ -135,19 +135,19 @@ class OrderApi {
     }
   }
 
-  Future<Order> patchOne(String id, Map body) async {
-    Order order = Order();
+  Future<OrderDetail> patchOne(String id, Map body) async {
+    OrderDetail orderDetail = OrderDetail();
 
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['orderDetail']}/$id"),
         headers: ApiConfig.headers,
         body: jsonEncode(body),
       );
 
       if (_isSuccessCall(response)) {
-        order = Order.fromJson(jsonDecode(response.body));
+        orderDetail = OrderDetail.fromJson(jsonDecode(response.body));
       } else {
         throw errorSomethingWentWrong;
       }
@@ -155,14 +155,14 @@ class OrderApi {
       rethrow;
     }
 
-    return order;
+    return orderDetail;
   }
 
   Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,
-            "${ApiConfig.odata}/${ApiConfig.paths['order']}/$id"),
+            "${ApiConfig.odata}/${ApiConfig.paths['orderDetail']}/$id"),
         headers: ApiConfig.headers,
       );
 

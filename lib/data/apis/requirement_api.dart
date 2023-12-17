@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/requirement.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../models/requirement.dart';
+import 'api_config.dart';
 
 class RequirementApi {
   Future<void> isNetworkConnected() async {
@@ -117,7 +118,7 @@ class RequirementApi {
     return requirement;
   }
 
-  Future postOne(Requirement requirement) async {
+  Future<void> postOne(Requirement requirement) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
@@ -157,7 +158,7 @@ class RequirementApi {
     return requirement;
   }
 
-  Future deleteOne(String id) async {
+  Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,

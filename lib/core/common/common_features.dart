@@ -11,9 +11,12 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../app_routes/app_routes.dart';
 import '../../data/apis/order_api.dart';
+import '../../data/apis/order_detail_api.dart';
 import '../../data/models/account_review.dart';
+import '../../data/models/artwork.dart';
 import '../../data/models/artwork_review.dart';
 import '../../data/models/order.dart';
+import '../../data/models/order_detail.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
 import '../utils/pref_utils.dart';
@@ -131,30 +134,96 @@ String getAccountReviewPoint(List<AccountReview> accountReviews) {
   return NumberFormat('0.0').format(point);
 }
 
-Future<Order> checkCartCreated() async {
+Future<Order> getCart() async {
   Order order = Order();
 
   try {
-    order = (await OrderApi().gets(
-      0,
-      filter:
-          "CreatedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and Status eq 'Cart'",
-    ))
-        .value
-        .first;
+    if (PrefUtils().getCartId() == '') {
+      order = (await OrderApi().gets(
+        0,
+        filter:
+            "OrderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and Status eq 'Cart'",
+        expand: 'orderDetails(expand=artwork(expand=arts,createdByNavigation))',
+      ))
+          .value
+          .first;
+    } else {
+      order = await OrderApi().getOne(
+        PrefUtils().getCartId(),
+        'orderDetails(expand=artwork(expand=arts,createdByNavigation))',
+      );
+    }
   } catch (error) {
-    order = await OrderApi().postOne(
-      Order(
-        id: Guid.newGuid,
-        orderType: 'Artwork',
-        orderDate: DateTime.now(),
-      ),
+    order = Order(
+      id: Guid.newGuid,
+      orderType: 'Artwork',
+      orderDate: DateTime.now(),
+      status: 'Cart',
+      total: 0,
+      orderBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
+      orderDetails: [],
     );
+
+    await OrderApi().postOne(order);
+
+    PrefUtils().setCartId(order.id!.toString());
   }
 
   return order;
 }
 
-void onAddToCart(String id) {
+void onAddToCart(Artwork artwork) async {
+  Order order = await getCart();
+
+  for (var orderDetail in order.orderDetails!) {
+    if (orderDetail.artworkId == artwork.id) {
+      increaseQuantity(orderDetail.id.toString(), orderDetail.quantity!);
+
+      Fluttertoast.showToast(msg: 'Add to cart successfully (quantity)');
+
+      return;
+    }
+  }
+
+  try {
+    OrderDetail orderDetai = OrderDetail(
+      id: Guid.newGuid,
+      price: artwork.price,
+      quantity: 1,
+      fee: artwork.createdByNavigation!.rank!.fee,
+      artworkId: artwork.id,
+      orderId: order.id,
+    );
+
+    await OrderDetailApi().postOne(orderDetai);
+
+    Fluttertoast.showToast(msg: 'Add to cart successfully');
+  } catch (error) {
+    Fluttertoast.showToast(msg: 'Add to cart failed');
+  }
+}
+
+Future<void> increaseQuantity(String id, int quantity) async {
+  quantity++;
+
+  try {
+    await OrderDetailApi().patchOne(id, {'Quantity': quantity});
+  } catch (error) {
+    //
+  }
+}
+
+Future<void> decreaseQuantity(String id, int quantity) async {
+  quantity--;
+
+  try {
+    await OrderDetailApi().patchOne(id, {'Quantity': quantity});
+  } catch (error) {
+    //
+  }
+}
+
+String getDiscount() {
   // TODO
+  return '';
 }

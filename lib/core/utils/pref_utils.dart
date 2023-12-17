@@ -23,6 +23,7 @@ class PrefUtils {
     _sharedPreferences!.remove('token');
     _sharedPreferences!.remove('role');
     _sharedPreferences!.remove('rank');
+    _sharedPreferences!.remove('cartId');
   }
 
   Future<void> setThemeData(String value) {
@@ -123,5 +124,17 @@ class PrefUtils {
 
   void clearTermId() {
     _sharedPreferences!.remove('termId');
+  }
+
+  Future<void> setCartId(String value) {
+    return _sharedPreferences!.setString('cartId', value);
+  }
+
+  String getCartId() {
+    try {
+      return _sharedPreferences!.getString('cartId')!;
+    } catch (e) {
+      return '';
+    }
   }
 }

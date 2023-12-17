@@ -1,3 +1,4 @@
+import 'package:drawing_on_demand/data/models/order_detail.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -25,11 +26,11 @@ class Order {
   DateTime? orderDate;
   DateTime? depositDate;
   DateTime? completedDate;
-  double? fee;
   String? status;
   double? total;
   Guid? orderBy;
   Guid? discountId;
+  List<OrderDetail>? orderDetails;
 
   Order({
     this.id,
@@ -37,11 +38,11 @@ class Order {
     this.orderDate,
     this.depositDate,
     this.completedDate,
-    this.fee,
     this.status,
     this.total,
     this.orderBy,
     this.discountId,
+    this.orderDetails,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -54,28 +55,33 @@ class Order {
     completedDate = json['CompletedDate'] != null
         ? DateTime.parse(json['CompletedDate'])
         : null;
-    fee = double.tryParse(json['Fee'].toString());
     status = json['Status'];
     total = double.tryParse(json['Total'].toString());
     orderBy = Guid(json['OrderBy']);
     discountId = json['DiscountId'] != null ? Guid(json['DiscountId']) : null;
+    orderDetails = json['OrderDetails'] != null
+        ? List<OrderDetail>.from(
+            json['OrderDetails'].map(
+              (x) => OrderDetail.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'Id': id.toString(),
       'OrderType': orderType,
-      'OrderDate': DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(orderDate!),
+      'OrderDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(orderDate!),
       'DepositDate': depositDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(depositDate!)
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(depositDate!)
           : null,
       'CompletedDate': completedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss+07:00').format(completedDate!)
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(completedDate!)
           : null,
-      'Fee': fee,
       'Status': status,
       'Total': total,
-      'OrderBy': orderBy.toString(),
+      'OrderedBy': orderBy.toString(),
       'DiscountId': discountId?.toString(),
     };
   }

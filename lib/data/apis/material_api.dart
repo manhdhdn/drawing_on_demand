@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:drawing_on_demand/data/apis/api_config.dart';
-import 'package:drawing_on_demand/data/models/material.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../models/material.dart';
+import 'api_config.dart';
 
 class MaterialApi {
   Future<void> isNetworkConnected() async {
@@ -117,7 +118,7 @@ class MaterialApi {
     return material;
   }
 
-  Future postOne(Material material) async {
+  Future<void> postOne(Material material) async {
     try {
       final response = await post(
         Uri.https(ApiConfig.baseUrl,
@@ -157,7 +158,7 @@ class MaterialApi {
     return material;
   }
 
-  Future deleteOne(String id) async {
+  Future<void> deleteOne(String id) async {
     try {
       final response = await delete(
         Uri.https(ApiConfig.baseUrl,
