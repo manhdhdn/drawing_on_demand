@@ -1,4 +1,5 @@
 import 'package:drawing_on_demand/core/common/common_features.dart';
+import 'package:drawing_on_demand/data/models/order_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -63,6 +64,32 @@ class _CartScreenState extends State<CartScreen> {
             future: cart,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
+
+                orderDetails.sort(((a, b) => a
+                    .artwork!.createdByNavigation!.email!
+                    .compareTo(b.artwork!.createdByNavigation!.email!)));
+
+                List<int> packList = [0];
+                int packCount = 0;
+                if (orderDetails.isNotEmpty) {
+                  String tempEmail =
+                      orderDetails.first.artwork!.createdByNavigation!.email!;
+
+                  for (var orderDetail in orderDetails) {
+                    if (orderDetail.artwork!.createdByNavigation!.email ==
+                        tempEmail) {
+                      packList[packCount]++;
+                    } else {
+                      tempEmail =
+                          orderDetail.artwork!.createdByNavigation!.email!;
+
+                      packCount++;
+                      packList.add(1);
+                    }
+                  }
+                }
+
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
@@ -90,304 +117,349 @@ class _CartScreenState extends State<CartScreen> {
                                 fontSize: 24.0),
                           ),
                         ],
-                      ).visible(snapshot.data!.orderDetails!.isEmpty),
+                      ).visible(orderDetails.isEmpty),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: snapshot.data!.orderDetails!.length,
+                          itemCount: packCount != 0 ? packCount + 1 : 0,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (_, i) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  onNewArtworkDetail(snapshot
-                                      .data!.orderDetails![i].artworkId
-                                      .toString());
-                                },
-                                child: Container(
-                                  height: context.height() * 0.135,
-                                  decoration: BoxDecoration(
-                                    color: kWhite,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                        color: kBorderColorTextField),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: kDarkWhite,
-                                        blurRadius: 5.0,
-                                        spreadRadius: 2.0,
-                                        offset: Offset(0, 5),
+                            return Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                initiallyExpanded: true,
+                                tilePadding: const EdgeInsets.only(bottom: 5.0),
+                                childrenPadding: EdgeInsets.zero,
+                                collapsedIconColor: kLightNeutralColor,
+                                iconColor: kLightNeutralColor,
+                                title: Row(
+                                  children: [
+                                    Container(
+                                      height: 32,
+                                      width: 32,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: NetworkImage(orderDetails[
+                                                    getCartIndex(i, packList)]
+                                                .artwork!
+                                                .createdByNavigation!
+                                                .avatar!),
+                                            fit: BoxFit.cover),
                                       ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.topLeft,
-                                        children: [
-                                          Container(
+                                    ),
+                                    const SizedBox(width: 5.0),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Author',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
+                                        ),
+                                        Text(
+                                          orderDetails[
+                                                  getCartIndex(i, packList)]
+                                              .artwork!
+                                              .createdByNavigation!
+                                              .name!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: packList[i],
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    itemBuilder: (_, j) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            onArtworkDetail(
+                                              orderDetails[j +
+                                                      getCartIndex(i, packList)]
+                                                  .artworkId
+                                                  .toString(),
+                                            );
+                                          },
+                                          child: Container(
                                             height: context.height() * 0.135,
-                                            width: context.height() * 0.135,
                                             decoration: BoxDecoration(
+                                              color: kWhite,
                                               borderRadius:
-                                                  const BorderRadius.only(
-                                                bottomLeft:
-                                                    Radius.circular(8.0),
-                                                topLeft: Radius.circular(8.0),
-                                              ),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(snapshot
-                                                      .data!
-                                                      .orderDetails![i]
-                                                      .artwork!
-                                                      .arts!
-                                                      .first
-                                                      .image!),
-                                                  fit: BoxFit.cover),
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                  color: kBorderColorTextField),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: kDarkWhite,
+                                                  blurRadius: 5.0,
+                                                  spreadRadius: 2.0,
+                                                  offset: Offset(0, 5),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Stack(
+                                                  alignment: Alignment.topLeft,
+                                                  children: [
+                                                    Container(
+                                                      height: context.height() *
+                                                          0.135,
+                                                      width: context.height() *
+                                                          0.135,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  8.0),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  8.0),
+                                                        ),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                orderDetails[j +
+                                                                        getCartIndex(
+                                                                            i,
+                                                                            packList)]
+                                                                    .artwork!
+                                                                    .arts!
+                                                                    .first
+                                                                    .image!),
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Flexible(
+                                                        child: SizedBox(
+                                                          width: 190,
+                                                          child: Text(
+                                                            orderDetails[j +
+                                                                    getCartIndex(
+                                                                        i,
+                                                                        packList)]
+                                                                .artwork!
+                                                                .title!,
+                                                            style: kTextStyle.copyWith(
+                                                                color:
+                                                                    kNeutralColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 5.0),
+                                                      Text(
+                                                        'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
+                                                        style: kTextStyle.copyWith(
+                                                            color:
+                                                                kSubTitleColor),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 5.0),
+                                                      SizedBox(
+                                                        width: context.width() *
+                                                            0.58,
+                                                        child: Row(
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                if (orderDetails[j +
+                                                                            getCartIndex(i,
+                                                                                packList)]
+                                                                        .quantity! >
+                                                                    1) {
+                                                                  decreaseQuantity(
+                                                                          orderDetails[j + getCartIndex(i, packList)]
+                                                                              .id
+                                                                              .toString(),
+                                                                          orderDetails[j + getCartIndex(i, packList)]
+                                                                              .quantity!)
+                                                                      .then((value) =>
+                                                                          refresh());
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                width: 20,
+                                                                height: 20,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      kBorderColorTextField,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    5.0,
+                                                                  ),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .remove_outlined,
+                                                                  size: 16,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 5.0),
+                                                            Text(
+                                                              orderDetails[j +
+                                                                      getCartIndex(
+                                                                          i,
+                                                                          packList)]
+                                                                  .quantity
+                                                                  .toString(),
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 5.0),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                increaseQuantity(
+                                                                        orderDetails[j + getCartIndex(i, packList)]
+                                                                            .id
+                                                                            .toString(),
+                                                                        orderDetails[j + getCartIndex(i, packList)]
+                                                                            .quantity!)
+                                                                    .then((value) =>
+                                                                        refresh());
+                                                              },
+                                                              child: Container(
+                                                                width: 20,
+                                                                height: 20,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      kBorderColorTextField,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    5.0,
+                                                                  ),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .add_rounded,
+                                                                  size: 16,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 10.0),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                onRemove(orderDetails[j +
+                                                                            getCartIndex(i,
+                                                                                packList)]
+                                                                        .id
+                                                                        .toString())
+                                                                    .then((value) =>
+                                                                        refresh());
+                                                              },
+                                                              child: Container(
+                                                                height: 27,
+                                                                width: 20,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      kBorderColorTextField,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    5.0,
+                                                                  ),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons.delete,
+                                                                  size: 18,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const Spacer(),
+                                                            Text(
+                                                              NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j +
+                                                                          getCartIndex(
+                                                                              i,
+                                                                              packList)]
+                                                                      .quantity! *
+                                                                  orderDetails[j +
+                                                                          getCartIndex(
+                                                                              i,
+                                                                              packList)]
+                                                                      .price!),
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Flexible(
-                                              child: SizedBox(
-                                                width: 190,
-                                                child: Text(
-                                                  snapshot
-                                                      .data!
-                                                      .orderDetails![i]
-                                                      .artwork!
-                                                      .title!,
-                                                  style: kTextStyle.copyWith(
-                                                      color: kNeutralColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5.0),
-                                            // Row(
-                                            //   children: [
-                                            //     Container(
-                                            //       height: 32,
-                                            //       width: 32,
-                                            //       decoration: BoxDecoration(
-                                            //         shape: BoxShape.circle,
-                                            //         image: DecorationImage(
-                                            //             image: NetworkImage(snapshot
-                                            //                 .data!.value
-                                            //                 .elementAt(i)
-                                            //                 .createdByNavigation!
-                                            //                 .avatar!),
-                                            //             fit: BoxFit.cover),
-                                            //       ),
-                                            //     ),
-                                            //     const SizedBox(width: 5.0),
-                                            //     Column(
-                                            //       crossAxisAlignment:
-                                            //           CrossAxisAlignment.start,
-                                            //       children: [
-                                            //         Text(
-                                            //           snapshot.data!.value
-                                            //               .elementAt(i)
-                                            //               .createdByNavigation!
-                                            //               .name!,
-                                            //           maxLines: 1,
-                                            //           overflow:
-                                            //               TextOverflow.ellipsis,
-                                            //           style:
-                                            //               kTextStyle.copyWith(
-                                            //                   color:
-                                            //                       kNeutralColor,
-                                            //                   fontWeight:
-                                            //                       FontWeight
-                                            //                           .bold),
-                                            //         ),
-                                            //         Text(
-                                            //           'Artist Rank - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
-                                            //           maxLines: 1,
-                                            //           overflow:
-                                            //               TextOverflow.ellipsis,
-                                            //           style: kTextStyle.copyWith(
-                                            //               color:
-                                            //                   kSubTitleColor),
-                                            //         ),
-                                            //       ],
-                                            //     ),
-                                            //   ],
-                                            // ),
-                                            Text(
-                                              'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![i].price)}',
-                                              style: kTextStyle.copyWith(
-                                                  color: kSubTitleColor),
-                                            ),
-                                            const SizedBox(height: 5.0),
-                                            SizedBox(
-                                              width: context.width() * 0.58,
-                                              child: Row(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      if (snapshot
-                                                              .data!
-                                                              .orderDetails![i]
-                                                              .quantity! >
-                                                          1) {
-                                                        decreaseQuantity(
-                                                                snapshot
-                                                                    .data!
-                                                                    .orderDetails![
-                                                                        i]
-                                                                    .id
-                                                                    .toString(),
-                                                                snapshot
-                                                                    .data!
-                                                                    .orderDetails![
-                                                                        i]
-                                                                    .quantity!)
-                                                            .then((value) =>
-                                                                refresh());
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      width: 20,
-                                                      height: 20,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            kBorderColorTextField,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          5.0,
-                                                        ),
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons.remove_outlined,
-                                                        size: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 5.0),
-                                                  Text(
-                                                    snapshot
-                                                        .data!
-                                                        .orderDetails![i]
-                                                        .quantity
-                                                        .toString(),
-                                                    style: kTextStyle.copyWith(
-                                                      color: kPrimaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 5.0),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      increaseQuantity(
-                                                              snapshot
-                                                                  .data!
-                                                                  .orderDetails![
-                                                                      i]
-                                                                  .id
-                                                                  .toString(),
-                                                              snapshot
-                                                                  .data!
-                                                                  .orderDetails![
-                                                                      i]
-                                                                  .quantity!)
-                                                          .then((value) =>
-                                                              refresh());
-                                                    },
-                                                    child: Container(
-                                                      width: 20,
-                                                      height: 20,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            kBorderColorTextField,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          5.0,
-                                                        ),
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons.add_rounded,
-                                                        size: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      onRemove(snapshot
-                                                              .data!
-                                                              .orderDetails![i]
-                                                              .id
-                                                              .toString())
-                                                          .then((value) =>
-                                                              refresh());
-                                                    },
-                                                    child: Container(
-                                                      height: 27,
-                                                      width: 20,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            kBorderColorTextField,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          5.0,
-                                                        ),
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons.delete,
-                                                        size: 18,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Spacer(),
-                                                  Text(
-                                                    NumberFormat.simpleCurrency(
-                                                            locale: 'vi_VN')
-                                                        .format(snapshot
-                                                                .data!
-                                                                .orderDetails![
-                                                                    i]
-                                                                .quantity! *
-                                                            snapshot
-                                                                .data!
-                                                                .orderDetails![
-                                                                    i]
-                                                                .price!),
-                                                    style: kTextStyle.copyWith(
-                                                      color: kPrimaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      ),
-                                    ],
+                                      );
+                                    },
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           },
@@ -433,13 +505,13 @@ class _CartScreenState extends State<CartScreen> {
             ),
             TextButton(
               onPressed: () {
-                onOrderNow();
+                total != 0 ? onOrderNow() : null;
               },
               child: Container(
                 width: context.width() * 0.5,
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 decoration: kButtonDecoration.copyWith(
-                  color: kPrimaryColor,
+                  color: total != 0 ? kPrimaryColor : kLightNeutralColor,
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 child: Row(
@@ -459,10 +531,10 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void onNewArtworkDetail(String id) {
+  void onArtworkDetail(String id) {
     PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, ServiceDetails.tag).then((value) => refresh());
+    Navigator.pushNamed(context, ServiceDetails.tag);
   }
 
   void refresh() {
@@ -484,6 +556,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onOrderNow() {
+    PrefUtils().setTermId(PrefUtils().getCartId());
+
     Navigator.pushNamed(context, ClientOrder.tag);
   }
 

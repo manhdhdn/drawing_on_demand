@@ -142,11 +142,13 @@ Future<Order> getCart() async {
       order = (await OrderApi().gets(
         0,
         filter:
-            "OrderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and Status eq 'Cart'",
+            "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
         expand: 'orderDetails(expand=artwork(expand=arts,createdByNavigation))',
       ))
           .value
           .first;
+
+      PrefUtils().setCartId(order.id!.toString());
     } else {
       order = await OrderApi().getOne(
         PrefUtils().getCartId(),
@@ -221,6 +223,16 @@ Future<void> decreaseQuantity(String id, int quantity) async {
   } catch (error) {
     //
   }
+}
+
+int getCartIndex(int index, List<int> packList) {
+  int cartIndex = 0;
+
+  for (var i = 0; i < index; i++) {
+    cartIndex += packList[i];
+  }
+
+  return cartIndex;
 }
 
 String getDiscount() {

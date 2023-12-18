@@ -18,16 +18,16 @@ class ClientOrder extends StatefulWidget {
 class _ClientOrderState extends State<ClientOrder> {
   List<String> paymentMethod = [
     'Credit or Debit Card',
-    'Paypal',
-    'bkash',
+    'Visa',
+    'VNPay',
   ];
 
   String selectedPaymentMethod = 'Credit or Debit Card';
 
   List<String> imageList = [
     'images/creditcard.png',
-    'images/paypal2.png',
-    'images/bkash2.png',
+    'images/visa2.png',
+    'images/vnpay2.png',
   ];
 
   @override

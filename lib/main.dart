@@ -10,7 +10,6 @@ import 'app_routes/app_routes.dart';
 import 'core/utils/pref_utils.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
-import 'screen/client_screen/job_post/job_details.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,13 +66,7 @@ class _MyAppState extends State<MyApp> {
       locale: locale,
       theme: ThemeData(fontFamily: 'Display'),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.defaultTag,
       routes: routes,
-      onUnknownRoute: (settings) {
-        return MaterialPageRoute(
-          builder: (context) => const JobDetails(),
-        );
-      },
     );
   }
 
