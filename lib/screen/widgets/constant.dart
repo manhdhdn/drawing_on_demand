@@ -194,8 +194,6 @@ List<TitleModel> list = [
   TitleModel("Source file", false),
 ];
 
-String selectedServiceList = 'All';
-
 List<String> serviceList = [
   'All',
   'Popular',
@@ -273,3 +271,6 @@ List<Color> colorList = [
   const Color(0xFF144BD6),
   const Color(0xFFFF3B30),
 ];
+
+String defaultImage =
+    'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf';

@@ -11,13 +11,8 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
-import '../home/seller_home.dart';
-import '../../common/artwork/service_details.dart';
-import 'create_new_service.dart';
 
 class CreateService extends StatefulWidget {
-  static const String tag = '${SellerHome.tag}/artworks';
-
   const CreateService({Key? key}) : super(key: key);
 
   @override
@@ -302,30 +297,30 @@ class _CreateServiceState extends State<CreateService> {
   }
 
   void onCreateArtwork() {
-    Navigator.pushNamed(
-      context,
-      CreateNewService.tag,
-    ).then(
-      (value) => setState(
-        () {
-          artworks = getArtworks();
-        },
-      ),
-    );
+    // Navigator.pushNamed(
+    //   context,
+    //   CreateNewService.tag,
+    // ).then(
+    //   (value) => setState(
+    //     () {
+    //       artworks = getArtworks();
+    //     },
+    //   ),
+    // );
   }
 
   void onDetail(String id) {
-    PrefUtils().setTermId(id);
+    // PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(
-      context,
-      ServiceDetails.tag,
-    ).then(
-      (value) => setState(
-        () {
-          artworks = getArtworks();
-        },
-      ),
-    );
+    // Navigator.pushNamed(
+    //   context,
+    //   ServiceDetails.tag,
+    // ).then(
+    //   (value) => setState(
+    //     () {
+    //       artworks = getArtworks();
+    //     },
+    //   ),
+    // );
   }
 }

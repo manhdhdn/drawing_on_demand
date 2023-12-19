@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/models/account.dart';
-import '../../common/setting/setting.dart';
-import '../../common/add_payment_method/add_payment_method.dart';
 import '../../widgets/constant.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
@@ -17,11 +17,8 @@ import '../invite/client_invite.dart';
 import '../notification/client_notification.dart';
 import '../report/client_report.dart';
 import '../transaction/transaction.dart';
-import 'client_profile_details.dart';
 
 class ClientProfile extends StatefulWidget {
-  static const String tag = '/profile';
-
   const ClientProfile({Key? key}) : super(key: key);
 
   @override
@@ -227,33 +224,33 @@ class _ClientProfileState extends State<ClientProfile> {
                 //     ],
                 //   ),
                 // ),
-                ListTile(
-                  onTap: () => const AddPaymentMethod().launch(context),
-                  visualDensity: const VisualDensity(vertical: -3),
-                  horizontalTitleGap: 10,
-                  contentPadding: const EdgeInsets.only(bottom: 12),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFFFE5E3),
-                    ),
-                    child: const Icon(
-                      IconlyBold.ticketStar,
-                      color: Color(0xFFFF3B30),
-                    ),
-                  ),
-                  title: Text(
-                    'Add Payment method',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: kTextStyle.copyWith(color: kNeutralColor),
-                  ),
-                  trailing: const Icon(
-                    FeatherIcons.chevronRight,
-                    color: kLightNeutralColor,
-                  ),
-                ),
+                // ListTile(
+                //   onTap: () => const AddPaymentMethod().launch(context),
+                //   visualDensity: const VisualDensity(vertical: -3),
+                //   horizontalTitleGap: 10,
+                //   contentPadding: const EdgeInsets.only(bottom: 12),
+                //   leading: Container(
+                //     padding: const EdgeInsets.all(10.0),
+                //     decoration: const BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       color: Color(0xFFFFE5E3),
+                //     ),
+                //     child: const Icon(
+                //       IconlyBold.ticketStar,
+                //       color: Color(0xFFFF3B30),
+                //     ),
+                //   ),
+                //   title: Text(
+                //     'Add Payment method',
+                //     overflow: TextOverflow.ellipsis,
+                //     maxLines: 1,
+                //     style: kTextStyle.copyWith(color: kNeutralColor),
+                //   ),
+                //   trailing: const Icon(
+                //     FeatherIcons.chevronRight,
+                //     color: kLightNeutralColor,
+                //   ),
+                // ),
                 ListTile(
                   onTap: () => const ClientTransaction().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),
@@ -336,7 +333,9 @@ class _ClientProfileState extends State<ClientProfile> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const Setting().launch(context),
+                  onTap: () {
+                    onSetting();
+                  },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -352,7 +351,7 @@ class _ClientProfileState extends State<ClientProfile> {
                     ),
                   ),
                   title: Text(
-                    'Setting',
+                    'Settings',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -461,6 +460,10 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onProfile() {
-    Navigator.pushNamed(context, ClientProfileDetails.tag);
+    context.goNamed(ProfileDetailRoute.name);
+  }
+
+  void onSetting() {
+    context.goNamed(SettingRoute.name);
   }
 }

@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../app_routes/app_routes.dart';
+import '../../app_routes/named_routes.dart';
 import '../../data/apis/order_api.dart';
 import '../../data/apis/order_detail_api.dart';
 import '../../data/models/account_review.dart';
@@ -30,16 +30,8 @@ void logout(BuildContext context) async {
     PrefUtils().clearPreferencesData();
 
     // Navigate to login
-
     // ignore: use_build_context_synchronously
-    Phoenix.rebirth(context);
-
-    // ignore: use_build_context_synchronously
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.defaultTag,
-      (route) => false,
-    );
+    context.goNamed(LoginRoute.name);
   } catch (error) {
     Fluttertoast.showToast(msg: error.toString());
   }
@@ -138,7 +130,7 @@ Future<Order> getCart() async {
   Order order = Order();
 
   try {
-    if (PrefUtils().getCartId() == '') {
+    if (PrefUtils().getCartId() == '{}') {
       order = (await OrderApi().gets(
         0,
         filter:

@@ -11,8 +11,6 @@ import '../../widgets/data.dart';
 import '../../common/popUp/popup_1.dart';
 
 class SellerCreateProfile extends StatefulWidget {
-  static const String tag = 'artist/create_profile';
-
   const SellerCreateProfile({Key? key}) : super(key: key);
 
   @override

@@ -4,11 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import 'opt_verification.dart';
 
 class SignUp extends StatefulWidget {
-  static const String tag = '/signup';
-
   const SignUp({Key? key}) : super(key: key);
 
   @override
@@ -301,10 +298,10 @@ class _SignUpState extends State<SignUp> {
   }
 
   void onSignUp() {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      OtpVerification.tag,
-      (route) => false,
-    );
+    // Navigator.pushNamedAndRemoveUntil(
+    //   context,
+    //   OtpVerification.tag,
+    //   (route) => false,
+    // );
   }
 }

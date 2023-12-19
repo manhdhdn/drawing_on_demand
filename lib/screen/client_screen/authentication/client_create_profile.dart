@@ -7,8 +7,6 @@ import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 
 class ClientCreateProfile extends StatefulWidget {
-  static const String tag = '/customer/create_profile';
-
   const ClientCreateProfile({Key? key}) : super(key: key);
 
   @override

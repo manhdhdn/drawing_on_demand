@@ -3,12 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import '../authentication/log_in.dart';
-import '../authentication/sign_up.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  static const String tag = '/welcome';
-
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -232,10 +228,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void onCreateAccount() {
-    Navigator.pushNamed(context, SignUp.tag);
+    // Navigator.pushNamed(context, SignUp.tag);
   }
 
   void onLogin() {
-    Navigator.pushNamed(context, Login.tag);
+    // Navigator.pushNamed(context, Login.tag);
   }
 }

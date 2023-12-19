@@ -46,7 +46,7 @@ class PrefUtils {
     try {
       return _sharedPreferences!.getString('account')!;
     } catch (e) {
-      return '';
+      return '{}';
     }
   }
 
@@ -58,7 +58,7 @@ class PrefUtils {
     try {
       return _sharedPreferences!.getString('token')!;
     } catch (e) {
-      return '';
+      return '{}';
     }
   }
 
@@ -106,24 +106,8 @@ class PrefUtils {
     try {
       return _sharedPreferences!.getString('rank')!;
     } catch (e) {
-      return '';
+      return '{}';
     }
-  }
-
-  Future<void> setTermId(String value) {
-    return _sharedPreferences!.setString('termId', value);
-  }
-
-  String getTermId() {
-    try {
-      return _sharedPreferences!.getString('termId')!;
-    } catch (e) {
-      return '';
-    }
-  }
-
-  void clearTermId() {
-    _sharedPreferences!.remove('termId');
   }
 
   Future<void> setCartId(String value) {
@@ -134,7 +118,7 @@ class PrefUtils {
     try {
       return _sharedPreferences!.getString('cartId')!;
     } catch (e) {
-      return '';
+      return '{}';
     }
   }
 }

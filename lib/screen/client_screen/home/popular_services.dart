@@ -1,20 +1,21 @@
+import 'package:drawing_on_demand/app_routes/named_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../core/common/common_features.dart';
-import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
-import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
-import 'client_home_screen.dart';
 
+// ignore: must_be_immutable
 class PopularServices extends StatefulWidget {
-  static const String tag = '${ClientHomeScreen.tag}/artworks';
-  const PopularServices({Key? key}) : super(key: key);
+  String? tab;
+
+  PopularServices({Key? key, this.tab}) : super(key: key);
 
   @override
   State<PopularServices> createState() => _PopularServicesState();
@@ -85,13 +86,13 @@ class _PopularServicesState extends State<PopularServices> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedServiceList = serviceList[i];
+                                  widget.tab = serviceList[i];
                                 });
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: selectedServiceList == serviceList[i]
+                                  color: widget.tab == serviceList[i]
                                       ? kPrimaryColor
                                       : kDarkWhite,
                                   borderRadius: BorderRadius.circular(40.0),
@@ -99,7 +100,7 @@ class _PopularServicesState extends State<PopularServices> {
                                 child: Text(
                                   serviceList[i],
                                   style: kTextStyle.copyWith(
-                                    color: selectedServiceList == serviceList[i]
+                                    color: widget.tab == serviceList[i]
                                         ? kWhite
                                         : kNeutralColor,
                                   ),
@@ -434,8 +435,10 @@ class _PopularServicesState extends State<PopularServices> {
   }
 
   void onPopularArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
-
-    Navigator.pushNamed(context, ServiceDetails.tag);
+    context.goNamed(
+      '${ArtworkDetailRoute.name} in',
+      pathParameters: {'id': id},
+      queryParameters: {'tab': widget.tab},
+    );
   }
 }

@@ -5,17 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/models/order.dart';
-import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
-import '../home/client_home_screen.dart';
-import '../service_details/client_order.dart';
 
 class CartScreen extends StatefulWidget {
-  static const String tag = '${ClientHomeScreen.tag}/cart';
-
   const CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -122,7 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: packCount != 0 ? packCount + 1 : 0,
+                          itemCount: packList[0] != 0 ? packList.length : 0,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (_, i) {
@@ -532,9 +526,9 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
+    // PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, ServiceDetails.tag);
+    // Navigator.pushNamed(context, ServiceDetails.tag);
   }
 
   void refresh() {
@@ -556,9 +550,9 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onOrderNow() {
-    PrefUtils().setTermId(PrefUtils().getCartId());
+    // PrefUtils().setTermId(PrefUtils().getCartId());
 
-    Navigator.pushNamed(context, ClientOrder.tag);
+    // Navigator.pushNamed(context, ClientOrder.tag);
   }
 
   Future<void> onRemove(String id) async {

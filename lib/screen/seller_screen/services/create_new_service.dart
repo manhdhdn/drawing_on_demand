@@ -12,8 +12,6 @@ import '../../widgets/constant.dart';
 import 'create_service.dart';
 
 class CreateNewService extends StatefulWidget {
-  static const String tag = '${CreateService.tag}/create';
-
   const CreateNewService({Key? key}) : super(key: key);
 
   @override

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
@@ -14,12 +13,11 @@ import '../../client_screen/service_details/client_order.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/review.dart';
-import '../../seller_screen/services/create_service.dart';
 
 class ServiceDetails extends StatefulWidget {
-  static const String tag = '${CreateService.tag}/detail';
+  final String? id;
 
-  const ServiceDetails({Key? key}) : super(key: key);
+  const ServiceDetails({Key? key, this.id}) : super(key: key);
 
   @override
   State<ServiceDetails> createState() => _ServiceDetailsState();
@@ -89,7 +87,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
-    PrefUtils().clearTermId();
+    // PrefUtils().clearTermId();
 
     super.dispose();
   }
@@ -741,6 +739,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
           ),
         ),
         bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(10.0),
           decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
@@ -788,7 +787,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
     try {
       return ArtworkApi()
           .getOne(
-        PrefUtils().getTermId(),
+        widget.id!,
         'arts,artworkReviews(expand=createdByNavigation),createdByNavigation(expand=rank),category,surface,material',
       )
           .then(

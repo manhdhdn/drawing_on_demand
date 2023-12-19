@@ -3,11 +3,8 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../widgets/constant.dart';
-import '../welcome_screen/welcome_screen.dart';
 
 class OnBoard extends StatefulWidget {
-  static const String tag = '/onboard';
-
   const OnBoard({Key? key}) : super(key: key);
 
   @override
@@ -160,11 +157,11 @@ class _OnBoardState extends State<OnBoard> {
   }
 
   void onEnd() {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      WelcomeScreen.tag,
-      (route) => false,
-    );
+    // Navigator.pushNamedAndRemoveUntil(
+    //   context,
+    //   WelcomeScreen.tag,
+    //   (route) => false,
+    // );
   }
 }
 

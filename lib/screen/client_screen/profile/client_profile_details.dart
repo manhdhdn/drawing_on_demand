@@ -8,11 +8,8 @@ import '../../../core/utils/pref_utils.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import 'client_edit_profile_details.dart';
-import 'client_profile.dart';
 
 class ClientProfileDetails extends StatefulWidget {
-  static const String tag = '${ClientProfile.tag}/detail';
-
   const ClientProfileDetails({Key? key}) : super(key: key);
 
   @override
@@ -36,6 +33,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
         centerTitle: true,
       ),
       bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithIcon(
           buttontext: 'Edit Profile',

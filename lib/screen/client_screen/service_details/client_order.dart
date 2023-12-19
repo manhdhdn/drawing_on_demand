@@ -7,8 +7,6 @@ import '../../widgets/constant.dart';
 import 'client_add_card.dart';
 
 class ClientOrder extends StatefulWidget {
-  static const String tag = '/checkout';
-
   const ClientOrder({Key? key}) : super(key: key);
 
   @override

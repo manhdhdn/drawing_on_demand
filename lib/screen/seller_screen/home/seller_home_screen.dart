@@ -16,8 +16,6 @@ import '../../widgets/chart.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
-import '../services/create_service.dart';
-import '../../common/artwork/service_details.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   const SellerHomeScreen({Key? key}) : super(key: key);
@@ -767,13 +765,13 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
   }
 
   void onViewAllArtwork() {
-    Navigator.pushNamed(context, CreateService.tag);
+    // Navigator.pushNamed(context, CreateService.tag);
   }
 
   void onArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
+    // PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, ServiceDetails.tag);
+    // Navigator.pushNamed(context, ServiceDetails.tag);
   }
 }
 

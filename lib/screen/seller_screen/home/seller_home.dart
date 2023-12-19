@@ -9,8 +9,6 @@ import '../request/seller_buyer_request.dart';
 import 'seller_home_screen.dart';
 
 class SellerHome extends StatefulWidget {
-  static const String tag = '/home';
-
   const SellerHome({Key? key}) : super(key: key);
 
   @override

@@ -4,25 +4,21 @@ import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
-import '../../common/artwork/service_details.dart';
 import '../../widgets/constant.dart';
-import '../cart/cart.dart';
 import '../notification/client_notification.dart';
 import '../search/search.dart';
 import 'client_all_categories.dart';
-import 'popular_services.dart';
-import 'top_seller.dart';
 
 class ClientHomeScreen extends StatefulWidget {
-  static const String tag = '/home';
-
   const ClientHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -59,7 +55,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: GestureDetector(
-                // onTap: () => const ClientProfile().launch(context),
+                onTap: () {
+                  onProfile();
+                },
                 child: Container(
                   height: 44,
                   width: 44,
@@ -67,19 +65,21 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image: NetworkImage(
-                            jsonDecode(PrefUtils().getAccount())['Avatar']),
+                            jsonDecode(PrefUtils().getAccount())['Avatar'] ??
+                                defaultImage),
                         fit: BoxFit.cover),
                   ),
                 ),
               ),
             ),
             title: Text(
-              jsonDecode(PrefUtils().getAccount())['Name'],
+              jsonDecode(PrefUtils().getAccount())['Name'] ??
+                  'Drawing on demand',
               style: kTextStyle.copyWith(
                   color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              'I’m a Client',
+              'I’m a Customer',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             trailing: Row(
@@ -1133,32 +1133,27 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   }
 
   void onArtworkDetail(String id) {
-    PrefUtils().setTermId(id);
-
-    Navigator.pushNamed(context, ServiceDetails.tag);
+    context
+        .goNamed('${ArtworkDetailRoute.name} out', pathParameters: {'id': id});
   }
 
   void onCart() {
-    Navigator.pushNamed(context, CartScreen.tag);
+    context.goNamed(CartRoute.name);
   }
 
   void onPopularArtwork() {
-    setState(() {
-      selectedServiceList = 'Popular';
-    });
-
-    Navigator.pushNamed(context, PopularServices.tag);
+    context.goNamed(ArtworkRoute.name, queryParameters: {'tab': 'Popular'});
   }
 
   void onNewArtworks() {
-    setState(() {
-      selectedServiceList = 'New';
-    });
-
-    Navigator.pushNamed(context, PopularServices.tag);
+    context.goNamed(ArtworkRoute.name, queryParameters: {'tab': 'New'});
   }
 
   void onTopArtists() {
-    Navigator.pushNamed(context, TopSeller.tag);
+    // Navigator.pushNamed(context, TopSeller.tag);
+  }
+
+  void onProfile() {
+    context.goNamed(ProfileRoute.name);
   }
 }

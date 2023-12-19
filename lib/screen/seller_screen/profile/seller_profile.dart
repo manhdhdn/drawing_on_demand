@@ -13,14 +13,11 @@ import '../notification/seller_notification.dart';
 import '../favourite/seller_favourite_list.dart';
 import '../report/seller_report.dart';
 import '../../common/setting/invite.dart';
-import '../../common/setting/setting.dart';
 import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
 import 'seller_profile_details.dart';
 
 class SellerProfile extends StatefulWidget {
-  static const String tag = '/profile';
-
   const SellerProfile({Key? key}) : super(key: key);
 
   @override
@@ -455,7 +452,7 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   void onSetting() {
-    Navigator.pushNamed(context, Setting.tag);
+    // Navigator.pushNamed(context, Setting.tag);
   }
 
   void onLogout() {

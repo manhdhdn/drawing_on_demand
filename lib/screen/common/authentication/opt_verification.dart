@@ -1,5 +1,3 @@
-import 'package:drawing_on_demand/screen/client_screen/authentication/client_create_profile.dart';
-import 'package:drawing_on_demand/screen/seller_screen/authentication/seller_create_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:pinput/pinput.dart';
@@ -7,8 +5,6 @@ import 'package:pinput/pinput.dart';
 import '../../widgets/constant.dart';
 
 class OtpVerification extends StatefulWidget {
-  static const String tag = '/verify';
-
   const OtpVerification({Key? key}) : super(key: key);
 
   @override
@@ -117,10 +113,10 @@ class _OtpVerificationState extends State<OtpVerification> {
   }
 
   void onSend() {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      isArtist ? SellerCreateProfile.tag : ClientCreateProfile.tag,
-      (route) => false,
-    );
+    // Navigator.pushNamedAndRemoveUntil(
+    //   context,
+    //   isArtist ? SellerCreateProfile.tag : ClientCreateProfile.tag,
+    //   (route) => false,
+    // );
   }
 }

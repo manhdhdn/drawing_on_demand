@@ -2,28 +2,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 
-import 'app_routes/app_routes.dart';
+import 'app_routes/go_routes.dart';
 import 'core/utils/pref_utils.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   usePathUrlStrategy();
   PrefUtils();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    Phoenix(
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 
   // RendererBinding.instance.ensureSemantics();
 }
@@ -42,8 +36,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale locale = const Locale('vi');
-  Map<String, WidgetBuilder> routes =
-      AppRoutes.getRoutes(PrefUtils().getRole());
 
   @override
   void initState() {
@@ -54,7 +46,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Drawing on demand',
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -66,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       locale: locale,
       theme: ThemeData(fontFamily: 'Display'),
       debugShowCheckedModeBanner: false,
-      routes: routes,
+      routerConfig: AppRoutes.routes,
     );
   }
 

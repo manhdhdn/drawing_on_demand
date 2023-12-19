@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../client_screen/job_post/job_post.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../common/popUp/popup_1.dart';
 import 'buyer_request_details.dart';
 
 class SellerBuyerReq extends StatefulWidget {
-  static const String tag = JobPost.tag;
-
   const SellerBuyerReq({Key? key}) : super(key: key);
 
   @override

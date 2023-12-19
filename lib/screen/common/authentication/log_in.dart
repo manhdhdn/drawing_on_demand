@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../app_routes/app_routes.dart';
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
@@ -12,12 +12,9 @@ import '../../../data/apis/account_api.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../welcome_screen/welcome_screen.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
-  static const String tag = '/login';
-
   const Login({Key? key}) : super(key: key);
 
   @override
@@ -306,16 +303,10 @@ class _LoginState extends State<Login> {
   }
 
   void onLogedIn() {
-    Phoenix.rebirth(context);
-
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.defaultTag,
-      (route) => false,
-    );
+    context.goNamed(HomeRoute.name);
   }
 
   void onCreateNewAccount() {
-    Navigator.pushNamed(context, WelcomeScreen.tag);
+    // Navigator.pushNamed(context, WelcomeScreen.tag);
   }
 }

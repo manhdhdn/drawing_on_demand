@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../app_routes/app_routes.dart';
 import '../../widgets/constant.dart';
-import 'onboard.dart';
+// import 'onboard.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const String tag = '/splash';
-
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,15 +18,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-    bool firstRun = true;
+    // bool firstRun = true;
 
-    await Future.delayed(const Duration(seconds: 2)).then(
-      (value) => Navigator.pushNamedAndRemoveUntil(
-          context,
-          // ignore: dead_code
-          firstRun ? OnBoard.tag : AppRoutes.defaultTag,
-          (route) => false),
-    );
+    // await Future.delayed(const Duration(seconds: 2)).then(
+    //   (value) => Navigator.pushNamedAndRemoveUntil(
+    //       context,
+    //       // ignore: dead_code
+    //       firstRun ? OnBoard.tag : AppRoutes.defaultTag,
+    //       (route) => false),
+    // );
   }
 
   @override

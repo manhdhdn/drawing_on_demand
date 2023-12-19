@@ -6,11 +6,8 @@ import '../../../core/common/common_features.dart';
 import '../../../data/apis/account_role_api.dart';
 import '../../../data/models/account.dart';
 import '../../widgets/constant.dart';
-import 'client_home_screen.dart';
 
 class TopSeller extends StatefulWidget {
-  static const String tag = '${ClientHomeScreen.tag}/artists';
-
   const TopSeller({Key? key}) : super(key: key);
 
   @override

@@ -10,11 +10,8 @@ import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import 'create_new_job_post.dart';
-import 'job_details.dart';
 
 class JobPost extends StatefulWidget {
-  static const String tag = '/requirements';
-
   const JobPost({Key? key}) : super(key: key);
 
   @override
@@ -257,14 +254,14 @@ class _JobPostState extends State<JobPost> {
   }
 
   void onDetail(String id) {
-    PrefUtils().setTermId(id);
+    // PrefUtils().setTermId(id);
 
-    Navigator.pushNamed(context, JobDetails.tag).then(
-      (value) => setState(
-        () {
-          requirements = getData();
-        },
-      ),
-    );
+    // Navigator.pushNamed(context, JobDetails.tag).then(
+    //   (value) => setState(
+    //     () {
+    //       requirements = getData();
+    //     },
+    //   ),
+    // );
   }
 }

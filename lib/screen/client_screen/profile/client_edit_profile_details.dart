@@ -7,11 +7,8 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../core/common/common_features.dart';
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
-import 'client_profile_details.dart';
 
 class ClientEditProfile extends StatefulWidget {
-  static const String tag = '${ClientProfileDetails.tag}/edit';
-
   const ClientEditProfile({Key? key}) : super(key: key);
 
   @override
@@ -395,6 +392,6 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
   }
 
   void onProfile() {
-    Navigator.pushNamed(context, ClientProfileDetails.tag);
+    // Navigator.pushNamed(context, ClientProfileDetails.tag);
   }
 }
