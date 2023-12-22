@@ -11,16 +11,29 @@ import '../../widgets/constant.dart';
 import 'about_us.dart';
 import 'policy.dart';
 
-class Setting extends StatefulWidget {
-  const Setting({Key? key}) : super(key: key);
+class Settings extends StatefulWidget {
+  static dynamic state;
+
+  const Settings({Key? key}) : super(key: key);
 
   @override
-  State<Setting> createState() => _SettingState();
+  State<Settings> createState() => _SettingsState();
+
+  static void refresh() {
+    state.refresh();
+  }
 }
 
-class _SettingState extends State<Setting> {
-  bool isOn = false;
+class _SettingsState extends State<Settings> {
+  bool isNotificationOn = false;
   String selectedLanguage = PrefUtils().getLanguage();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Settings.state = this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +90,10 @@ class _SettingState extends State<Setting> {
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
                 trailing: CupertinoSwitch(
-                  value: isOn,
+                  value: isNotificationOn,
                   onChanged: (value) {
                     setState(() {
-                      isOn = value;
+                      isNotificationOn = value;
                     });
                   },
                 ),
@@ -175,8 +188,8 @@ class _SettingState extends State<Setting> {
     context.goNamed(LanguageRoute.name);
   }
 
-  reload() {
-    return setState(() {
+  refresh() {
+    setState(() {
       selectedLanguage = PrefUtils().getLanguage();
     });
   }

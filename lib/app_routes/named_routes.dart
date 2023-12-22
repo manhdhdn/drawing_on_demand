@@ -59,8 +59,8 @@ class ProfileRoute {
 
 /// Setting
 class SettingRoute {
-  static const String tag = 'setting';
-  static const String name = 'Setting';
+  static const String tag = 'settings';
+  static const String name = 'Settings';
 }
 
 // Language

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -28,9 +29,12 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 
-  static void reLoadLocale(BuildContext context) {
+  static void refreshLocale(BuildContext context) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.initLanguage();
+
+    if (state != null) {
+      state.initLanguage();
+    }
   }
 }
 

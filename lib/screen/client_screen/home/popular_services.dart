@@ -122,7 +122,7 @@ class _PopularServicesState extends State<PopularServices> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onPopularArtworkDetail(snapshot.data!.value
+                                  onArtworkDetail(snapshot.data!.value
                                       .elementAt(i)
                                       .id!
                                       .toString());
@@ -428,13 +428,13 @@ class _PopularServicesState extends State<PopularServices> {
         expand: 'artworkReviews,arts,createdByNavigation(expand=rank)',
       );
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get popular artworks failed');
+      Fluttertoast.showToast(msg: 'Get artworks failed');
     }
 
     return null;
   }
 
-  void onPopularArtworkDetail(String id) {
+  void onArtworkDetail(String id) {
     context.goNamed(
       '${ArtworkDetailRoute.name} in',
       pathParameters: {'id': id},

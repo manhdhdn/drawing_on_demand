@@ -14,13 +14,16 @@ import '../screen/common/artwork/service_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/messgae/chat_list.dart';
 import '../screen/common/setting/language.dart';
-import '../screen/common/setting/setting.dart';
+import '../screen/common/setting/settings.dart';
 import 'named_routes.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shell');
+
+get rootNavigatorState => _rootNavigatorKey.currentState;
+get shellNavigatorState => _shellNavigatorKey.currentState;
 
 class AppRoutes {
   static const String defaultTag = HomeRoute.tag;
@@ -131,16 +134,14 @@ class AppRoutes {
                 path: SettingRoute.tag,
                 name: SettingRoute.name,
                 builder: (context, state) {
-                  return const Setting();
+                  return const Settings();
                 },
                 routes: [
                   GoRoute(
                     path: LanguageRoute.tag,
                     name: LanguageRoute.name,
                     builder: (context, state) {
-                      return Language(
-                        reload: state.extra,
-                      );
+                      return const Language();
                     },
                   ),
                 ],

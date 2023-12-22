@@ -5,11 +5,10 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../main.dart';
 import '../../widgets/constant.dart';
+import 'settings.dart';
 
 class Language extends StatefulWidget {
-  final dynamic reload;
-
-  const Language({Key? key, this.reload}) : super(key: key);
+  const Language({Key? key}) : super(key: key);
 
   @override
   State<Language> createState() => _LanguageState();
@@ -88,13 +87,12 @@ class _LanguageState extends State<Language> {
 
   void onChangeLanguage(String language) async {
     setState(() {
-      widget.reload;
       selectedLanguage = language;
     });
 
     PrefUtils().setLanguage(language);
 
-    // ignore: use_build_context_synchronously
-    MyApp.reLoadLocale(context);
+    MyApp.refreshLocale(context);
+    Settings.refresh();
   }
 }
