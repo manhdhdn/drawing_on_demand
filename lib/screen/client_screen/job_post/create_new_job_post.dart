@@ -341,6 +341,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(color: kWhite),
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
         child: ButtonGlobalWithoutIcon(
             buttontext: 'Done',
             buttonDecoration: kButtonDecoration.copyWith(

@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
@@ -254,14 +256,6 @@ class _JobPostState extends State<JobPost> {
   }
 
   void onDetail(String id) {
-    // PrefUtils().setTermId(id);
-
-    // Navigator.pushNamed(context, JobDetails.tag).then(
-    //   (value) => setState(
-    //     () {
-    //       requirements = getData();
-    //     },
-    //   ),
-    // );
+    context.goNamed('${JobDetailRoute.name} in', pathParameters: {'id': id});
   }
 }

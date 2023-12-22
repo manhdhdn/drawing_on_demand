@@ -5,12 +5,15 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
 
 // import '../../widgets/button_global.dart';
+import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
 
 class JobDetails extends StatefulWidget {
-  const JobDetails({Key? key}) : super(key: key);
+  final String? id;
+
+  const JobDetails({Key? key, this.id}) : super(key: key);
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
@@ -506,10 +509,10 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<Requirement?> getData() async {
     try {
-      // return RequirementApi().getOne(
-      //   PrefUtils().getTermId(),
-      //   'category,surface,material,createdByNavigation,proposals,sizes,steps',
-      // );
+      return RequirementApi().getOne(
+        widget.id!,
+        'category,surface,material,createdByNavigation,proposals,sizes,steps',
+      );
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement failed');
     }

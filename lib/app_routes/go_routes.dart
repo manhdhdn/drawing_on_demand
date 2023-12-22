@@ -6,6 +6,7 @@ import '../screen/client_screen/cart/cart_screen.dart';
 import '../screen/client_screen/home/client_home.dart';
 import '../screen/client_screen/home/client_home_screen.dart';
 import '../screen/client_screen/home/popular_services.dart';
+import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
 import '../screen/client_screen/orders/client_orders.dart';
 import '../screen/client_screen/profile/client_profile.dart';
@@ -106,6 +107,18 @@ class AppRoutes {
             builder: (context, state) {
               return const JobPost();
             },
+            redirect: (context, state) => _unAuthened(),
+            routes: [
+              GoRoute(
+                path: JobDetailRoute.tag,
+                name: '${JobDetailRoute.name} in',
+                builder: (context, state) {
+                  return JobDetails(
+                    id: state.pathParameters['id'],
+                  );
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: OrderRoute.tag,
