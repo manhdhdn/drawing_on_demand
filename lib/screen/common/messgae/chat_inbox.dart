@@ -148,13 +148,14 @@ class _ChatInboxState extends State<ChatInbox> {
         shadowColor: kNeutralColor.withOpacity(0.5),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              decoration: const BoxDecoration(color: kWhite),
-              child: Column(
+      body: Container(
+        height: context.height(),
+        decoration: const BoxDecoration(color: kWhite),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Column(
                 children: [
                   8.height,
                   Text('9:41 AM', style: secondaryTextStyle(size: 16)),
@@ -234,10 +235,10 @@ class _ChatInboxState extends State<ChatInbox> {
                   ),
                 ],
               ),
-            )
-          ],
-        ),
-      ).paddingTop(8.0),
+            ],
+          ),
+        ).paddingTop(8.0),
+      ),
       bottomNavigationBar: Container(
         padding: MediaQuery.of(context).viewInsets,
         decoration: boxDecorationWithRoundedCorners(
