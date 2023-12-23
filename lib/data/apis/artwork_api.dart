@@ -11,7 +11,7 @@ class ArtworkApi {
   Future<void> isNetworkConnected() async {
     try {
       if (!isWeb) {
-        await InternetAddress.lookup(ApiConfig.baseUrl);
+        await InternetAddress.lookup('google.com');
       }
     } catch (error) {
       throw errorInternetNotAvailable;

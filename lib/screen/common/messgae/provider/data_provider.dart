@@ -52,12 +52,18 @@ List<ChatModel> maanGetChatList() {
 
 List<InboxData> maanInboxChatDataList() {
   List<InboxData> list = [];
-  list.add(InboxData(id: 0, message: 'Yeah,,'));
-  list.add(InboxData(id: 1, message: 'Have you taken your medicine?'));
+  list.add(InboxData(id: 0, message: 'yeah,,'));
+  list.add(InboxData(
+      id: 1,
+      message:
+          'aa? I am home waiting for you waiting for youwaiting for you waiting for youwaiting for you waiting for you'));
   list.add(
-      InboxData(id: 1, message: 'sorry but I can\'t find your home number'));
+      InboxData(id: 1, message: 'sorry but i can\'t find your home number'));
   list.add(InboxData(id: 0, message: 'Please knock on dor'));
-  list.add(InboxData(id: 0, message: 'I am home waiting for you'));
+  list.add(InboxData(
+      id: 0,
+      message:
+          'I am home waiting for you waiting for youwaiting for you waiting for youwaiting for you waiting for you'));
   list.add(InboxData(id: 0, message: 'Hi Miranda'));
   list.add(InboxData(id: 1, message: 'I am on my way to your home visit'));
   return list;

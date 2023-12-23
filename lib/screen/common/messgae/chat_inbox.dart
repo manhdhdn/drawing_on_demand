@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:drawing_on_demand/core/utils/pref_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../popUp/popup_1.dart';
+import 'function/chat_function.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
 
@@ -175,8 +179,12 @@ class _ChatInboxState extends State<ChatInbox> {
                             8.height,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: context.width() * 0.6,
+                                  ),
                                   decoration: boxDecorationWithRoundedCorners(
                                     backgroundColor: kPrimaryColor,
                                     borderRadius: const BorderRadius.only(
@@ -187,14 +195,18 @@ class _ChatInboxState extends State<ChatInbox> {
                                     ),
                                   ),
                                   padding: const EdgeInsets.all(12.0),
-                                  child: Text((data[index].message).validate(),
-                                      style: primaryTextStyle(color: white)),
+                                  child: Text(
+                                    (data[index].message).validate(),
+                                    style: primaryTextStyle(color: white),
+                                  ),
                                 ),
                                 8.width,
                                 CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        NetworkImage(widget.img.validate())),
+                                  radius: 20,
+                                  backgroundImage: NetworkImage(
+                                    widget.img.validate(),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -205,7 +217,7 @@ class _ChatInboxState extends State<ChatInbox> {
                             8.height,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 CircleAvatar(
                                     radius: 20,
@@ -213,6 +225,9 @@ class _ChatInboxState extends State<ChatInbox> {
                                         NetworkImage(widget.img.validate())),
                                 8.width,
                                 Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: context.width() * 0.6,
+                                  ),
                                   decoration: boxDecorationWithRoundedCorners(
                                     borderRadius: const BorderRadius.only(
                                       topRight: Radius.circular(20.0),
@@ -222,14 +237,16 @@ class _ChatInboxState extends State<ChatInbox> {
                                     ),
                                     backgroundColor: kDarkWhite,
                                   ),
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text((data[index].message).validate(),
-                                      style: primaryTextStyle()),
-                                ).paddingOnly(right: 42.0).expand(),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    (data[index].message).validate(),
+                                    style: primaryTextStyle(),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
-                        ).paddingOnly(right: 32.0);
+                        );
                       }
                     },
                   ),
@@ -292,10 +309,7 @@ class _ChatInboxState extends State<ChatInbox> {
                           .paddingAll(4.0)
                           .onTap(
                         () {
-                          if (messageController.text.isNotEmpty) {
-                            addMessage();
-                            messageController.clear();
-                          }
+                          onSend();
                         },
                       ),
                     ),
@@ -309,15 +323,27 @@ class _ChatInboxState extends State<ChatInbox> {
     );
   }
 
-  void addMessage() {
-    hideKeyboard(context);
+  void addMessage(String message) async {
     setState(
       () {
-        data.insert(0, InboxData(id: 0, message: messageController.text));
+        data.insert(0, InboxData(id: 0, message: message));
         if (mounted) scrollController.animToTop();
-        FocusScope.of(context).requestFocus(msgFocusNode);
-        setState(() {});
       },
     );
+
+    await ChatFunction.addTextMessage(
+      content: message,
+      receiverId: '7681ee23-7b59-4962-a7d1-d72d9118ad3',
+      senderId: jsonDecode(PrefUtils().getAccount())['Id'],
+    );
+  }
+
+  void onSend() {
+    String message = messageController.text.trim();
+    messageController.clear();
+
+    if (message.isNotEmpty) {
+      addMessage(message);
+    }
   }
 }

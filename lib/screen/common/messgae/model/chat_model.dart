@@ -8,7 +8,13 @@ class ChatModel {
   bool? isCheckList;
   Color? color;
 
-  ChatModel({this.title, this.subTitle, this.image, this.color, this.isCheckList = false, this.icon});
+  ChatModel(
+      {this.title,
+      this.subTitle,
+      this.image,
+      this.color,
+      this.isCheckList = false,
+      this.icon});
 }
 
 class InboxData {
@@ -16,4 +22,32 @@ class InboxData {
   String? message;
 
   InboxData({this.id, this.message});
+}
+
+enum MessageType { text, image }
+
+class Message {
+  final String senderId;
+  final String receiverId;
+  final String content;
+  final DateTime sentTime;
+  final MessageType messageType;
+
+  const Message({
+    required this.senderId,
+    required this.receiverId,
+    required this.content,
+    required this.sentTime,
+    required this.messageType,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'content': content,
+      'sentTime': sentTime,
+      'messageType': messageType.toString(),
+    };
+  }
 }
