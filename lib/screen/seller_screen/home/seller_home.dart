@@ -4,7 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../widgets/constant.dart';
 import '../orders/seller_orders.dart';
 import '../profile/seller_profile.dart';
-import '../../common/messgae/chat_list.dart';
+import '../../common/message/chat_list.dart';
 import '../request/seller_buyer_request.dart';
 import 'seller_home_screen.dart';
 

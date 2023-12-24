@@ -13,7 +13,7 @@ import '../screen/client_screen/profile/client_profile.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
 import '../screen/common/artwork/service_details.dart';
 import '../screen/common/authentication/log_in.dart';
-import '../screen/common/messgae/chat_list.dart';
+import '../screen/common/message/chat_list.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
 import 'named_routes.dart';

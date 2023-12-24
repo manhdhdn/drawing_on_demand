@@ -3,19 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
 import '../popUp/popup_1.dart';
+import 'empty_widget.dart';
 import 'function/chat_function.dart';
-import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
 
 class ChatInbox extends StatefulWidget {
   final String? img;
   final String? name;
+  final String? receiverId;
 
-  const ChatInbox({super.key, this.img, this.name});
+  const ChatInbox({
+    super.key,
+    this.img,
+    this.name,
+    this.receiverId = '7681ee23-7b59-4962-a7d1-d72d9118ad3',
+  });
 
   @override
   State<ChatInbox> createState() => _ChatInboxState();
@@ -64,24 +71,22 @@ class _ChatInboxState extends State<ChatInbox> {
     );
   }
 
-  ScrollController scrollController = ScrollController();
-
   TextEditingController messageController = TextEditingController();
 
   FocusNode msgFocusNode = FocusNode();
-
-  List<InboxData> data = maanInboxChatDataList();
 
   get kTitleColor => null;
 
   @override
   void initState() {
-    super.initState();
     init();
+
+    super.initState();
   }
 
   Future<void> init() async {
-    //
+    Provider.of<ChatProvider>(context, listen: false)
+        .getMessages(widget.receiverId!);
   }
 
   @override
@@ -160,98 +165,120 @@ class _ChatInboxState extends State<ChatInbox> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              Column(
-                children: [
-                  8.height,
-                  Text('9:41 AM', style: secondaryTextStyle(size: 16)),
-                  8.height,
-                  ListView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    controller: scrollController,
-                    scrollDirection: Axis.vertical,
-                    reverse: true,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      if (data[index].id == 0) {
-                        return Column(
-                          children: [
-                            8.height,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(
-                                    maxWidth: context.width() * 0.6,
-                                  ),
-                                  decoration: boxDecorationWithRoundedCorners(
-                                    backgroundColor: kPrimaryColor,
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(20.0),
-                                      topLeft: Radius.circular(20.0),
-                                      bottomLeft: Radius.circular(20.0),
-                                      bottomRight: Radius.circular(0.0),
+              Consumer<ChatProvider>(
+                builder: (context, value, child) => value.inboxDatas.isNotEmpty
+                    ? Column(
+                        children: [
+                          8.height,
+                          Text('9:41 AM', style: secondaryTextStyle(size: 16)),
+                          8.height,
+                          ListView.builder(
+                            padding: const EdgeInsets.all(16.0),
+                            controller: Provider.of<ChatProvider>(context,
+                                    listen: false)
+                                .scrollController,
+                            scrollDirection: Axis.vertical,
+                            reverse: true,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: value.inboxDatas.length,
+                            itemBuilder: (context, index) {
+                              if (value.inboxDatas[index].id == 0) {
+                                return Column(
+                                  children: [
+                                    8.height,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          constraints: BoxConstraints(
+                                            maxWidth: context.width() * 0.6,
+                                          ),
+                                          decoration:
+                                              boxDecorationWithRoundedCorners(
+                                            backgroundColor: kPrimaryColor,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(20.0),
+                                              topLeft: Radius.circular(20.0),
+                                              bottomLeft: Radius.circular(20.0),
+                                              bottomRight: Radius.circular(0.0),
+                                            ),
+                                          ),
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Text(
+                                            (value.inboxDatas[index].message)
+                                                .validate(),
+                                            style:
+                                                primaryTextStyle(color: white),
+                                          ),
+                                        ),
+                                        8.width,
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: NetworkImage(
+                                            widget.img.validate(),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(
-                                    (data[index].message).validate(),
-                                    style: primaryTextStyle(color: white),
-                                  ),
-                                ),
-                                8.width,
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: NetworkImage(
-                                    widget.img.validate(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            8.height,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        NetworkImage(widget.img.validate())),
-                                8.width,
-                                Container(
-                                  constraints: BoxConstraints(
-                                    maxWidth: context.width() * 0.6,
-                                  ),
-                                  decoration: boxDecorationWithRoundedCorners(
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(20.0),
-                                      topLeft: Radius.circular(20.0),
-                                      bottomLeft: Radius.circular(0.0),
-                                      bottomRight: Radius.circular(20.0),
+                                  ],
+                                );
+                              } else {
+                                return Column(
+                                  children: [
+                                    8.height,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                widget.img.validate())),
+                                        8.width,
+                                        Container(
+                                          constraints: BoxConstraints(
+                                            maxWidth: context.width() * 0.6,
+                                          ),
+                                          decoration:
+                                              boxDecorationWithRoundedCorners(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(20.0),
+                                              topLeft: Radius.circular(20.0),
+                                              bottomLeft: Radius.circular(0.0),
+                                              bottomRight:
+                                                  Radius.circular(20.0),
+                                            ),
+                                            backgroundColor: kDarkWhite,
+                                          ),
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Text(
+                                            (value.inboxDatas[index].message)
+                                                .validate(),
+                                            style: primaryTextStyle(),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    backgroundColor: kDarkWhite,
-                                  ),
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(
-                                    (data[index].message).validate(),
-                                    style: primaryTextStyle(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ],
+                                  ],
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    : const Expanded(
+                        child: EmptyWidget(
+                          icon: Icons.waving_hand,
+                          text: 'Say Hello!',
+                        ),
+                      ),
               ),
             ],
           ),
@@ -325,16 +352,9 @@ class _ChatInboxState extends State<ChatInbox> {
   }
 
   void addMessage(String message) async {
-    setState(
-      () {
-        data.insert(0, InboxData(id: 0, message: message));
-        if (mounted) scrollController.animToTop();
-      },
-    );
-
     await ChatFunction.addTextMessage(
       content: message,
-      receiverId: '7681ee23-7b59-4962-a7d1-d72d9118ad3',
+      receiverId: widget.receiverId!,
       senderId: jsonDecode(PrefUtils().getAccount())['Id'],
     );
   }

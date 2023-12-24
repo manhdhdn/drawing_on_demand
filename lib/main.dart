@@ -5,11 +5,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:provider/provider.dart';
 
 import 'app_routes/go_routes.dart';
 import 'core/utils/pref_utils.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
+import 'screen/common/message/provider/data_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,19 +52,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Drawing on demand',
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: L10n.all,
-      locale: locale,
-      theme: ThemeData(fontFamily: 'Display'),
-      debugShowCheckedModeBanner: false,
-      routerConfig: AppRoutes.routes,
+    return ChangeNotifierProvider(
+      create: (_) => ChatProvider(),
+      child: MaterialApp.router(
+        title: 'Drawing on demand',
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: L10n.all,
+        locale: locale,
+        theme: ThemeData(fontFamily: 'Display'),
+        debugShowCheckedModeBanner: false,
+        routerConfig: AppRoutes.routes,
+      ),
     );
   }
 

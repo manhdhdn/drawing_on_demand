@@ -41,6 +41,15 @@ class Message {
     required this.messageType,
   });
 
+  Message.fromJson(Map<String, dynamic> json)
+      : senderId = json['senderId'],
+        receiverId = json['receiverId'],
+        content = json['content'],
+        sentTime = DateTime.parse(json['sentTime']),
+        messageType = MessageType.values.firstWhere(
+          (e) => e.toString() == json['messageType'],
+        );
+
   Map<String, dynamic> toJson() {
     return {
       'senderId': senderId,

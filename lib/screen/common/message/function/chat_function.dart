@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drawing_on_demand/screen/common/messgae/model/chat_model.dart';
+import 'package:drawing_on_demand/screen/common/message/model/chat_model.dart';
 
 class ChatFunction {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
