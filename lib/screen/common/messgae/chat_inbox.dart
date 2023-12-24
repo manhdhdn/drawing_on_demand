@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/core/utils/pref_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:drawing_on_demand/screen/widgets/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../../../core/utils/pref_utils.dart';
+import '../../widgets/constant.dart';
 import '../popUp/popup_1.dart';
 import 'function/chat_function.dart';
 import 'model/chat_model.dart';
