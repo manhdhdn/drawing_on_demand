@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/pref_utils.dart';
@@ -17,25 +16,6 @@ List<ChatModel> maanGetChatList() {
   return list;
 }
 
-List<InboxData> maanInboxChatDataList() {
-  List<InboxData> list = [];
-  list.add(InboxData(id: 0, message: 'yeah,,'));
-  list.add(InboxData(
-      id: 1,
-      message:
-          'aa? I am home waiting for you waiting for youwaiting for you waiting for youwaiting for you waiting for you'));
-  list.add(
-      InboxData(id: 1, message: 'sorry but i can\'t find your home number'));
-  list.add(InboxData(id: 0, message: 'Please knock on dor'));
-  list.add(InboxData(
-      id: 0,
-      message:
-          'I am home waiting for you waiting for youwaiting for you waiting for youwaiting for you waiting for you'));
-  list.add(InboxData(id: 0, message: 'Hi Miranda'));
-  list.add(InboxData(id: 1, message: 'I am on my way to your home visit'));
-  return list;
-}
-
 class ChatProvider extends ChangeNotifier {
   ScrollController scrollController = ScrollController();
 
@@ -47,28 +27,32 @@ class ChatProvider extends ChangeNotifier {
   List<InboxData> getMessages(String receiverId) {
     FirebaseFirestore.instance
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('chat')
+        .doc(jsonDecode(PrefUtils().getAccount())['Id'])
+        .collection('chats')
         .doc(receiverId)
         .collection('messages')
-        .orderBy('sentTime', descending: false)
+        .orderBy('sentTime', descending: true)
         .snapshots(includeMetadataChanges: true)
         .listen((messages) {
       this.messages =
           messages.docs.map((doc) => Message.fromJson(doc.data())).toList();
 
+      inboxDatas.clear();
+      for (var message in this.messages) {
+        inboxDatas.add(
+          InboxData(
+            id: message.senderId == jsonDecode(PrefUtils().getAccount())['Id']
+                ? 0
+                : 1,
+            message: message.content,
+            sentTime: message.sentTime,
+          ),
+        );
+      }
+
+      notifyListeners();
       scrollDown();
     });
-
-    for (var message in messages) {
-      inboxDatas.add(InboxData(
-          id: message.senderId == jsonDecode(PrefUtils().getAccount())['Id']
-              ? 0
-              : 1,
-          message: message.content));
-    }
-
-    notifyListeners();
 
     return inboxDatas;
   }

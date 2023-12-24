@@ -33,10 +33,16 @@ class CartRoute {
   static const String name = 'Cart';
 }
 
-///// Message
+//// Message
 class MessageRoute {
   static const String tag = '/message';
   static const String name = 'Message';
+}
+
+/// Chat
+class ChatRoute {
+  static const String tag = 'chat/:id';
+  static const String name = 'Chat';
 }
 
 //// Job

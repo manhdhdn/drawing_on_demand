@@ -13,6 +13,7 @@ import '../screen/client_screen/profile/client_profile.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
 import '../screen/common/artwork/service_details.dart';
 import '../screen/common/authentication/log_in.dart';
+import '../screen/common/message/chat_inbox.dart';
 import '../screen/common/message/chat_list.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
@@ -100,6 +101,16 @@ class AppRoutes {
               return const ChatScreen();
             },
             redirect: (context, state) => _unAuthened(),
+            routes: [
+              GoRoute(
+                  path: ChatRoute.tag,
+                  name: ChatRoute.name,
+                  builder: (context, state) {
+                    return ChatInbox(
+                      receiverId: state.pathParameters['id'],
+                    );
+                  }),
+            ],
           ),
           GoRoute(
             path: JobRoute.tag,

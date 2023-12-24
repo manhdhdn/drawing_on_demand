@@ -16,7 +16,7 @@ import 'screen/common/message/provider/data_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
-  PrefUtils();
+  await PrefUtils().init();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

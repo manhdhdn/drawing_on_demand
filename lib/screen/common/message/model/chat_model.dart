@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatModel {
@@ -20,34 +21,35 @@ class ChatModel {
 class InboxData {
   int? id;
   String? message;
+  DateTime? sentTime;
 
-  InboxData({this.id, this.message});
+  InboxData({this.id, this.message, this.sentTime});
 }
 
 enum MessageType { text, image }
 
 class Message {
-  final String senderId;
-  final String receiverId;
-  final String content;
-  final DateTime sentTime;
-  final MessageType messageType;
+  String? senderId;
+  String? receiverId;
+  String? content;
+  DateTime? sentTime;
+  MessageType? messageType;
 
-  const Message({
-    required this.senderId,
-    required this.receiverId,
-    required this.content,
-    required this.sentTime,
-    required this.messageType,
+  Message({
+    this.senderId,
+    this.receiverId,
+    this.content,
+    this.sentTime,
+    this.messageType,
   });
 
   Message.fromJson(Map<String, dynamic> json)
       : senderId = json['senderId'],
         receiverId = json['receiverId'],
         content = json['content'],
-        sentTime = DateTime.parse(json['sentTime']),
+        sentTime = json['sentTime'].toDate(),
         messageType = MessageType.values.firstWhere(
-          (e) => e.toString() == json['messageType'],
+          (type) => type.toString() == json['messageType'],
         );
 
   Map<String, dynamic> toJson() {
@@ -55,7 +57,7 @@ class Message {
       'senderId': senderId,
       'receiverId': receiverId,
       'content': content,
-      'sentTime': sentTime,
+      'sentTime': Timestamp.fromDate(sentTime!),
       'messageType': messageType.toString(),
     };
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
@@ -18,11 +19,11 @@ class ChatInbox extends StatefulWidget {
   final String? receiverId;
 
   const ChatInbox({
-    super.key,
+    Key? key,
     this.img,
     this.name,
     this.receiverId = '7681ee23-7b59-4962-a7d1-d72d9118ad3',
-  });
+  }) : super(key: key);
 
   @override
   State<ChatInbox> createState() => _ChatInboxState();
@@ -73,15 +74,15 @@ class _ChatInboxState extends State<ChatInbox> {
 
   TextEditingController messageController = TextEditingController();
 
-  FocusNode msgFocusNode = FocusNode();
+  // FocusNode msgFocusNode = FocusNode();
 
   get kTitleColor => null;
 
   @override
   void initState() {
-    init();
-
     super.initState();
+
+    init();
   }
 
   Future<void> init() async {
@@ -162,127 +163,147 @@ class _ChatInboxState extends State<ChatInbox> {
         height: context.height(),
         decoration: const BoxDecoration(color: kWhite),
         child: SingleChildScrollView(
+          controller: Provider.of<ChatProvider>(context, listen: false)
+              .scrollController,
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Consumer<ChatProvider>(
-                builder: (context, value, child) => value.inboxDatas.isNotEmpty
-                    ? Column(
-                        children: [
-                          8.height,
-                          Text('9:41 AM', style: secondaryTextStyle(size: 16)),
-                          8.height,
-                          ListView.builder(
-                            padding: const EdgeInsets.all(16.0),
-                            controller: Provider.of<ChatProvider>(context,
-                                    listen: false)
-                                .scrollController,
-                            scrollDirection: Axis.vertical,
-                            reverse: true,
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: value.inboxDatas.length,
-                            itemBuilder: (context, index) {
-                              if (value.inboxDatas[index].id == 0) {
-                                return Column(
-                                  children: [
-                                    8.height,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
-                                          ),
-                                          decoration:
-                                              boxDecorationWithRoundedCorners(
-                                            backgroundColor: kPrimaryColor,
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topRight: Radius.circular(20.0),
-                                              topLeft: Radius.circular(20.0),
-                                              bottomLeft: Radius.circular(20.0),
-                                              bottomRight: Radius.circular(0.0),
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Text(
-                                            (value.inboxDatas[index].message)
-                                                .validate(),
-                                            style:
-                                                primaryTextStyle(color: white),
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: context.height() * 0.7,
+            ),
+            decoration: const BoxDecoration(color: kWhite),
+            child: Consumer<ChatProvider>(
+              builder: (context, value, child) => value.inboxDatas.isNotEmpty
+                  ? Column(
+                      children: [
+                        8.height,
+                        ListView.builder(
+                          padding: const EdgeInsets.all(16.0),
+                          scrollDirection: Axis.vertical,
+                          reverse: true,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: value.inboxDatas.length,
+                          itemBuilder: (context, index) {
+                            if (value.inboxDatas[index].id == 0) {
+                              return Column(
+                                children: [
+                                  8.height,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: context.width() * 0.6,
+                                        ),
+                                        decoration:
+                                            boxDecorationWithRoundedCorners(
+                                          backgroundColor: kPrimaryColor,
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20.0),
+                                            topLeft: Radius.circular(20.0),
+                                            bottomLeft: Radius.circular(20.0),
+                                            bottomRight: Radius.circular(0.0),
                                           ),
                                         ),
-                                        8.width,
-                                        CircleAvatar(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              (value.inboxDatas[index].message)
+                                                  .validate(),
+                                              style: primaryTextStyle(
+                                                color: white,
+                                              ),
+                                            ),
+                                            Text(
+                                              timeago.format(value
+                                                  .inboxDatas[index].sentTime!),
+                                              style: secondaryTextStyle(
+                                                size: 9,
+                                                color: kNeutralColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      8.width,
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: NetworkImage(
+                                          widget.img.validate(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Column(
+                                children: [
+                                  8.height,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      CircleAvatar(
                                           radius: 20,
                                           backgroundImage: NetworkImage(
-                                            widget.img.validate(),
-                                          ),
+                                              widget.img.validate())),
+                                      8.width,
+                                      Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: context.width() * 0.6,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Column(
-                                  children: [
-                                    8.height,
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: NetworkImage(
-                                                widget.img.validate())),
-                                        8.width,
-                                        Container(
-                                          constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
+                                        decoration:
+                                            boxDecorationWithRoundedCorners(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20.0),
+                                            topLeft: Radius.circular(20.0),
+                                            bottomLeft: Radius.circular(0.0),
+                                            bottomRight: Radius.circular(20.0),
                                           ),
-                                          decoration:
-                                              boxDecorationWithRoundedCorners(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topRight: Radius.circular(20.0),
-                                              topLeft: Radius.circular(20.0),
-                                              bottomLeft: Radius.circular(0.0),
-                                              bottomRight:
-                                                  Radius.circular(20.0),
+                                          backgroundColor: kDarkWhite,
+                                        ),
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              (value.inboxDatas[index].message)
+                                                  .validate(),
+                                              style: primaryTextStyle(),
                                             ),
-                                            backgroundColor: kDarkWhite,
-                                          ),
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Text(
-                                            (value.inboxDatas[index].message)
-                                                .validate(),
-                                            style: primaryTextStyle(),
-                                          ),
+                                            Text(
+                                              timeago.format(value
+                                                  .inboxDatas[index].sentTime!),
+                                              style: secondaryTextStyle(
+                                                size: 9,
+                                                color: kNeutralColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      )
-                    : const Expanded(
-                        child: EmptyWidget(
-                          icon: Icons.waving_hand,
-                          text: 'Say Hello!',
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            }
+                          },
                         ),
-                      ),
-              ),
-            ],
+                      ],
+                    )
+                  : const EmptyWidget(
+                      icon: Icons.waving_hand,
+                      text: 'Say Hello!',
+                    ),
+            ),
           ),
-        ).paddingTop(8.0),
+        ),
       ),
       bottomNavigationBar: Container(
         padding: MediaQuery.of(context).viewInsets,
@@ -326,7 +347,7 @@ class _ChatInboxState extends State<ChatInbox> {
                   child: AppTextField(
                     controller: messageController,
                     textFieldType: TextFieldType.OTHER,
-                    focus: msgFocusNode,
+                    // focus: msgFocusNode,
                     autoFocus: true,
                     decoration: InputDecoration(
                       border: InputBorder.none,
