@@ -6,25 +6,46 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/pref_utils.dart';
 import '../model/chat_model.dart';
 
-List<ChatModel> maanGetChatList() {
-  List<ChatModel> list = [];
-  list.add(ChatModel(
-      title: 'Prince Mahmud',
-      subTitle: 'hello',
-      image:
-          "https://assets.iqonic.design/old-themeforest-images/prokit/datingApp/Image.9.jpg"));
-  return list;
-}
-
 class ChatProvider extends ChangeNotifier {
   ScrollController scrollController = ScrollController();
 
-  List<ChatModel> chatModels = [];
   List<InboxData> inboxDatas = [];
 
+  UserModel user = UserModel();
+  List<UserModel> users = [];
   List<Message> messages = [];
 
-  List<InboxData> getMessages(String receiverId) {
+  UserModel getUser(dynamic uid) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots(includeMetadataChanges: true)
+        .listen((user) {
+      this.user = UserModel.fromJson(user.data()!);
+
+      notifyListeners();
+    });
+
+    return user;
+  }
+
+  List<UserModel> getChatedUsers() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(jsonDecode(PrefUtils().getAccount())['Id'])
+        .collection('chats')
+        .snapshots(includeMetadataChanges: true)
+        .listen((users) {
+      this.users =
+          users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+
+      notifyListeners();
+    });
+
+    return users;
+  }
+
+  List<InboxData> getMessages(dynamic receiverId) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(jsonDecode(PrefUtils().getAccount())['Id'])

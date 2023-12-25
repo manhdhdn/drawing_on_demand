@@ -17,6 +17,7 @@ import '../../data/models/artwork.dart';
 import '../../data/models/artwork_review.dart';
 import '../../data/models/order.dart';
 import '../../data/models/order_detail.dart';
+import '../../screen/common/message/function/chat_function.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
 import '../utils/pref_utils.dart';
@@ -25,6 +26,12 @@ void logout(BuildContext context) async {
   try {
     // Sign out
     await FirebaseAuth.instance.signOut();
+
+    // Offline chat
+    ChatFunction.updateUserData({
+      'lastActive': DateTime.now(),
+      'isOnline': false,
+    });
 
     // Clear pref data
     PrefUtils().clearPreferencesData();

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -8,11 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../app_routes/named_routes.dart';
+import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../widgets/constant.dart';
 import '../notification/client_notification.dart';
 import '../search/search.dart';
@@ -632,107 +633,116 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           itemBuilder: (_, i) {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10.0),
-                              child: Container(
-                                height: 220,
-                                width: 156,
-                                decoration: BoxDecoration(
-                                  color: kWhite,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  border:
-                                      Border.all(color: kBorderColorTextField),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: kDarkWhite,
-                                      blurRadius: 5.0,
-                                      spreadRadius: 2.0,
-                                      offset: Offset(0, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 135,
-                                      width: 156,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(8.0),
-                                          topLeft: Radius.circular(8.0),
-                                        ),
-                                        image: DecorationImage(
-                                            image: NetworkImage(snapshot
-                                                .data!.value
-                                                .elementAt(i)
-                                                .avatar!),
-                                            fit: BoxFit.cover),
+                              child: GestureDetector(
+                                onTap: () {
+                                  onArtistDetail(snapshot.data!.value
+                                      .elementAt(i)
+                                      .id!
+                                      .toString());
+                                },
+                                child: Container(
+                                  height: 220,
+                                  width: 156,
+                                  decoration: BoxDecoration(
+                                    color: kWhite,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
+                                        color: kBorderColorTextField),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: kDarkWhite,
+                                        blurRadius: 5.0,
+                                        spreadRadius: 2.0,
+                                        offset: Offset(0, 5),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            snapshot.data!.value
-                                                .elementAt(i)
-                                                .name!,
-                                            style: kTextStyle.copyWith(
-                                                color: kNeutralColor,
-                                                fontWeight: FontWeight.bold),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 135,
+                                        width: 156,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(8.0),
+                                            topLeft: Radius.circular(8.0),
                                           ),
-                                          const SizedBox(height: 6.0),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              const Icon(
-                                                IconlyBold.star,
-                                                color: Colors.amber,
-                                                size: 18.0,
-                                              ),
-                                              const SizedBox(width: 2.0),
-                                              Text(
-                                                getAccountReviewPoint(snapshot
-                                                    .data!.value
-                                                    .elementAt(i)
-                                                    .accountReviewAccounts!),
-                                                style: kTextStyle.copyWith(
-                                                    color: kNeutralColor),
-                                              ),
-                                              const SizedBox(width: 2.0),
-                                              Text(
-                                                '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
-                                                style: kTextStyle.copyWith(
-                                                    color: kLightNeutralColor),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 6.0),
-                                          RichText(
-                                            text: TextSpan(
-                                              text: 'Artist Rank - ',
+                                          image: DecorationImage(
+                                              image: NetworkImage(snapshot
+                                                  .data!.value
+                                                  .elementAt(i)
+                                                  .avatar!),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data!.value
+                                                  .elementAt(i)
+                                                  .name!,
                                               style: kTextStyle.copyWith(
-                                                  color: kNeutralColor),
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 6.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: [
-                                                TextSpan(
-                                                  text: snapshot.data!.value
+                                                const Icon(
+                                                  IconlyBold.star,
+                                                  color: Colors.amber,
+                                                  size: 18.0,
+                                                ),
+                                                const SizedBox(width: 2.0),
+                                                Text(
+                                                  getAccountReviewPoint(snapshot
+                                                      .data!.value
                                                       .elementAt(i)
-                                                      .rank!
-                                                      .name!,
+                                                      .accountReviewAccounts!),
+                                                  style: kTextStyle.copyWith(
+                                                      color: kNeutralColor),
+                                                ),
+                                                const SizedBox(width: 2.0),
+                                                Text(
+                                                  '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
                                                   style: kTextStyle.copyWith(
                                                       color:
                                                           kLightNeutralColor),
-                                                )
+                                                ),
                                               ],
                                             ),
-                                          )
-                                        ],
+                                            const SizedBox(height: 6.0),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: 'Artist Rank - ',
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
+                                                children: [
+                                                  TextSpan(
+                                                    text: snapshot.data!.value
+                                                        .elementAt(i)
+                                                        .rank!
+                                                        .name!,
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -1155,5 +1165,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   void onProfile() {
     context.goNamed(ProfileRoute.name);
+  }
+
+  void onArtistDetail(dynamic id) {
+    ChatFunction.createChat(
+        senderId: jsonDecode(PrefUtils().getAccount())['Id'], receiverId: id);
   }
 }

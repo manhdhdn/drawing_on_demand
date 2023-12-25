@@ -26,6 +26,46 @@ class InboxData {
   InboxData({this.id, this.message, this.sentTime});
 }
 
+class UserModel {
+  String? uid;
+  String? name;
+  String? image;
+  String? lastMessage;
+  DateTime? sentTime;
+  DateTime? lastActive;
+  bool? isOnline;
+
+  UserModel({
+    this.uid,
+    this.name,
+    this.image,
+    this.lastMessage,
+    this.sentTime,
+    this.lastActive,
+    this.isOnline = false,
+  });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        uid: json['uid'],
+        name: json['name'],
+        image: json['image'],
+        lastMessage: json['lastMessage'],
+        sentTime: json['sentTime'].toDate(),
+        lastActive: json['lastActive'].toDate(),
+        isOnline: json['isOnline'] ?? false,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'uid': uid,
+        'name': name,
+        'image': image,
+        'lastMessage': lastMessage,
+        'sentTime': Timestamp.fromDate(sentTime!),
+        'lastActive': Timestamp.fromDate(lastActive!),
+        'isOnline': isOnline,
+      };
+}
+
 enum MessageType { text, image }
 
 class Message {

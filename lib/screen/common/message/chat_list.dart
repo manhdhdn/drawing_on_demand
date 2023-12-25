@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/constant.dart';
 import 'chat_inbox.dart';
+import 'function/chat_function.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -14,9 +17,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // ignore: non_constant_identifier_names
-  List<ChatModel> list_data = maanGetChatList();
-
   @override
   void initState() {
     super.initState();
@@ -25,7 +25,21 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> init() async {
-    //
+    ChatFunction.updateUserData({
+      'isOnline': true,
+    });
+
+    Provider.of<ChatProvider>(context, listen: false).getChatedUsers();
+  }
+
+  @override
+  void dispose() {
+    ChatFunction.updateUserData({
+      'lastActive': DateTime.now(),
+      'isOnline': false,
+    });
+
+    super.dispose();
   }
 
   @override
@@ -54,6 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
           padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             height: context.height(),
+            width: context.width(),
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             decoration: const BoxDecoration(
               color: kWhite,
@@ -64,46 +79,67 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: list_data.map(
-                  (data) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 10.0),
-                        SettingItemWidget(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          title: data.title.validate(),
-                          subTitle: data.subTitle.validate(),
-                          leading: Image.network(data.image.validate(),
-                                  height: 50, width: 50, fit: BoxFit.cover)
-                              .cornerRadiusWithClipRRect(25),
-                          trailing: Column(
-                            children: [
-                              Text('10.00 AM', style: secondaryTextStyle()),
-                            ],
-                          ),
-                          onTap: () {
-                            ChatInbox(
-                                    img: data.image.validate(),
-                                    name: data.title.validate())
-                                .launch(context);
-                          },
-                        ),
-                        const Divider(
-                          thickness: 1.0,
-                          color: kBorderColorTextField,
-                          height: 0,
-                        ),
-                      ],
-                    );
-                  },
-                ).toList(),
+              child:
+                  // Container(
+                  //   constraints: BoxConstraints(
+                  //     minHeight: context.height() * 0.7,
+                  //   ),
+                  //   decoration: const BoxDecoration(color: kWhite),
+                  //   child:
+                  Consumer<ChatProvider>(
+                builder: (context, value, child) => value.users.isNotEmpty
+                    ? Column(
+                        children: value.users
+                            .map((user) => Column(
+                                  children: [
+                                    const SizedBox(height: 10.0),
+                                    SettingItemWidget(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      title: user.name.validate(),
+                                      subTitle: user.lastMessage.validate(),
+                                      leading: Image.network(
+                                              user.image.validate(),
+                                              height: 50,
+                                              width: 50,
+                                              fit: BoxFit.cover)
+                                          .cornerRadiusWithClipRRect(25),
+                                      trailing: Column(
+                                        children: [
+                                          Text(
+                                            timeago.format(user.sentTime!),
+                                            style: secondaryTextStyle(),
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        onChat(user);
+                                      },
+                                    ),
+                                    const Divider(
+                                      thickness: 1.0,
+                                      color: kBorderColorTextField,
+                                      height: 0,
+                                    ),
+                                  ],
+                                ))
+                            .toList(),
+                      )
+                    : const SizedBox(),
               ),
+              // ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void onChat(UserModel user) {
+    ChatInbox(
+      img: user.image.validate(),
+      name: user.name.validate(),
+      receiverId: user.uid.validate(),
+    ).launch(context);
   }
 }

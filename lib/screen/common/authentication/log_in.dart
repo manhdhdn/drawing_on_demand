@@ -12,6 +12,7 @@ import '../../../data/apis/account_api.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import '../message/function/chat_function.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
@@ -276,6 +277,7 @@ class _LoginState extends State<Login> {
 
       // Save token
       var token = await FirebaseAuth.instance.currentUser!.getIdToken();
+
       PrefUtils().setToken(token!);
 
       // Navigator
@@ -285,6 +287,7 @@ class _LoginState extends State<Login> {
       var roles = account.value.first.accountRoles!
           .map((accountRole) => accountRole.role!.name)
           .toSet();
+
       if (roles.contains('Artist')) {
         PrefUtils().setRole('Artist');
         PrefUtils().setRank(account.value.first.rank!.name!);
@@ -298,11 +301,22 @@ class _LoginState extends State<Login> {
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
+      // ignore: use_build_context_synchronously
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Invalid email or password'),
+      //     closeIconColor: Colors.red,
+      //   ),
+      // );
       Fluttertoast.showToast(msg: 'Invalid email or password');
     }
   }
 
   void onLogedIn() {
+    ChatFunction.updateUserData({
+      'isOnline': true,
+    });
+
     context.goNamed(HomeRoute.name);
   }
 
