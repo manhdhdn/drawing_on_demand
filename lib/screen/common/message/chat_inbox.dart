@@ -16,13 +16,13 @@ import 'provider/data_provider.dart';
 class ChatInbox extends StatefulWidget {
   final String? img;
   final String? name;
-  final String? receiverId;
+  final dynamic receiverId;
 
   const ChatInbox({
     Key? key,
     this.img,
     this.name,
-    this.receiverId = '7681ee23-7b59-4962-a7d1-d72d9118ad3',
+    this.receiverId,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,6 @@ class ChatInbox extends StatefulWidget {
 }
 
 class _ChatInboxState extends State<ChatInbox> {
-  //__________Blocking_reason_popup________________________________________________
   void showBlockPopUp() {
     showDialog(
       barrierDismissible: false,
@@ -51,7 +50,6 @@ class _ChatInboxState extends State<ChatInbox> {
     );
   }
 
-  //__________Blocking_reason_popup________________________________________________
   void showAddFilePopUp() {
     showDialog(
       barrierDismissible: false,
@@ -74,8 +72,6 @@ class _ChatInboxState extends State<ChatInbox> {
 
   TextEditingController messageController = TextEditingController();
 
-  // FocusNode msgFocusNode = FocusNode();
-
   get kTitleColor => null;
 
   @override
@@ -87,7 +83,8 @@ class _ChatInboxState extends State<ChatInbox> {
 
   Future<void> init() async {
     Provider.of<ChatProvider>(context, listen: false)
-        .getMessages(widget.receiverId!);
+      ..getMessages(widget.receiverId)
+      ..getUser(widget.receiverId);
   }
 
   @override
@@ -101,8 +98,6 @@ class _ChatInboxState extends State<ChatInbox> {
       backgroundColor: kDarkWhite,
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        // ignore: deprecated_member_use
-        // backwardsCompatibility: true,
         leadingWidth: 24,
         iconTheme: const IconThemeData(color: kNeutralColor),
         backgroundColor: kDarkWhite,
@@ -117,7 +112,12 @@ class _ChatInboxState extends State<ChatInbox> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.name.validate(), style: boldTextStyle()),
-                Text('Online', style: secondaryTextStyle()),
+                Consumer<ChatProvider>(
+                  builder: (context, value, child) => value.user.isOnline!
+                      ? Text('Online',
+                          style: secondaryTextStyle(color: kPrimaryColor))
+                      : Text('Offline', style: secondaryTextStyle()),
+                ),
               ],
             ),
           ],
@@ -134,11 +134,12 @@ class _ChatInboxState extends State<ChatInbox> {
               child: PopupMenuButton(
                 itemBuilder: (BuildContext bc) => [
                   PopupMenuItem(
-                      onTap: () => showBlockPopUp(),
-                      child: Text(
-                        'Block',
-                        style: kTextStyle.copyWith(color: kNeutralColor),
-                      )),
+                    onTap: () => showBlockPopUp(),
+                    child: Text(
+                      'Block',
+                      style: kTextStyle.copyWith(color: kNeutralColor),
+                    ),
+                  ),
                   PopupMenuItem(
                     child: Text(
                       'Report',
@@ -348,7 +349,6 @@ class _ChatInboxState extends State<ChatInbox> {
                   child: AppTextField(
                     controller: messageController,
                     textFieldType: TextFieldType.OTHER,
-                    // focus: msgFocusNode,
                     autoFocus: true,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -376,8 +376,8 @@ class _ChatInboxState extends State<ChatInbox> {
   void addMessage(String message) async {
     await ChatFunction.addTextMessage(
       content: message,
-      receiverId: widget.receiverId!,
       senderId: jsonDecode(PrefUtils().getAccount())['Id'],
+      receiverId: widget.receiverId,
     );
   }
 
