@@ -33,6 +33,12 @@ class CartRoute {
   static const String name = 'Cart';
 }
 
+// Checkout
+class CheckoutRoute {
+  static const String tag = 'checkout';
+  static const String name = 'Checkout';
+}
+
 //// Message
 class MessageRoute {
   static const String tag = '/message';

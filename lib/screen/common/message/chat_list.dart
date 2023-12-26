@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
 import 'function/chat_function.dart';
@@ -28,6 +31,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> init() async {
     ChatFunction.updateUserData({
+      'image': jsonDecode(PrefUtils().getAccount())['Avatar'],
+      'name': jsonDecode(PrefUtils().getAccount())['Name'],
       'isOnline': true,
     });
 

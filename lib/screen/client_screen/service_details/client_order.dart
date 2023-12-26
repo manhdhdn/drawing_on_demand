@@ -7,7 +7,9 @@ import '../../widgets/constant.dart';
 import 'client_add_card.dart';
 
 class ClientOrder extends StatefulWidget {
-  const ClientOrder({Key? key}) : super(key: key);
+  final String? id;
+
+  const ClientOrder({Key? key, this.id}) : super(key: key);
 
   @override
   State<ClientOrder> createState() => _ClientOrderState();
@@ -15,17 +17,17 @@ class ClientOrder extends StatefulWidget {
 
 class _ClientOrderState extends State<ClientOrder> {
   List<String> paymentMethod = [
-    'Credit or Debit Card',
-    'Visa',
     'VNPay',
+    'Credit or Debit Card',
+    'Internation Card',
   ];
 
-  String selectedPaymentMethod = 'Credit or Debit Card';
+  int selectedPaymentMethod = 0;
 
   List<String> imageList = [
+    'images/vnpay.png',
     'images/creditcard.png',
-    'images/visa2.png',
-    'images/vnpay2.png',
+    'images/internation.png',
   ];
 
   @override
@@ -44,6 +46,7 @@ class _ClientOrderState extends State<ClientOrder> {
         ),
       ),
       bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
           buttontext: 'Continue',
@@ -62,6 +65,7 @@ class _ClientOrderState extends State<ClientOrder> {
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
           decoration: const BoxDecoration(
@@ -323,7 +327,7 @@ class _ClientOrderState extends State<ClientOrder> {
                           onTap: () {
                             setState(
                               () {
-                                selectedPaymentMethod = paymentMethod[i];
+                                selectedPaymentMethod = i;
                               },
                             );
                           },
@@ -343,10 +347,10 @@ class _ClientOrderState extends State<ClientOrder> {
                             style: kTextStyle.copyWith(color: kNeutralColor),
                           ),
                           trailing: Icon(
-                            selectedPaymentMethod == paymentMethod[i]
+                            selectedPaymentMethod == i
                                 ? Icons.radio_button_checked_rounded
                                 : Icons.radio_button_off_rounded,
-                            color: selectedPaymentMethod == paymentMethod[i]
+                            color: selectedPaymentMethod == i
                                 ? kPrimaryColor
                                 : kSubTitleColor,
                           ),

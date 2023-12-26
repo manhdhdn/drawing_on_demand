@@ -24,7 +24,7 @@ class PopularServices extends StatefulWidget {
 class _PopularServicesState extends State<PopularServices> {
   late Future<Artworks?> popularArtworks;
 
-  int top = 100;
+  int top = 25;
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _PopularServicesState extends State<PopularServices> {
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: 10,
+                          itemCount: snapshot.data!.value.length,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (_, i) {

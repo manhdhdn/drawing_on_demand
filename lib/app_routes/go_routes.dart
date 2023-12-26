@@ -13,6 +13,7 @@ import '../screen/client_screen/job_post/job_post.dart';
 import '../screen/client_screen/orders/client_orders.dart';
 import '../screen/client_screen/profile/client_profile.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
+import '../screen/client_screen/service_details/client_order.dart';
 import '../screen/common/artwork/service_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/message/chat_inbox.dart';
@@ -65,6 +66,23 @@ class AppRoutes {
                   return const CartScreen();
                 },
                 redirect: (context, state) => _unAuthened(),
+                routes: [
+                  GoRoute(
+                      path: CheckoutRoute.tag,
+                      name: CheckoutRoute.name,
+                      builder: (context, state) {
+                        return const ClientOrder();
+                      }),
+                  GoRoute(
+                    path: ArtworkDetailRoute.tag,
+                    name: '${ArtworkDetailRoute.name} cart',
+                    builder: (context, state) {
+                      return ServiceDetails(
+                        id: state.pathParameters['id'],
+                      );
+                    },
+                  ),
+                ],
               ),
               GoRoute(
                 path: ArtworkRoute.tag,

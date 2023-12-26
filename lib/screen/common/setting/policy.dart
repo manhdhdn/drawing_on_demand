@@ -29,6 +29,7 @@ class _PolicyState extends State<Policy> {
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Container(
+          height: context.height(),
           padding: const EdgeInsets.only(
             left: 15.0,
             right: 15.0,

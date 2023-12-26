@@ -1,10 +1,12 @@
 import 'package:drawing_on_demand/core/common/common_features.dart';
 import 'package:drawing_on_demand/data/models/order_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/models/order.dart';
 import '../../widgets/constant.dart';
@@ -504,9 +506,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onArtworkDetail(String id) {
-    // PrefUtils().setTermId(id);
-
-    // Navigator.pushNamed(context, ServiceDetails.tag);
+    context
+        .goNamed('${ArtworkDetailRoute.name} cart', pathParameters: {'id': id});
   }
 
   void refresh() {
@@ -528,9 +529,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onOrderNow() {
-    // PrefUtils().setTermId(PrefUtils().getCartId());
-
-    // Navigator.pushNamed(context, ClientOrder.tag);
+    context.goNamed(CheckoutRoute.name);
   }
 
   Future<void> onRemove(String id) async {
