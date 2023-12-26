@@ -31,7 +31,7 @@ class UserModel {
   String? name;
   String? image;
   String? lastMessage;
-  DateTime? sentTime;
+  bool? isSeen;
   DateTime? lastActive;
   bool? isOnline;
 
@@ -40,7 +40,7 @@ class UserModel {
     this.name,
     this.image,
     this.lastMessage,
-    this.sentTime,
+    this.isSeen,
     this.lastActive,
     this.isOnline = false,
   });
@@ -50,7 +50,7 @@ class UserModel {
         name: json['name'],
         image: json['image'],
         lastMessage: json['lastMessage'],
-        sentTime: json['sentTime'].toDate(),
+        isSeen: json['isSeen'] ?? false,
         lastActive: json['lastActive'].toDate(),
         isOnline: json['isOnline'] ?? false,
       );
@@ -60,7 +60,7 @@ class UserModel {
         'name': name,
         'image': image,
         'lastMessage': lastMessage,
-        'sentTime': Timestamp.fromDate(sentTime!),
+        'isSeen': isSeen,
         'lastActive': Timestamp.fromDate(lastActive!),
         'isOnline': isOnline,
       };

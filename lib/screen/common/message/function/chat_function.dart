@@ -17,7 +17,7 @@ class ChatFunction {
       name: name,
       image: image,
       lastMessage: '',
-      sentTime: DateTime.now(),
+      isSeen: false,
       lastActive: DateTime.now(),
       isOnline: true,
     );
@@ -59,6 +59,39 @@ class ChatFunction {
               .get()
               .then((value) => value.data()!),
         );
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(senderId)
+        .collection('chats')
+        .doc(receiverId)
+        .update({
+      'lastMessage': 'artist you want to chat with',
+      'isSeen': false,
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(senderId)
+        .set(
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(senderId)
+              .get()
+              .then((value) => value.data()!),
+        );
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(senderId)
+        .update({
+      'lastMessage': 'want to chat with you',
+      'isSeen': false,
+    });
   }
 
   static Future<void> addTextMessage({
@@ -89,7 +122,7 @@ class ChatFunction {
         .doc(receiverId)
         .update({
       'lastMessage': message.content,
-      'sentTime': message.sentTime,
+      'isSeen': true,
     });
 
     await FirebaseFirestore.instance
@@ -105,22 +138,9 @@ class ChatFunction {
         .doc(receiverId)
         .collection('chats')
         .doc(senderId)
-        .set(
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(senderId)
-              .get()
-              .then((value) => value.data()!),
-        );
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
         .update({
       'lastMessage': message.content,
-      'sentTime': message.sentTime,
+      'isSeen': false,
     });
 
     await FirebaseFirestore.instance

@@ -41,7 +41,7 @@ class MessageRoute {
 
 /// Chat
 class ChatRoute {
-  static const String tag = 'chat/:id';
+  static const String tag = ':id';
   static const String name = 'Chat';
 }
 

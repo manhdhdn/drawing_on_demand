@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../widgets/constant.dart';
-import 'chat_inbox.dart';
 import 'function/chat_function.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
@@ -98,6 +99,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                           horizontal: 16, vertical: 8),
                                       title: user.name.validate(),
                                       subTitle: user.lastMessage.validate(),
+                                      subTitleTextStyle: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontFamily: kTextStyle.fontFamily,
+                                        fontWeight: user.isSeen.validate()
+                                            ? FontWeight.normal
+                                            : FontWeight.w700,
+                                      ),
                                       leading: Image.network(
                                               user.image.validate(),
                                               height: 50,
@@ -107,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       trailing: Column(
                                         children: [
                                           Text(
-                                            timeago.format(user.sentTime!),
+                                            timeago.format(user.lastActive!),
                                             style: secondaryTextStyle(),
                                           ),
                                         ],
@@ -136,10 +144,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onChat(UserModel user) {
-    ChatInbox(
-      img: user.image.validate(),
-      name: user.name.validate(),
-      receiverId: user.uid.validate(),
-    ).launch(context);
+    context.goNamed(
+      ChatRoute.name,
+      pathParameters: {'id': user.uid.validate()},
+    );
   }
 }

@@ -71,6 +71,7 @@ class _ChatInboxState extends State<ChatInbox> {
   }
 
   TextEditingController messageController = TextEditingController();
+  FocusNode msgFocus = FocusNode();
 
   get kTitleColor => null;
 
@@ -235,7 +236,8 @@ class _ChatInboxState extends State<ChatInbox> {
                                       CircleAvatar(
                                         radius: 20,
                                         backgroundImage: NetworkImage(
-                                          widget.img.validate(),
+                                          jsonDecode(PrefUtils().getAccount())[
+                                              'Avatar'],
                                         ),
                                       ),
                                     ],
@@ -349,20 +351,28 @@ class _ChatInboxState extends State<ChatInbox> {
                   child: AppTextField(
                     controller: messageController,
                     textFieldType: TextFieldType.OTHER,
+                    focus: msgFocus,
                     autoFocus: true,
+                    maxLines: 7,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Message...',
                       hintStyle: secondaryTextStyle(size: 16),
-                      suffixIcon: const Icon(Icons.send_outlined,
-                              size: 24, color: kPrimaryColor)
-                          .paddingAll(4.0)
-                          .onTap(
+                      suffixIcon: const Icon(
+                        Icons.send_outlined,
+                        size: 24,
+                        color: kPrimaryColor,
+                      ).paddingAll(4.0).onTap(
                         () {
                           onSend();
                         },
                       ),
                     ),
+                    onFieldSubmitted: (p0) {
+                      Future.delayed(10.milliseconds, () {
+                        FocusScope.of(context).requestFocus(msgFocus);
+                      });
+                    },
                   ),
                 ),
               ),
