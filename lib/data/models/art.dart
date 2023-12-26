@@ -44,7 +44,7 @@ class Art {
       'Id': id.toString(),
       'Image': image,
       'CreatedDate':
-          DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(createdDate!),
+          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
       'ArtworkId': artworkId.toString(),
     };
   }

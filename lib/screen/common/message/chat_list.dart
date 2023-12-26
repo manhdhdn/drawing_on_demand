@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/nothing_yet.dart';
 import 'function/chat_function.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
@@ -133,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ))
                             .toList(),
                       )
-                    : const SizedBox(),
+                    : const NothingYet(visible: true),
               ),
               // ),
             ),

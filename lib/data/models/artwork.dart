@@ -115,9 +115,9 @@ class Artwork {
       'Pieces': pieces,
       'InStock': inStock,
       'CreatedDate':
-          DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(createdDate!),
+          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(lastModifiedDate!)
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
           : null,
       'Status': status,
       'CategoryId': categoryId.toString(),

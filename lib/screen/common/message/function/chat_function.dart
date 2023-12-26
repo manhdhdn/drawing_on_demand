@@ -122,6 +122,7 @@ class ChatFunction {
         .doc(receiverId)
         .update({
       'lastMessage': message.content,
+      'lastActive': DateTime.now(),
       'isSeen': true,
     });
 
@@ -140,6 +141,7 @@ class ChatFunction {
         .doc(senderId)
         .update({
       'lastMessage': message.content,
+      'lastActive': DateTime.now(),
       'isSeen': false,
     });
 

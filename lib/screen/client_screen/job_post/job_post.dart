@@ -11,13 +11,18 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
-import 'create_new_job_post.dart';
 
 class JobPost extends StatefulWidget {
+  static dynamic state;
+
   const JobPost({Key? key}) : super(key: key);
 
   @override
   State<JobPost> createState() => _JobPostState();
+
+  static void refresh() {
+    state.refresh();
+  }
 }
 
 class _JobPostState extends State<JobPost> {
@@ -27,6 +32,7 @@ class _JobPostState extends State<JobPost> {
   void initState() {
     super.initState();
 
+    JobPost.state = this;
     requirements = getData();
   }
 
@@ -50,17 +56,7 @@ class _JobPostState extends State<JobPost> {
         padding: const EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context)
-                .push(
-                  MaterialPageRoute(
-                    builder: (context) => const CreateNewJobPost(),
-                  ),
-                )
-                .then((value) => setState(
-                      () {
-                        requirements = getData();
-                      },
-                    ));
+            onCreate();
           },
           backgroundColor: kPrimaryColor,
           child: const Icon(
@@ -256,6 +252,16 @@ class _JobPostState extends State<JobPost> {
   }
 
   void onDetail(String id) {
-    context.goNamed('${JobDetailRoute.name} in', pathParameters: {'id': id});
+    context.goNamed(JobDetailRoute.name, pathParameters: {'id': id});
+  }
+
+  void onCreate() {
+    context.goNamed(JobCreateRoute.name);
+  }
+
+  void refresh() {
+    setState(() {
+      requirements = getData();
+    });
   }
 }

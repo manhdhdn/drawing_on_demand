@@ -8,6 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/models/order.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/nothing_yet.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -88,30 +89,7 @@ class _CartScreenState extends State<CartScreen> {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 50.0),
-                          Container(
-                            height: 213,
-                            width: 269,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('images/emptyservice.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20.0),
-                          Text(
-                            'Nothing just yet',
-                            textAlign: TextAlign.center,
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.0),
-                          ),
-                        ],
-                      ).visible(orderDetails.isEmpty),
+                      NothingYet(visible: orderDetails.isEmpty),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(

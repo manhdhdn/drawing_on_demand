@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
 
-// import '../../widgets/button_global.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
+import 'job_post.dart';
 
 class JobDetails extends StatefulWidget {
   final String? id;
@@ -29,18 +29,9 @@ class _JobDetailsState extends State<JobDetails> {
     requirement = getData();
   }
 
-  @override
-  void dispose() {
-    if (mounted) {
-      // PrefUtils().clearTermId();
-    }
-
-    super.dispose();
-  }
-
   //__________cancel_order_reason_popup________________________________________________
   void cancelJobPopUp(String id) async {
-    await showDialog(
+    var result = await showDialog<bool>(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -59,6 +50,9 @@ class _JobDetailsState extends State<JobDetails> {
         );
       },
     );
+
+    // ignore: use_build_context_synchronously
+    result! ? {context.pop(), JobPost.refresh()} : null;
   }
 
   @override
@@ -95,7 +89,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ],
             onSelected: (value) {
-              // value == 'edit' ? null : cancelJobPopUp(PrefUtils().getTermId());
+              value == 'edit' ? null : cancelJobPopUp(widget.id!);
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 10.0),

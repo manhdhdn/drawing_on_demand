@@ -276,9 +276,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
   }
 
   void onNo() {
-    setState(() {
-      finish(context);
-    });
+    context.pop(false);
   }
 
   void onYes() async {
@@ -289,11 +287,8 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
 
-      setState(() {
-        finish(context);
-      });
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      context.pop(true);
     } catch (e) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);

@@ -74,10 +74,10 @@ class Order {
       'OrderType': orderType,
       'OrderDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(orderDate!),
       'DepositDate': depositDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(depositDate!)
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(depositDate!)
           : null,
       'CompletedDate': completedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(completedDate!)
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(completedDate!)
           : null,
       'Status': status,
       'Total': total,

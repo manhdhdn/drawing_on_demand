@@ -12,13 +12,13 @@ import '../../../data/apis/category_api.dart';
 import '../../../data/apis/material_api.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/apis/surface_api.dart';
-import '../../../data/models/account.dart';
 import '../../../data/models/category.dart';
 import '../../../data/models/material.dart' as material_model;
 import '../../../data/models/requirement.dart';
 import '../../../data/models/surface.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import 'job_post.dart';
 
 class CreateNewJobPost extends StatefulWidget {
   const CreateNewJobPost({Key? key}) : super(key: key);
@@ -389,7 +389,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
         images.clear();
       }
 
-      var accountId = Account.fromJson(jsonDecode(PrefUtils().getAccount())).id;
+      var accountId = Guid(jsonDecode(PrefUtils().getAccount())['Id']);
 
       var requirement = Requirement(
         id: Guid.newGuid,
@@ -412,7 +412,10 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       ProgressDialogUtils.hideProgress(context);
 
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      context.pop();
+
+      // update last screen
+      JobPost.refresh();
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);

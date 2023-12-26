@@ -62,9 +62,9 @@ class Rank {
       'Fee': fee,
       'Connect': connect,
       'CreatedDate':
-          DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(createdDate!),
+          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
       'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(lastModifiedDate!)
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
           : null,
     };
   }

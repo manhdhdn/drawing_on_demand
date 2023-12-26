@@ -53,8 +53,14 @@ class JobRoute {
 
 /// Job Detail
 class JobDetailRoute {
-  static const String tag = 'detail/:id';
+  static const String tag = ':id';
   static const String name = 'Job Detail';
+}
+
+///
+class JobCreateRoute {
+  static const String tag = 'create';
+  static const String name = 'Job Create';
 }
 
 //// Order

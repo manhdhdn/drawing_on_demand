@@ -60,9 +60,9 @@ class AccountRole {
   Map<String, dynamic> toJson() {
     return {
       'Id': id.toString(),
-      'AddedDate': DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(addedDate!),
+      'AddedDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(addedDate!),
       'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSS[Z]').format(lastModifiedDate!)
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
           : null,
       'Status': status,
       'AccountId': accountId.toString(),

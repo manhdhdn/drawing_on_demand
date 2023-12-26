@@ -97,7 +97,7 @@ Future<String> uploadImage(XFile image) async {
   var data = await image.readAsBytes();
 
   try {
-    await imageRef.putData(data);
+    await imageRef.putData(data, SettableMetadata(contentType: image.mimeType));
   } catch (error) {
     rethrow;
   }
