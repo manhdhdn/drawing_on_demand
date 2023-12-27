@@ -131,7 +131,7 @@ class _CartScreenState extends State<CartScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Author',
+                                          'Artist',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: kTextStyle.copyWith(
@@ -225,6 +225,60 @@ class _CartScreenState extends State<CartScreen> {
                                                                     .first
                                                                     .image!),
                                                             fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isFavorite =
+                                                              !isFavorite;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Container(
+                                                          height: 25,
+                                                          width: 25,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .black12,
+                                                                blurRadius:
+                                                                    10.0,
+                                                                spreadRadius:
+                                                                    1.0,
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: isFavorite
+                                                              ? const Center(
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .favorite,
+                                                                    color: Colors
+                                                                        .red,
+                                                                    size: 16.0,
+                                                                  ),
+                                                                )
+                                                              : const Center(
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .favorite_border,
+                                                                    color:
+                                                                        kNeutralColor,
+                                                                    size: 16.0,
+                                                                  ),
+                                                                ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],

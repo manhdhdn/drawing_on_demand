@@ -49,8 +49,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     getData();
   }
 
-  DropdownButton<Guid> getCategory() {
+  DropdownButton<Guid> getCategories() {
     List<DropdownMenuItem<Guid>> dropDownItems = [];
+
     for (Category des in categories) {
       var item = DropdownMenuItem(
         value: des.id,
@@ -58,6 +59,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       );
       dropDownItems.add(item);
     }
+
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
@@ -71,8 +73,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     );
   }
 
-  DropdownButton<Guid> getMaterial() {
+  DropdownButton<Guid> getMaterials() {
     List<DropdownMenuItem<Guid>> dropDownItems = [];
+
     for (material_model.Material des in materials) {
       var item = DropdownMenuItem(
         value: des.id,
@@ -80,6 +83,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       );
       dropDownItems.add(item);
     }
+
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
@@ -93,8 +97,9 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     );
   }
 
-  DropdownButton<Guid> getSurface() {
+  DropdownButton<Guid> getSurfaces() {
     List<DropdownMenuItem<Guid>> dropDownItems = [];
+
     for (Surface des in surfaces) {
       var item = DropdownMenuItem(
         value: des.id,
@@ -102,6 +107,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       );
       dropDownItems.add(item);
     }
+
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
@@ -117,6 +123,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
 
   DropdownButton<int> getPieces() {
     List<DropdownMenuItem<int>> dropDownItems = [];
+
     for (int des in pieces) {
       var item = DropdownMenuItem(
         value: des,
@@ -124,6 +131,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       );
       dropDownItems.add(item);
     }
+
     return DropdownButton(
       icon: const Icon(FeatherIcons.chevronDown),
       items: dropDownItems,
@@ -155,8 +163,8 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
-          width: context.width(),
           height: context.height(),
+          width: context.width(),
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           decoration: const BoxDecoration(
             color: kWhite,
@@ -208,7 +216,8 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         labelText: 'Choose a Category',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child: DropdownButtonHideUnderline(child: getCategory()),
+                      child:
+                          DropdownButtonHideUnderline(child: getCategories()),
                     );
                   },
                 ),
@@ -229,7 +238,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         labelText: 'Choose a Material',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child: DropdownButtonHideUnderline(child: getMaterial()),
+                      child: DropdownButtonHideUnderline(child: getMaterials()),
                     );
                   },
                 ),
@@ -250,7 +259,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         labelText: 'Choose a Surface',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child: DropdownButtonHideUnderline(child: getSurface()),
+                      child: DropdownButtonHideUnderline(child: getSurfaces()),
                     );
                   },
                 ),

@@ -36,5 +36,15 @@ class ApiConfig {
     'size': 'sizes',
     'step': 'steps',
     'surface': 'surfaces',
+
+    // GHN
+    'ghn': 'ghn',
+  };
+
+  // ignore: constant_identifier_names
+  static const Map<String, String> GHNPaths = {
+    'province': '/master-data/province',
+    'district': '/master-data/district',
+    'ward': '/master-data/ward',
   };
 }
