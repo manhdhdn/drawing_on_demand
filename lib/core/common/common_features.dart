@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:document_analysis/document_analysis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,8 @@ Future<Order> getCart() async {
         0,
         filter:
             "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
-        expand: 'orderDetails(expand=artwork(expand=arts,createdByNavigation))',
+        expand:
+            'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
       ))
           .value
           .first;
@@ -151,7 +153,7 @@ Future<Order> getCart() async {
     } else {
       order = await OrderApi().getOne(
         PrefUtils().getCartId(),
-        'orderDetails(expand=artwork(expand=arts,createdByNavigation))',
+        'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
       );
     }
   } catch (error) {
@@ -234,7 +236,13 @@ int getCartIndex(int index, List<int> packList) {
   return cartIndex;
 }
 
+double getMatchPoint(String base, String target) {
+  base.toLowerCase;
+  target.toLowerCase;
+
+  return wordFrequencySimilarity(base, target);
+}
+
 String getDiscount() {
-  // TODO
   return '';
 }

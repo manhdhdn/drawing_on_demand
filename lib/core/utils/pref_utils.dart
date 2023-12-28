@@ -18,7 +18,7 @@ class PrefUtils {
   }
 
   /// This will clear some data stored in preference
-  void clearPreferencesData() async {
+  Future<void> clearPreferencesData() async {
     _sharedPreferences!.remove('account');
     _sharedPreferences!.remove('token');
     _sharedPreferences!.remove('role');
@@ -26,7 +26,7 @@ class PrefUtils {
     _sharedPreferences!.remove('cartId');
   }
 
-  Future<void> setThemeData(String value) {
+  Future<bool> setThemeData(String value) {
     return _sharedPreferences!.setString('themeData', value);
   }
 
@@ -38,7 +38,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setAccount(Account account) {
+  Future<bool> setAccount(Account account) {
     return _sharedPreferences!.setString('account', jsonEncode(account));
   }
 
@@ -50,7 +50,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setToken(String value) {
+  Future<bool> setToken(String value) {
     return _sharedPreferences!.setString('token', value);
   }
 
@@ -62,7 +62,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setLanguage(String value) {
+  Future<bool> setLanguage(String value) {
     return _sharedPreferences!.setString('language', value);
   }
 
@@ -74,7 +74,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setPushNotifications(bool value) {
+  Future<bool> setPushNotifications(bool value) {
     return _sharedPreferences!.setBool('pushNotifications', value);
   }
 
@@ -86,7 +86,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setRole(String value) {
+  Future<bool> setRole(String value) {
     return _sharedPreferences!.setString('role', value);
   }
 
@@ -98,7 +98,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setRank(String value) {
+  Future<bool> setRank(String value) {
     return _sharedPreferences!.setString('rank', value);
   }
 
@@ -110,7 +110,7 @@ class PrefUtils {
     }
   }
 
-  Future<void> setCartId(String value) {
+  Future<bool> setCartId(String value) {
     return _sharedPreferences!.setString('cartId', value);
   }
 
@@ -120,5 +120,37 @@ class PrefUtils {
     } catch (e) {
       return '{}';
     }
+  }
+
+  Future<bool> setShippingOrders(String value) {
+    return _sharedPreferences!.setString('shippingOrders', value);
+  }
+
+  String getShippingOrders() {
+    try {
+      return _sharedPreferences!.getString('shippingOrders')!;
+    } catch (e) {
+      return '{}';
+    }
+  }
+
+  Future<bool> clearShippingOrders() async {
+    return _sharedPreferences!.remove('shippingOrders');
+  }
+
+  Future<bool> setVNPayRef(String value) {
+    return _sharedPreferences!.setString('VNPayRef', value);
+  }
+
+  String getVNPayRef() {
+    try {
+      return _sharedPreferences!.getString('VNPayRef')!;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  Future<bool> clearVNPayRef() async {
+    return _sharedPreferences!.remove('VNPayRef');
   }
 }

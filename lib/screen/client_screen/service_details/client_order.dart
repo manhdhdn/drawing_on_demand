@@ -2,19 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/api_config.dart';
 import '../../../data/apis/ghn_api.dart';
+import '../../../data/apis/order_api.dart';
+import '../../../data/apis/vnpay_api.dart';
 import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
+import '../../../data/models/vnpay_request.dart';
+import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
-import 'client_add_card.dart';
 
 class ClientOrder extends StatefulWidget {
   final String? id;
@@ -26,18 +33,38 @@ class ClientOrder extends StatefulWidget {
 }
 
 class _ClientOrderState extends State<ClientOrder> {
-  late Future<Order?> cart;
+  late Future<Order?> order;
+
+  TextEditingController nameController = TextEditingController(
+    text: jsonDecode(PrefUtils().getAccount())['Name'],
+  );
+  TextEditingController phoneController = TextEditingController(
+    text: jsonDecode(PrefUtils().getAccount())['Phone'],
+  );
+  TextEditingController addressController = TextEditingController(
+    text: jsonDecode(PrefUtils().getAccount())['Address'],
+  );
+
+  bool isCheck = false;
+  bool canContinue = true;
+
+  int lightServiceTypeId = 2;
+  int heavyServiceTypeId = 5;
+  String requiredNote = 'KHONGCHOXEMHANG';
 
   double total = 0;
-  double shippingFee = 180000;
+  List<double> shippingFees = [39, 39];
+  List<String> shippingOrders = [];
 
   List<Map<String, dynamic>> provinces = [];
-  List<Object> districts = [];
-  List<Object> wards = [];
+  List<Map<String, dynamic>> districts = [];
+  List<Map<String, dynamic>> wards = [];
 
   int? selectedProvince;
+  int? previousSelectedDistrict = 39;
   int? selectedDistrict;
-  int? selectedWard;
+  String? previousSelectedWard = '39';
+  String? selectedWard;
 
   int selectedPaymentMethod = 0;
 
@@ -52,6 +79,46 @@ class _ClientOrderState extends State<ClientOrder> {
     'images/creditcard.png',
     'images/internation.png',
   ];
+
+  Future<void> showProcessingPopUp() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: const ProcessingPopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void showFailedPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: const FailedPopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
 
   DropdownButton<int> getProvinces() {
     List<DropdownMenuItem<int>> dropDownItems = [];
@@ -69,10 +136,70 @@ class _ClientOrderState extends State<ClientOrder> {
       items: dropDownItems,
       value: selectedProvince,
       style: kTextStyle.copyWith(color: kSubTitleColor),
+      onChanged: (value) async {
+        if (isCheck) {
+          await getDistrict(value!);
+
+          setState(() {
+            selectedProvince = value;
+          });
+        }
+      },
+    );
+  }
+
+  DropdownButton<int> getDistricts() {
+    List<DropdownMenuItem<int>> dropDownItems = [];
+
+    for (Map<String, dynamic> des in districts) {
+      var item = DropdownMenuItem(
+        value: des['DistrictID'] as int,
+        child: Text(des['DistrictName']),
+      );
+      dropDownItems.add(item);
+    }
+
+    return DropdownButton(
+      icon: const Icon(FeatherIcons.chevronDown),
+      items: dropDownItems,
+      value: selectedDistrict,
+      style: kTextStyle.copyWith(color: kSubTitleColor),
+      onChanged: (value) async {
+        if (isCheck) {
+          await getWard(value!);
+
+          setState(() {
+            previousSelectedDistrict = selectedDistrict;
+            selectedDistrict = value;
+          });
+        }
+      },
+    );
+  }
+
+  DropdownButton<String> getWards() {
+    List<DropdownMenuItem<String>> dropDownItems = [];
+
+    for (Map<String, dynamic> des in wards) {
+      var item = DropdownMenuItem(
+        value: des['WardCode'] as String,
+        child: Text(des['WardName']),
+      );
+      dropDownItems.add(item);
+    }
+
+    return DropdownButton(
+      icon: const Icon(FeatherIcons.chevronDown),
+      items: dropDownItems,
+      value: selectedWard,
+      style: kTextStyle.copyWith(color: kSubTitleColor),
       onChanged: (value) {
-        setState(() {
-          selectedProvince = value!;
-        });
+        if (isCheck) {
+          setState(() {
+            previousSelectedWard = selectedWard;
+            selectedWard = value!;
+          });
+        }
       },
     );
   }
@@ -82,6 +209,53 @@ class _ClientOrderState extends State<ClientOrder> {
     super.initState();
 
     init();
+  }
+
+  void init() async {
+    if (widget.id == null) {
+      order = getCart().then((order) {
+        double total = 0;
+
+        for (var orderDetail in order.orderDetails!) {
+          total += orderDetail.price! * orderDetail.quantity!;
+        }
+
+        setState(() {
+          this.total = total;
+        });
+
+        return order;
+      });
+    } else {
+      order = OrderApi().getOne(
+        widget.id!,
+        'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+      );
+    }
+
+    await getProvince();
+
+    Map<String, String> query =
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).routeInformationProvider.value.uri.queryParameters;
+
+    if (query.containsKey('vnp_TxnRef')) {
+      if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
+          query['vnp_ResponseCode'] == '00') {
+        setState(() {
+          canContinue = false;
+        });
+
+        await showProcessingPopUp();
+
+        // ignore: use_build_context_synchronously
+        context.goNamed(OrderRoute.name);
+      } else {
+        showFailedPopUp();
+      }
+    }
+
+    PrefUtils().clearVNPayRef();
   }
 
   @override
@@ -105,13 +279,15 @@ class _ClientOrderState extends State<ClientOrder> {
         child: ButtonGlobalWithoutIcon(
           buttontext: 'Continue',
           buttonDecoration: kButtonDecoration.copyWith(
-            color: kPrimaryColor,
+            color: !shippingFees.any((shippingFee) => shippingFee == 39)
+                ? kPrimaryColor
+                : kLightNeutralColor,
             borderRadius: BorderRadius.circular(30.0),
           ),
           onPressed: () {
-            setState(() {
-              const AddNewCard().launch(context);
-            });
+            !shippingFees.any((shippingFee) => shippingFee == 39) && canContinue
+                ? onContinue()
+                : null;
           },
           buttonTextColor: kWhite,
         ),
@@ -136,7 +312,7 @@ class _ClientOrderState extends State<ClientOrder> {
               children: [
                 const SizedBox(height: 15.0),
                 FutureBuilder(
-                  future: cart,
+                  future: order,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<OrderDetail> orderDetails =
@@ -177,6 +353,10 @@ class _ClientOrderState extends State<ClientOrder> {
                               physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
                               itemBuilder: (_, i) {
+                                shippingFees.add(0);
+                                shippingOrders.add('');
+                                createOrder(orderDetails, packList, i);
+
                                 return Theme(
                                   data: Theme.of(context).copyWith(
                                       dividerColor: Colors.transparent),
@@ -451,39 +631,6 @@ class _ClientOrderState extends State<ClientOrder> {
                                                               ],
                                                             ),
                                                           ),
-                                                          SizedBox(
-                                                            width: context
-                                                                    .width() *
-                                                                0.5,
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  'Shipping fee:',
-                                                                  style: kTextStyle
-                                                                      .copyWith(
-                                                                    color:
-                                                                        kSubTitleColor,
-                                                                  ),
-                                                                ),
-                                                                const Spacer(),
-                                                                Text(
-                                                                  NumberFormat.simpleCurrency(
-                                                                          locale:
-                                                                              'vi_VN')
-                                                                      .format(
-                                                                          60000),
-                                                                  style: kTextStyle
-                                                                      .copyWith(
-                                                                    color:
-                                                                        kPrimaryColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -494,6 +641,36 @@ class _ClientOrderState extends State<ClientOrder> {
                                           );
                                         },
                                       ),
+                                      SizedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                                width:
+                                                    context.height() * 0.135 +
+                                                        6),
+                                            Text(
+                                              'Shipping fee:',
+                                              style: kTextStyle.copyWith(
+                                                color: kSubTitleColor,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              NumberFormat.simpleCurrency(
+                                                      locale: 'vi_VN')
+                                                  .format(shippingFees[i]),
+                                              style: kTextStyle.copyWith(
+                                                color: kPrimaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 15.0),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10.0),
                                     ],
                                   ),
                                 );
@@ -513,10 +690,120 @@ class _ClientOrderState extends State<ClientOrder> {
                   },
                 ),
                 const SizedBox(height: 15.0),
-                Text(
-                  'Delivery Address',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Delivery Address',
+                        style: kTextStyle.copyWith(
+                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            activeColor: kPrimaryColor,
+                            visualDensity: const VisualDensity(horizontal: -4),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.0),
+                            ),
+                            value: isCheck,
+                            onChanged: (value) {
+                              setState(() {
+                                isCheck = !isCheck;
+                              });
+
+                              if (!isCheck) {
+                                setState(() {
+                                  nameController.text = jsonDecode(
+                                      PrefUtils().getAccount())['Name'];
+                                  phoneController.text = jsonDecode(
+                                      PrefUtils().getAccount())['Phone'];
+                                  addressController.text = jsonDecode(
+                                      PrefUtils().getAccount())['Address'];
+                                });
+
+                                getProvince();
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 2.0),
+                          Text(
+                            'Use this address instead',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                Row(
+                  children: [
+                    Text(
+                      'Name',
+                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: context.width() * 0.7,
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        cursorColor: kNeutralColor,
+                        textInputAction: TextInputAction.next,
+                        decoration: kInputDecoration.copyWith(
+                          labelText: 'Receiver name',
+                          labelStyle: kTextStyle.copyWith(
+                            color: kNeutralColor,
+                            fontSize: 14.0,
+                          ),
+                          hintText: 'Enter receiver name',
+                          hintStyle: kTextStyle.copyWith(
+                            color: kSubTitleColor,
+                            fontSize: 14.0,
+                          ),
+                          focusColor: kNeutralColor,
+                          border: const OutlineInputBorder(),
+                        ),
+                        readOnly: !isCheck,
+                        controller: nameController,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 15.0),
+                Row(
+                  children: [
+                    Text(
+                      'Phone',
+                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: context.width() * 0.7,
+                      child: TextFormField(
+                        keyboardType: TextInputType.phone,
+                        cursorColor: kNeutralColor,
+                        textInputAction: TextInputAction.next,
+                        decoration: kInputDecoration.copyWith(
+                          labelText: 'Receiver phone',
+                          labelStyle: kTextStyle.copyWith(
+                            color: kNeutralColor,
+                            fontSize: 14.0,
+                          ),
+                          hintText: 'Enter receiver phone',
+                          hintStyle: kTextStyle.copyWith(
+                            color: kSubTitleColor,
+                            fontSize: 14.0,
+                          ),
+                          focusColor: kNeutralColor,
+                          border: const OutlineInputBorder(),
+                        ),
+                        readOnly: !isCheck,
+                        controller: phoneController,
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(height: 15.0),
                 Row(
@@ -527,7 +814,7 @@ class _ClientOrderState extends State<ClientOrder> {
                     ),
                     const Spacer(),
                     SizedBox(
-                      width: context.width() * 0.6,
+                      width: context.width() * 0.7,
                       child: FormField(
                         builder: (FormFieldState<dynamic> field) {
                           return InputDecorator(
@@ -552,7 +839,7 @@ class _ClientOrderState extends State<ClientOrder> {
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 15.0),
@@ -563,9 +850,32 @@ class _ClientOrderState extends State<ClientOrder> {
                       style: kTextStyle.copyWith(color: kSubTitleColor),
                     ),
                     const Spacer(),
-                    Text(
-                      'Unlimited',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                    SizedBox(
+                      width: context.width() * 0.7,
+                      child: FormField(
+                        builder: (FormFieldState<dynamic> field) {
+                          return InputDecorator(
+                            decoration: kInputDecoration.copyWith(
+                              enabledBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                                borderSide: BorderSide(
+                                    color: kBorderColorTextField, width: 2),
+                              ),
+                              contentPadding: const EdgeInsets.all(7.0),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelText: 'Choose a District',
+                              labelStyle:
+                                  kTextStyle.copyWith(color: kNeutralColor),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: getDistricts(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -577,10 +887,70 @@ class _ClientOrderState extends State<ClientOrder> {
                       style: kTextStyle.copyWith(color: kSubTitleColor),
                     ),
                     const Spacer(),
-                    const Icon(
-                      Icons.check_rounded,
-                      color: kPrimaryColor,
+                    SizedBox(
+                      width: context.width() * 0.7,
+                      child: FormField(
+                        builder: (FormFieldState<dynamic> field) {
+                          return InputDecorator(
+                            decoration: kInputDecoration.copyWith(
+                              enabledBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                                borderSide: BorderSide(
+                                    color: kBorderColorTextField, width: 2),
+                              ),
+                              contentPadding: const EdgeInsets.all(7.0),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelText: 'Choose a Ward',
+                              labelStyle:
+                                  kTextStyle.copyWith(color: kNeutralColor),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: getWards(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 15.0),
+                Row(
+                  children: [
+                    Text(
+                      'Address',
+                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: context.width() * 0.7,
+                      child: TextFormField(
+                        keyboardType: TextInputType.streetAddress,
+                        cursorColor: kNeutralColor,
+                        textInputAction: TextInputAction.done,
+                        decoration: kInputDecoration.copyWith(
+                          labelText: 'Address detail',
+                          labelStyle: kTextStyle.copyWith(
+                            color: kNeutralColor,
+                            fontSize: 14.0,
+                          ),
+                          hintText: 'Enter address detail',
+                          hintStyle: kTextStyle.copyWith(
+                            color: kSubTitleColor,
+                            fontSize: 14.0,
+                          ),
+                          focusColor: kNeutralColor,
+                          border: const OutlineInputBorder(),
+                        ),
+                        readOnly: !isCheck,
+                        controller: addressController,
+                        onEditingComplete: () {
+                          getProvince();
+                        },
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -673,7 +1043,7 @@ class _ClientOrderState extends State<ClientOrder> {
                     const Spacer(),
                     Text(
                       NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(shippingFee),
+                          .format(shippingFees.reduce((a, b) => a + b)),
                       style: kTextStyle.copyWith(color: kSubTitleColor),
                     ),
                   ],
@@ -684,18 +1054,20 @@ class _ClientOrderState extends State<ClientOrder> {
                     Text(
                       'Total',
                       style: kTextStyle.copyWith(
-                          color: kNeutralColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0),
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
                     ),
                     const Spacer(),
                     Text(
                       NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(total + shippingFee),
+                          .format(total + shippingFees.reduce((a, b) => a + b)),
                       style: kTextStyle.copyWith(
-                          color: kNeutralColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0),
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
                     ),
                   ],
                 ),
@@ -708,24 +1080,6 @@ class _ClientOrderState extends State<ClientOrder> {
     );
   }
 
-  void init() async {
-    cart = getCart().then((order) {
-      double total = 0;
-
-      for (var orderDetail in order.orderDetails!) {
-        total += orderDetail.price! * orderDetail.quantity!;
-      }
-
-      setState(() {
-        this.total = total;
-      });
-
-      return order;
-    });
-
-    getProvince();
-  }
-
   Future<void> getProvince() async {
     var request = GHNRequest(endpoint: ApiConfig.GHNPaths['province']);
     var respone = await GHNApi().postOne(request);
@@ -733,10 +1087,38 @@ class _ClientOrderState extends State<ClientOrder> {
     setState(() {
       provinces = List<Map<String, dynamic>>.from(
           jsonDecode(respone.postJsonString!)['data']);
+
+      Map<String, dynamic> result = {};
+      double matchPoint = 0;
+
+      for (var province in provinces) {
+        var nameExs = [];
+
+        if (province.containsKey('NameExtension')) {
+          nameExs = List<String>.from(province['NameExtension']);
+        }
+
+        for (var nameEx in nameExs) {
+          double point = getMatchPoint(addressController.text.trim(), nameEx);
+
+          if (matchPoint < point) {
+            matchPoint = point;
+            result = province;
+          }
+        }
+      }
+
+      if (result.isNotEmpty) {
+        getDistrict(result['ProvinceID']).then(
+          (value) => setState(() {
+            selectedProvince = result['ProvinceID'];
+          }),
+        );
+      }
     });
   }
 
-  Future<void> getDistrict(String provinceId) async {
+  Future<void> getDistrict(int provinceId) async {
     var request = GHNRequest(
       endpoint: ApiConfig.GHNPaths['district'],
       postJsonString: jsonEncode(
@@ -746,12 +1128,46 @@ class _ClientOrderState extends State<ClientOrder> {
     var respone = await GHNApi().postOne(request);
 
     setState(() {
+      previousSelectedDistrict = selectedDistrict;
+      selectedDistrict = null;
+      previousSelectedWard = selectedWard;
+      selectedWard = null;
+
       districts = List<Map<String, dynamic>>.from(
           jsonDecode(respone.postJsonString!)['data']);
+      wards = [];
+
+      Map<String, dynamic> result = {};
+      double matchPoint = 0;
+
+      for (var district in districts) {
+        var nameExs = [];
+
+        if (district.containsKey('NameExtension')) {
+          nameExs = List<String>.from(district['NameExtension']);
+        }
+
+        for (var nameEx in nameExs) {
+          double point = getMatchPoint(addressController.text.trim(), nameEx);
+
+          if (matchPoint < point) {
+            matchPoint = point;
+            result = district;
+          }
+        }
+      }
+
+      if (result.isNotEmpty) {
+        getWard(result['DistrictID']).then(
+          (value) => setState(() {
+            selectedDistrict = result['DistrictID'];
+          }),
+        );
+      }
     });
   }
 
-  Future<void> getWard(String districtId) async {
+  Future<void> getWard(int districtId) async {
     var request = GHNRequest(
       endpoint: ApiConfig.GHNPaths['ward'],
       postJsonString: jsonEncode(
@@ -761,10 +1177,152 @@ class _ClientOrderState extends State<ClientOrder> {
     var respone = await GHNApi().postOne(request);
 
     setState(() {
+      previousSelectedWard = selectedWard;
+      selectedWard = null;
+
       wards = List<Map<String, dynamic>>.from(
           jsonDecode(respone.postJsonString!)['data']);
+
+      Map<String, dynamic> result = {};
+      double matchPoint = 0;
+
+      for (var ward in wards) {
+        var nameExs = [];
+
+        if (ward.containsKey('NameExtension')) {
+          nameExs = List<String>.from(ward['NameExtension']);
+        }
+
+        for (var nameEx in nameExs) {
+          double point = getMatchPoint(addressController.text.trim(), nameEx);
+
+          if (matchPoint < point) {
+            matchPoint = point;
+            result = ward;
+          }
+        }
+      }
+
+      if (result.isNotEmpty) {
+        selectedWard = result['WardCode'];
+      }
     });
   }
 
+  Future<void> createOrder(
+      List<OrderDetail> orderDetails, List<int> packList, int i) async {
+    if (selectedDistrict != null &&
+        selectedWard != null &&
+        (previousSelectedDistrict != selectedDistrict ||
+            previousSelectedWard != selectedWard)) {
+      var items = [];
+
+      double price = 0;
+
+      int weight = 0;
+      int length = 0;
+      int width = 0;
+      int height = 0;
+
+      int currentIndex = getCartIndex(i, packList);
+
+      for (var j = currentIndex; j < currentIndex + packList[i]; j++) {
+        for (var size in orderDetails[j].artwork!.sizes!) {
+          weight += size.weight! * orderDetails[j].quantity!;
+
+          height += size.height! * orderDetails[j].quantity!;
+
+          if (length < size.length!) {
+            length = size.length!;
+          }
+
+          if (width < size.width!) {
+            width = size.width!;
+          }
+        }
+
+        price += orderDetails[j].price! * orderDetails[j].quantity!;
+
+        items.add({
+          'name': orderDetails[j].artwork!.title,
+          'quantity': orderDetails[j].quantity,
+        });
+      }
+
+      var request = GHNRequest(
+        endpoint: ApiConfig.GHNPaths['preview'],
+        postJsonString: jsonEncode({
+          'to_name': nameController.text.trim(),
+          'to_phone': phoneController.text.trim(),
+          'to_address': addressController.text.trim(),
+          'to_ward_code': selectedWard,
+          'to_district_id': selectedDistrict,
+          'weight': weight,
+          'length': length,
+          'width': width,
+          'height': height,
+          'service_type_id':
+              weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
+          'payment_type_id': 1,
+          'required_note': requiredNote,
+          'items': items,
+          'insurance_value': price,
+        }),
+      );
+
+      // Call preview
+      try {
+        var response = await GHNApi().postOne(request);
+
+        List<double> shippingFees = this.shippingFees;
+        shippingFees[i] = double.parse(
+            jsonDecode(response.postJsonString!)['data']['total_fee']
+                .toString());
+
+        List<String> shippingOrders = this.shippingOrders;
+        shippingOrders[i] = request.postJsonString!;
+
+        setState(() {
+          previousSelectedDistrict = selectedDistrict;
+          previousSelectedWard = selectedWard;
+
+          this.shippingFees = shippingFees;
+          this.shippingOrders = shippingOrders;
+        });
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: 'Create shipping order failed (Check if over weight)',
+        );
+      }
+    }
+  }
+
   void onArtworkDetail(String string) {}
+
+  Future<void> onContinue() async {
+    String uri = isWeb ? ApiConfig.paymentUri : 'android';
+
+    try {
+      Order? order = await this.order;
+
+      VNPayRequest request = VNPayRequest(
+        orderId: order!.id.toString().split('-').first,
+        price: total + shippingFees.reduce((a, b) => a + b),
+        method: selectedPaymentMethod > 0
+            ? selectedPaymentMethod + 1
+            : selectedPaymentMethod,
+        lang: PrefUtils().getLanguage() == 'Vietnamese' ? 'vn' : 'en',
+        // ignore: use_build_context_synchronously
+        returnUrl: uri,
+      );
+
+      VNPayRequest response = (await VNPayApi().postOne(request));
+
+      await PrefUtils().setVNPayRef(response.orderId!);
+
+      launchUrlString(response.paymentUrl!, webOnlyWindowName: '_self');
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 }

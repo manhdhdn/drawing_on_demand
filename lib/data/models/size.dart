@@ -20,8 +20,10 @@ class Sizes {
 
 class Size {
   Guid? id;
-  double? width;
-  double? length;
+  int? width;
+  int? length;
+  int? height;
+  int? weight;
   Guid? requirementId;
   Guid? artworkId;
 
@@ -29,14 +31,18 @@ class Size {
     this.id,
     this.width,
     this.length,
+    this.height,
+    this.weight,
     this.requirementId,
     this.artworkId,
   });
 
   Size.fromJson(Map<String, dynamic> json) {
     id = Guid(json['Id']);
-    width = double.tryParse(json['Width'].toString());
-    length = double.tryParse(json['Length'].toString());
+    width = json['Width'];
+    length = json['Length'];
+    height = json['Height'];
+    weight = json['Weight'];
     requirementId = Guid(json['RequirementId']);
     artworkId = Guid(json['ArtworkId']);
   }
@@ -46,6 +52,8 @@ class Size {
       'Id': id.toString(),
       'Width': width,
       'Length': length,
+      'Height': height,
+      'Weight': weight,
       'RequirementId': requirementId?.toString(),
       'ArtworkId': artworkId?.toString(),
     };

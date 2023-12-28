@@ -19,6 +19,19 @@ class ProcessingPopUp extends StatefulWidget {
 
 class _ProcessingPopUpState extends State<ProcessingPopUp> {
   @override
+  void initState() {
+    super.initState();
+
+    init();
+  }
+
+  void init() async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      finish(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -51,6 +64,71 @@ class _ProcessingPopUpState extends State<ProcessingPopUp> {
             const SizedBox(height: 10.0),
             Text(
               'Stay tuned...',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(color: kLightNeutralColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FailedPopUp extends StatefulWidget {
+  const FailedPopUp({Key? key}) : super(key: key);
+
+  @override
+  State<FailedPopUp> createState() => _FailedPopUpState();
+}
+
+class _FailedPopUpState extends State<FailedPopUp> {
+  @override
+  void initState() {
+    super.initState();
+
+    init();
+  }
+
+  void init() async {
+    await Future.delayed(const Duration(seconds: 3), () {
+      finish(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 166,
+              width: 208,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/failed.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              'Your payment was not\nsuccessful',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(
+                  color: kNeutralColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              'Try again...',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),

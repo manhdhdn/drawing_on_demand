@@ -2,6 +2,7 @@ import '../../core/utils/pref_utils.dart';
 
 class ApiConfig {
   static const String baseUrl = 'dond.azurewebsites.net';
+  static const String paymentUri = 'http://localhost:8000/cart/checkout';
 
   static Map<String, String> get headers {
     return {
@@ -39,6 +40,9 @@ class ApiConfig {
 
     // GHN
     'ghn': 'ghn',
+
+    // VNPay
+    'vnpay': 'vnpay',
   };
 
   // ignore: constant_identifier_names
@@ -46,5 +50,7 @@ class ApiConfig {
     'province': '/master-data/province',
     'district': '/master-data/district',
     'ward': '/master-data/ward',
+    'preview': '/v2/shipping-order/preview',
+    'create': '/v2/shipping-order/create',
   };
 }

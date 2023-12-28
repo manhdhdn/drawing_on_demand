@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'account.dart';
 import 'art.dart';
+import 'size.dart';
 import 'artwork_review.dart';
 import 'category.dart';
 import 'material.dart';
@@ -42,6 +43,7 @@ class Artwork {
   Guid? createdBy;
   List<ArtworkReview>? artworkReviews;
   List<Art>? arts;
+  List<Size>? sizes;
   Account? createdByNavigation;
   Category? category;
   Surface? surface;
@@ -63,6 +65,7 @@ class Artwork {
     this.createdBy,
     this.artworkReviews,
     this.arts,
+    this.sizes,
     this.createdByNavigation,
     this.category,
     this.surface,
@@ -93,6 +96,11 @@ class Artwork {
     arts = json['Arts'] != null
         ? List<Art>.from(json['Arts'].map(
             (x) => Art.fromJson(x),
+          ))
+        : null;
+    sizes = json['Sizes'] != null
+        ? List<Size>.from(json['Sizes'].map(
+            (x) => Size.fromJson(x),
           ))
         : null;
     createdByNavigation = json['CreatedByNavigation'] != null

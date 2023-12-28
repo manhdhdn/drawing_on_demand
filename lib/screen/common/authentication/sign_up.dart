@@ -175,17 +175,18 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Checkbox(
-                        activeColor: kPrimaryColor,
-                        visualDensity: const VisualDensity(horizontal: -4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        value: isCheck,
-                        onChanged: (value) {
-                          setState(() {
-                            isCheck = !isCheck;
-                          });
-                        }),
+                      activeColor: kPrimaryColor,
+                      visualDensity: const VisualDensity(horizontal: -4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      value: isCheck,
+                      onChanged: (value) {
+                        setState(() {
+                          isCheck = !isCheck;
+                        });
+                      },
+                    ),
                     Flexible(
                       child: RichText(
                         text: TextSpan(
