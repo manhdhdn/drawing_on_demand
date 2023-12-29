@@ -135,9 +135,7 @@ class AccountRoleApi {
     }
   }
 
-  Future<AccountRole> patchOne(String id, Map body) async {
-    AccountRole accountRole = AccountRole();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class AccountRoleApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        accountRole = AccountRole.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return accountRole;
   }
 
   Future<void> deleteOne(String id) async {

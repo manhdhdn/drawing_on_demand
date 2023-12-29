@@ -135,9 +135,7 @@ class CategoryApi {
     }
   }
 
-  Future<Category> patchOne(String id, Map body) async {
-    Category category = Category();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class CategoryApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        category = Category.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return category;
   }
 
   Future<void> deleteOne(String id) async {

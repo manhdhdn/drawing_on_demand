@@ -135,9 +135,7 @@ class RequirementApi {
     }
   }
 
-  Future<Requirement> patchOne(String id, Map body) async {
-    Requirement requirement = Requirement();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class RequirementApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        requirement = Requirement.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return requirement;
   }
 
   Future<void> deleteOne(String id) async {

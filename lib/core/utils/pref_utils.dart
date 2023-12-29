@@ -33,7 +33,7 @@ class PrefUtils {
   String getThemeData() {
     try {
       return _sharedPreferences!.getString('themeData')!;
-    } catch (e) {
+    } catch (error) {
       return 'primary';
     }
   }
@@ -45,7 +45,7 @@ class PrefUtils {
   String getAccount() {
     try {
       return _sharedPreferences!.getString('account')!;
-    } catch (e) {
+    } catch (error) {
       return '{}';
     }
   }
@@ -57,7 +57,7 @@ class PrefUtils {
   String getToken() {
     try {
       return _sharedPreferences!.getString('token')!;
-    } catch (e) {
+    } catch (error) {
       return '{}';
     }
   }
@@ -69,7 +69,7 @@ class PrefUtils {
   String getLanguage() {
     try {
       return _sharedPreferences!.getString('language')!;
-    } catch (e) {
+    } catch (error) {
       return 'Vietnamese';
     }
   }
@@ -81,7 +81,7 @@ class PrefUtils {
   bool getPushNotifications() {
     try {
       return _sharedPreferences!.getBool('pushNotifications')!;
-    } catch (e) {
+    } catch (error) {
       return false;
     }
   }
@@ -93,7 +93,7 @@ class PrefUtils {
   String getRole() {
     try {
       return _sharedPreferences!.getString('role')!;
-    } catch (e) {
+    } catch (error) {
       return 'Guest';
     }
   }
@@ -105,7 +105,7 @@ class PrefUtils {
   String getRank() {
     try {
       return _sharedPreferences!.getString('rank')!;
-    } catch (e) {
+    } catch (error) {
       return '{}';
     }
   }
@@ -117,9 +117,13 @@ class PrefUtils {
   String getCartId() {
     try {
       return _sharedPreferences!.getString('cartId')!;
-    } catch (e) {
+    } catch (error) {
       return '{}';
     }
+  }
+
+  Future<bool> clearCartId() async {
+    return _sharedPreferences!.remove('cartId');
   }
 
   Future<bool> setShippingOrders(String value) {
@@ -129,7 +133,7 @@ class PrefUtils {
   String getShippingOrders() {
     try {
       return _sharedPreferences!.getString('shippingOrders')!;
-    } catch (e) {
+    } catch (error) {
       return '{}';
     }
   }
@@ -145,7 +149,7 @@ class PrefUtils {
   String getVNPayRef() {
     try {
       return _sharedPreferences!.getString('VNPayRef')!;
-    } catch (e) {
+    } catch (error) {
       return '';
     }
   }

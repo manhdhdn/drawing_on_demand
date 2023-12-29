@@ -135,9 +135,7 @@ class SurfaceApi {
     }
   }
 
-  Future<Surface> patchOne(String id, Map body) async {
-    Surface surface = Surface();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class SurfaceApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        surface = Surface.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return surface;
   }
 
   Future<void> deleteOne(String id) async {

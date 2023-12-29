@@ -135,9 +135,7 @@ class OrderDetailApi {
     }
   }
 
-  Future<OrderDetail> patchOne(String id, Map body) async {
-    OrderDetail orderDetail = OrderDetail();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class OrderDetailApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        orderDetail = OrderDetail.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return orderDetail;
   }
 
   Future<void> deleteOne(String id) async {

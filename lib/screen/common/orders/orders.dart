@@ -3,7 +3,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../widgets/constant.dart';
-import 'client_order_details.dart';
+import 'order_details.dart';
 
 class ClientOrderList extends StatefulWidget {
   const ClientOrderList({Key? key}) : super(key: key);

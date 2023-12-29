@@ -135,9 +135,7 @@ class MaterialApi {
     }
   }
 
-  Future<Material> patchOne(String id, Map body) async {
-    Material material = Material();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class MaterialApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        material = Material.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return material;
   }
 
   Future<void> deleteOne(String id) async {

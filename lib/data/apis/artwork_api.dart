@@ -135,9 +135,7 @@ class ArtworkApi {
     }
   }
 
-  Future<Artwork> patchOne(String id, Map body) async {
-    Artwork artwork = Artwork();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class ArtworkApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        artwork = Artwork.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return artwork;
   }
 
   Future<void> deleteOne(String id) async {

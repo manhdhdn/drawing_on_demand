@@ -367,7 +367,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
 
       // ignore: use_build_context_synchronously
       context.pop(true);
-    } catch (e) {
+    } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
 

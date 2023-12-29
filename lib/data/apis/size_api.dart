@@ -135,9 +135,7 @@ class SizeApi {
     }
   }
 
-  Future<Size> patchOne(String id, Map body) async {
-    Size size = Size();
-
+  Future<void> patchOne(String id, Map body) async {
     try {
       final response = await patch(
         Uri.https(ApiConfig.baseUrl,
@@ -146,16 +144,12 @@ class SizeApi {
         body: jsonEncode(body),
       );
 
-      if (_isSuccessCall(response)) {
-        size = Size.fromJson(jsonDecode(response.body));
-      } else {
+      if (!_isSuccessCall(response)) {
         throw errorSomethingWentWrong;
       }
     } catch (error) {
       rethrow;
     }
-
-    return size;
   }
 
   Future<void> deleteOne(String id) async {

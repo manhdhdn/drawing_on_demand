@@ -51,7 +51,9 @@ class _ClientOrderState extends State<ClientOrder> {
   int heavyServiceTypeId = 5;
   String requiredNote = 'KHONGCHOXEMHANG';
 
+  String status = '';
   double total = 0;
+  double paid = 0;
   List<double> shippingFees = [39, 39];
   List<String> shippingOrders = [];
 
@@ -210,58 +212,6 @@ class _ClientOrderState extends State<ClientOrder> {
     init();
   }
 
-  void init() async {
-    order = OrderApi()
-        .getOne(
-      widget.id!,
-      'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
-    )
-        .then((order) async {
-      if (order.status == 'Completed') {
-        GoRouter.of(context).pop();
-        return null;
-      }
-
-      double total = 0;
-
-      for (var orderDetail in order.orderDetails!) {
-        total += orderDetail.price! * orderDetail.quantity!;
-      }
-
-      setState(() {
-        this.total = total;
-      });
-
-      Map<String, String> query =
-          // ignore: use_build_context_synchronously
-          GoRouter.of(context)
-              .routeInformationProvider
-              .value
-              .uri
-              .queryParameters;
-
-      if (query.containsKey('vnp_TxnRef')) {
-        if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
-            query['vnp_ResponseCode'] == '00') {
-          showProcessingPopUp();
-
-          // ignore: use_build_context_synchronously
-          context.goNamed(OrderRoute.name);
-        } else {
-          showFailedPopUp();
-
-          await getProvince();
-        }
-      } else {
-        await getProvince();
-      }
-
-      PrefUtils().clearVNPayRef();
-
-      return order;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -359,7 +309,7 @@ class _ClientOrderState extends State<ClientOrder> {
                               itemBuilder: (_, i) {
                                 shippingFees.add(0);
                                 shippingOrders.add('');
-                                createOrder(orderDetails, packList, i);
+                                createShippingOrder(orderDetails, packList, i);
 
                                 return Theme(
                                   data: Theme.of(context).copyWith(
@@ -1059,8 +1009,8 @@ class _ClientOrderState extends State<ClientOrder> {
                       'Total',
                       style: kTextStyle.copyWith(
                         color: kNeutralColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
                       ),
                     ),
                     const Spacer(),
@@ -1069,19 +1019,132 @@ class _ClientOrderState extends State<ClientOrder> {
                           .format(total + shippingFees.reduce((a, b) => a + b)),
                       style: kTextStyle.copyWith(
                         color: kNeutralColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: 'Need to pay ',
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          status == 'Pending'
+                              ? TextSpan(
+                                  text: '(${30}% of subtotal)',
+                                  style: kTextStyle.copyWith(
+                                    color: kNeutralColor,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.0,
+                                  ),
+                                )
+                              : TextSpan(
+                                  text: '(the rest)',
+                                  style: kTextStyle.copyWith(
+                                    color: kNeutralColor,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                          status == 'Pending'
+                              ? total * 0.3
+                              : total +
+                                  shippingFees.reduce((a, b) => a + b) -
+                                  paid),
+                      style: kTextStyle.copyWith(
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ],
+                ).visible(status != 'Cart'),
+                const SizedBox(height: 10.0).visible(status != 'Cart'),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void init() async {
+    order = OrderApi()
+        .getOne(
+      widget.id!,
+      'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+    )
+        .then((order) async {
+      Map<String, String> query = GoRouter.of(context)
+          .routeInformationProvider
+          .value
+          .uri
+          .queryParameters;
+
+      if (query.containsKey('vnp_TxnRef')) {
+        if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
+            query['vnp_ResponseCode'] == '00') {
+          showProcessingPopUp();
+          PrefUtils().clearVNPayRef();
+
+          await updateData(order);
+
+          // ignore: use_build_context_synchronously
+          context.goNamed(OrderRoute.name);
+          return null;
+        } else {
+          showFailedPopUp();
+          PrefUtils().clearVNPayRef();
+
+          await getProvince();
+        }
+      } else {
+        PrefUtils().clearVNPayRef();
+        await getProvince();
+      }
+
+      if (order.status == 'Completed') {
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).pop();
+        return null;
+      }
+
+      setState(() {
+        status = order.status!;
+      });
+
+      double total = 0;
+
+      for (var orderDetail in order.orderDetails!) {
+        total += orderDetail.price! * orderDetail.quantity!;
+      }
+
+      setState(() {
+        this.total = total;
+      });
+
+      if (order.total! > 0) {
+        setState(() {
+          paid = order.total!;
+        });
+      }
+
+      return order;
+    });
   }
 
   Future<void> getProvince() async {
@@ -1213,7 +1276,7 @@ class _ClientOrderState extends State<ClientOrder> {
     });
   }
 
-  Future<void> createOrder(
+  Future<void> createShippingOrder(
       List<OrderDetail> orderDetails, List<int> packList, int i) async {
     if (selectedDistrict != null &&
         selectedWard != null &&
@@ -1280,8 +1343,8 @@ class _ClientOrderState extends State<ClientOrder> {
 
         List<double> shippingFees = this.shippingFees;
         shippingFees[i] = double.parse(
-            jsonDecode(response.postJsonString!)['data']['total_fee']
-                .toString());
+          jsonDecode(response.postJsonString!)['data']['total_fee'].toString(),
+        );
 
         List<String> shippingOrders = this.shippingOrders;
         shippingOrders[i] = request.postJsonString!;
@@ -1293,7 +1356,7 @@ class _ClientOrderState extends State<ClientOrder> {
           this.shippingFees = shippingFees;
           this.shippingOrders = shippingOrders;
         });
-      } catch (e) {
+      } catch (error) {
         Fluttertoast.showToast(
           msg: 'Create shipping order failed (Check if over weight)',
         );
@@ -1309,9 +1372,15 @@ class _ClientOrderState extends State<ClientOrder> {
     try {
       Order? order = await this.order;
 
+      double price = status == 'Cart'
+          ? total + shippingFees.reduce((a, b) => a + b)
+          : status == 'Pending'
+              ? 0.3 * total
+              : total + shippingFees.reduce((a, b) => a + b) - paid;
+
       VNPayRequest request = VNPayRequest(
         orderId: order!.id.toString().split('-').first,
-        price: total + shippingFees.reduce((a, b) => a + b),
+        price: price,
         method: selectedPaymentMethod > 0
             ? selectedPaymentMethod + 1
             : selectedPaymentMethod,
@@ -1326,8 +1395,67 @@ class _ClientOrderState extends State<ClientOrder> {
       await PrefUtils().setShippingOrders(jsonEncode(shippingOrders));
 
       launchUrlString(response.paymentUrl!, webOnlyWindowName: '_self');
-    } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Create payment failed');
+    }
+  }
+
+  Future<void> updateData(Order order) async {
+    try {
+      String status = order.status!;
+      double total = 0;
+      List<double> shippingFees = [];
+
+      for (var orderDetail in order.orderDetails!) {
+        total += orderDetail.price! * orderDetail.quantity!;
+      }
+
+      for (var shippingOrder
+          in List<String>.from(jsonDecode(PrefUtils().getShippingOrders()))) {
+        if (shippingOrder.isNotEmpty) {
+          var request = GHNRequest(
+            endpoint: ApiConfig.GHNPaths['preview'],
+            postJsonString: shippingOrder,
+          );
+
+          var response = await GHNApi().postOne(request);
+
+          shippingFees.add(
+            double.parse(
+              jsonDecode(response.postJsonString!)['data']['total_fee']
+                  .toString(),
+            ),
+          );
+        }
+      }
+
+      Map<String, dynamic> body = {
+        'DepositDate': status == 'Pending'
+            ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
+            : order.depositDate != null
+                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+                    .format(order.depositDate!)
+                : null,
+        'CompletedDate': status == 'Cart' || status == 'Deposited'
+            ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
+            : null,
+        'Status': status == 'Pending' ? 'Deposited' : 'Completed',
+        'Total': status == 'Cart'
+            ? total + shippingFees.reduce((a, b) => a + b)
+            : status == 'Pending'
+                ? 0.3 * total
+                : total + shippingFees.reduce((a, b) => a + b),
+      };
+
+      await OrderApi().patchOne(widget.id!, body);
+
+      if (status == 'Cart') {
+        await PrefUtils().clearCartId();
+      }
+
+      await PrefUtils().clearShippingOrders();
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Update data failed');
     }
   }
 }
