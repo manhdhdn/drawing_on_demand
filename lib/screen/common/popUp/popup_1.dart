@@ -468,7 +468,7 @@ class _BlockingReasonPopUpState extends State<BlockingReasonPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'If you’re friens, blocking Angle Young. The conversation will stay in chats unless you hide it',
+              'If you’re friend, the conversation will stay in chats unless you hide it.',
               style: kTextStyle.copyWith(color: kSubTitleColor),
             ),
             const SizedBox(height: 20.0),
@@ -819,7 +819,7 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your order has been completed. Date Thursday 27 Jun 2023 ',
+              'Your order has been completed.\nDate Thursday 27 Jun 2023 ',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -915,7 +915,7 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
             ),
             const SizedBox(height: 20.0),
             ButtonGlobalWithoutIcon(
-                buttontext: 'got it!',
+                buttontext: 'Got it!',
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(30.0),

@@ -5,11 +5,11 @@ import 'package:go_router/go_router.dart';
 class ProgressDialogUtils {
   static bool isProgressShowing = false;
 
-  static Future<void> showProgress(BuildContext context) async {
+  static void showProgress(BuildContext context) {
     if (!isProgressShowing) {
       isProgressShowing = true;
 
-      await showDialog(
+      showDialog(
         barrierDismissible: false,
         context: context,
         builder: (context) => const Center(

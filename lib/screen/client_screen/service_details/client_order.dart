@@ -54,8 +54,8 @@ class _ClientOrderState extends State<ClientOrder> {
   String status = '';
   double total = 0;
   double paid = 0;
-  List<double> shippingFees = [39, 39];
-  List<String> shippingOrders = [];
+  List<double> shippingFees = [0];
+  List<String> shippingOrders = [''];
 
   List<Map<String, dynamic>> provinces = [];
   List<Map<String, dynamic>> districts = [];
@@ -233,13 +233,13 @@ class _ClientOrderState extends State<ClientOrder> {
         child: ButtonGlobalWithoutIcon(
           buttontext: 'Continue',
           buttonDecoration: kButtonDecoration.copyWith(
-            color: !shippingFees.any((shippingFee) => shippingFee == 39)
+            color: !shippingFees.any((shippingFee) => shippingFee == 0)
                 ? kPrimaryColor
                 : kLightNeutralColor,
             borderRadius: BorderRadius.circular(30.0),
           ),
           onPressed: () {
-            !shippingFees.any((shippingFee) => shippingFee == 39)
+            !shippingFees.any((shippingFee) => shippingFee == 0)
                 ? onContinue()
                 : null;
           },
@@ -278,6 +278,7 @@ class _ClientOrderState extends State<ClientOrder> {
 
                       List<int> packList = [0];
                       int packCount = 0;
+
                       if (orderDetails.isNotEmpty) {
                         String tempEmail = orderDetails
                             .first.artwork!.createdByNavigation!.email!;
@@ -309,6 +310,12 @@ class _ClientOrderState extends State<ClientOrder> {
                               itemBuilder: (_, i) {
                                 shippingFees.add(0);
                                 shippingOrders.add('');
+
+                                while (shippingFees.length > packList.length) {
+                                  shippingFees.removeLast();
+                                  shippingOrders.removeLast();
+                                }
+
                                 createShippingOrder(orderDetails, packList, i);
 
                                 return Theme(
@@ -996,8 +1003,10 @@ class _ClientOrderState extends State<ClientOrder> {
                     ),
                     const Spacer(),
                     Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(shippingFees.reduce((a, b) => a + b)),
+                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                          shippingFees.length > 1
+                              ? shippingFees.reduce((a, b) => a + b)
+                              : shippingFees[0]),
                       style: kTextStyle.copyWith(color: kSubTitleColor),
                     ),
                   ],
@@ -1015,8 +1024,11 @@ class _ClientOrderState extends State<ClientOrder> {
                     ),
                     const Spacer(),
                     Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(total + shippingFees.reduce((a, b) => a + b)),
+                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                          total +
+                              (shippingFees.length > 1
+                                  ? shippingFees.reduce((a, b) => a + b)
+                                  : shippingFees[0])),
                       style: kTextStyle.copyWith(
                         color: kNeutralColor,
                         fontWeight: FontWeight.w600,
@@ -1063,7 +1075,9 @@ class _ClientOrderState extends State<ClientOrder> {
                           status == 'Pending'
                               ? total * 0.3
                               : total +
-                                  shippingFees.reduce((a, b) => a + b) -
+                                  (shippingFees.length > 1
+                                      ? shippingFees.reduce((a, b) => a + b)
+                                      : shippingFees[0]) -
                                   paid),
                       style: kTextStyle.copyWith(
                         color: kNeutralColor,
@@ -1357,9 +1371,7 @@ class _ClientOrderState extends State<ClientOrder> {
           this.shippingOrders = shippingOrders;
         });
       } catch (error) {
-        Fluttertoast.showToast(
-          msg: 'Create shipping order failed (Check if over weight)',
-        );
+        Fluttertoast.showToast(msg: 'Create shipping order failed');
       }
     }
   }
@@ -1373,10 +1385,17 @@ class _ClientOrderState extends State<ClientOrder> {
       Order? order = await this.order;
 
       double price = status == 'Cart'
-          ? total + shippingFees.reduce((a, b) => a + b)
+          ? total +
+              (shippingFees.length > 1
+                  ? shippingFees.reduce((a, b) => a + b)
+                  : shippingFees[0])
           : status == 'Pending'
               ? 0.3 * total
-              : total + shippingFees.reduce((a, b) => a + b) - paid;
+              : total +
+                  (shippingFees.length > 1
+                      ? shippingFees.reduce((a, b) => a + b)
+                      : shippingFees[0]) -
+                  paid;
 
       VNPayRequest request = VNPayRequest(
         orderId: order!.id.toString().split('-').first,
@@ -1441,10 +1460,16 @@ class _ClientOrderState extends State<ClientOrder> {
             : null,
         'Status': status == 'Pending' ? 'Deposited' : 'Completed',
         'Total': status == 'Cart'
-            ? total + shippingFees.reduce((a, b) => a + b)
+            ? total +
+                (shippingFees.length > 1
+                    ? shippingFees.reduce((a, b) => a + b)
+                    : shippingFees[0])
             : status == 'Pending'
                 ? 0.3 * total
-                : total + shippingFees.reduce((a, b) => a + b),
+                : total +
+                    (shippingFees.length > 1
+                        ? shippingFees.reduce((a, b) => a + b)
+                        : shippingFees[0]),
       };
 
       await OrderApi().patchOne(widget.id!, body);

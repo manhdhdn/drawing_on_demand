@@ -10,7 +10,8 @@ import '../screen/client_screen/home/popular_services.dart';
 import '../screen/client_screen/job_post/create_new_job_post.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
-import '../screen/client_screen/orders/client_orders.dart';
+import '../screen/common/orders/order_detail.dart';
+import '../screen/common/orders/orders.dart';
 import '../screen/client_screen/profile/client_profile.dart';
 import '../screen/client_screen/profile/client_profile_details.dart';
 import '../screen/client_screen/service_details/client_order.dart';
@@ -170,9 +171,19 @@ class AppRoutes {
             path: OrderRoute.tag,
             name: OrderRoute.name,
             builder: (context, state) {
-              return const ClientOrderList();
+              return const OrderList();
             },
             redirect: (context, state) => _unAuthened(),
+            routes: [
+              GoRoute(
+                  path: OrderDetailRoute.tag,
+                  name: OrderDetailRoute.name,
+                  builder: (context, state) {
+                    return OrderDetailScreen(
+                      id: state.pathParameters['id'],
+                    );
+                  }),
+            ],
           ),
           GoRoute(
             path: ProfileRoute.tag,

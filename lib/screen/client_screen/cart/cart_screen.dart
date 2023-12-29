@@ -70,6 +70,7 @@ class _CartScreenState extends State<CartScreen> {
 
                 List<int> packList = [0];
                 int packCount = 0;
+
                 if (orderDetails.isNotEmpty) {
                   String tempEmail =
                       orderDetails.first.artwork!.createdByNavigation!.email!;

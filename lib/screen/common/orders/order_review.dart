@@ -5,14 +5,14 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
 
-class SellerOrderReview extends StatefulWidget {
-  const SellerOrderReview({Key? key}) : super(key: key);
+class OrderReview extends StatefulWidget {
+  const OrderReview({Key? key}) : super(key: key);
 
   @override
-  State<SellerOrderReview> createState() => _SellerOrderReviewState();
+  State<OrderReview> createState() => _OrderReviewState();
 }
 
-class _SellerOrderReviewState extends State<SellerOrderReview> {
+class _OrderReviewState extends State<OrderReview> {
   //__________review_Submitted_PopUp________________________________________________
   void reviewSubmittedPopUp() {
     showDialog(

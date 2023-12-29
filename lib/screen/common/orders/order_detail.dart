@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/orders/seller_deliver_order.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import 'seller_deliver_order.dart';
 
-class SellerOrderDetails extends StatefulWidget {
-  const SellerOrderDetails({Key? key}) : super(key: key);
+class OrderDetailScreen extends StatefulWidget {
+  final String? id;
+
+  const OrderDetailScreen({Key? key, this.id}) : super(key: key);
 
   @override
-  State<SellerOrderDetails> createState() => _SellerOrderDetailsState();
+  State<OrderDetailScreen> createState() => _OrderDetailScreenState();
 }
 
-class _SellerOrderDetailsState extends State<SellerOrderDetails> {
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
   //__________cancel_order_reason_popup________________________________________________
   void cancelOrderPopUp() {
     showDialog(
@@ -120,8 +122,8 @@ class _SellerOrderDetailsState extends State<SellerOrderDetails> {
                       ),
                       onPressed: () {
                         setState(() {
-                          const SellerDeliverOrder().launch(context);
-                          // orderCompletePopUp();
+                          // const SellerDeliverOrder().launch(context);
+                          orderCompletePopUp();
                         });
                       },
                       buttonTextColor: kWhite,

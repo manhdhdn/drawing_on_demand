@@ -259,7 +259,7 @@ class _LoginState extends State<Login> {
     }
 
     try {
-      await ProgressDialogUtils.showProgress(context);
+      ProgressDialogUtils.showProgress(context);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),

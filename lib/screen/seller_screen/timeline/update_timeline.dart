@@ -8,14 +8,14 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
 
-class Requirements extends StatefulWidget {
-  const Requirements({Key? key}) : super(key: key);
+class UpdateTimeline extends StatefulWidget {
+  const UpdateTimeline({Key? key}) : super(key: key);
 
   @override
-  State<Requirements> createState() => _RequirementsState();
+  State<UpdateTimeline> createState() => _UpdateTimelineState();
 }
 
-class _RequirementsState extends State<Requirements> {
+class _UpdateTimelineState extends State<UpdateTimeline> {
   //__________Show_upload_popup________________________________________________
   void showUploadDocPopUp() {
     showDialog(
@@ -122,7 +122,7 @@ class _RequirementsState extends State<Requirements> {
                 cursorColor: kNeutralColor,
                 textInputAction: TextInputAction.next,
                 decoration: kInputDecoration.copyWith(
-                  labelText: 'Uplaod file,photo and docoment',
+                  labelText: 'Upload file,photo and doccument',
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                   hintText: 'Tap icon to attach a file',
                   hintStyle: kTextStyle.copyWith(color: kSubTitleColor),

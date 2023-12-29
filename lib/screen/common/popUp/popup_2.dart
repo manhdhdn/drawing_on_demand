@@ -118,7 +118,7 @@ class _FailedPopUpState extends State<FailedPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your payment was not\nsuccessful',
+              'Your payment was\nnot successful',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(
@@ -359,7 +359,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
 
   void onYes() async {
     try {
-      await ProgressDialogUtils.showProgress(context);
+      ProgressDialogUtils.showProgress(context);
       await RequirementApi().deleteOne(widget.id);
 
       // ignore: use_build_context_synchronously

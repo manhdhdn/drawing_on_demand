@@ -203,13 +203,13 @@ List<String> serviceList = [
 List<TitleModel> selectedTitle = [];
 
 List<String> titleList = [
-  'Active',
   'Pending',
+  'Active',
   'Completed',
   'Cancelled',
 ];
 
-String isSelected = 'Active';
+String isSelected = 'Pending';
 
 List<String> deliveryTimeList = [
   '3 days',

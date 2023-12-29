@@ -3,7 +3,7 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:drawing_on_demand/screen/client_screen/service_details/requirements.dart';
+import 'package:drawing_on_demand/screen/seller_screen/timeline/update_timeline.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -80,7 +80,7 @@ class _AddNewCardState extends State<AddNewCard> {
             setState(() {
               showProcessingPopUp();
               finish(context);
-              const Requirements().launch(context);
+              const UpdateTimeline().launch(context);
             });
           },
           buttonTextColor: kWhite),

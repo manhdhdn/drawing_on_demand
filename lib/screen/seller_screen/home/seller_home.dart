@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
+import '../../common/orders/orders.dart';
 import '../../widgets/constant.dart';
-import '../orders/seller_orders.dart';
 import '../profile/seller_profile.dart';
 import '../../common/message/chat_list.dart';
 import '../request/seller_buyer_request.dart';
@@ -22,7 +22,7 @@ class _SellerHomeState extends State<SellerHome> {
     SellerHomeScreen(),
     ChatScreen(),
     SellerBuyerReq(),
-    SellerOrderList(),
+    OrderList(),
     SellerProfile(),
   ];
 

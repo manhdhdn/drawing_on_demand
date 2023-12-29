@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:drawing_on_demand/screen/seller_screen/orders/seller_order_review.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import 'order_review.dart';
 
 class SellerDeliverOrder extends StatefulWidget {
   const SellerDeliverOrder({Key? key}) : super(key: key);
@@ -36,7 +36,7 @@ class _SellerDeliverOrderState extends State<SellerDeliverOrder> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           onPressed: () {
-            const SellerOrderReview().launch(context);
+            const OrderReview().launch(context);
           },
           buttonTextColor: kWhite),
       body: Container(
