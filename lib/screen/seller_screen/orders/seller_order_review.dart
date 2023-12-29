@@ -52,7 +52,7 @@ class _SellerOrderReviewState extends State<SellerOrderReview> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
-            buttontext: 'Published Review',
+            buttontext: 'Publish Review',
             buttonDecoration: kButtonDecoration.copyWith(
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(30.0)),

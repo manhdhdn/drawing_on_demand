@@ -68,13 +68,14 @@ class AppRoutes {
                 redirect: (context, state) => _unAuthened(),
                 routes: [
                   GoRoute(
-                      path: CheckoutRoute.tag,
-                      name: CheckoutRoute.name,
-                      builder: (context, state) {
-                        return ClientOrder(
-                          id: state.pathParameters['id'],
-                        );
-                      }),
+                    path: CheckoutRoute.tag,
+                    name: CheckoutRoute.name,
+                    builder: (context, state) {
+                      return ClientOrder(
+                        id: state.pathParameters['id'],
+                      );
+                    },
+                  ),
                   GoRoute(
                     path: ArtworkDetailRoute.tag,
                     name: '${ArtworkDetailRoute.name} cart',

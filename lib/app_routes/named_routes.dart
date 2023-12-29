@@ -35,7 +35,7 @@ class CartRoute {
 
 // Checkout
 class CheckoutRoute {
-  static const String tag = 'checkout';
+  static const String tag = 'checkout/:id';
   static const String name = 'Checkout';
 }
 

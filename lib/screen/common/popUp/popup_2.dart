@@ -359,7 +359,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
 
   void onYes() async {
     try {
-      ProgressDialogUtils.showProgress(context);
+      await ProgressDialogUtils.showProgress(context);
       await RequirementApi().deleteOne(widget.id);
 
       // ignore: use_build_context_synchronously

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/models/order.dart';
 import '../../widgets/constant.dart';
@@ -583,7 +584,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onOrderNow() {
-    context.goNamed(CheckoutRoute.name);
+    context.goNamed(CheckoutRoute.name,
+        pathParameters: {'id': PrefUtils().getCartId()});
   }
 
   Future<void> onRemove(String id) async {

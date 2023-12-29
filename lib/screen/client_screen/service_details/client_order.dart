@@ -46,7 +46,6 @@ class _ClientOrderState extends State<ClientOrder> {
   );
 
   bool isCheck = false;
-  bool canContinue = true;
 
   int lightServiceTypeId = 2;
   int heavyServiceTypeId = 5;
@@ -80,8 +79,8 @@ class _ClientOrderState extends State<ClientOrder> {
     'images/internation.png',
   ];
 
-  Future<void> showProcessingPopUp() async {
-    await showDialog(
+  void showProcessingPopUp() {
+    showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -212,50 +211,55 @@ class _ClientOrderState extends State<ClientOrder> {
   }
 
   void init() async {
-    if (widget.id == null) {
-      order = getCart().then((order) {
-        double total = 0;
-
-        for (var orderDetail in order.orderDetails!) {
-          total += orderDetail.price! * orderDetail.quantity!;
-        }
-
-        setState(() {
-          this.total = total;
-        });
-
-        return order;
-      });
-    } else {
-      order = OrderApi().getOne(
-        widget.id!,
-        'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
-      );
-    }
-
-    await getProvince();
-
-    Map<String, String> query =
-        // ignore: use_build_context_synchronously
-        GoRouter.of(context).routeInformationProvider.value.uri.queryParameters;
-
-    if (query.containsKey('vnp_TxnRef')) {
-      if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
-          query['vnp_ResponseCode'] == '00') {
-        setState(() {
-          canContinue = false;
-        });
-
-        await showProcessingPopUp();
-
-        // ignore: use_build_context_synchronously
-        context.goNamed(OrderRoute.name);
-      } else {
-        showFailedPopUp();
+    order = OrderApi()
+        .getOne(
+      widget.id!,
+      'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+    )
+        .then((order) async {
+      if (order.status == 'Completed') {
+        GoRouter.of(context).pop();
+        return null;
       }
-    }
 
-    PrefUtils().clearVNPayRef();
+      double total = 0;
+
+      for (var orderDetail in order.orderDetails!) {
+        total += orderDetail.price! * orderDetail.quantity!;
+      }
+
+      setState(() {
+        this.total = total;
+      });
+
+      Map<String, String> query =
+          // ignore: use_build_context_synchronously
+          GoRouter.of(context)
+              .routeInformationProvider
+              .value
+              .uri
+              .queryParameters;
+
+      if (query.containsKey('vnp_TxnRef')) {
+        if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
+            query['vnp_ResponseCode'] == '00') {
+          showProcessingPopUp();
+
+          // ignore: use_build_context_synchronously
+          context.goNamed(OrderRoute.name);
+        } else {
+          showFailedPopUp();
+
+          await getProvince();
+        }
+      } else {
+        await getProvince();
+      }
+
+      PrefUtils().clearVNPayRef();
+
+      return order;
+    });
   }
 
   @override
@@ -285,7 +289,7 @@ class _ClientOrderState extends State<ClientOrder> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           onPressed: () {
-            !shippingFees.any((shippingFee) => shippingFee == 39) && canContinue
+            !shippingFees.any((shippingFee) => shippingFee == 39)
                 ? onContinue()
                 : null;
           },
@@ -1300,7 +1304,7 @@ class _ClientOrderState extends State<ClientOrder> {
   void onArtworkDetail(String string) {}
 
   Future<void> onContinue() async {
-    String uri = isWeb ? ApiConfig.paymentUri : 'android';
+    String uri = isWeb ? '${ApiConfig.paymentUri}/${widget.id!}' : 'android';
 
     try {
       Order? order = await this.order;
@@ -1319,6 +1323,7 @@ class _ClientOrderState extends State<ClientOrder> {
       VNPayRequest response = (await VNPayApi().postOne(request));
 
       await PrefUtils().setVNPayRef(response.orderId!);
+      await PrefUtils().setShippingOrders(jsonEncode(shippingOrders));
 
       launchUrlString(response.paymentUrl!, webOnlyWindowName: '_self');
     } catch (e) {

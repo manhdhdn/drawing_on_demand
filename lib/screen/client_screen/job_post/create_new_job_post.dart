@@ -389,7 +389,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
 
   void onDone() async {
     try {
-      ProgressDialogUtils.showProgress(context);
+      await ProgressDialogUtils.showProgress(context);
 
       String? image;
 
