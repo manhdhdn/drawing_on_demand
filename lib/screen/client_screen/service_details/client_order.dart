@@ -1449,6 +1449,9 @@ class _ClientOrderState extends State<ClientOrder> {
       }
 
       Map<String, dynamic> body = {
+        'OrderDate': status == 'Cart'
+            ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
+            : order.orderDate,
         'DepositDate': status == 'Pending'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
             : order.depositDate != null
@@ -1479,6 +1482,10 @@ class _ClientOrderState extends State<ClientOrder> {
       }
 
       await PrefUtils().clearShippingOrders();
+
+      setState(() {
+        isSelected = status == 'Pending' ? 'Deposited' : 'Completed';
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Update data failed');
     }
