@@ -20,6 +20,7 @@ import '../screen/common/authentication/log_in.dart';
 import '../screen/common/message/chat_inbox.dart';
 import '../screen/common/message/chat_list.dart';
 import '../screen/common/message/provider/data_provider.dart';
+import '../screen/common/orders/order_review.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
 import 'named_routes.dart';
@@ -189,6 +190,15 @@ class AppRoutes {
                 name: '${CheckoutRoute.name} order',
                 builder: (context, state) {
                   return ClientOrder(
+                    id: state.pathParameters['id'],
+                  );
+                },
+              ),
+              GoRoute(
+                path: ReviewRoute.tag,
+                name: ReviewRoute.name,
+                builder: (context, state) {
+                  return OrderReview(
                     id: state.pathParameters['id'],
                   );
                 },

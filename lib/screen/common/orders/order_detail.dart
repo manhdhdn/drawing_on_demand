@@ -14,7 +14,7 @@ import '../../../data/models/order_detail.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/nothing_yet.dart';
-import 'order_review.dart';
+import 'order_list.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final String? id;
@@ -29,6 +29,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   late Future<Order?> order;
 
   String status = 'Cancelled';
+  String accountId = '';
 
   @override
   void initState() {
@@ -37,8 +38,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     order = getData();
   }
 
-  void cancelOrderPopUp() {
-    showDialog(
+  Future<void> cancelOrderPopUp() async {
+    await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -49,7 +50,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: const CancelReasonPopUp(),
+              child: CancelReasonPopUp(id: widget.id, accountId: accountId),
             );
           },
         );
@@ -1103,6 +1104,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           .then((order) {
         setState(() {
           status = order.status!;
+          accountId = order.orderDetails!.first.artwork!.createdByNavigation!.id
+              .toString();
         });
 
         return order;
@@ -1115,11 +1118,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   void onReview() {
-    const OrderReview().launch(context);
+    context.goNamed(ReviewRoute.name, pathParameters: {'id': widget.id!});
   }
 
-  void onCancelOrder() {
-    cancelOrderPopUp();
+  Future<void> onCancelOrder() async {
+    await cancelOrderPopUp();
+
+    OrderList.refresh();
   }
 
   void onCheckout() {

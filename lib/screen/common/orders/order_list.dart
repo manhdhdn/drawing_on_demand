@@ -22,6 +22,10 @@ class OrderList extends StatefulWidget {
 
   @override
   State<OrderList> createState() => _OrderListState();
+
+  static void refresh() {
+    state.refresh();
+  }
 }
 
 class _OrderListState extends State<OrderList> {
@@ -76,7 +80,9 @@ class _OrderListState extends State<OrderList> {
                     .where(((order) => order.status == 'Paid'))
                     .toList();
                 List<Order> completedOrders = snapshot.data!.value
-                    .where(((order) => order.status == 'Completed'))
+                    .where(((order) =>
+                        order.status == 'Completed' ||
+                        order.status == 'Reviewed'))
                     .toList();
                 List<Order> cancelledOrders = snapshot.data!.value
                     .where(((order) => order.status == 'Cancelled'))
@@ -1232,7 +1238,7 @@ class _OrderListState extends State<OrderList> {
                                               const SizedBox(width: 10.0),
                                               Flexible(
                                                 child: Text(
-                                                  'Completed',
+                                                  completedOrders[i].status!,
                                                   style: kTextStyle.copyWith(
                                                       color: kNeutralColor),
                                                   overflow:

@@ -30,7 +30,7 @@ class Order {
   DateTime? completedDate;
   String? status;
   double? total;
-  Guid? orderBy;
+  Guid? orderedBy;
   Guid? discountId;
   Discount? discount;
   List<OrderDetail>? orderDetails;
@@ -43,7 +43,7 @@ class Order {
     this.completedDate,
     this.status,
     this.total,
-    this.orderBy,
+    this.orderedBy,
     this.discountId,
     this.discount,
     this.orderDetails,
@@ -61,7 +61,7 @@ class Order {
         : null;
     status = json['Status'];
     total = double.tryParse(json['Total'].toString());
-    orderBy = Guid(json['OrderBy']);
+    orderedBy = Guid(json['OrderedBy']);
     discountId = json['DiscountId'] != null ? Guid(json['DiscountId']) : null;
     discount =
         json['Discount'] != null ? Discount.fromJson(json['Discount']) : null;
@@ -87,7 +87,7 @@ class Order {
           : null,
       'Status': status,
       'Total': total,
-      'OrderedBy': orderBy.toString(),
+      'OrderedBy': orderedBy.toString(),
       'DiscountId': discountId?.toString(),
     };
   }

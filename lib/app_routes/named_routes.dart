@@ -81,6 +81,12 @@ class OrderDetailRoute {
   static const String name = 'Order Detail';
 }
 
+/// Review
+class ReviewRoute {
+  static const String tag = 'review/:id';
+  static const String name = 'Review';
+}
+
 //// Profile
 class ProfileRoute {
   static const String tag = '/profile';

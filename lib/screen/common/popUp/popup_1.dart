@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
-import '../../seller_screen/home/seller_home.dart';
+import '../../../data/apis/order_api.dart';
 import '../../seller_screen/profile/seller_profile.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -677,89 +679,143 @@ class _AddFAQPopUpState extends State<AddFAQPopUp> {
 }
 
 class CancelReasonPopUp extends StatefulWidget {
-  const CancelReasonPopUp({Key? key}) : super(key: key);
+  final String? id;
+  final String? accountId;
+
+  const CancelReasonPopUp({Key? key, this.id, this.accountId})
+      : super(key: key);
 
   @override
   State<CancelReasonPopUp> createState() => _CancelReasonPopUpState();
 }
 
 class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController reasonController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Why are you Cancel Order',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => finish(context),
-                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
-                ),
-              ],
-            ),
-            const Divider(
-              thickness: 1.0,
-              color: kBorderColorTextField,
-            ),
-            const SizedBox(height: 20.0),
-            TextFormField(
-              keyboardType: TextInputType.multiline,
-              maxLines: 2,
-              cursorColor: kNeutralColor,
-              textInputAction: TextInputAction.next,
-              decoration: kInputDecoration.copyWith(
-                labelText: 'Enter Reason',
-                labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                hintText:
-                    'Lorem ipsum dolor sit amet, cons ectetur adipiscing elit.',
-                hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                focusColor: kNeutralColor,
-                border: const OutlineInputBorder(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Why are you Cancel Order',
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => finish(context),
+                    child: const Icon(FeatherIcons.x, color: kSubTitleColor),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 10.0),
-            Row(
-              children: [
-                Expanded(
-                  child: Button(
-                    containerBg: kWhite,
-                    borderColor: Colors.red,
-                    buttonText: 'Cancel',
-                    textColor: Colors.red,
-                    onPressed: () {
-                      finish(context);
-                    },
-                  ),
+              const Divider(
+                thickness: 1.0,
+                color: kBorderColorTextField,
+              ),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                keyboardType: TextInputType.multiline,
+                maxLines: 2,
+                cursorColor: kNeutralColor,
+                textInputAction: TextInputAction.next,
+                decoration: kInputDecoration.copyWith(
+                  labelText: 'Enter Reason',
+                  labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                  hintText: 'Describe why you want to cancel the order.',
+                  hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  focusColor: kNeutralColor,
+                  border: const OutlineInputBorder(),
                 ),
-                Expanded(
-                  child: Button(
-                    containerBg: kPrimaryColor,
-                    borderColor: Colors.transparent,
-                    buttonText: 'Submit',
-                    textColor: kWhite,
-                    onPressed: () {
-                      finish(context);
-                    },
+                controller: reasonController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a reason';
+                  }
+
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: Button(
+                      containerBg: kWhite,
+                      borderColor: Colors.red,
+                      buttonText: 'Cancel',
+                      textColor: Colors.red,
+                      onPressed: () {
+                        finish(context);
+                      },
+                    ),
                   ),
-                )
-              ],
-            ),
-          ],
+                  Expanded(
+                    child: Button(
+                      containerBg: kPrimaryColor,
+                      borderColor: Colors.transparent,
+                      buttonText: 'Submit',
+                      textColor: kWhite,
+                      onPressed: () {
+                        onCancelOrder();
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> onCancelOrder() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    try {
+      // AccountReview accountReview = AccountReview(
+      //   id: Guid.newGuid,
+      //   star: 0,
+      //   comment: reasonController.text.trim(),
+      //   createdDate: DateTime.now(),
+      //   status: 'Cancelled',
+      //   createdBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
+      //   accountId: Guid(widget.accountId),
+      // );
+
+      // await AccountReviewApi().postOne(accountReview);
+
+      await OrderApi().patchOne(widget.id!, {
+        'Status': 'Cancelled',
+      });
+
+      // ignore: use_build_context_synchronously
+      finish(context);
+
+      setState(() {
+        isSelected = 'Cancelled';
+      });
+
+      // ignore: use_build_context_synchronously
+      context.goNamed(OrderRoute.name);
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Cancel order failed');
+    }
   }
 }
 
@@ -921,16 +977,19 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 onPressed: () {
-                  setState(() {
-                    finish(context);
-                    const SellerHome().launch(context);
-                  });
+                  onFinish();
                 },
                 buttonTextColor: kWhite),
           ],
         ),
       ),
     );
+  }
+
+  void onFinish() {
+    finish(context);
+
+    context.goNamed(OrderRoute.name);
   }
 }
 
