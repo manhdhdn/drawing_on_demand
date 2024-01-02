@@ -11,11 +11,16 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../app_routes/named_routes.dart';
+import '../../data/apis/api_config.dart';
+import '../../data/apis/discount_api.dart';
+import '../../data/apis/ghn_api.dart';
 import '../../data/apis/order_api.dart';
 import '../../data/apis/order_detail_api.dart';
 import '../../data/models/account_review.dart';
 import '../../data/models/artwork.dart';
 import '../../data/models/artwork_review.dart';
+import '../../data/models/discount.dart';
+import '../../data/models/ghn_request.dart';
 import '../../data/models/order.dart';
 import '../../data/models/order_detail.dart';
 import '../../screen/common/message/function/chat_function.dart';
@@ -111,7 +116,9 @@ String getReviewPoint(List<ArtworkReview> artworkReviews) {
 
   if (artworkReviews.isNotEmpty) {
     for (var artworkReview in artworkReviews) {
-      point += artworkReview.star!;
+      if (artworkReview.status == 'Approved') {
+        point += artworkReview.star!;
+      }
     }
 
     point = point / artworkReviews.length;
@@ -125,7 +132,9 @@ String getAccountReviewPoint(List<AccountReview> accountReviews) {
 
   if (accountReviews.isNotEmpty) {
     for (var artworkReview in accountReviews) {
-      point += artworkReview.star!;
+      if (artworkReview.status == 'Approved') {
+        point += artworkReview.star!;
+      }
     }
 
     point = point / accountReviews.length;
@@ -164,7 +173,6 @@ Future<Order> getCart() async {
       status: 'Cart',
       total: 0,
       orderBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
-      orderDetails: [],
     );
 
     await OrderApi().postOne(order);
@@ -236,6 +244,140 @@ int getCartIndex(int index, List<int> packList) {
   return cartIndex;
 }
 
+double getSubtotal(List<OrderDetail> orderDetails) {
+  double subtotal = 0;
+
+  for (var orderDetail in orderDetails) {
+    subtotal += orderDetail.price! * orderDetail.quantity!;
+  }
+
+  return subtotal;
+}
+
+Future<int> getProvinceCode(String address) async {
+  int code = 0;
+
+  try {
+    var request = GHNRequest(endpoint: ApiConfig.GHNPaths['province']);
+    var respone = await GHNApi().postOne(request);
+
+    var provinces = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
+
+    Map<String, dynamic> result = {};
+    double matchPoint = 0;
+
+    for (var province in provinces) {
+      var nameExs = [];
+
+      if (province.containsKey('NameExtension')) {
+        nameExs = List<String>.from(province['NameExtension']);
+      }
+
+      for (var nameEx in nameExs) {
+        double point = getMatchPoint(address.split(',').last, nameEx);
+
+        if (matchPoint < point) {
+          matchPoint = point;
+          result = province;
+        }
+      }
+    }
+
+    code = result['ProvinceID'];
+  } catch (error) {
+    Fluttertoast.showToast(msg: 'Get country code failed');
+  }
+
+  return code;
+}
+
+Future<int> getDistrictCode(String address, int provinceId) async {
+  int code = 0;
+
+  try {
+    var request = GHNRequest(
+      endpoint: ApiConfig.GHNPaths['district'],
+      postJsonString: jsonEncode(
+        {'province_id': provinceId},
+      ),
+    );
+    var respone = await GHNApi().postOne(request);
+
+    var districts = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
+
+    Map<String, dynamic> result = {};
+    double matchPoint = 0;
+
+    for (var district in districts) {
+      var nameExs = [];
+
+      if (district.containsKey('NameExtension')) {
+        nameExs = List<String>.from(district['NameExtension']);
+      }
+
+      for (var nameEx in nameExs) {
+        double point = getMatchPoint(address, nameEx);
+
+        if (matchPoint < point) {
+          matchPoint = point;
+          result = district;
+        }
+      }
+    }
+
+    code = result['DistrictID'];
+  } catch (error) {
+    Fluttertoast.showToast(msg: 'Get district code failed');
+  }
+
+  return code;
+}
+
+Future<String> getWardCode(String address, int districtId) async {
+  String code = '0';
+
+  try {
+    var request = GHNRequest(
+      endpoint: ApiConfig.GHNPaths['ward'],
+      postJsonString: jsonEncode(
+        {'district_id': districtId},
+      ),
+    );
+    var respone = await GHNApi().postOne(request);
+
+    var wards = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
+
+    Map<String, dynamic> result = {};
+    double matchPoint = 0;
+
+    for (var ward in wards) {
+      var nameExs = [];
+
+      if (ward.containsKey('NameExtension')) {
+        nameExs = List<String>.from(ward['NameExtension']);
+      }
+
+      for (var nameEx in nameExs) {
+        double point = getMatchPoint(address, nameEx);
+
+        if (matchPoint < point) {
+          matchPoint = point;
+          result = ward;
+        }
+      }
+    }
+
+    code = result['WardCode'];
+  } catch (error) {
+    Fluttertoast.showToast(msg: 'Get ward code failed');
+  }
+
+  return code;
+}
+
 double getMatchPoint(String base, String target) {
   base.toLowerCase;
   target.toLowerCase;
@@ -243,6 +385,44 @@ double getMatchPoint(String base, String target) {
   return wordFrequencySimilarity(base, target);
 }
 
-String getDiscount() {
-  return '';
+Future<Map<String, dynamic>> getDiscount(Order order) async {
+  double discount = 0;
+  int quantity = 0;
+  Guid? discountId;
+
+  try {
+    for (var orderDetail in order.orderDetails!) {
+      quantity += orderDetail.quantity!;
+    }
+
+    DateTime dateTime = DateTime.now();
+    String dateTimeString =
+        DateFormat("yyyy-MM-ddTHH:mm:ss'Z'").format(dateTime);
+
+    Discounts discounts = await DiscountApi().gets(
+      0,
+      filter:
+          'number le $quantity and startDate le $dateTimeString and endDate ge $dateTimeString',
+      orderBy: 'discountPercent',
+    );
+
+    if (discounts.value.isNotEmpty) {
+      discount = discounts.value.last.discountPercent!;
+      discountId = discounts.value.last.id!;
+    }
+  } catch (error) {
+    rethrow;
+  }
+
+  return {'discountPercent': discount, 'discountId': discountId};
+}
+
+List<String> getArtistsName(List<OrderDetail> orderDetails) {
+  List<String> artistsNames = [];
+
+  for (var orderDetail in orderDetails) {
+    artistsNames.add(orderDetail.artwork!.createdByNavigation!.name!);
+  }
+
+  return artistsNames;
 }

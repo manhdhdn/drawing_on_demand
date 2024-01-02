@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
-import '../../common/orders/orders.dart';
+import '../../common/orders/order_list.dart';
 import '../../widgets/constant.dart';
 import '../profile/seller_profile.dart';
 import '../../common/message/chat_list.dart';

@@ -83,7 +83,7 @@ class _ChatInboxState extends State<ChatInbox> {
   }
 
   Future<void> init() async {
-    ChatFunction.createChat(
+    ChatFunction.updateChatUser(
       senderId: jsonDecode(PrefUtils().getAccount())['Id'],
       receiverId: widget.receiverId,
     );

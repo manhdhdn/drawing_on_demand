@@ -53,6 +53,8 @@ class _ClientOrderState extends State<ClientOrder> {
 
   String status = '';
   double total = 0;
+  double discount = 0.3;
+  String? discountId;
   double paid = 0;
   List<double> shippingFees = [0];
   List<String> shippingOrders = [''];
@@ -1037,7 +1039,35 @@ class _ClientOrderState extends State<ClientOrder> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 5.0),
+                Row(
+                  children: [
+                    Text(
+                      'Discount',
+                      style: kTextStyle.copyWith(
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                          -(total +
+                                  (shippingFees.length > 1
+                                      ? shippingFees.reduce((a, b) => a + b)
+                                      : shippingFees[0])) *
+                              discount),
+                      style: kTextStyle.copyWith(
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ).visible(discount != 0 && status != 'Pending'),
+                const SizedBox(height: 10.0)
+                    .visible(discount != 0 && status != 'Pending'),
                 Row(
                   children: [
                     RichText(
@@ -1049,15 +1079,17 @@ class _ClientOrderState extends State<ClientOrder> {
                           fontSize: 18.0,
                         ),
                         children: [
-                          status == 'Pending'
-                              ? TextSpan(
-                                  text: '(${30}% of subtotal)',
-                                  style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 14.0,
-                                  ),
-                                )
+                          status != 'Deposited'
+                              ? status == 'Pending'
+                                  ? TextSpan(
+                                      text: '(${discount * 100}% of subtotal)',
+                                      style: kTextStyle.copyWith(
+                                        color: kNeutralColor,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 14.0,
+                                      ),
+                                    )
+                                  : const TextSpan()
                               : TextSpan(
                                   text: '(the rest)',
                                   style: kTextStyle.copyWith(
@@ -1072,12 +1104,21 @@ class _ClientOrderState extends State<ClientOrder> {
                     const Spacer(),
                     Text(
                       NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                          status == 'Pending'
-                              ? total * 0.3
-                              : total +
-                                  (shippingFees.length > 1
-                                      ? shippingFees.reduce((a, b) => a + b)
-                                      : shippingFees[0]) -
+                          status != 'Deposited'
+                              ? status == 'Pending'
+                                  ? total * discount
+                                  : (total +
+                                          (shippingFees.length > 1
+                                              ? shippingFees
+                                                  .reduce((a, b) => a + b)
+                                              : shippingFees[0])) *
+                                      (1 - discount)
+                              : ((total +
+                                          (shippingFees.length > 1
+                                              ? shippingFees
+                                                  .reduce((a, b) => a + b)
+                                              : shippingFees[0])) *
+                                      (1 - discount)) -
                                   paid),
                       style: kTextStyle.copyWith(
                         color: kNeutralColor,
@@ -1086,8 +1127,9 @@ class _ClientOrderState extends State<ClientOrder> {
                       ),
                     ),
                   ],
-                ).visible(status != 'Cart'),
-                const SizedBox(height: 10.0).visible(status != 'Cart'),
+                ).visible(discount != 0 || status == 'Deposited'),
+                const SizedBox(height: 10.0)
+                    .visible(discount != 0 || status == 'Deposited'),
               ],
             ),
           ),
@@ -1100,9 +1142,10 @@ class _ClientOrderState extends State<ClientOrder> {
     order = OrderApi()
         .getOne(
       widget.id!,
-      'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+      'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation)),discount',
     )
         .then((order) async {
+      // ignore: use_build_context_synchronously
       Map<String, String> query = GoRouter.of(context)
           .routeInformationProvider
           .value
@@ -1115,7 +1158,7 @@ class _ClientOrderState extends State<ClientOrder> {
           showProcessingPopUp();
           PrefUtils().clearVNPayRef();
 
-          await updateData(order);
+          await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
           // ignore: use_build_context_synchronously
           context.goNamed(OrderRoute.name);
@@ -1131,24 +1174,42 @@ class _ClientOrderState extends State<ClientOrder> {
         await getProvince();
       }
 
-      if (order.status == 'Completed') {
+      if (order.status == 'Paid' ||
+          order.status == 'Completed' ||
+          order.status == 'Cancelled') {
         // ignore: use_build_context_synchronously
         GoRouter.of(context).pop();
         return null;
+      }
+
+      if (order.discountId != null) {
+        setState(() {
+          if (order.status != 'Pending') {
+            discount = order.discount!.discountPercent!;
+          }
+
+          discountId = order.discountId.toString();
+        });
+      } else {
+        Map<String, dynamic> discount = await getDiscount(order);
+
+        // Get discount
+        setState(() {
+          if (order.status != 'Pending') {
+            this.discount =
+                double.tryParse(discount['discountPercent'].toString())!;
+          }
+
+          discountId = discount['discountId']?.toString();
+        });
       }
 
       setState(() {
         status = order.status!;
       });
 
-      double total = 0;
-
-      for (var orderDetail in order.orderDetails!) {
-        total += orderDetail.price! * orderDetail.quantity!;
-      }
-
       setState(() {
-        this.total = total;
+        total = getSubtotal(order.orderDetails!);
       });
 
       if (order.total! > 0) {
@@ -1180,7 +1241,8 @@ class _ClientOrderState extends State<ClientOrder> {
         }
 
         for (var nameEx in nameExs) {
-          double point = getMatchPoint(addressController.text.trim(), nameEx);
+          double point = getMatchPoint(
+              addressController.text.trim().split(',').last, nameEx);
 
           if (matchPoint < point) {
             matchPoint = point;
@@ -1320,34 +1382,41 @@ class _ClientOrderState extends State<ClientOrder> {
           if (width < size.width!) {
             width = size.width!;
           }
+
+          items.add({
+            'name': orderDetails[j].artwork!.title,
+            'quantity': orderDetails[j].quantity,
+            'weight': size.weight!,
+            'length': size.length!,
+            'width': size.width!,
+            'height': size.height!,
+          });
         }
 
         price += orderDetails[j].price! * orderDetails[j].quantity!;
-
-        items.add({
-          'name': orderDetails[j].artwork!.title,
-          'quantity': orderDetails[j].quantity,
-        });
       }
 
+      var artistAddress =
+          orderDetails[currentIndex].artwork!.createdByNavigation!.address!;
+      var fromDistrictId = await getDistrictCode(
+          artistAddress, await getProvinceCode(artistAddress));
+      var fromWardCode = await getWardCode(artistAddress, fromDistrictId);
+
       var request = GHNRequest(
-        endpoint: ApiConfig.GHNPaths['preview'],
+        endpoint: ApiConfig.GHNPaths['fee'],
         postJsonString: jsonEncode({
-          'to_name': nameController.text.trim(),
-          'to_phone': phoneController.text.trim(),
-          'to_address': addressController.text.trim(),
+          'service_type_id':
+              weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
+          'insurance_value': price,
+          'from_district_id': fromDistrictId,
+          'from_ward_code': fromWardCode,
           'to_ward_code': selectedWard,
           'to_district_id': selectedDistrict,
           'weight': weight,
           'length': length,
           'width': width,
           'height': height,
-          'service_type_id':
-              weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
-          'payment_type_id': 1,
-          'required_note': requiredNote,
           'items': items,
-          'insurance_value': price,
         }),
       );
 
@@ -1357,7 +1426,7 @@ class _ClientOrderState extends State<ClientOrder> {
 
         List<double> shippingFees = this.shippingFees;
         shippingFees[i] = double.parse(
-          jsonDecode(response.postJsonString!)['data']['total_fee'].toString(),
+          jsonDecode(response.postJsonString!)['data']['total'].toString(),
         );
 
         List<String> shippingOrders = this.shippingOrders;
@@ -1379,23 +1448,27 @@ class _ClientOrderState extends State<ClientOrder> {
   void onArtworkDetail(String string) {}
 
   Future<void> onContinue() async {
-    String uri = isWeb ? '${ApiConfig.paymentUri}/${widget.id!}' : 'android';
+    String uri = isWeb
+        ? '${ApiConfig.paymentUri}${GoRouter.of(context).routeInformationProvider.value.uri.path}'
+        : 'android';
 
     try {
       Order? order = await this.order;
 
-      double price = status == 'Cart'
-          ? total +
-              (shippingFees.length > 1
-                  ? shippingFees.reduce((a, b) => a + b)
-                  : shippingFees[0])
-          : status == 'Pending'
-              ? 0.3 * total
-              : total +
-                  (shippingFees.length > 1
-                      ? shippingFees.reduce((a, b) => a + b)
-                      : shippingFees[0]) -
-                  paid;
+      double price = status != 'Deposited'
+          ? status == 'Pending'
+              ? total * discount
+              : (total +
+                      (shippingFees.length > 1
+                          ? shippingFees.reduce((a, b) => a + b)
+                          : shippingFees[0])) *
+                  (1 - discount)
+          : ((total +
+                      (shippingFees.length > 1
+                          ? shippingFees.reduce((a, b) => a + b)
+                          : shippingFees[0])) *
+                  (1 - discount)) -
+              paid;
 
       VNPayRequest request = VNPayRequest(
         orderId: order!.id.toString().split('-').first,
@@ -1412,6 +1485,9 @@ class _ClientOrderState extends State<ClientOrder> {
 
       await PrefUtils().setVNPayRef(response.orderId!);
       await PrefUtils().setShippingOrders(jsonEncode(shippingOrders));
+      if (discountId != null) {
+        await PrefUtils().setDiscountId(discountId.toString());
+      }
 
       launchUrlString(response.paymentUrl!, webOnlyWindowName: '_self');
     } catch (error) {
@@ -1419,39 +1495,18 @@ class _ClientOrderState extends State<ClientOrder> {
     }
   }
 
-  Future<void> updateData(Order order) async {
+  Future<void> updateData(Order order, double total) async {
     try {
       String status = order.status!;
-      double total = 0;
-      List<double> shippingFees = [];
-
-      for (var orderDetail in order.orderDetails!) {
-        total += orderDetail.price! * orderDetail.quantity!;
-      }
-
-      for (var shippingOrder
-          in List<String>.from(jsonDecode(PrefUtils().getShippingOrders()))) {
-        if (shippingOrder.isNotEmpty) {
-          var request = GHNRequest(
-            endpoint: ApiConfig.GHNPaths['preview'],
-            postJsonString: shippingOrder,
-          );
-
-          var response = await GHNApi().postOne(request);
-
-          shippingFees.add(
-            double.parse(
-              jsonDecode(response.postJsonString!)['data']['total_fee']
-                  .toString(),
-            ),
-          );
-        }
-      }
+      // List<double> shippingFees = [];
 
       Map<String, dynamic> body = {
         'OrderDate': status == 'Cart'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
-            : order.orderDate,
+            : order.orderDate != null
+                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+                    .format(order.orderDate!)
+                : null,
         'DepositDate': status == 'Pending'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
             : order.depositDate != null
@@ -1461,18 +1516,11 @@ class _ClientOrderState extends State<ClientOrder> {
         'CompletedDate': status == 'Cart' || status == 'Deposited'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
             : null,
-        'Status': status == 'Pending' ? 'Deposited' : 'Completed',
-        'Total': status == 'Cart'
-            ? total +
-                (shippingFees.length > 1
-                    ? shippingFees.reduce((a, b) => a + b)
-                    : shippingFees[0])
-            : status == 'Pending'
-                ? 0.3 * total
-                : total +
-                    (shippingFees.length > 1
-                        ? shippingFees.reduce((a, b) => a + b)
-                        : shippingFees[0]),
+        'Status': status == 'Pending' ? 'Deposited' : 'Paid',
+        'Total': order.total! + total,
+        'DiscountId': PrefUtils().getDiscountId() == ''
+            ? null
+            : PrefUtils().getDiscountId(),
       };
 
       await OrderApi().patchOne(widget.id!, body);
@@ -1482,9 +1530,10 @@ class _ClientOrderState extends State<ClientOrder> {
       }
 
       await PrefUtils().clearShippingOrders();
+      await PrefUtils().clearDiscountId();
 
       setState(() {
-        isSelected = status == 'Pending' ? 'Deposited' : 'Completed';
+        isSelected = status == 'Pending' ? 'Active' : 'Paid';
       });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Update data failed');

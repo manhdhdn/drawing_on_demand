@@ -2,7 +2,7 @@ import '../../core/utils/pref_utils.dart';
 
 class ApiConfig {
   static const String baseUrl = 'dond.azurewebsites.net';
-  static const String paymentUri = 'http://localhost:8000/cart/checkout';
+  static const String paymentUri = 'http://localhost:8000';
 
   static Map<String, String> get headers {
     return {
@@ -50,6 +50,7 @@ class ApiConfig {
     'province': '/master-data/province',
     'district': '/master-data/district',
     'ward': '/master-data/ward',
+    'fee': '/v2/shipping-order/fee',
     'preview': '/v2/shipping-order/preview',
     'create': '/v2/shipping-order/create',
   };

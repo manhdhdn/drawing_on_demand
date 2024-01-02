@@ -205,6 +205,7 @@ List<TitleModel> selectedTitle = [];
 List<String> titleList = [
   'Pending',
   'Active',
+  'Paid',
   'Completed',
   'Cancelled',
 ];

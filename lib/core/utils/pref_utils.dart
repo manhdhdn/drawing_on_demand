@@ -157,4 +157,20 @@ class PrefUtils {
   Future<bool> clearVNPayRef() async {
     return _sharedPreferences!.remove('VNPayRef');
   }
+
+  Future<bool> setDiscountId(String value) {
+    return _sharedPreferences!.setString('discountId', value);
+  }
+
+  String getDiscountId() {
+    try {
+      return _sharedPreferences!.getString('discountId')!;
+    } catch (error) {
+      return '';
+    }
+  }
+
+  Future<bool> clearDiscountId() async {
+    return _sharedPreferences!.remove('discountId');
+  }
 }

@@ -352,8 +352,8 @@ class _JobDetailsState extends State<JobDetails> {
                                     Flexible(
                                       child: Text(
                                         NumberFormat.simpleCurrency(
-                                                locale: 'vi_VN')
-                                            .format(snapshot.data!.budget),
+                                          locale: 'vi_VN',
+                                        ).format(snapshot.data!.budget),
                                         style: kTextStyle.copyWith(
                                             color: kSubTitleColor),
                                         overflow: TextOverflow.ellipsis,

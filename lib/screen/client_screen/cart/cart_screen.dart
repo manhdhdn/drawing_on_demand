@@ -98,9 +98,9 @@ class _CartScreenState extends State<CartScreen> {
                         padding: const EdgeInsets.all(15.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: packList[0] != 0 ? packList.length : 0,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
+                          itemCount: packList[0] != 0 ? packList.length : 0,
                           itemBuilder: (_, i) {
                             return Theme(
                               data: Theme.of(context)
@@ -158,10 +158,10 @@ class _CartScreenState extends State<CartScreen> {
                                 children: [
                                   ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: packList[i],
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     padding: EdgeInsets.zero,
+                                    itemCount: packList[i],
                                     itemBuilder: (_, j) {
                                       return Padding(
                                         padding:

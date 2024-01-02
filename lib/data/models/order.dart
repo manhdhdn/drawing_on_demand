@@ -2,6 +2,8 @@ import 'package:drawing_on_demand/data/models/order_detail.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'discount.dart';
+
 class Orders {
   int? count;
   List<Order> value;
@@ -30,6 +32,7 @@ class Order {
   double? total;
   Guid? orderBy;
   Guid? discountId;
+  Discount? discount;
   List<OrderDetail>? orderDetails;
 
   Order({
@@ -42,6 +45,7 @@ class Order {
     this.total,
     this.orderBy,
     this.discountId,
+    this.discount,
     this.orderDetails,
   });
 
@@ -59,6 +63,8 @@ class Order {
     total = double.tryParse(json['Total'].toString());
     orderBy = Guid(json['OrderBy']);
     discountId = json['DiscountId'] != null ? Guid(json['DiscountId']) : null;
+    discount =
+        json['Discount'] != null ? Discount.fromJson(json['Discount']) : null;
     orderDetails = json['OrderDetails'] != null
         ? List<OrderDetail>.from(
             json['OrderDetails'].map(

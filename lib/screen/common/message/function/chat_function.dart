@@ -94,6 +94,37 @@ class ChatFunction {
     });
   }
 
+  static Future<void> updateChatUser({
+    required dynamic senderId,
+    required dynamic receiverId,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(senderId)
+        .collection('chats')
+        .doc(receiverId)
+        .set(
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(receiverId)
+              .get()
+              .then((value) => value.data()!),
+        );
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(senderId)
+        .set(
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(senderId)
+              .get()
+              .then((value) => value.data()!),
+        );
+  }
+
   static Future<void> addTextMessage({
     required String content,
     required dynamic senderId,
