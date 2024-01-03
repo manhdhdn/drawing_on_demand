@@ -8,6 +8,7 @@ import '../../../data/apis/order_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/account_review.dart';
 import '../../../data/models/order.dart';
+import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
 import 'order_list.dart';
@@ -61,152 +62,157 @@ class _OrderReviewState extends State<OrderReview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kDarkWhite,
-      appBar: AppBar(
+    return Title(
+      title: '${L10n.appName} | Review',
+      color: kPrimaryColor,
+      child: Scaffold(
         backgroundColor: kDarkWhite,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: kNeutralColor),
-        title: Text(
-          'Write a Review',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(10.0),
-        decoration: const BoxDecoration(color: kWhite),
-        child: ButtonGlobalWithoutIcon(
-            buttontext: 'Publish Review',
-            buttonDecoration: kButtonDecoration.copyWith(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(30.0)),
-            onPressed: () {
-              onSubmit();
-            },
-            buttonTextColor: kWhite),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Container(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          width: context.width(),
-          height: context.height(),
-          decoration: const BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              topRight: Radius.circular(30.0),
-            ),
+        appBar: AppBar(
+          backgroundColor: kDarkWhite,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: kNeutralColor),
+          title: Text(
+            'Write a Review',
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
-          child: FutureBuilder(
-            future: order,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                Account account = snapshot
-                    .data!.orderDetails!.first.artwork!.createdByNavigation!;
+          centerTitle: true,
+        ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(color: kWhite),
+          child: ButtonGlobalWithoutIcon(
+              buttontext: 'Publish Review',
+              buttonDecoration: kButtonDecoration.copyWith(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(30.0)),
+              onPressed: () {
+                onSubmit();
+              },
+              buttonTextColor: kWhite),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Container(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            width: context.width(),
+            height: context.height(),
+            decoration: const BoxDecoration(
+              color: kWhite,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0),
+              ),
+            ),
+            child: FutureBuilder(
+              future: order,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  Account account = snapshot
+                      .data!.orderDetails!.first.artwork!.createdByNavigation!;
 
-                return SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15.0),
-                        Text(
-                          'Review your experience',
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          'How would you rate your overall experience with this artist?',
-                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Center(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: NetworkImage(account.avatar!),
-                                    fit: BoxFit.cover,
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 15.0),
+                          Text(
+                            'Review your experience',
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            'How would you rate your overall experience with this artist?',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Center(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(account.avatar!),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                account.name!,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                                const SizedBox(height: 10.0),
+                                Text(
+                                  account.name!,
+                                  style: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Select Rating',
-                          style: kTextStyle.copyWith(color: kNeutralColor),
-                        ),
-                        const SizedBox(height: 5.0),
-                        RatingBarWidget(
-                          itemCount: 5,
-                          rating: star,
-                          activeColor: ratingBarColor,
-                          inActiveColor: kBorderColorTextField,
-                          onRatingChanged: (rating) {
-                            setState(() {
-                              star = rating;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          cursorColor: kNeutralColor,
-                          maxLines: 3,
-                          decoration: kInputDecoration.copyWith(
-                            border: const OutlineInputBorder(),
-                            labelText: 'Write a Comment',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
-                            hintText: 'Share your experience...',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
-                            focusColor: kNeutralColor,
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          Text(
+                            'Select Rating',
+                            style: kTextStyle.copyWith(color: kNeutralColor),
                           ),
-                          controller: reviewController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your review';
-                            }
+                          const SizedBox(height: 5.0),
+                          RatingBarWidget(
+                            itemCount: 5,
+                            rating: star,
+                            activeColor: ratingBarColor,
+                            inActiveColor: kBorderColorTextField,
+                            onRatingChanged: (rating) {
+                              setState(() {
+                                star = rating;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 20.0),
+                          TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            cursorColor: kNeutralColor,
+                            maxLines: 3,
+                            decoration: kInputDecoration.copyWith(
+                              border: const OutlineInputBorder(),
+                              labelText: 'Write a Comment',
+                              labelStyle:
+                                  kTextStyle.copyWith(color: kNeutralColor),
+                              hintText: 'Share your experience...',
+                              hintStyle: kTextStyle.copyWith(
+                                  color: kLightNeutralColor),
+                              focusColor: kNeutralColor,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                            ),
+                            controller: reviewController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your review';
+                              }
 
-                            return null;
-                          },
-                          onChanged: (value) {
-                            _formKey.currentState!.validate();
-                          },
-                        ),
-                      ],
+                              return null;
+                            },
+                            onChanged: (value) {
+                              _formKey.currentState!.validate();
+                            },
+                          ),
+                        ],
+                      ),
                     ),
+                  );
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
                   ),
                 );
-              }
-
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: kPrimaryColor,
-                ),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

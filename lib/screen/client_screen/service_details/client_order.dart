@@ -18,6 +18,7 @@ import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/vnpay_request.dart';
+import '../../../l10n/l10n.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -216,921 +217,931 @@ class _ClientOrderState extends State<ClientOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kDarkWhite,
-      appBar: AppBar(
-        elevation: 0.0,
+    return Title(
+      title: '${L10n.appName} | Checkout',
+      color: kPrimaryColor,
+      child: Scaffold(
         backgroundColor: kDarkWhite,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: kNeutralColor),
-        title: Text(
-          'Order',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(10.0),
-        decoration: const BoxDecoration(color: kWhite),
-        child: ButtonGlobalWithoutIcon(
-          buttontext: 'Continue',
-          buttonDecoration: kButtonDecoration.copyWith(
-            color: !shippingFees.any((shippingFee) => shippingFee == 0)
-                ? kPrimaryColor
-                : kLightNeutralColor,
-            borderRadius: BorderRadius.circular(30.0),
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: kDarkWhite,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: kNeutralColor),
+          title: Text(
+            'Order',
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
-          onPressed: () {
-            !shippingFees.any((shippingFee) => shippingFee == 0)
-                ? onContinue()
-                : null;
-          },
-          buttonTextColor: kWhite,
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: Container(
-          height: context.height(),
-          width: context.width(),
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          decoration: const BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              topRight: Radius.circular(30.0),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(color: kWhite),
+          child: ButtonGlobalWithoutIcon(
+            buttontext: 'Continue',
+            buttonDecoration: kButtonDecoration.copyWith(
+              color: !shippingFees.any((shippingFee) => shippingFee == 0)
+                  ? kPrimaryColor
+                  : kLightNeutralColor,
+              borderRadius: BorderRadius.circular(30.0),
             ),
+            onPressed: () {
+              !shippingFees.any((shippingFee) => shippingFee == 0)
+                  ? onContinue()
+                  : null;
+            },
+            buttonTextColor: kWhite,
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 15.0),
-                FutureBuilder(
-                  future: order,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<OrderDetail> orderDetails =
-                          snapshot.data!.orderDetails!;
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Container(
+            height: context.height(),
+            width: context.width(),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            decoration: const BoxDecoration(
+              color: kWhite,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0),
+              ),
+            ),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 15.0),
+                  FutureBuilder(
+                    future: order,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<OrderDetail> orderDetails =
+                            snapshot.data!.orderDetails!;
 
-                      orderDetails.sort(((a, b) => a
-                          .artwork!.createdByNavigation!.email!
-                          .compareTo(b.artwork!.createdByNavigation!.email!)));
+                        orderDetails.sort(((a, b) =>
+                            a.artwork!.createdByNavigation!.email!.compareTo(
+                                b.artwork!.createdByNavigation!.email!)));
 
-                      List<int> packList = [0];
-                      int packCount = 0;
+                        List<int> packList = [0];
+                        int packCount = 0;
 
-                      if (orderDetails.isNotEmpty) {
-                        String tempEmail = orderDetails
-                            .first.artwork!.createdByNavigation!.email!;
+                        if (orderDetails.isNotEmpty) {
+                          String tempEmail = orderDetails
+                              .first.artwork!.createdByNavigation!.email!;
 
-                        for (var orderDetail in orderDetails) {
-                          if (orderDetail.artwork!.createdByNavigation!.email ==
-                              tempEmail) {
-                            packList[packCount]++;
-                          } else {
-                            tempEmail = orderDetail
-                                .artwork!.createdByNavigation!.email!;
+                          for (var orderDetail in orderDetails) {
+                            if (orderDetail
+                                    .artwork!.createdByNavigation!.email ==
+                                tempEmail) {
+                              packList[packCount]++;
+                            } else {
+                              tempEmail = orderDetail
+                                  .artwork!.createdByNavigation!.email!;
 
-                            packCount++;
-                            packList.add(1);
+                              packCount++;
+                              packList.add(1);
+                            }
                           }
                         }
-                      }
 
-                      return Column(
-                        children: [
-                          NothingYet(visible: orderDetails.isEmpty),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: packList[0] != 0 ? packList.length : 0,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              itemBuilder: (_, i) {
-                                shippingFees.add(0);
-                                shippingOrders.add('');
+                        return Column(
+                          children: [
+                            NothingYet(visible: orderDetails.isEmpty),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    packList[0] != 0 ? packList.length : 0,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemBuilder: (_, i) {
+                                  shippingFees.add(0);
+                                  shippingOrders.add('');
 
-                                while (shippingFees.length > packList.length) {
-                                  shippingFees.removeLast();
-                                  shippingOrders.removeLast();
-                                }
+                                  while (
+                                      shippingFees.length > packList.length) {
+                                    shippingFees.removeLast();
+                                    shippingOrders.removeLast();
+                                  }
 
-                                createShippingOrder(orderDetails, packList, i);
+                                  createShippingOrder(
+                                      orderDetails, packList, i);
 
-                                return Theme(
-                                  data: Theme.of(context).copyWith(
-                                      dividerColor: Colors.transparent),
-                                  child: ExpansionTile(
-                                    initiallyExpanded: true,
-                                    tilePadding:
-                                        const EdgeInsets.only(bottom: 5.0),
-                                    childrenPadding: EdgeInsets.zero,
-                                    collapsedIconColor: kLightNeutralColor,
-                                    iconColor: kLightNeutralColor,
-                                    title: Row(
-                                      children: [
-                                        Container(
-                                          height: 32,
-                                          width: 32,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    orderDetails[getCartIndex(
-                                                            i, packList)]
-                                                        .artwork!
-                                                        .createdByNavigation!
-                                                        .avatar!),
-                                                fit: BoxFit.cover),
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                        dividerColor: Colors.transparent),
+                                    child: ExpansionTile(
+                                      initiallyExpanded: true,
+                                      tilePadding:
+                                          const EdgeInsets.only(bottom: 5.0),
+                                      childrenPadding: EdgeInsets.zero,
+                                      collapsedIconColor: kLightNeutralColor,
+                                      iconColor: kLightNeutralColor,
+                                      title: Row(
+                                        children: [
+                                          Container(
+                                            height: 32,
+                                            width: 32,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      orderDetails[getCartIndex(
+                                                              i, packList)]
+                                                          .artwork!
+                                                          .createdByNavigation!
+                                                          .avatar!),
+                                                  fit: BoxFit.cover),
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 5.0),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Artist',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: kTextStyle.copyWith(
-                                                  color: kSubTitleColor),
-                                            ),
-                                            Text(
-                                              orderDetails[
-                                                      getCartIndex(i, packList)]
-                                                  .artwork!
-                                                  .createdByNavigation!
-                                                  .name!,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    children: [
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: packList[i],
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.zero,
-                                        itemBuilder: (_, j) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 10.0),
-                                            child: GestureDetector(
-                                              onTap: () {},
-                                              child: Container(
-                                                height:
-                                                    context.height() * 0.135,
-                                                decoration: BoxDecoration(
-                                                  color: kWhite,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  border: Border.all(
-                                                      color:
-                                                          kBorderColorTextField),
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: kDarkWhite,
-                                                      blurRadius: 5.0,
-                                                      spreadRadius: 2.0,
-                                                      offset: Offset(0, 5),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Stack(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      children: [
-                                                        Container(
-                                                          height:
-                                                              context.height() *
-                                                                  0.135,
-                                                          width:
-                                                              context.height() *
-                                                                  0.135,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(
-                                                                      8.0),
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      8.0),
-                                                            ),
-                                                            image: DecorationImage(
-                                                                image: NetworkImage(orderDetails[j +
-                                                                        getCartIndex(
-                                                                            i,
-                                                                            packList)]
-                                                                    .artwork!
-                                                                    .arts!
-                                                                    .first
-                                                                    .image!),
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          ),
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              isFavorite =
-                                                                  !isFavorite;
-                                                            });
-                                                          },
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(5.0),
-                                                            child: Container(
-                                                              height: 25,
-                                                              width: 25,
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                color: Colors
-                                                                    .white,
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors
-                                                                        .black12,
-                                                                    blurRadius:
-                                                                        10.0,
-                                                                    spreadRadius:
-                                                                        1.0,
-                                                                    offset:
-                                                                        Offset(
-                                                                            0,
-                                                                            2),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: isFavorite
-                                                                  ? const Center(
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .favorite,
-                                                                        color: Colors
-                                                                            .red,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                    )
-                                                                  : const Center(
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .favorite_border,
-                                                                        color:
-                                                                            kNeutralColor,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                    ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
+                                          const SizedBox(width: 5.0),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Artist',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
+                                              ),
+                                              Text(
+                                                orderDetails[getCartIndex(
+                                                        i, packList)]
+                                                    .artwork!
+                                                    .createdByNavigation!
+                                                    .name!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      children: [
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: packList[i],
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.zero,
+                                          itemBuilder: (_, j) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10.0),
+                                              child: GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  height:
+                                                      context.height() * 0.135,
+                                                  decoration: BoxDecoration(
+                                                    color: kWhite,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                        color:
+                                                            kBorderColorTextField),
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color: kDarkWhite,
+                                                        blurRadius: 5.0,
+                                                        spreadRadius: 2.0,
+                                                        offset: Offset(0, 5),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Stack(
+                                                        alignment:
+                                                            Alignment.topLeft,
                                                         children: [
-                                                          Flexible(
-                                                            child: SizedBox(
-                                                              width: 190,
-                                                              child: Text(
-                                                                orderDetails[j +
-                                                                        getCartIndex(
-                                                                            i,
-                                                                            packList)]
-                                                                    .artwork!
-                                                                    .title!,
-                                                                style: kTextStyle.copyWith(
-                                                                    color:
-                                                                        kNeutralColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 5.0),
-                                                          Text(
-                                                            'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
-                                                            style: kTextStyle
-                                                                .copyWith(
-                                                              color:
-                                                                  kSubTitleColor,
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 5.0),
-                                                          SizedBox(
+                                                          Container(
+                                                            height: context
+                                                                    .height() *
+                                                                0.135,
                                                             width: context
-                                                                    .width() *
-                                                                0.5,
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  'Quantity: ${snapshot.data!.orderDetails![j + getCartIndex(i, packList)].quantity}',
-                                                                  style: kTextStyle
-                                                                      .copyWith(
-                                                                    color:
-                                                                        kSubTitleColor,
-                                                                  ),
+                                                                    .height() *
+                                                                0.135,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                              ),
+                                                              image: DecorationImage(
+                                                                  image: NetworkImage(orderDetails[j +
+                                                                          getCartIndex(
+                                                                              i,
+                                                                              packList)]
+                                                                      .artwork!
+                                                                      .arts!
+                                                                      .first
+                                                                      .image!),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                isFavorite =
+                                                                    !isFavorite;
+                                                              });
+                                                            },
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(5.0),
+                                                              child: Container(
+                                                                height: 25,
+                                                                width: 25,
+                                                                decoration:
+                                                                    const BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black12,
+                                                                      blurRadius:
+                                                                          10.0,
+                                                                      spreadRadius:
+                                                                          1.0,
+                                                                      offset:
+                                                                          Offset(
+                                                                              0,
+                                                                              2),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                const Spacer(),
-                                                                Text(
-                                                                  NumberFormat.simpleCurrency(
-                                                                          locale:
-                                                                              'vi_VN')
-                                                                      .format(orderDetails[j + getCartIndex(i, packList)]
-                                                                              .quantity! *
-                                                                          orderDetails[j + getCartIndex(i, packList)]
-                                                                              .price!),
-                                                                  style: kTextStyle
-                                                                      .copyWith(
-                                                                    color:
-                                                                        kPrimaryColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                                child: isFavorite
+                                                                    ? const Center(
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .favorite,
+                                                                          color:
+                                                                              Colors.red,
+                                                                          size:
+                                                                              16.0,
+                                                                        ),
+                                                                      )
+                                                                    : const Center(
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .favorite_border,
+                                                                          color:
+                                                                              kNeutralColor,
+                                                                          size:
+                                                                              16.0,
+                                                                        ),
+                                                                      ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Flexible(
+                                                              child: SizedBox(
+                                                                width: 190,
+                                                                child: Text(
+                                                                  orderDetails[j +
+                                                                          getCartIndex(
+                                                                              i,
+                                                                              packList)]
+                                                                      .artwork!
+                                                                      .title!,
+                                                                  style: kTextStyle.copyWith(
+                                                                      color:
+                                                                          kNeutralColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5.0),
+                                                            Text(
+                                                              'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                color:
+                                                                    kSubTitleColor,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5.0),
+                                                            SizedBox(
+                                                              width: context
+                                                                      .width() *
+                                                                  0.5,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Quantity: ${snapshot.data!.orderDetails![j + getCartIndex(i, packList)].quantity}',
+                                                                    style: kTextStyle
+                                                                        .copyWith(
+                                                                      color:
+                                                                          kSubTitleColor,
+                                                                    ),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  Text(
+                                                                    NumberFormat.simpleCurrency(
+                                                                            locale:
+                                                                                'vi_VN')
+                                                                        .format(orderDetails[j + getCartIndex(i, packList)].quantity! *
+                                                                            orderDetails[j + getCartIndex(i, packList)].price!),
+                                                                    style: kTextStyle
+                                                                        .copyWith(
+                                                                      color:
+                                                                          kPrimaryColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            SizedBox(
-                                                width:
-                                                    context.height() * 0.135 +
-                                                        6),
-                                            Text(
-                                              'Shipping fee:',
-                                              style: kTextStyle.copyWith(
-                                                color: kSubTitleColor,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'vi_VN')
-                                                  .format(shippingFees[i]),
-                                              style: kTextStyle.copyWith(
-                                                color: kPrimaryColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 15.0),
-                                          ],
+                                            );
+                                          },
                                         ),
-                                      ),
-                                      const SizedBox(height: 10.0),
-                                    ],
-                                  ),
-                                );
-                              },
+                                        SizedBox(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                  width:
+                                                      context.height() * 0.135 +
+                                                          6),
+                                              Text(
+                                                'Shipping fee:',
+                                                style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                NumberFormat.simpleCurrency(
+                                                        locale: 'vi_VN')
+                                                    .format(shippingFees[i]),
+                                                style: kTextStyle.copyWith(
+                                                  color: kPrimaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 15.0),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        );
+                      }
+
+                      return const Center(
+                        heightFactor: 2.0,
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
+                        ),
                       );
-                    }
-
-                    return const Center(
-                      heightFactor: 2.0,
-                      child: CircularProgressIndicator(
-                        color: kPrimaryColor,
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 15.0),
-                SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Delivery Address',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            activeColor: kPrimaryColor,
-                            visualDensity: const VisualDensity(horizontal: -4),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2.0),
-                            ),
-                            value: isCheck,
-                            onChanged: (value) {
-                              setState(() {
-                                isCheck = !isCheck;
-                              });
-
-                              if (!isCheck) {
+                    },
+                  ),
+                  const SizedBox(height: 15.0),
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Delivery Address',
+                          style: kTextStyle.copyWith(
+                              color: kNeutralColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              activeColor: kPrimaryColor,
+                              visualDensity:
+                                  const VisualDensity(horizontal: -4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0),
+                              ),
+                              value: isCheck,
+                              onChanged: (value) {
                                 setState(() {
-                                  nameController.text = jsonDecode(
-                                      PrefUtils().getAccount())['Name'];
-                                  phoneController.text = jsonDecode(
-                                      PrefUtils().getAccount())['Phone'];
-                                  addressController.text = jsonDecode(
-                                      PrefUtils().getAccount())['Address'];
+                                  isCheck = !isCheck;
                                 });
 
-                                getProvince();
-                              }
-                            },
+                                if (!isCheck) {
+                                  setState(() {
+                                    nameController.text = jsonDecode(
+                                        PrefUtils().getAccount())['Name'];
+                                    phoneController.text = jsonDecode(
+                                        PrefUtils().getAccount())['Phone'];
+                                    addressController.text = jsonDecode(
+                                        PrefUtils().getAccount())['Address'];
+                                  });
+
+                                  getProvince();
+                                }
+                              },
+                            ),
+                            const SizedBox(width: 2.0),
+                            Text(
+                              'Use this address instead',
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Name',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: TextFormField(
+                          keyboardType: TextInputType.name,
+                          cursorColor: kNeutralColor,
+                          textInputAction: TextInputAction.next,
+                          decoration: kInputDecoration.copyWith(
+                            labelText: 'Receiver name',
+                            labelStyle: kTextStyle.copyWith(
+                              color: kNeutralColor,
+                              fontSize: 14.0,
+                            ),
+                            hintText: 'Enter receiver name',
+                            hintStyle: kTextStyle.copyWith(
+                              color: kSubTitleColor,
+                              fontSize: 14.0,
+                            ),
+                            focusColor: kNeutralColor,
+                            border: const OutlineInputBorder(),
                           ),
-                          const SizedBox(width: 2.0),
-                          Text(
-                            'Use this address instead',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                        ],
+                          readOnly: !isCheck,
+                          controller: nameController,
+                        ),
                       )
                     ],
                   ),
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'Name',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: TextFormField(
-                        keyboardType: TextInputType.name,
-                        cursorColor: kNeutralColor,
-                        textInputAction: TextInputAction.next,
-                        decoration: kInputDecoration.copyWith(
-                          labelText: 'Receiver name',
-                          labelStyle: kTextStyle.copyWith(
-                            color: kNeutralColor,
-                            fontSize: 14.0,
-                          ),
-                          hintText: 'Enter receiver name',
-                          hintStyle: kTextStyle.copyWith(
-                            color: kSubTitleColor,
-                            fontSize: 14.0,
-                          ),
-                          focusColor: kNeutralColor,
-                          border: const OutlineInputBorder(),
-                        ),
-                        readOnly: !isCheck,
-                        controller: nameController,
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Phone',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'Phone',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: TextFormField(
-                        keyboardType: TextInputType.phone,
-                        cursorColor: kNeutralColor,
-                        textInputAction: TextInputAction.next,
-                        decoration: kInputDecoration.copyWith(
-                          labelText: 'Receiver phone',
-                          labelStyle: kTextStyle.copyWith(
-                            color: kNeutralColor,
-                            fontSize: 14.0,
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          cursorColor: kNeutralColor,
+                          textInputAction: TextInputAction.next,
+                          decoration: kInputDecoration.copyWith(
+                            labelText: 'Receiver phone',
+                            labelStyle: kTextStyle.copyWith(
+                              color: kNeutralColor,
+                              fontSize: 14.0,
+                            ),
+                            hintText: 'Enter receiver phone',
+                            hintStyle: kTextStyle.copyWith(
+                              color: kSubTitleColor,
+                              fontSize: 14.0,
+                            ),
+                            focusColor: kNeutralColor,
+                            border: const OutlineInputBorder(),
                           ),
-                          hintText: 'Enter receiver phone',
-                          hintStyle: kTextStyle.copyWith(
-                            color: kSubTitleColor,
-                            fontSize: 14.0,
-                          ),
-                          focusColor: kNeutralColor,
-                          border: const OutlineInputBorder(),
+                          readOnly: !isCheck,
+                          controller: phoneController,
                         ),
-                        readOnly: !isCheck,
-                        controller: phoneController,
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Province',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'Province',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: FormField(
-                        builder: (FormFieldState<dynamic> field) {
-                          return InputDecorator(
-                            decoration: kInputDecoration.copyWith(
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: FormField(
+                          builder: (FormFieldState<dynamic> field) {
+                            return InputDecorator(
+                              decoration: kInputDecoration.copyWith(
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                      color: kBorderColorTextField, width: 2),
                                 ),
-                                borderSide: BorderSide(
-                                    color: kBorderColorTextField, width: 2),
+                                contentPadding: const EdgeInsets.all(7.0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Choose a Province',
+                                labelStyle:
+                                    kTextStyle.copyWith(color: kNeutralColor),
                               ),
-                              contentPadding: const EdgeInsets.all(7.0),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelText: 'Choose a Province',
-                              labelStyle:
-                                  kTextStyle.copyWith(color: kNeutralColor),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: getProvinces(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'District',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: FormField(
-                        builder: (FormFieldState<dynamic> field) {
-                          return InputDecorator(
-                            decoration: kInputDecoration.copyWith(
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                                borderSide: BorderSide(
-                                    color: kBorderColorTextField, width: 2),
+                              child: DropdownButtonHideUnderline(
+                                child: getProvinces(),
                               ),
-                              contentPadding: const EdgeInsets.all(7.0),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelText: 'Choose a District',
-                              labelStyle:
-                                  kTextStyle.copyWith(color: kNeutralColor),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: getDistricts(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'Ward',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: FormField(
-                        builder: (FormFieldState<dynamic> field) {
-                          return InputDecorator(
-                            decoration: kInputDecoration.copyWith(
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                                borderSide: BorderSide(
-                                    color: kBorderColorTextField, width: 2),
-                              ),
-                              contentPadding: const EdgeInsets.all(7.0),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelText: 'Choose a Ward',
-                              labelStyle:
-                                  kTextStyle.copyWith(color: kNeutralColor),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: getWards(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    Text(
-                      'Address',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: context.width() * 0.7,
-                      child: TextFormField(
-                        keyboardType: TextInputType.streetAddress,
-                        cursorColor: kNeutralColor,
-                        textInputAction: TextInputAction.done,
-                        decoration: kInputDecoration.copyWith(
-                          labelText: 'Address detail',
-                          labelStyle: kTextStyle.copyWith(
-                            color: kNeutralColor,
-                            fontSize: 14.0,
-                          ),
-                          hintText: 'Enter address detail',
-                          hintStyle: kTextStyle.copyWith(
-                            color: kSubTitleColor,
-                            fontSize: 14.0,
-                          ),
-                          focusColor: kNeutralColor,
-                          border: const OutlineInputBorder(),
-                        ),
-                        readOnly: !isCheck,
-                        controller: addressController,
-                        onEditingComplete: () {
-                          getProvince();
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 20.0),
-                Text(
-                  'Payment Method',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20.0),
-                ListView.builder(
-                  itemCount: paymentMethod.length,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, i) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: kWhite,
-                          border: Border.all(color: kBorderColorTextField),
-                        ),
-                        child: ListTile(
-                          visualDensity: const VisualDensity(vertical: -2),
-                          onTap: () {
-                            setState(
-                              () {
-                                selectedPaymentMethod = i;
-                              },
                             );
                           },
-                          contentPadding: const EdgeInsets.only(right: 8.0),
-                          leading: Container(
-                            height: 50.0,
-                            width: 50.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage(imageList[i]),
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                          title: Text(
-                            paymentMethod[i],
-                            style: kTextStyle.copyWith(color: kNeutralColor),
-                          ),
-                          trailing: Icon(
-                            selectedPaymentMethod == i
-                                ? Icons.radio_button_checked_rounded
-                                : Icons.radio_button_off_rounded,
-                            color: selectedPaymentMethod == i
-                                ? kPrimaryColor
-                                : kSubTitleColor,
-                          ),
                         ),
                       ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                Text(
-                  'Order Summary',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    Text(
-                      'Subtotal',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(total),
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Text(
-                      'Shipping fee',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                    const Spacer(),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                          shippingFees.length > 1
-                              ? shippingFees.reduce((a, b) => a + b)
-                              : shippingFees[0]),
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Text(
-                      'Total',
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'District',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                          total +
-                              (shippingFees.length > 1
-                                  ? shippingFees.reduce((a, b) => a + b)
-                                  : shippingFees[0])),
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: FormField(
+                          builder: (FormFieldState<dynamic> field) {
+                            return InputDecorator(
+                              decoration: kInputDecoration.copyWith(
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                      color: kBorderColorTextField, width: 2),
+                                ),
+                                contentPadding: const EdgeInsets.all(7.0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Choose a District',
+                                labelStyle:
+                                    kTextStyle.copyWith(color: kNeutralColor),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: getDistricts(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 5.0),
-                Row(
-                  children: [
-                    Text(
-                      'Discount',
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Ward',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                          -(total +
-                                  (shippingFees.length > 1
-                                      ? shippingFees.reduce((a, b) => a + b)
-                                      : shippingFees[0])) *
-                              discount),
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: FormField(
+                          builder: (FormFieldState<dynamic> field) {
+                            return InputDecorator(
+                              decoration: kInputDecoration.copyWith(
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                      color: kBorderColorTextField, width: 2),
+                                ),
+                                contentPadding: const EdgeInsets.all(7.0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Choose a Ward',
+                                labelStyle:
+                                    kTextStyle.copyWith(color: kNeutralColor),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: getWards(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ).visible(discount != 0 && status != 'Pending'),
-                const SizedBox(height: 10.0)
-                    .visible(discount != 0 && status != 'Pending'),
-                Row(
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'Need to pay ',
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Address',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: context.width() * 0.7,
+                        child: TextFormField(
+                          keyboardType: TextInputType.streetAddress,
+                          cursorColor: kNeutralColor,
+                          textInputAction: TextInputAction.done,
+                          decoration: kInputDecoration.copyWith(
+                            labelText: 'Address detail',
+                            labelStyle: kTextStyle.copyWith(
+                              color: kNeutralColor,
+                              fontSize: 14.0,
+                            ),
+                            hintText: 'Enter address detail',
+                            hintStyle: kTextStyle.copyWith(
+                              color: kSubTitleColor,
+                              fontSize: 14.0,
+                            ),
+                            focusColor: kNeutralColor,
+                            border: const OutlineInputBorder(),
+                          ),
+                          readOnly: !isCheck,
+                          controller: addressController,
+                          onEditingComplete: () {
+                            getProvince();
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    'Payment Method',
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20.0),
+                  ListView.builder(
+                    itemCount: paymentMethod.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, i) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: kWhite,
+                            border: Border.all(color: kBorderColorTextField),
+                          ),
+                          child: ListTile(
+                            visualDensity: const VisualDensity(vertical: -2),
+                            onTap: () {
+                              setState(
+                                () {
+                                  selectedPaymentMethod = i;
+                                },
+                              );
+                            },
+                            contentPadding: const EdgeInsets.only(right: 8.0),
+                            leading: Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: AssetImage(imageList[i]),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                            title: Text(
+                              paymentMethod[i],
+                              style: kTextStyle.copyWith(color: kNeutralColor),
+                            ),
+                            trailing: Icon(
+                              selectedPaymentMethod == i
+                                  ? Icons.radio_button_checked_rounded
+                                  : Icons.radio_button_off_rounded,
+                              color: selectedPaymentMethod == i
+                                  ? kPrimaryColor
+                                  : kSubTitleColor,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    'Order Summary',
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Subtotal',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                      const Spacer(),
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'vi_VN')
+                            .format(total),
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Shipping fee',
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                      const Spacer(),
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                            shippingFees.length > 1
+                                ? shippingFees.reduce((a, b) => a + b)
+                                : shippingFees[0]),
+                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Total',
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                            total +
+                                (shippingFees.length > 1
+                                    ? shippingFees.reduce((a, b) => a + b)
+                                    : shippingFees[0])),
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5.0),
+                  Row(
+                    children: [
+                      Text(
+                        'Discount',
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                            -(total +
+                                    (shippingFees.length > 1
+                                        ? shippingFees.reduce((a, b) => a + b)
+                                        : shippingFees[0])) *
+                                discount),
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ).visible(discount != 0 && status != 'Pending'),
+                  const SizedBox(height: 10.0)
+                      .visible(discount != 0 && status != 'Pending'),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: 'Need to pay ',
+                          style: kTextStyle.copyWith(
+                            color: kNeutralColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                          children: [
+                            status != 'Deposited'
+                                ? status == 'Pending'
+                                    ? TextSpan(
+                                        text:
+                                            '(${discount * 100}% of subtotal)',
+                                        style: kTextStyle.copyWith(
+                                          color: kNeutralColor,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14.0,
+                                        ),
+                                      )
+                                    : const TextSpan()
+                                : TextSpan(
+                                    text: '(the rest)',
+                                    style: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'vi_VN').format(
+                            status != 'Deposited'
+                                ? status == 'Pending'
+                                    ? total * discount
+                                    : (total +
+                                            (shippingFees.length > 1
+                                                ? shippingFees
+                                                    .reduce((a, b) => a + b)
+                                                : shippingFees[0])) *
+                                        (1 - discount)
+                                : ((total +
+                                            (shippingFees.length > 1
+                                                ? shippingFees
+                                                    .reduce((a, b) => a + b)
+                                                : shippingFees[0])) *
+                                        (1 - discount)) -
+                                    paid),
                         style: kTextStyle.copyWith(
                           color: kNeutralColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
                         ),
-                        children: [
-                          status != 'Deposited'
-                              ? status == 'Pending'
-                                  ? TextSpan(
-                                      text: '(${discount * 100}% of subtotal)',
-                                      style: kTextStyle.copyWith(
-                                        color: kNeutralColor,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14.0,
-                                      ),
-                                    )
-                                  : const TextSpan()
-                              : TextSpan(
-                                  text: '(the rest)',
-                                  style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                        ],
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                          status != 'Deposited'
-                              ? status == 'Pending'
-                                  ? total * discount
-                                  : (total +
-                                          (shippingFees.length > 1
-                                              ? shippingFees
-                                                  .reduce((a, b) => a + b)
-                                              : shippingFees[0])) *
-                                      (1 - discount)
-                              : ((total +
-                                          (shippingFees.length > 1
-                                              ? shippingFees
-                                                  .reduce((a, b) => a + b)
-                                              : shippingFees[0])) *
-                                      (1 - discount)) -
-                                  paid),
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  ],
-                ).visible(discount != 0 || status == 'Deposited'),
-                const SizedBox(height: 10.0)
-                    .visible(discount != 0 || status == 'Deposited'),
-              ],
+                    ],
+                  ).visible(discount != 0 || status == 'Deposited'),
+                  const SizedBox(height: 10.0)
+                      .visible(discount != 0 || status == 'Deposited'),
+                ],
+              ),
             ),
           ),
         ),
@@ -1156,7 +1167,7 @@ class _ClientOrderState extends State<ClientOrder> {
         if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
             query['vnp_ResponseCode'] == '00') {
           showProcessingPopUp();
-          PrefUtils().clearVNPayRef();
+          await PrefUtils().clearVNPayRef();
 
           await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
@@ -1165,12 +1176,12 @@ class _ClientOrderState extends State<ClientOrder> {
           return null;
         } else {
           showFailedPopUp();
-          PrefUtils().clearVNPayRef();
+          await PrefUtils().clearVNPayRef();
 
           await getProvince();
         }
       } else {
-        PrefUtils().clearVNPayRef();
+        await PrefUtils().clearVNPayRef();
         await getProvince();
       }
 

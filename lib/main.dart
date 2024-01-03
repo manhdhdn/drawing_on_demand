@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'app_routes/go_routes.dart';
@@ -35,19 +36,28 @@ class MyApp extends StatefulWidget {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
 
     if (state != null) {
-      state.initLanguage();
+      state.setLanguage();
+    }
+  }
+
+  static void refreshRoutes(BuildContext context) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+
+    if (state != null) {
+      state.setRoutes();
     }
   }
 }
 
 class _MyAppState extends State<MyApp> {
   Locale locale = const Locale('vi');
+  GoRouter routes = AppRoutes.routes();
 
   @override
   void initState() {
     super.initState();
 
-    initLanguage();
+    setLanguage();
   }
 
   @override
@@ -55,7 +65,7 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider(
       create: (_) => ChatProvider(),
       child: MaterialApp.router(
-        title: 'Drawing on demand',
+        title: L10n.appName,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -66,12 +76,12 @@ class _MyAppState extends State<MyApp> {
         locale: locale,
         theme: ThemeData(fontFamily: 'Display'),
         debugShowCheckedModeBanner: false,
-        routerConfig: AppRoutes.routes,
+        routerConfig: routes,
       ),
     );
   }
 
-  Future<void> initLanguage() async {
+  Future<void> setLanguage() async {
     switch (PrefUtils().getLanguage()) {
       case 'English':
         setState(() {
@@ -84,5 +94,11 @@ class _MyAppState extends State<MyApp> {
         });
         break;
     }
+  }
+
+  void setRoutes() {
+    setState(() {
+      routes = AppRoutes.routes();
+    });
   }
 }

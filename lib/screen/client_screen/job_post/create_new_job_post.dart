@@ -16,6 +16,7 @@ import '../../../data/models/category.dart';
 import '../../../data/models/material.dart' as material_model;
 import '../../../data/models/requirement.dart';
 import '../../../data/models/surface.dart';
+import '../../../l10n/l10n.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import 'job_post.dart';
@@ -147,220 +148,226 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kDarkWhite,
-      appBar: AppBar(
+    return Title(
+      title: '${L10n.appName} | Create requirement',
+      color: kPrimaryColor,
+      child: Scaffold(
         backgroundColor: kDarkWhite,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: kNeutralColor),
-        title: Text(
-          'Create New Requirement',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: Container(
-          height: context.height(),
-          width: context.width(),
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          decoration: const BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              topLeft: Radius.circular(30.0),
-            ),
+        appBar: AppBar(
+          backgroundColor: kDarkWhite,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: kNeutralColor),
+          title: Text(
+            'Create New Requirement',
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20.0),
-                Text(
-                  'Overview',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 15.0),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  cursorColor: kNeutralColor,
-                  textInputAction: TextInputAction.next,
-                  decoration: kInputDecoration.copyWith(
-                    labelText: 'Requirement Title',
-                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'Enter requirement title',
-                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                    focusColor: kNeutralColor,
-                    border: const OutlineInputBorder(),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Container(
+            height: context.height(),
+            width: context.width(),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+            decoration: const BoxDecoration(
+              color: kWhite,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30.0),
+                topLeft: Radius.circular(30.0),
+              ),
+            ),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20.0),
+                  Text(
+                    'Overview',
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
-                  controller: titleController,
-                ),
-                const SizedBox(height: 20.0),
-                FormField(
-                  builder: (FormFieldState<dynamic> field) {
-                    return InputDecorator(
-                      decoration: kInputDecoration.copyWith(
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
-                          ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
-                        ),
-                        contentPadding: const EdgeInsets.all(7.0),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Choose a Category',
-                        labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                      child:
-                          DropdownButtonHideUnderline(child: getCategories()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                FormField(
-                  builder: (FormFieldState<dynamic> field) {
-                    return InputDecorator(
-                      decoration: kInputDecoration.copyWith(
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
-                          ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
-                        ),
-                        contentPadding: const EdgeInsets.all(7.0),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Choose a Material',
-                        labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                      child: DropdownButtonHideUnderline(child: getMaterials()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                FormField(
-                  builder: (FormFieldState<dynamic> field) {
-                    return InputDecorator(
-                      decoration: kInputDecoration.copyWith(
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
-                          ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
-                        ),
-                        contentPadding: const EdgeInsets.all(7.0),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Choose a Surface',
-                        labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                      child: DropdownButtonHideUnderline(child: getSurfaces()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                FormField(
-                  builder: (FormFieldState<dynamic> field) {
-                    return InputDecorator(
-                      decoration: kInputDecoration.copyWith(
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
-                          ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
-                        ),
-                        contentPadding: const EdgeInsets.all(7.0),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Pieces',
-                        labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      ),
-                      child: DropdownButtonHideUnderline(child: getPieces()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  cursorColor: kNeutralColor,
-                  textInputAction: TextInputAction.next,
-                  decoration: kInputDecoration.copyWith(
-                    labelText: 'Budget',
-                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'Price you can pay',
-                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                    focusColor: kNeutralColor,
-                    border: const OutlineInputBorder(),
-                  ),
-                  controller: budgetController,
-                ),
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  cursorColor: kNeutralColor,
-                  textInputAction: TextInputAction.next,
-                  maxLines: 3,
-                  decoration: kInputDecoration.copyWith(
-                    labelText: 'Describe',
-                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'I need an artist for...',
-                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                    focusColor: kNeutralColor,
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    border: const OutlineInputBorder(),
-                  ),
-                  controller: descriptionController,
-                ),
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  showCursor: false,
-                  readOnly: true,
-                  cursorColor: kNeutralColor,
-                  textInputAction: TextInputAction.next,
-                  decoration: kInputDecoration.copyWith(
-                    labelText: 'Upload Image',
-                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                    hintText: 'Upload image here',
-                    hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                    focusColor: kNeutralColor,
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    border: const OutlineInputBorder(),
-                    suffixIcon: const Icon(
-                      FeatherIcons.upload,
-                      color: kLightNeutralColor,
+                  const SizedBox(height: 15.0),
+                  TextFormField(
+                    keyboardType: TextInputType.name,
+                    cursorColor: kNeutralColor,
+                    textInputAction: TextInputAction.next,
+                    decoration: kInputDecoration.copyWith(
+                      labelText: 'Requirement Title',
+                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                      hintText: 'Enter requirement title',
+                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                      focusColor: kNeutralColor,
+                      border: const OutlineInputBorder(),
                     ),
+                    controller: titleController,
                   ),
-                  controller: imageController,
-                  onTap: () async {
-                    await pickImage();
-                    imageController.text =
-                        images.isNotEmpty ? images.last.name : '';
-                  },
-                ),
-                const SizedBox(height: 10.0),
-              ],
+                  const SizedBox(height: 20.0),
+                  FormField(
+                    builder: (FormFieldState<dynamic> field) {
+                      return InputDecorator(
+                        decoration: kInputDecoration.copyWith(
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                            borderSide: BorderSide(
+                                color: kBorderColorTextField, width: 2),
+                          ),
+                          contentPadding: const EdgeInsets.all(7.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Choose a Category',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                        ),
+                        child:
+                            DropdownButtonHideUnderline(child: getCategories()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  FormField(
+                    builder: (FormFieldState<dynamic> field) {
+                      return InputDecorator(
+                        decoration: kInputDecoration.copyWith(
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                            borderSide: BorderSide(
+                                color: kBorderColorTextField, width: 2),
+                          ),
+                          contentPadding: const EdgeInsets.all(7.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Choose a Material',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                        ),
+                        child:
+                            DropdownButtonHideUnderline(child: getMaterials()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  FormField(
+                    builder: (FormFieldState<dynamic> field) {
+                      return InputDecorator(
+                        decoration: kInputDecoration.copyWith(
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                            borderSide: BorderSide(
+                                color: kBorderColorTextField, width: 2),
+                          ),
+                          contentPadding: const EdgeInsets.all(7.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Choose a Surface',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                        ),
+                        child:
+                            DropdownButtonHideUnderline(child: getSurfaces()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  FormField(
+                    builder: (FormFieldState<dynamic> field) {
+                      return InputDecorator(
+                        decoration: kInputDecoration.copyWith(
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                            borderSide: BorderSide(
+                                color: kBorderColorTextField, width: 2),
+                          ),
+                          contentPadding: const EdgeInsets.all(7.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Pieces',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                        ),
+                        child: DropdownButtonHideUnderline(child: getPieces()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    cursorColor: kNeutralColor,
+                    textInputAction: TextInputAction.next,
+                    decoration: kInputDecoration.copyWith(
+                      labelText: 'Budget',
+                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                      hintText: 'Price you can pay',
+                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                      focusColor: kNeutralColor,
+                      border: const OutlineInputBorder(),
+                    ),
+                    controller: budgetController,
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    cursorColor: kNeutralColor,
+                    textInputAction: TextInputAction.next,
+                    maxLines: 3,
+                    decoration: kInputDecoration.copyWith(
+                      labelText: 'Describe',
+                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                      hintText: 'I need an artist for...',
+                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                      focusColor: kNeutralColor,
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: const OutlineInputBorder(),
+                    ),
+                    controller: descriptionController,
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextFormField(
+                    showCursor: false,
+                    readOnly: true,
+                    cursorColor: kNeutralColor,
+                    textInputAction: TextInputAction.next,
+                    decoration: kInputDecoration.copyWith(
+                      labelText: 'Upload Image',
+                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                      hintText: 'Upload image here',
+                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                      focusColor: kNeutralColor,
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: const OutlineInputBorder(),
+                      suffixIcon: const Icon(
+                        FeatherIcons.upload,
+                        color: kLightNeutralColor,
+                      ),
+                    ),
+                    controller: imageController,
+                    onTap: () async {
+                      await pickImage();
+                      imageController.text =
+                          images.isNotEmpty ? images.last.name : '';
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: kWhite),
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-        child: ButtonGlobalWithoutIcon(
-            buttontext: 'Done',
-            buttonDecoration: kButtonDecoration.copyWith(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            onPressed: () {
-              onDone();
-            },
-            buttonTextColor: kWhite),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(color: kWhite),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+          child: ButtonGlobalWithoutIcon(
+              buttontext: 'Done',
+              buttonDecoration: kButtonDecoration.copyWith(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              onPressed: () {
+                onDone();
+              },
+              buttonTextColor: kWhite),
+        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:drawing_on_demand/screen/seller_screen/home/seller_home.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/button_global.dart';
@@ -89,7 +88,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(30.0)),
             onPressed: () {
-              const SellerHome().launch(context);
+              // const SellerHome().launch(context);
             },
             buttonTextColor: kWhite),
       ),

@@ -19,11 +19,11 @@ class PrefUtils {
 
   /// This will clear some data stored in preference
   Future<void> clearPreferencesData() async {
-    _sharedPreferences!.remove('account');
-    _sharedPreferences!.remove('token');
-    _sharedPreferences!.remove('role');
-    _sharedPreferences!.remove('rank');
-    _sharedPreferences!.remove('cartId');
+    await _sharedPreferences!.remove('account');
+    await _sharedPreferences!.remove('token');
+    await _sharedPreferences!.remove('role');
+    await _sharedPreferences!.remove('rank');
+    await _sharedPreferences!.remove('cartId');
   }
 
   Future<bool> setThemeData(String value) {

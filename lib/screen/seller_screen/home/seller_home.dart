@@ -1,36 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../common/orders/order_list.dart';
+import '../../../app_routes/named_routes.dart';
 import '../../widgets/constant.dart';
-import '../profile/seller_profile.dart';
-import '../../common/message/chat_list.dart';
-import '../request/seller_buyer_request.dart';
-import 'seller_home_screen.dart';
 
-class SellerHome extends StatefulWidget {
-  const SellerHome({Key? key}) : super(key: key);
+class SellerHome extends StatelessWidget {
+  final Widget child;
 
-  @override
-  State<SellerHome> createState() => _SellerHomeState();
-}
+  const SellerHome({Key? key, required this.child}) : super(key: key);
 
-class _SellerHomeState extends State<SellerHome> {
-  int _currentPage = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    SellerHomeScreen(),
-    ChatScreen(),
-    SellerBuyerReq(),
-    OrderList(),
-    SellerProfile(),
-  ];
+  // static const List<Widget> _widgetOptions = <Widget>[
+  //   SellerHomeScreen(),
+  //   ChatScreen(),
+  //   SellerBuyerReq(),
+  //   OrderList(),
+  //   SellerProfile(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhite,
-      body: _widgetOptions.elementAt(_currentPage),
+      body: child,
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
@@ -76,11 +68,51 @@ class _SellerHomeState extends State<SellerHome> {
             ),
           ],
           onTap: (int index) {
-            setState(() => _currentPage = index);
+            _onItemTapped(index, context);
           },
-          currentIndex: _currentPage,
+          currentIndex: _calculateSelectedIndex(context),
         ),
       ),
     );
+  }
+
+  static int _calculateSelectedIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+
+    if (location.startsWith(MessageRoute.tag)) {
+      return 1;
+    }
+    if (location.startsWith(JobRoute.tag)) {
+      return 2;
+    }
+    if (location.startsWith(OrderRoute.tag)) {
+      return 3;
+    }
+    if (location.startsWith(ProfileRoute.tag)) {
+      return 4;
+    }
+    if (location.startsWith(HomeRoute.tag)) {
+      return 0;
+    }
+    return 0;
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        context.goNamed(HomeRoute.name);
+        break;
+      case 1:
+        context.goNamed(MessageRoute.name);
+        break;
+      case 2:
+        context.goNamed(JobRoute.name);
+        break;
+      case 3:
+        context.goNamed(OrderRoute.name);
+        break;
+      case 4:
+        context.goNamed(ProfileRoute.name);
+    }
   }
 }

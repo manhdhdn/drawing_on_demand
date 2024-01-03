@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
 import 'function/chat_function.dart';
@@ -56,92 +57,96 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kDarkWhite,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          iconTheme: const IconThemeData(color: kNeutralColor),
+    return Title(
+      title: '${L10n.appName} | Message',
+      color: kPrimaryColor,
+      child: SafeArea(
+        child: Scaffold(
           backgroundColor: kDarkWhite,
-          elevation: 0.0,
-          centerTitle: true,
-          title: Text(
-            'Message',
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Container(
-            height: context.height(),
-            width: context.width(),
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            decoration: const BoxDecoration(
-              color: kWhite,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0),
-              ),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            iconTheme: const IconThemeData(color: kNeutralColor),
+            backgroundColor: kDarkWhite,
+            elevation: 0.0,
+            centerTitle: true,
+            title: Text(
+              'Message',
+              style: kTextStyle.copyWith(
+                  color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child:
-                  // Container(
-                  //   constraints: BoxConstraints(
-                  //     minHeight: context.height() * 0.7,
-                  //   ),
-                  //   decoration: const BoxDecoration(color: kWhite),
-                  //   child:
-                  Consumer<ChatProvider>(
-                builder: (context, value, child) => value.users.isNotEmpty
-                    ? Column(
-                        children: value.users
-                            .map((user) => Column(
-                                  children: [
-                                    const SizedBox(height: 10.0),
-                                    SettingItemWidget(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      title: user.name.validate(),
-                                      subTitle: user.lastMessage.validate(),
-                                      subTitleTextStyle: TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        fontFamily: kTextStyle.fontFamily,
-                                        fontWeight: user.isSeen.validate()
-                                            ? FontWeight.normal
-                                            : FontWeight.w700,
-                                      ),
-                                      leading: Image.network(
-                                              user.image.validate(),
-                                              height: 50,
-                                              width: 50,
-                                              fit: BoxFit.cover)
-                                          .cornerRadiusWithClipRRect(25),
-                                      trailing: Column(
-                                        children: [
-                                          Text(
-                                            timeago.format(user.lastActive!),
-                                            style: secondaryTextStyle(),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
-                                        onChat(user);
-                                      },
-                                    ),
-                                    const Divider(
-                                      thickness: 1.0,
-                                      color: kBorderColorTextField,
-                                      height: 0,
-                                    ),
-                                  ],
-                                ))
-                            .toList(),
-                      )
-                    : const NothingYet(visible: true),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Container(
+              height: context.height(),
+              width: context.width(),
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              decoration: const BoxDecoration(
+                color: kWhite,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
               ),
-              // ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child:
+                    // Container(
+                    //   constraints: BoxConstraints(
+                    //     minHeight: context.height() * 0.7,
+                    //   ),
+                    //   decoration: const BoxDecoration(color: kWhite),
+                    //   child:
+                    Consumer<ChatProvider>(
+                  builder: (context, value, child) => value.users.isNotEmpty
+                      ? Column(
+                          children: value.users
+                              .map((user) => Column(
+                                    children: [
+                                      const SizedBox(height: 10.0),
+                                      SettingItemWidget(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                        title: user.name.validate(),
+                                        subTitle: user.lastMessage.validate(),
+                                        subTitleTextStyle: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontFamily: kTextStyle.fontFamily,
+                                          fontWeight: user.isSeen.validate()
+                                              ? FontWeight.normal
+                                              : FontWeight.w700,
+                                        ),
+                                        leading: Image.network(
+                                                user.image.validate(),
+                                                height: 50,
+                                                width: 50,
+                                                fit: BoxFit.cover)
+                                            .cornerRadiusWithClipRRect(25),
+                                        trailing: Column(
+                                          children: [
+                                            Text(
+                                              timeago.format(user.lastActive!),
+                                              style: secondaryTextStyle(),
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          onChat(user);
+                                        },
+                                      ),
+                                      const Divider(
+                                        thickness: 1.0,
+                                        color: kBorderColorTextField,
+                                        height: 0,
+                                      ),
+                                    ],
+                                  ))
+                              .toList(),
+                        )
+                      : const NothingYet(visible: true),
+                ),
+                // ),
+              ),
             ),
           ),
         ),

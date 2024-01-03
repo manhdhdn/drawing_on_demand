@@ -23,12 +23,13 @@ import '../../data/models/discount.dart';
 import '../../data/models/ghn_request.dart';
 import '../../data/models/order.dart';
 import '../../data/models/order_detail.dart';
+// import '../../main.dart';
 import '../../screen/common/message/function/chat_function.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
 import '../utils/pref_utils.dart';
 
-void logout(BuildContext context) async {
+Future<void> logout(BuildContext context) async {
   try {
     // Sign out
     await FirebaseAuth.instance.signOut();
@@ -40,11 +41,13 @@ void logout(BuildContext context) async {
     });
 
     // Clear pref data
-    PrefUtils().clearPreferencesData();
+    await PrefUtils().clearPreferencesData();
 
     // Navigate to login
-    // ignore: use_build_context_synchronously
-    context.goNamed(LoginRoute.name);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      // MyApp.refreshRoutes(context);
+      context.goNamed(LoginRoute.name);
+    });
   } catch (error) {
     Fluttertoast.showToast(msg: error.toString());
   }
