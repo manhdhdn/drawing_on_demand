@@ -1,3 +1,4 @@
+import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,9 @@ import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
 import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/home/seller_home_screen.dart';
+import '../screen/seller_screen/profile/seller_profile_details.dart';
+import '../screen/seller_screen/request/seller_buyer_request.dart';
+import '../screen/seller_screen/services/create_service.dart';
 import 'named_routes.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -67,40 +71,10 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                        path: CartRoute.tag,
-                        name: CartRoute.name,
-                        builder: (context, state) {
-                          return const CartScreen();
-                        },
-                        redirect: (context, state) => _unAuthened(),
-                        routes: [
-                          GoRoute(
-                            path: CheckoutRoute.tag,
-                            name: CheckoutRoute.name,
-                            builder: (context, state) {
-                              return ClientOrder(
-                                id: state.pathParameters['id'],
-                              );
-                            },
-                          ),
-                          GoRoute(
-                            path: ArtworkDetailRoute.tag,
-                            name: '${ArtworkDetailRoute.name} cart',
-                            builder: (context, state) {
-                              return ServiceDetails(
-                                id: state.pathParameters['id'],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      GoRoute(
                         path: ArtworkRoute.tag,
                         name: ArtworkRoute.name,
                         builder: (context, state) {
-                          return PopularServices(
-                            tab: state.uri.queryParameters['tab'],
-                          );
+                          return const CreateService();
                         },
                         routes: [
                           GoRoute(
@@ -134,24 +108,25 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                          path: ChatRoute.tag,
-                          name: ChatRoute.name,
-                          builder: (context, state) {
-                            var extra = Provider.of<ChatProvider>(context).user;
+                        path: ChatRoute.tag,
+                        name: ChatRoute.name,
+                        builder: (context, state) {
+                          var extra = Provider.of<ChatProvider>(context).user;
 
-                            return ChatInbox(
-                              img: extra.image,
-                              name: extra.name,
-                              receiverId: state.pathParameters['id'],
-                            );
-                          }),
+                          return ChatInbox(
+                            img: extra.image,
+                            name: extra.name,
+                            receiverId: state.pathParameters['id'],
+                          );
+                        },
+                      ),
                     ],
                   ),
                   GoRoute(
-                    path: JobRoute.tag,
-                    name: JobRoute.name,
+                    path: JobApplyRoute.tag,
+                    name: JobApplyRoute.name,
                     builder: (context, state) {
-                      return const JobPost();
+                      return const SellerBuyerReq();
                     },
                     redirect: (context, state) => _unAuthened(),
                     routes: [
@@ -214,7 +189,7 @@ class AppRoutes {
                     path: ProfileRoute.tag,
                     name: ProfileRoute.name,
                     builder: (context, state) {
-                      return const ClientProfile();
+                      return const SellerProfile();
                     },
                     redirect: (context, state) => _unAuthened(),
                     routes: [
@@ -222,7 +197,7 @@ class AppRoutes {
                         path: ProfileDetailRoute.tag,
                         name: ProfileDetailRoute.name,
                         builder: (context, state) {
-                          return const ClientProfileDetails();
+                          return const SellerProfileDetails();
                         },
                       ),
                       GoRoute(
@@ -326,17 +301,18 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                          path: ChatRoute.tag,
-                          name: ChatRoute.name,
-                          builder: (context, state) {
-                            var extra = Provider.of<ChatProvider>(context).user;
+                        path: ChatRoute.tag,
+                        name: ChatRoute.name,
+                        builder: (context, state) {
+                          var extra = Provider.of<ChatProvider>(context).user;
 
-                            return ChatInbox(
-                              img: extra.image,
-                              name: extra.name,
-                              receiverId: state.pathParameters['id'],
-                            );
-                          }),
+                          return ChatInbox(
+                            img: extra.image,
+                            name: extra.name,
+                            receiverId: state.pathParameters['id'],
+                          );
+                        },
+                      ),
                     ],
                   ),
                   GoRoute(

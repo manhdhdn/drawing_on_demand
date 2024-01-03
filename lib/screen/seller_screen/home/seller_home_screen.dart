@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
@@ -475,7 +477,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                         .elementAt(index)
                                         .name!,
                                     subTitle:
-                                        'Fee per order: ${snapshot.data!.value.elementAt(index).fee! * 100}%\n'
+                                        'Fee per order: ${(snapshot.data!.value.elementAt(index).fee! * 100).toStringAsFixed(0)}%\n'
                                         'Connect: ${snapshot.data!.value.elementAt(index).connect!}',
                                     trailing1: NumberFormat.simpleCurrency(
                                             locale: 'vi_VN')
@@ -500,7 +502,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                           .elementAt(index + 1)
                                           .name!,
                                       subTitle:
-                                          'Fee per order: ${snapshot.data!.value.elementAt(index + 1).fee! * 100}%\n'
+                                          'Fee per order: ${(snapshot.data!.value.elementAt(index + 1).fee! * 100).toStringAsFixed(0)}%\n'
                                           'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
                                       trailing1: '0',
                                       trailing2: NumberFormat.simpleCurrency(
@@ -765,13 +767,12 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
   }
 
   void onViewAllArtwork() {
-    // Navigator.pushNamed(context, CreateService.tag);
+    context.goNamed(ArtworkRoute.name);
   }
 
   void onArtworkDetail(String id) {
-    // PrefUtils().setTermId(id);
-
-    // Navigator.pushNamed(context, ServiceDetails.tag);
+    context
+        .goNamed('${ArtworkDetailRoute.name} out', pathParameters: {'id': id});
   }
 }
 

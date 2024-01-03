@@ -57,6 +57,12 @@ class JobRoute {
   static const String name = 'Job';
 }
 
+//// Job Apply
+class JobApplyRoute {
+  static const String tag = '/apply';
+  static const String name = 'Job Apply';
+}
+
 /// Job Detail
 class JobDetailRoute {
   static const String tag = 'detail/:id';

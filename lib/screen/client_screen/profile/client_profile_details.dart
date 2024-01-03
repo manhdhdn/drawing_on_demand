@@ -83,7 +83,8 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: NetworkImage(
-                              jsonDecode(PrefUtils().getAccount())['Avatar'],
+                              jsonDecode(PrefUtils().getAccount())['Avatar'] ??
+                                  defaultImage,
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -124,14 +125,14 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Text(
                           'Phone Number',
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
                       Expanded(
-                        flex: 4,
+                        flex: 8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,14 +162,14 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Text(
                           'Gender',
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
                       Expanded(
-                        flex: 4,
+                        flex: 8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,14 +200,14 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Text(
                           'Address',
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
                       Expanded(
-                        flex: 4,
+                        flex: 8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,14 +238,14 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Text(
                           'Bio',
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
                       Expanded(
-                        flex: 4,
+                        flex: 8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,13 +256,16 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             ),
                             const SizedBox(width: 10.0),
                             Flexible(
-                              child: Text(
+                              child: ReadMoreText(
                                 jsonDecode(PrefUtils().getAccount())['Bio'] ??
                                     '',
                                 style:
                                     kTextStyle.copyWith(color: kSubTitleColor),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                trimLines: 4,
+                                colorClickableText: kPrimaryColor,
+                                trimMode: TrimMode.Line,
+                                trimCollapsedText: '..read more',
+                                trimExpandedText: ' read less',
                               ),
                             ),
                           ],

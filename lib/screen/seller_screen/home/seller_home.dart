@@ -82,7 +82,7 @@ class SellerHome extends StatelessWidget {
     if (location.startsWith(MessageRoute.tag)) {
       return 1;
     }
-    if (location.startsWith(JobRoute.tag)) {
+    if (location.startsWith(JobApplyRoute.tag)) {
       return 2;
     }
     if (location.startsWith(OrderRoute.tag)) {
@@ -106,7 +106,7 @@ class SellerHome extends StatelessWidget {
         context.goNamed(MessageRoute.name);
         break;
       case 2:
-        context.goNamed(JobRoute.name);
+        context.goNamed(JobApplyRoute.name);
         break;
       case 3:
         context.goNamed(OrderRoute.name);

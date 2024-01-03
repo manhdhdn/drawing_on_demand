@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
@@ -15,7 +17,6 @@ import '../report/seller_report.dart';
 import '../../common/setting/invite.dart';
 import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
-import 'seller_profile_details.dart';
 
 class SellerProfile extends StatefulWidget {
   const SellerProfile({Key? key}) : super(key: key);
@@ -109,7 +110,9 @@ class _SellerProfileState extends State<SellerProfile> {
               children: [
                 const SizedBox(height: 20.0),
                 ListTile(
-                  onTap: () => const SellerProfileDetails().launch(context),
+                  onTap: () {
+                    onProfile();
+                  },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 20),
@@ -451,8 +454,12 @@ class _SellerProfileState extends State<SellerProfile> {
     );
   }
 
+  void onProfile() {
+    context.goNamed(ProfileDetailRoute.name);
+  }
+
   void onSetting() {
-    // Navigator.pushNamed(context, Setting.tag);
+    context.goNamed(SettingRoute.name);
   }
 
   void onLogout() {

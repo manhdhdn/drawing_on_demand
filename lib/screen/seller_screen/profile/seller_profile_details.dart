@@ -1,10 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/seller_screen/profile/seller_edit_profile_details.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/artwork_api.dart';
+import '../../../data/models/artwork.dart';
+import '../../../data/models/category.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
+import 'seller_edit_profile_details.dart';
 
 class SellerProfileDetails extends StatefulWidget {
   const SellerProfileDetails({Key? key}) : super(key: key);
@@ -14,6 +22,15 @@ class SellerProfileDetails extends StatefulWidget {
 }
 
 class _SellerProfileDetailsState extends State<SellerProfileDetails> {
+  late Future<Artworks?> artworks;
+
+  @override
+  void initState() {
+    super.initState();
+
+    artworks = getArtworks();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +62,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 15.0),
                 Row(
@@ -52,10 +70,14 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                     Container(
                       height: 80,
                       width: 80,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage('images/profile3.png'),
+                          image: NetworkImage(
+                            jsonDecode(PrefUtils().getAccount())['Avatar'] ??
+                                defaultImage,
+                          ),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -64,7 +86,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Shaidulislam',
+                          jsonDecode(PrefUtils().getAccount())['Name'],
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: kTextStyle.copyWith(
@@ -73,10 +95,15 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               fontSize: 18.0),
                         ),
                         Text(
-                          'shaidulislamma@gmail.com',
+                          PrefUtils().getRole() == 'Artist'
+                              ? jsonDecode(PrefUtils().getAccount())['Email']
+                              : generateHide(jsonDecode(
+                                  PrefUtils().getAccount())['Email']),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: kTextStyle.copyWith(color: kLightNeutralColor),
+                          style: kTextStyle.copyWith(
+                            color: kLightNeutralColor,
+                          ),
                         ),
                       ],
                     ),
@@ -86,7 +113,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                 Row(
                   children: [
                     Text(
-                      'About Us',
+                      'About Me',
                       style: kTextStyle.copyWith(
                           color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
@@ -113,7 +140,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                       borderRadius: BorderRadius.circular(6.0),
                       border: Border.all(color: kBorderColorTextField)),
                   child: ReadMoreText(
-                    'Hello there, This is Ibne Riead! A professional UI/UX Design experience with 2+ years in this field. I specialize in Mobile Apps and Website Design. I always try to meet the needs of my client. I specialize in Mobile Apps and Website Design. I always try to meet the needs of my client.',
+                    jsonDecode(PrefUtils().getAccount())['Bio'] ?? '',
                     style: kTextStyle.copyWith(color: kLightNeutralColor),
                     trimLines: 4,
                     colorClickableText: kPrimaryColor,
@@ -131,19 +158,6 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
-                    const Icon(
-                      IconlyLight.edit,
-                      size: 18.0,
-                      color: kSubTitleColor,
-                    ),
-                    const SizedBox(width: 2.0),
-                    GestureDetector(
-                      onTap: () => const SellerEditProfile().launch(context),
-                      child: Text(
-                        'Edit',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 10.0),
@@ -151,154 +165,14 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 2,
-                      child: Text(
-                        'First Name',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'Shahidul',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Last Name',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'Islam',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'User Name',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'shaidulislam',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Email',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'shaidulislam@gmail.com',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Text(
                         'Phone Number',
                         style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 8,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,7 +184,10 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           const SizedBox(width: 10.0),
                           Flexible(
                             child: Text(
-                              '(+1) 3635 654454 548',
+                              PrefUtils().getRole() == 'Artist'
+                                  ? jsonDecode(
+                                      PrefUtils().getAccount())['Phone']
+                                  : '**********',
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -326,224 +203,14 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Country',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'United States',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Address',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              '5205 North Kierland Blvd. Suite 100',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'City',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'Scottsdale',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'State',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'AZ',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'ZIP/Post Code',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              '12365',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Language',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ':',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(width: 10.0),
-                          Flexible(
-                            child: Text(
-                              'English',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Text(
                         'Gender',
                         style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 8,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,7 +222,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           const SizedBox(width: 10.0),
                           Flexible(
                             child: Text(
-                              'Male',
+                              jsonDecode(PrefUtils().getAccount())['Gender'],
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -566,39 +233,44 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'languages',
-                      style: kTextStyle.copyWith(
-                          color: kNeutralColor, fontWeight: FontWeight.bold),
-                    ),
-                    const Spacer(),
-                    const Icon(
-                      IconlyLight.edit,
-                      size: 18.0,
-                      color: kSubTitleColor,
-                    ),
-                    const SizedBox(width: 2.0),
-                    GestureDetector(
-                      onTap: () => const SellerEditProfile().launch(context),
+                    Expanded(
+                      flex: 3,
                       child: Text(
-                        'Edit',
+                        'Address',
                         style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
                     ),
+                    Expanded(
+                      flex: 8,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            ':',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const SizedBox(width: 10.0),
+                          Flexible(
+                            child: Text(
+                              PrefUtils().getRole() == 'Artist'
+                                  ? jsonDecode(
+                                      PrefUtils().getAccount())['Address']
+                                  : generateHide(jsonDecode(
+                                      PrefUtils().getAccount())['Address']),
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
-                ),
-                const SizedBox(height: 20.0),
-                const InfoShowCaseWithoutIcon(
-                  title: 'English',
-                  subTitle: 'Fluent',
-                ),
-                const SizedBox(height: 10.0),
-                const InfoShowCaseWithoutIcon(
-                  title: 'Bangla',
-                  subTitle: 'Fluent',
                 ),
                 const SizedBox(height: 25.0),
                 Row(
@@ -609,27 +281,46 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
-                    const Icon(
-                      IconlyLight.edit,
-                      size: 18.0,
-                      color: kSubTitleColor,
-                    ),
-                    const SizedBox(width: 2.0),
-                    Text(
-                      'Edit',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 20.0),
-                const InfoShowCaseWithoutIcon(
-                  title: 'Ui Design',
-                  subTitle: 'Expert',
-                ),
                 const SizedBox(height: 10.0),
-                const InfoShowCaseWithoutIcon(
-                  title: 'Visual Design',
-                  subTitle: 'Expert',
+                FutureBuilder(
+                  future: artworks,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Category> categories = [];
+
+                      for (var artwork in snapshot.data!.value) {
+                        if (!categories.any((category) =>
+                            category.id == artwork.category!.id)) {
+                          categories.add(artwork.category!);
+                        }
+                      }
+
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                const SizedBox(height: 10.0),
+                                InfoShowCaseWithoutIcon(
+                                  title: categories[index].name!,
+                                  subTitle: categories[index].description!,
+                                ),
+                              ],
+                            );
+                          });
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 25.0),
                 Row(
@@ -640,16 +331,6 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
-                    const Icon(
-                      IconlyLight.edit,
-                      size: 18.0,
-                      color: kSubTitleColor,
-                    ),
-                    const SizedBox(width: 2.0),
-                    Text(
-                      'Edit',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -667,28 +348,252 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
-                    const Icon(
-                      IconlyLight.edit,
-                      size: 18.0,
-                      color: kSubTitleColor,
-                    ),
-                    const SizedBox(width: 2.0),
-                    Text(
-                      'Edit',
-                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 20.0),
                 const SummaryWithoutIcon(
                   title: 'UI/UX Design',
                   subtitle: 'Shikhbe Shobai Institute 2018',
-                )
+                ),
+                const SizedBox(height: 25.0),
+                Row(
+                  children: [
+                    Text(
+                      'My artworks',
+                      style: kTextStyle.copyWith(
+                          color: kNeutralColor, fontWeight: FontWeight.bold),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        // onViewAllArtwork();
+                      },
+                      child: Text(
+                        'View All',
+                        style: kTextStyle.copyWith(color: kLightNeutralColor),
+                      ),
+                    )
+                  ],
+                ).visible(PrefUtils().getRole() != 'Artist'),
+                const SizedBox(height: 20.0)
+                    .visible(PrefUtils().getRole() != 'Artist'),
+                FutureBuilder(
+                  future: artworks,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      int itemCount = snapshot.data!.count! < 10
+                          ? snapshot.data!.count!
+                          : 10;
+
+                      return HorizontalList(
+                        spacing: 10.0,
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        itemCount: itemCount,
+                        itemBuilder: (_, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // onArtworkDetail(snapshot.data!.value
+                              //     .elementAt(index)
+                              //     .id
+                              //     .toString());
+                            },
+                            child: Container(
+                              height: 205,
+                              width: 156,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                border:
+                                    Border.all(color: kBorderColorTextField),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: kDarkWhite,
+                                    blurRadius: 5.0,
+                                    spreadRadius: 2.0,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: 156,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(8.0),
+                                            topLeft: Radius.circular(8.0),
+                                          ),
+                                          image: DecorationImage(
+                                            image: NetworkImage(snapshot
+                                                .data!.value
+                                                .elementAt(index)
+                                                .arts!
+                                                .first
+                                                .image!),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isFavorite = !isFavorite;
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Container(
+                                            height: 30,
+                                            width: 30,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: isFavorite
+                                                ? const Center(
+                                                    child: Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.red,
+                                                      size: 18.0,
+                                                    ),
+                                                  )
+                                                : const Center(
+                                                    child: Icon(
+                                                      Icons.favorite_border,
+                                                      color: kNeutralColor,
+                                                      size: 18.0,
+                                                    ),
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          snapshot.data!.value
+                                              .elementAt(index)
+                                              .title!,
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              IconlyBold.star,
+                                              color: Colors.amber,
+                                              size: 18.0,
+                                            ),
+                                            const SizedBox(width: 2.0),
+                                            Text(
+                                              getReviewPoint(snapshot
+                                                  .data!.value
+                                                  .elementAt(index)
+                                                  .artworkReviews!),
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor),
+                                            ),
+                                            const SizedBox(width: 2.0),
+                                            Text(
+                                              '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
+                                              style: kTextStyle.copyWith(
+                                                  color: kLightNeutralColor),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Price: ',
+                                            style: kTextStyle.copyWith(
+                                                color: kLightNeutralColor),
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'vi_VN')
+                                                        .format(snapshot
+                                                            .data!.value
+                                                            .elementAt(index)
+                                                            .price),
+                                                style: kTextStyle.copyWith(
+                                                    color: kPrimaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+
+                    return const Center(
+                      heightFactor: 2.0,
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ),
+                    );
+                  },
+                ).visible(PrefUtils().getRole() != 'Artist'),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<Artworks?> getArtworks() async {
+    try {
+      return ArtworkApi().gets(
+        0,
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
+        count: 'true',
+        orderBy: 'createdDate desc',
+        expand: 'arts,artworkReviews,category',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get artworks failed');
+    }
+
+    return null;
+  }
+
+  String generateHide(String text) {
+    String result = '';
+
+    for (int i = 0; i < text.length - 10; i++) {
+      if (text[i] == ' ') {
+        result += ' ';
+      } else {
+        result += '*';
+      }
+    }
+
+    result += text.substring(text.length - 10);
+
+    return result;
   }
 }
