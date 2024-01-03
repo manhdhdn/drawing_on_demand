@@ -140,6 +140,9 @@ class _LoginState extends State<Login> {
                   onEditingComplete: () {
                     onLogin();
                   },
+                  onChanged: (value) {
+                    _formKey.currentState!.validate();
+                  },
                 ),
                 const SizedBox(height: 5.0),
                 Row(

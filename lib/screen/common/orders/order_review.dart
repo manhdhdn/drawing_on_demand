@@ -173,6 +173,7 @@ class _OrderReviewState extends State<OrderReview> {
                           cursorColor: kNeutralColor,
                           maxLines: 3,
                           decoration: kInputDecoration.copyWith(
+                            border: const OutlineInputBorder(),
                             labelText: 'Write a Comment',
                             labelStyle:
                                 kTextStyle.copyWith(color: kNeutralColor),
@@ -193,7 +194,7 @@ class _OrderReviewState extends State<OrderReview> {
                           onChanged: (value) {
                             _formKey.currentState!.validate();
                           },
-                        )
+                        ),
                       ],
                     ),
                   ),
