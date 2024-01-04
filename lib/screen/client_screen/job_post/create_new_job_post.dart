@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
@@ -16,7 +17,6 @@ import '../../../data/models/category.dart';
 import '../../../data/models/material.dart' as material_model;
 import '../../../data/models/requirement.dart';
 import '../../../data/models/surface.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import 'job_post.dart';
@@ -149,7 +149,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Create requirement',
+      title: '$dod | Create requirement',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

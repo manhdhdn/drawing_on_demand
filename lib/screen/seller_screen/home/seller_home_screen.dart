@@ -771,8 +771,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
   }
 
   void onArtworkDetail(String id) {
-    context
-        .goNamed('${ArtworkDetailRoute.name} out', pathParameters: {'id': id});
+    context.goNamed(
+      '${ArtworkDetailRoute.name} out',
+      pathParameters: {'artworkId': id},
+    );
   }
 }
 

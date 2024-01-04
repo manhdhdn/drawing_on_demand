@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
@@ -13,10 +15,16 @@ import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
 
 class CreateService extends StatefulWidget {
+  static dynamic state;
+
   const CreateService({Key? key}) : super(key: key);
 
   @override
   State<CreateService> createState() => _CreateServiceState();
+
+  static void refresh() {
+    state.refresh();
+  }
 }
 
 class _CreateServiceState extends State<CreateService> {
@@ -26,6 +34,7 @@ class _CreateServiceState extends State<CreateService> {
   void initState() {
     super.initState();
 
+    CreateService.state = this;
     artworks = getArtworks();
   }
 
@@ -297,30 +306,17 @@ class _CreateServiceState extends State<CreateService> {
   }
 
   void onCreateArtwork() {
-    // Navigator.pushNamed(
-    //   context,
-    //   CreateNewService.tag,
-    // ).then(
-    //   (value) => setState(
-    //     () {
-    //       artworks = getArtworks();
-    //     },
-    //   ),
-    // );
+    context.goNamed(ArtworkCreateRoute.name);
   }
 
   void onDetail(String id) {
-    // PrefUtils().setTermId(id);
+    context.goNamed('${ArtworkDetailRoute.name} in',
+        pathParameters: {'artworkId': id});
+  }
 
-    // Navigator.pushNamed(
-    //   context,
-    //   ServiceDetails.tag,
-    // ).then(
-    //   (value) => setState(
-    //     () {
-    //       artworks = getArtworks();
-    //     },
-    //   ),
-    // );
+  void refresh() {
+    setState(() {
+      artworks = getArtworks();
+    });
   }
 }

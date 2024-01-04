@@ -9,7 +9,6 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/account_api.dart';
-import '../../../l10n/l10n.dart';
 import '../../../main.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -35,7 +34,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Login',
+      title: '$dod | Login',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kWhite,

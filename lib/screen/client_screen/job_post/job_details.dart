@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
 import 'job_post.dart';
@@ -58,7 +58,7 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Requirement detail',
+      title: '$dod | Requirement detail',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

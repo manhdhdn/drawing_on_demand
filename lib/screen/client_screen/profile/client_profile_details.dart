@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import 'client_edit_profile_details.dart';
@@ -21,7 +21,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Profile details',
+      title: '$dod | Profile details',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

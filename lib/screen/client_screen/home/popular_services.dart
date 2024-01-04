@@ -9,7 +9,6 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../core/common/common_features.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 
 // ignore: must_be_immutable
@@ -25,7 +24,9 @@ class PopularServices extends StatefulWidget {
 class _PopularServicesState extends State<PopularServices> {
   late Future<Artworks?> popularArtworks;
 
-  int top = 25;
+  int skip = 0;
+  int top = 10;
+  int count = 10;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _PopularServicesState extends State<PopularServices> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Popular artworks',
+      title: '$dod | Popular artworks',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,
@@ -438,7 +439,7 @@ class _PopularServicesState extends State<PopularServices> {
   Future<Artworks?> getArtworks() async {
     try {
       return ArtworkApi().gets(
-        0,
+        skip,
         top: top,
         expand: 'artworkReviews,arts,createdByNavigation(expand=rank)',
       );
@@ -452,7 +453,7 @@ class _PopularServicesState extends State<PopularServices> {
   void onArtworkDetail(String id) {
     context.goNamed(
       '${ArtworkDetailRoute.name} in',
-      pathParameters: {'id': id},
+      pathParameters: {'artworkId': id},
       queryParameters: {'tab': widget.tab},
     );
   }

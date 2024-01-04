@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../../main.dart';
 import '../../widgets/constant.dart';
 import 'settings.dart';
@@ -21,7 +21,7 @@ class _LanguageState extends State<Language> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Language',
+      title: '$dod | Language',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

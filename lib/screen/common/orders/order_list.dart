@@ -11,7 +11,6 @@ import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/models/order.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 
 class OrderList extends StatefulWidget {
@@ -43,7 +42,7 @@ class _OrderListState extends State<OrderList> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Orders',
+      title: '$dod | Orders',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

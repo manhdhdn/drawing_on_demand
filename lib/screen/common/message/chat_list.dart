@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
 import 'function/chat_function.dart';
@@ -58,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Message',
+      title: '$dod | Message',
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(

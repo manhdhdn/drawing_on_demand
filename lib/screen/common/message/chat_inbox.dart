@@ -6,8 +6,8 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../popUp/popup_1.dart';
 import 'empty_widget.dart';
@@ -102,7 +102,7 @@ class _ChatInboxState extends State<ChatInbox> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Chat',
+      title: '$dod | Chat',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

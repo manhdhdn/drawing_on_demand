@@ -18,7 +18,6 @@ import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/vnpay_request.dart';
-import '../../../l10n/l10n.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -218,7 +217,7 @@ class _ClientOrderState extends State<ClientOrder> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Checkout',
+      title: '$dod | Checkout',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

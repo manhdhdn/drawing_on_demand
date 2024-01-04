@@ -10,7 +10,6 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 
 class JobPost extends StatefulWidget {
@@ -40,7 +39,7 @@ class _JobPostState extends State<JobPost> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Requirements',
+      title: '$dod | Requirements',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

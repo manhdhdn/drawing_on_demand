@@ -10,7 +10,6 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/models/order.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
 
@@ -36,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Cart',
+      title: '$dod | Cart',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

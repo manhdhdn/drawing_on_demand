@@ -5,6 +5,4 @@ class L10n {
     const Locale('en'),
     const Locale('vi'),
   ];
-
-  static const appName = 'Drawing on demand';
 }

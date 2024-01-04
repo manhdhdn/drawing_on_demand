@@ -10,7 +10,6 @@ import '../../../core/common/common_features.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
@@ -82,7 +81,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Order details',
+      title: '$dod | Order details',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

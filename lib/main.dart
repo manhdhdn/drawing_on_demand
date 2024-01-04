@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'app_routes/go_routes.dart';
+import 'app_routes/named_routes.dart';
 import 'core/utils/pref_utils.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider(
       create: (_) => ChatProvider(),
       child: MaterialApp.router(
-        title: L10n.appName,
+        title: dod,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

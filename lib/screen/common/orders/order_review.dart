@@ -3,12 +3,12 @@ import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/account_review_api.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/account_review.dart';
 import '../../../data/models/order.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
 import 'order_list.dart';
@@ -63,7 +63,7 @@ class _OrderReviewState extends State<OrderReview> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Review',
+      title: '$dod | Review',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

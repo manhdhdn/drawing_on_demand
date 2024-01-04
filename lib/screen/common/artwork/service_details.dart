@@ -6,10 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
-import '../../../l10n/l10n.dart';
 import '../../client_screen/service_details/client_order.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -98,7 +99,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Artwork details',
+      title: '$dod | Artwork details',
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(
@@ -798,7 +799,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                 ),
               ],
             ),
-          ),
+          ).visible(PrefUtils().getRole() == 'Customer'),
         ),
       ),
     );

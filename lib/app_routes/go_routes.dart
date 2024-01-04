@@ -1,4 +1,3 @@
-import 'package:drawing_on_demand/screen/seller_screen/profile/seller_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +7,7 @@ import '../screen/client_screen/cart/cart_screen.dart';
 import '../screen/client_screen/home/client_home.dart';
 import '../screen/client_screen/home/client_home_screen.dart';
 import '../screen/client_screen/home/popular_services.dart';
+import '../screen/client_screen/home/top_seller.dart';
 import '../screen/client_screen/job_post/create_new_job_post.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
@@ -26,8 +26,10 @@ import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
 import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/home/seller_home_screen.dart';
+import '../screen/seller_screen/profile/seller_profile.dart';
 import '../screen/seller_screen/profile/seller_profile_details.dart';
 import '../screen/seller_screen/request/seller_buyer_request.dart';
+import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
 import 'named_routes.dart';
 
@@ -62,43 +64,6 @@ class AppRoutes {
                   return SellerHome(child: child);
                 },
                 routes: [
-                  GoRoute(
-                    path: HomeRoute.tag,
-                    name: HomeRoute.name,
-                    builder: (context, state) {
-                      return const SellerHomeScreen();
-                    },
-                    redirect: (context, state) => _unAuthened(),
-                    routes: [
-                      GoRoute(
-                        path: ArtworkRoute.tag,
-                        name: ArtworkRoute.name,
-                        builder: (context, state) {
-                          return const CreateService();
-                        },
-                        routes: [
-                          GoRoute(
-                            path: ArtworkDetailRoute.tag,
-                            name: '${ArtworkDetailRoute.name} in',
-                            builder: (context, state) {
-                              return ServiceDetails(
-                                id: state.pathParameters['id'],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      GoRoute(
-                        path: ArtworkDetailRoute.tag,
-                        name: '${ArtworkDetailRoute.name} out',
-                        builder: (context, state) {
-                          return ServiceDetails(
-                            id: state.pathParameters['id'],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
                   GoRoute(
                     path: MessageRoute.tag,
                     name: MessageRoute.name,
@@ -220,64 +185,34 @@ class AppRoutes {
                       ),
                     ],
                   ),
-                ],
-              )
-            : ShellRoute(
-                navigatorKey: _shellNavigatorKey,
-                builder: (context, state, child) {
-                  return ClientHome(child: child);
-                },
-                routes: [
                   GoRoute(
                     path: HomeRoute.tag,
                     name: HomeRoute.name,
                     builder: (context, state) {
-                      return const ClientHomeScreen();
+                      return const SellerHomeScreen();
                     },
+                    redirect: (context, state) => _unAuthened(),
                     routes: [
-                      GoRoute(
-                        path: CartRoute.tag,
-                        name: CartRoute.name,
-                        builder: (context, state) {
-                          return const CartScreen();
-                        },
-                        redirect: (context, state) => _unAuthened(),
-                        routes: [
-                          GoRoute(
-                            path: CheckoutRoute.tag,
-                            name: CheckoutRoute.name,
-                            builder: (context, state) {
-                              return ClientOrder(
-                                id: state.pathParameters['id'],
-                              );
-                            },
-                          ),
-                          GoRoute(
-                            path: ArtworkDetailRoute.tag,
-                            name: '${ArtworkDetailRoute.name} cart',
-                            builder: (context, state) {
-                              return ServiceDetails(
-                                id: state.pathParameters['id'],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
                       GoRoute(
                         path: ArtworkRoute.tag,
                         name: ArtworkRoute.name,
                         builder: (context, state) {
-                          return PopularServices(
-                            tab: state.uri.queryParameters['tab'],
-                          );
+                          return const CreateService();
                         },
                         routes: [
+                          GoRoute(
+                            path: ArtworkCreateRoute.tag,
+                            name: ArtworkCreateRoute.name,
+                            builder: (context, state) {
+                              return const CreateNewService();
+                            },
+                          ),
                           GoRoute(
                             path: ArtworkDetailRoute.tag,
                             name: '${ArtworkDetailRoute.name} in',
                             builder: (context, state) {
                               return ServiceDetails(
-                                id: state.pathParameters['id'],
+                                id: state.pathParameters['artworkId'],
                               );
                             },
                           ),
@@ -288,12 +223,20 @@ class AppRoutes {
                         name: '${ArtworkDetailRoute.name} out',
                         builder: (context, state) {
                           return ServiceDetails(
-                            id: state.pathParameters['id'],
+                            id: state.pathParameters['artworkId'],
                           );
                         },
                       ),
                     ],
                   ),
+                ],
+              )
+            : ShellRoute(
+                navigatorKey: _shellNavigatorKey,
+                builder: (context, state, child) {
+                  return ClientHome(child: child);
+                },
+                routes: [
                   GoRoute(
                     path: MessageRoute.tag,
                     name: MessageRoute.name,
@@ -410,6 +353,110 @@ class AppRoutes {
                             },
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: HomeRoute.tag,
+                    name: HomeRoute.name,
+                    builder: (context, state) {
+                      return const ClientHomeScreen();
+                    },
+                    routes: [
+                      GoRoute(
+                        path: CartRoute.tag,
+                        name: CartRoute.name,
+                        builder: (context, state) {
+                          return const CartScreen();
+                        },
+                        redirect: (context, state) => _unAuthened(),
+                        routes: [
+                          GoRoute(
+                            path: CheckoutRoute.tag,
+                            name: CheckoutRoute.name,
+                            builder: (context, state) {
+                              return ClientOrder(
+                                id: state.pathParameters['id'],
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: ArtworkDetailRoute.tag,
+                            name: '${ArtworkDetailRoute.name} cart',
+                            builder: (context, state) {
+                              return ServiceDetails(
+                                id: state.pathParameters['id'],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: ArtworkRoute.tag,
+                        name: ArtworkRoute.name,
+                        builder: (context, state) {
+                          return PopularServices(
+                            tab: state.uri.queryParameters['tab'],
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            path: ArtworkDetailRoute.tag,
+                            name: '${ArtworkDetailRoute.name} in',
+                            builder: (context, state) {
+                              return ServiceDetails(
+                                id: state.pathParameters['artworkId'],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: ArtistRoute.tag,
+                        name: ArtistRoute.name,
+                        builder: (context, state) {
+                          return const TopSeller();
+                        },
+                        routes: [
+                          GoRoute(
+                            path: ArtistProfileDetailRoute.tag,
+                            name: ArtistProfileDetailRoute.name,
+                            builder: (context, state) {
+                              return SellerProfileDetails(
+                                id: state.pathParameters['id'],
+                              );
+                            },
+                            routes: [
+                              GoRoute(
+                                path: ArtworkDetailRoute.tag,
+                                name: '${ArtworkDetailRoute.name} artist',
+                                builder: (context, state) {
+                                  return ServiceDetails(
+                                    id: state.pathParameters['artworkId'],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: ArtworkDetailRoute.tag,
+                        name: '${ArtworkDetailRoute.name} out',
+                        builder: (context, state) {
+                          return ServiceDetails(
+                            id: state.pathParameters['artworkId'],
+                          );
+                        },
+                      ),
+                      GoRoute(
+                        path: ArtistProfileDetailRoute.tag,
+                        name: '${ArtistProfileDetailRoute.name} out',
+                        builder: (context, state) {
+                          return SellerProfileDetails(
+                            id: state.pathParameters['id'],
+                          );
+                        },
                       ),
                     ],
                   ),

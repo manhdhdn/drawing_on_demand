@@ -14,8 +14,6 @@ import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
-import '../../../l10n/l10n.dart';
-import '../../common/message/function/chat_function.dart';
 import '../../widgets/constant.dart';
 import '../notification/client_notification.dart';
 import '../search/search.dart';
@@ -49,7 +47,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Home',
+      title: '$dod | Home',
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(
@@ -1173,8 +1171,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   }
 
   void onArtworkDetail(String id) {
-    context
-        .goNamed('${ArtworkDetailRoute.name} out', pathParameters: {'id': id});
+    context.goNamed(
+      '${ArtworkDetailRoute.name} out',
+      pathParameters: {'artworkId': id},
+    );
   }
 
   void onCart() {
@@ -1190,15 +1190,17 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   }
 
   void onTopArtists() {
-    // Navigator.pushNamed(context, TopSeller.tag);
+    context.goNamed(ArtistRoute.name);
   }
 
   void onProfile() {
     context.goNamed(ProfileRoute.name);
   }
 
-  void onArtistDetail(dynamic id) {
-    ChatFunction.createChat(
-        senderId: jsonDecode(PrefUtils().getAccount())['Id'], receiverId: id);
+  void onArtistDetail(String id) {
+    context.goNamed(
+      '${ArtistProfileDetailRoute.name} out',
+      pathParameters: {'id': id},
+    );
   }
 }

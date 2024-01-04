@@ -3,7 +3,6 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app_routes/named_routes.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 
 class ClientHome extends StatelessWidget {
@@ -14,7 +13,7 @@ class ClientHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Home',
+      title: '$dod | Home',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kWhite,

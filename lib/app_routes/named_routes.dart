@@ -1,5 +1,5 @@
 ///// App name
-const String dod = "Drawing on demand - ";
+const String dod = "Drawing on demand";
 
 ///// Auth
 class LoginRoute {
@@ -21,10 +21,22 @@ class ArtworkRoute {
   static const String name = 'Artwork';
 }
 
+// Artwork Create
+class ArtworkCreateRoute {
+  static const String tag = 'create';
+  static const String name = 'Create Artwork';
+}
+
 // Artwork Detail
 class ArtworkDetailRoute {
-  static const String tag = 'detail/:id';
+  static const String tag = ':artworkId';
   static const String name = 'Artwork Detail';
+}
+
+/// Artist
+class ArtistRoute {
+  static const String tag = 'artist';
+  static const String name = 'Artist';
 }
 
 /// Cart
@@ -117,7 +129,7 @@ class ProfileDetailRoute {
   static const String name = 'Profile Detail';
 }
 
-/// Aritist Profile Detail
+// Aritist Profile Detail
 class ArtistProfileDetailRoute {
   static const String tag = 'detail/:id';
   static const String name = 'Artist Profile Detail';

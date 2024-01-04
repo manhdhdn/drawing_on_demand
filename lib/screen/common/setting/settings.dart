@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import 'about_us.dart';
 import 'policy.dart';
@@ -39,7 +38,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Settings',
+      title: '$dod | Settings',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

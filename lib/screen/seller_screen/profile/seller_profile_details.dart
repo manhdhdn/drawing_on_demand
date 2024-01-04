@@ -1,9 +1,11 @@
 import 'package:drawing_on_demand/data/models/certificate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_api.dart';
@@ -145,8 +147,9 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                             IconlyLight.edit,
                             size: 18.0,
                             color: kSubTitleColor,
-                          ),
-                          const SizedBox(width: 2.0),
+                          ).visible(PrefUtils().getRole() == 'Artist'),
+                          const SizedBox(width: 2.0)
+                              .visible(PrefUtils().getRole() == 'Artist'),
                           GestureDetector(
                             onTap: () =>
                                 const SellerEditProfile().launch(context),
@@ -432,7 +435,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               style: kTextStyle.copyWith(
                                   color: kLightNeutralColor),
                             ),
-                          )
+                          ).visible(PrefUtils().getRole() == 'Artist'),
                         ],
                       ).visible(PrefUtils().getRole() != 'Artist'),
                       const SizedBox(height: 20.0)
@@ -690,5 +693,10 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     return result;
   }
 
-  void onArtworkDetail(String id) {}
+  void onArtworkDetail(String id) {
+    context.goNamed(
+      '${ArtworkDetailRoute.name} artist',
+      pathParameters: {'id': widget.id!, 'artworkId': id},
+    );
+  }
 }

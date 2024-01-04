@@ -9,7 +9,6 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../../l10n/l10n.dart';
 import '../../widgets/constant.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
@@ -29,7 +28,7 @@ class _ClientProfileState extends State<ClientProfile> {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '${L10n.appName} | Profile',
+      title: '$dod | Profile',
       color: kPrimaryColor,
       child: Scaffold(
         backgroundColor: kDarkWhite,

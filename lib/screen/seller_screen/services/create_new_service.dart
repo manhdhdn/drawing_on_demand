@@ -1,15 +1,16 @@
+import 'package:drawing_on_demand/app_routes/named_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:drawing_on_demand/screen/common/popUp/popup_1.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
+import '../../common/popUp/popup_1.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import 'create_service.dart';
 
 class CreateNewService extends StatefulWidget {
   const CreateNewService({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
   int currentIndexPage = 0;
   double percent = 33.3;
 
-  //__________Category____________________________________________________________
   DropdownButton<String> getCategory() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in category) {
@@ -46,7 +46,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
     );
   }
 
-  //__________SubCategory____________________________________________________________
   DropdownButton<String> getSubCategory() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in subcategory) {
@@ -69,7 +68,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
     );
   }
 
-  //__________ServiceType____________________________________________________________
   DropdownButton<String> getServiceType() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in serviceType) {
@@ -92,7 +90,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
     );
   }
 
-  //__________DeliveryTime____________________________________________________________
   DropdownButton<String> getDeliveryTime() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in deliveryTime) {
@@ -119,7 +116,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
     );
   }
 
-  //__________totalScreen____________________________________________________________
   DropdownButton<String> getTotalScreen() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String des in pageCount) {
@@ -174,7 +170,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
     super.initState();
   }
 
-  //__________Create_FAQ_PopUP________________________________________________
   void showAddFAQPopUp() {
     showDialog(
       barrierDismissible: false,
@@ -978,21 +973,52 @@ class _CreateNewServiceState extends State<CreateNewService> {
           );
         },
       ),
-      bottomNavigationBar: ButtonGlobalWithoutIcon(
-          buttontext: 'Next',
-          buttonDecoration: kButtonDecoration.copyWith(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          onPressed: () {
-            currentIndexPage < 2;
-            currentIndexPage < 2
-                ? pageController.nextPage(
-                    duration: const Duration(microseconds: 3000),
-                    curve: Curves.bounceInOut)
-                : const CreateService().launch(context);
-          },
-          buttonTextColor: kWhite),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: const BoxDecoration(
+          color: kWhite,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ButtonGlobalWithoutIcon(
+                buttontext: 'Back',
+                buttonDecoration: kButtonDecoration.copyWith(
+                  color: kWhite,
+                  borderRadius: BorderRadius.circular(30.0),
+                  border: Border.all(color: kPrimaryColor),
+                ),
+                onPressed: () {
+                  currentIndexPage > 0
+                      ? pageController.previousPage(
+                          duration: const Duration(microseconds: 3000),
+                          curve: Curves.bounceInOut)
+                      : null;
+                },
+                buttonTextColor: kPrimaryColor,
+              ),
+            ),
+            Expanded(
+              child: ButtonGlobalWithoutIcon(
+                buttontext: 'Next',
+                buttonDecoration: kButtonDecoration.copyWith(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                onPressed: () {
+                  currentIndexPage < 2
+                      ? pageController.nextPage(
+                          duration: const Duration(microseconds: 3000),
+                          curve: Curves.bounceInOut)
+                      : onDone();
+                },
+                buttonTextColor: kWhite,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -1015,5 +1041,9 @@ class _CreateNewServiceState extends State<CreateNewService> {
         });
       },
     );
+  }
+
+  void onDone() {
+    context.goNamed(ArtworkRoute.name);
   }
 }
