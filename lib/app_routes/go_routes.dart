@@ -194,10 +194,12 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                        path: ProfileDetailRoute.tag,
-                        name: ProfileDetailRoute.name,
+                        path: ArtistProfileDetailRoute.tag,
+                        name: ArtistProfileDetailRoute.name,
                         builder: (context, state) {
-                          return const SellerProfileDetails();
+                          return SellerProfileDetails(
+                            id: state.pathParameters['id'],
+                          );
                         },
                       ),
                       GoRoute(

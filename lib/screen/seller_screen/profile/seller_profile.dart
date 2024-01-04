@@ -455,7 +455,9 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   void onProfile() {
-    context.goNamed(ProfileDetailRoute.name);
+    context.goNamed(ArtistProfileDetailRoute.name, pathParameters: {
+      'id': jsonDecode(PrefUtils().getAccount())['Id'].toString(),
+    });
   }
 
   void onSetting() {

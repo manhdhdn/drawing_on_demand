@@ -111,8 +111,14 @@ class LanguageRoute {
   static const String name = 'Language';
 }
 
-/// Profile_Detail
+/// Profile Detail
 class ProfileDetailRoute {
   static const String tag = 'detail';
   static const String name = 'Profile Detail';
+}
+
+/// Aritist Profile Detail
+class ArtistProfileDetailRoute {
+  static const String tag = 'detail/:id';
+  static const String name = 'Artist Profile Detail';
 }

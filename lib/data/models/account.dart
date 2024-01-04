@@ -1,3 +1,4 @@
+import 'package:drawing_on_demand/data/models/certificate.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -40,6 +41,7 @@ class Account {
   List<AccountRole>? accountRoles;
   Rank? rank;
   List<AccountReview>? accountReviewAccounts;
+  List<Certificate>? certificates;
 
   Account({
     this.id,
@@ -58,6 +60,7 @@ class Account {
     this.accountRoles,
     this.rank,
     this.accountReviewAccounts,
+    this.certificates,
   });
 
   Account.fromJson(Map<String, dynamic> json) {
@@ -88,6 +91,13 @@ class Account {
         ? List<AccountReview>.from(
             json['AccountReviewAccounts'].map(
               (x) => AccountReview.fromJson(x),
+            ),
+          )
+        : null;
+    certificates = json['Certificates'] != null
+        ? List<Certificate>.from(
+            json['Certificates'].map(
+              (x) => Certificate.fromJson(x),
             ),
           )
         : null;
