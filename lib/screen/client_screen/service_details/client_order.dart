@@ -1240,6 +1240,9 @@ class _ClientOrderState extends State<ClientOrder> {
       provinces = List<Map<String, dynamic>>.from(
           jsonDecode(respone.postJsonString!)['data']);
 
+      provinces
+          .sort(((a, b) => a['ProvinceName'].compareTo(b['ProvinceName'])));
+
       Map<String, dynamic> result = {};
       double matchPoint = 0;
 
