@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
@@ -7,6 +8,7 @@ import 'package:photo_view/photo_view.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
 import 'job_post.dart';
@@ -23,6 +25,8 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   late Future<Requirement?> requirement;
 
+  String status = 'Public';
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +34,7 @@ class _JobDetailsState extends State<JobDetails> {
     requirement = getData();
   }
 
-  void cancelJobPopUp(String id) async {
+  void cancelJobPopUp() async {
     var result = await showDialog<bool>(
       barrierDismissible: false,
       context: context,
@@ -43,7 +47,8 @@ class _JobDetailsState extends State<JobDetails> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: CancelJobPopUp(
-                id: id,
+                id: widget.id!,
+                status: status,
               ),
             );
           },
@@ -52,7 +57,7 @@ class _JobDetailsState extends State<JobDetails> {
     );
 
     // ignore: use_build_context_synchronously
-    result! ? {context.pop(), JobPost.refresh()} : null;
+    result! ? {GoRouter.of(context).pop(), JobPost.refresh()} : null;
   }
 
   @override
@@ -92,7 +97,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ],
               onSelected: (value) {
-                value == 'edit' ? null : cancelJobPopUp(widget.id!);
+                value == 'edit' ? null : cancelJobPopUp();
               },
               child: const Padding(
                 padding: EdgeInsets.only(right: 10.0),
@@ -101,26 +106,45 @@ class _JobDetailsState extends State<JobDetails> {
                   color: kNeutralColor,
                 ),
               ),
-            ),
+            ).visible(!status.contains('Cancelled')),
           ],
         ),
-        // bottomNavigationBar: Container(
-        //   decoration: const BoxDecoration(
-        //     color: kWhite,
-        //   ),
-        //   child: ButtonGlobalWithoutIcon(
-        //     buttontext: 'Re-Post',
-        //     buttonDecoration: kButtonDecoration.copyWith(
-        //       color: kPrimaryColor,
-        //     ),
-        //     onPressed: () {
-        //       setState(() {
-        //         cancelOrderPopUp();
-        //       });
-        //     },
-        //     buttonTextColor: kWhite,
-        //   ),
-        // ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            color: kWhite,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: ButtonGlobalWithoutIcon(
+                  buttontext: 'Re-Post',
+                  buttonDecoration: kButtonDecoration.copyWith(
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () {
+                    onRePost();
+                  },
+                  buttonTextColor: kWhite,
+                ),
+              ).visible(status.contains('Cancelled')),
+              Expanded(
+                child: ButtonGlobalWithoutIcon(
+                  buttontext: 'Invite',
+                  buttonDecoration: kButtonDecoration.copyWith(
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () {
+                    onInvite();
+                  },
+                  buttonTextColor: kWhite,
+                ),
+              ).visible(
+                  !status.contains('Cancelled') && status.contains('Private')),
+            ],
+          ),
+        ),
         body: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -293,6 +317,67 @@ class _JobDetailsState extends State<JobDetails> {
                                 ),
                               ],
                             ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.pieces,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    const SizedBox(height: 8.0),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            'Pieces',
+                                            style: kTextStyle.copyWith(
+                                              color: index == 0
+                                                  ? kSubTitleColor
+                                                  : kWhite,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 4,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                ':',
+                                                style: kTextStyle.copyWith(
+                                                  color: index == 0
+                                                      ? kSubTitleColor
+                                                      : kWhite,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10.0),
+                                              Flexible(
+                                                child: Text(
+                                                  index == 0
+                                                      ? '${snapshot.data!.pieces!} (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
+                                                      : '   (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)',
+                                                  style: kTextStyle.copyWith(
+                                                      color: kSubTitleColor),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                             const SizedBox(height: 8.0),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +385,7 @@ class _JobDetailsState extends State<JobDetails> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    'Pieces',
+                                    'Quantity',
                                     style: kTextStyle.copyWith(
                                         color: kSubTitleColor),
                                   ),
@@ -320,7 +405,7 @@ class _JobDetailsState extends State<JobDetails> {
                                       const SizedBox(width: 10.0),
                                       Flexible(
                                         child: Text(
-                                          snapshot.data!.pieces!.toString(),
+                                          snapshot.data!.quantity!.toString(),
                                           style: kTextStyle.copyWith(
                                               color: kSubTitleColor),
                                           overflow: TextOverflow.ellipsis,
@@ -514,14 +599,36 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<Requirement?> getData() async {
     try {
-      return RequirementApi().getOne(
+      return RequirementApi()
+          .getOne(
         widget.id!,
-        'category,surface,material,createdByNavigation,proposals,sizes,steps',
-      );
+        'category,surface,material,sizes',
+      )
+          .then((value) {
+        setState(() {
+          status = value.status!;
+        });
+
+        return value;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement failed');
     }
 
     return null;
+  }
+
+  void onRePost() async {
+    await RequirementApi().patchOne(widget.id!, {
+      'Status': status.replaceAll('|Cancelled', ''),
+    }).then((value) {
+      JobPost.refresh();
+      GoRouter.of(context).pop();
+    });
+  }
+
+  void onInvite() {
+    context.goNamed('${ArtistRoute.name} job',
+        pathParameters: {'jobId': widget.id!});
   }
 }

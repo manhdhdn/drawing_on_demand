@@ -107,7 +107,7 @@ class AppRoutes {
                         name: JobDetailRoute.name,
                         builder: (context, state) {
                           return JobDetails(
-                            id: state.pathParameters['id'],
+                            id: state.pathParameters['jobId'],
                           );
                         },
                       ),
@@ -280,9 +280,40 @@ class AppRoutes {
                         name: JobDetailRoute.name,
                         builder: (context, state) {
                           return JobDetails(
-                            id: state.pathParameters['id'],
+                            id: state.pathParameters['jobId'],
                           );
                         },
+                        routes: [
+                          GoRoute(
+                            path: ArtistRoute.tag,
+                            name: '${ArtistRoute.name} job',
+                            builder: (context, state) {
+                              return const TopSeller();
+                            },
+                            routes: [
+                              GoRoute(
+                                path: ArtistProfileDetailRoute.tag,
+                                name: '${ArtistProfileDetailRoute.name} job',
+                                builder: (context, state) {
+                                  return SellerProfileDetails(
+                                    id: state.pathParameters['id'],
+                                  );
+                                },
+                                routes: [
+                                  GoRoute(
+                                    path: ArtworkDetailRoute.tag,
+                                    name: '${ArtworkDetailRoute.name} job',
+                                    builder: (context, state) {
+                                      return ServiceDetails(
+                                        id: state.pathParameters['artworkId'],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),

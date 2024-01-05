@@ -52,6 +52,25 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
               color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.person_add_alt_1,
+                    color: kPrimaryColor,
+                  ),
+                  const SizedBox(width: 5.0),
+                  Text(
+                    'Invite',
+                    style: kTextStyle.copyWith(
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ],
+              )),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0),
@@ -694,9 +713,15 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
   }
 
   void onArtworkDetail(String id) {
-    context.goNamed(
-      '${ArtworkDetailRoute.name} artist',
-      pathParameters: {'id': widget.id!, 'artworkId': id},
-    );
+    var state = GoRouterState.of(context);
+    String name = '${ArtworkDetailRoute.name} artist';
+    Map<String, String> pathParameters = {'id': widget.id!, 'artworkId': id};
+
+    if (state.pathParameters['jobId'] != null) {
+      name = '${ArtworkDetailRoute.name} job';
+      pathParameters['jobId'] = state.pathParameters['jobId']!;
+    }
+
+    context.goNamed(name, pathParameters: pathParameters);
   }
 }

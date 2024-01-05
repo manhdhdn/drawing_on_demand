@@ -388,9 +388,12 @@ class _ChatInboxState extends State<ChatInbox> {
                         ),
                       ),
                       onFieldSubmitted: (p0) {
-                        Future.delayed(10.milliseconds, () {
-                          FocusScope.of(context).requestFocus(msgFocus);
-                        });
+                        Future.delayed(
+                          10.milliseconds,
+                          () {
+                            FocusScope.of(context).requestFocus(msgFocus);
+                          },
+                        );
                       },
                     ),
                   ),

@@ -206,91 +206,93 @@ class _ServiceDetailsState extends State<ServiceDetails>
                       ),
                     ),
                   ),
-                  actions: _isShrink
-                      ? [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(5.0),
-                              child: PopupMenuButton(
-                                itemBuilder: (BuildContext bc) => [
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Edit',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
+                  actions: PrefUtils().getRole() == 'Artist'
+                      ? _isShrink
+                          ? [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: PopupMenuButton(
+                                    itemBuilder: (BuildContext bc) => [
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Edit',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Pause',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Delete',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      Navigator.pushNamed(context, '$value');
+                                    },
+                                    child: const Icon(
+                                      FeatherIcons.moreVertical,
+                                      color: kNeutralColor,
                                     ),
                                   ),
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Pause',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Delete',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
-                                    ),
-                                  ),
-                                ],
-                                onSelected: (value) {
-                                  Navigator.pushNamed(context, '$value');
-                                },
-                                child: const Icon(
-                                  FeatherIcons.moreVertical,
-                                  color: kNeutralColor,
                                 ),
-                              ),
-                            ),
-                          )
-                        ]
-                      : [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(5.0),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kWhite,
-                              ),
-                              child: PopupMenuButton(
-                                itemBuilder: (BuildContext bc) => [
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Edit',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
+                              )
+                            ]
+                          : [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: kWhite,
+                                  ),
+                                  child: PopupMenuButton(
+                                    itemBuilder: (BuildContext bc) => [
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Edit',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Pause',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text(
+                                          'Delete',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor),
+                                        ),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      Navigator.pushNamed(context, '$value');
+                                    },
+                                    child: const Icon(
+                                      FeatherIcons.moreVertical,
+                                      color: kNeutralColor,
                                     ),
                                   ),
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Pause',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text(
-                                      'Delete',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor),
-                                    ),
-                                  ),
-                                ],
-                                onSelected: (value) {
-                                  Navigator.pushNamed(context, '$value');
-                                },
-                                child: const Icon(
-                                  FeatherIcons.moreVertical,
-                                  color: kNeutralColor,
                                 ),
-                              ),
-                            ),
-                          )
-                        ],
+                              )
+                            ]
+                      : null,
                   bottom: _isShrink
                       ? null
                       : PreferredSize(
@@ -769,6 +771,19 @@ class _ServiceDetailsState extends State<ServiceDetails>
               children: [
                 Expanded(
                   child: ButtonGlobalWithoutIcon(
+                    buttontext: 'Add to cart',
+                    buttonDecoration: kButtonDecoration.copyWith(
+                      color: kWhite,
+                      border: Border.all(color: kPrimaryColor),
+                    ),
+                    onPressed: () async {
+                      onAddToCart(await artwork.then((value) => value!));
+                    },
+                    buttonTextColor: kPrimaryColor,
+                  ),
+                ),
+                Expanded(
+                  child: ButtonGlobalWithoutIcon(
                     buttontext: 'Order now',
                     buttonDecoration: kButtonDecoration.copyWith(
                       color: kPrimaryColor,
@@ -782,19 +797,6 @@ class _ServiceDetailsState extends State<ServiceDetails>
                       );
                     },
                     buttonTextColor: kWhite,
-                  ),
-                ),
-                Expanded(
-                  child: ButtonGlobalWithoutIcon(
-                    buttontext: 'Add to cart',
-                    buttonDecoration: kButtonDecoration.copyWith(
-                      color: kWhite,
-                      border: Border.all(color: kPrimaryColor),
-                    ),
-                    onPressed: () async {
-                      onAddToCart(await artwork.then((value) => value!));
-                    },
-                    buttonTextColor: kPrimaryColor,
                   ),
                 ),
               ],

@@ -275,9 +275,10 @@ class _UploadCompletePopUpState extends State<UploadCompletePopUp> {
 }
 
 class CancelJobPopUp extends StatefulWidget {
-  final String id;
+  final String? id;
+  final String? status;
 
-  const CancelJobPopUp({Key? key, required this.id}) : super(key: key);
+  const CancelJobPopUp({Key? key, this.id, this.status}) : super(key: key);
 
   @override
   State<CancelJobPopUp> createState() => _CancelJobPopUpState();
@@ -314,7 +315,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'This action will be permanent. Do you want to continue?',
+              'This action will hide your requirement from artist. Do you want to continue?',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.start,
             ),
@@ -360,7 +361,10 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
   void onYes() async {
     try {
       ProgressDialogUtils.showProgress(context);
-      await RequirementApi().deleteOne(widget.id);
+
+      await RequirementApi().patchOne(widget.id!, {
+        'Status': '${widget.status}|Cancelled',
+      });
 
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);

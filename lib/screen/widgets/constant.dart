@@ -200,6 +200,8 @@ List<String> serviceList = [
   'New',
 ];
 
+String selectedServiceList = 'All';
+
 List<TitleModel> selectedTitle = [];
 
 List<String> titleList = [

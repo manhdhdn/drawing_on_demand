@@ -28,6 +28,13 @@ class JobPost extends StatefulWidget {
 class _JobPostState extends State<JobPost> {
   late Future<Requirements?> requirements;
 
+  List<String> serviceList = [
+    'All',
+    'Public',
+    'Private',
+    'Cancelled',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -91,6 +98,40 @@ class _JobPostState extends State<JobPost> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        const SizedBox(height: 15.0),
+                        HorizontalList(
+                          padding:
+                              const EdgeInsets.only(left: 15.0, right: 15.0),
+                          itemCount: serviceList.length,
+                          itemBuilder: (_, i) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  onChangeTab(i);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: selectedServiceList == serviceList[i]
+                                        ? kPrimaryColor
+                                        : kDarkWhite,
+                                    borderRadius: BorderRadius.circular(40.0),
+                                  ),
+                                  child: Text(
+                                    serviceList[i],
+                                    style: kTextStyle.copyWith(
+                                      color:
+                                          selectedServiceList == serviceList[i]
+                                              ? kWhite
+                                              : kNeutralColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         const SizedBox(height: 15.0),
                         Column(
                           children: [
@@ -245,7 +286,9 @@ class _JobPostState extends State<JobPost> {
     try {
       return RequirementApi().gets(
         0,
-        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
+        filter: selectedServiceList != 'All'
+            ? 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and endswith(status, \'$selectedServiceList\')'
+            : 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Processing\' and status ne \'Completed\' and not endswith(status, \'Cancelled\')',
         expand: 'category',
         orderBy: 'createdDate desc',
         count: 'true',
@@ -258,7 +301,7 @@ class _JobPostState extends State<JobPost> {
   }
 
   void onDetail(String id) {
-    context.goNamed(JobDetailRoute.name, pathParameters: {'id': id});
+    context.goNamed(JobDetailRoute.name, pathParameters: {'jobId': id});
   }
 
   void onCreate() {
@@ -267,6 +310,13 @@ class _JobPostState extends State<JobPost> {
 
   void refresh() {
     setState(() {
+      requirements = getData();
+    });
+  }
+
+  void onChangeTab(int i) {
+    setState(() {
+      selectedServiceList = serviceList[i];
       requirements = getData();
     });
   }

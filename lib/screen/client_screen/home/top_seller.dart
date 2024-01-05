@@ -26,19 +26,19 @@ class _TopSellerState extends State<TopSeller> {
   int top = 10;
   int count = 10;
 
-  @override
-  void initState() {
-    super.initState();
-
-    artists = getArtists();
-  }
+  String selectedServiceList = 'Top Artists';
 
   List<String> serviceList = [
     'All',
     'Top Artists',
   ];
 
-  String selectedServiceList = 'Top Artists';
+  @override
+  void initState() {
+    super.initState();
+
+    artists = getArtists();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +285,15 @@ class _TopSellerState extends State<TopSeller> {
   }
 
   void onDetail(String id) {
-    context.goNamed(ArtistProfileDetailRoute.name, pathParameters: {'id': id});
+    var state = GoRouterState.of(context);
+    String name = ArtistProfileDetailRoute.name;
+    Map<String, String> pathParameters = {'id': id};
+
+    if (state.pathParameters['jobId'] != null) {
+      name = '$name job';
+      pathParameters['jobId'] = state.pathParameters['jobId']!;
+    }
+
+    context.goNamed(name, pathParameters: pathParameters);
   }
 }

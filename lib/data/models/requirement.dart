@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'category.dart';
 import 'material.dart';
+import 'size.dart';
 import 'surface.dart';
 
 class Requirements {
@@ -28,6 +29,7 @@ class Requirement {
   String? title;
   String? description;
   String? image;
+  int? quantity;
   int? pieces;
   double? budget;
   DateTime? createdDate;
@@ -40,12 +42,14 @@ class Requirement {
   Category? category;
   Surface? surface;
   Material? material;
+  List<Size>? sizes;
 
   Requirement({
     this.id,
     this.title,
     this.description,
     this.image,
+    this.quantity,
     this.pieces,
     this.budget,
     this.createdDate,
@@ -58,6 +62,7 @@ class Requirement {
     this.category,
     this.surface,
     this.material,
+    this.sizes,
   });
 
   Requirement.fromJson(Map<String, dynamic> json) {
@@ -65,6 +70,7 @@ class Requirement {
     title = json['Title'];
     description = json['Description'];
     image = json['Image'];
+    quantity = json['Quantity'];
     pieces = json['Pieces'];
     budget = double.tryParse(json['Budget'].toString());
     createdDate = DateTime.parse(json['CreatedDate']);
@@ -82,6 +88,13 @@ class Requirement {
         json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
     material =
         json['Material'] != null ? Material.fromJson(json['Material']) : null;
+    sizes = json['Sizes'] != null
+        ? List<Size>.from(
+            json['Sizes'].map(
+              (x) => Size.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -90,6 +103,7 @@ class Requirement {
       'Title': title,
       'Description': description,
       'Image': image,
+      'Quantity': quantity,
       'Pieces': pieces,
       'Budget': budget,
       'CreatedDate':
