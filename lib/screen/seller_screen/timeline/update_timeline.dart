@@ -29,7 +29,7 @@ class _UpdateTimelineState extends State<UpdateTimeline> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              child: const UploadRequirementsPopUp(),
+              child: const CompleteStepPopUp(),
             );
           },
         );

@@ -140,15 +140,14 @@ class _FailedPopUpState extends State<FailedPopUp> {
   }
 }
 
-class UploadRequirementsPopUp extends StatefulWidget {
-  const UploadRequirementsPopUp({Key? key}) : super(key: key);
+class CompleteStepPopUp extends StatefulWidget {
+  const CompleteStepPopUp({Key? key}) : super(key: key);
 
   @override
-  State<UploadRequirementsPopUp> createState() =>
-      _UploadRequirementsPopUpState();
+  State<CompleteStepPopUp> createState() => _CompleteStepPopUpState();
 }
 
-class _UploadRequirementsPopUpState extends State<UploadRequirementsPopUp> {
+class _CompleteStepPopUpState extends State<CompleteStepPopUp> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -307,10 +306,15 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                       color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
-                const Icon(
-                  FeatherIcons.x,
-                  color: kSubTitleColor,
-                )
+                GestureDetector(
+                  onTap: () {
+                    onNo();
+                  },
+                  child: const Icon(
+                    FeatherIcons.x,
+                    color: kSubTitleColor,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 15.0),
@@ -420,8 +424,7 @@ class _CancelOrderPopUpState extends State<CancelOrderPopUp> {
               decoration: kInputDecoration.copyWith(
                   labelText: 'Enter Reason',
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                  hintText:
-                      'Lorem ipsum dolor sit amet, cons ectetur adipiscing elit.',
+                  hintText: 'Describe why you want to cancel the order.',
                   hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                   focusColor: kNeutralColor,
                   border: const OutlineInputBorder(),

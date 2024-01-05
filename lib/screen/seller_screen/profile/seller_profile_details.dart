@@ -1,5 +1,6 @@
 import 'package:drawing_on_demand/data/models/certificate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -10,9 +11,12 @@ import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_api.dart';
 import '../../../data/apis/artwork_api.dart';
+import '../../../data/apis/invite_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/category.dart';
+import '../../../data/models/invite.dart';
+import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import 'seller_edit_profile_details.dart';
@@ -38,6 +42,48 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     artworks = getArtworks();
   }
 
+  void showInviteSuccessPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: const InviteSuccessPopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<String?> showInvitePopUp() async {
+    var result = await showDialog<String?>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: const InvitePopUp(),
+            );
+          },
+        );
+      },
+    );
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +100,11 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
         centerTitle: true,
         actions: [
           Padding(
-              padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              onTap: () {
+                onInvite();
+              },
               child: Row(
                 children: [
                   const Icon(
@@ -69,7 +119,9 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                     ),
                   ),
                 ],
-              )),
+              ),
+            ),
+          ),
         ],
       ),
       body: Padding(
@@ -723,5 +775,61 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     }
 
     context.goNamed(name, pathParameters: pathParameters);
+  }
+
+  void onInvite() async {
+    var state = GoRouterState.of(context);
+
+    try {
+      if (state.pathParameters['jobId'] != null) {
+        var jobId = state.pathParameters['jobId']!;
+
+        await createInvite(jobId);
+      } else {
+        var requirementId = await showInvitePopUp();
+
+        if (requirementId != null) {
+          await createInvite(requirementId);
+        }
+      }
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Already invited');
+    }
+  }
+
+  Future<bool> isInvited(String jobId) async {
+    try {
+      Invites invites = await InviteApi().gets(
+        0,
+        count: 'true',
+        filter: 'receivedBy eq ${widget.id} and requirementId eq $jobId',
+      );
+
+      if (invites.count != 0) {
+        return true;
+      }
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Check invited failed');
+    }
+
+    return false;
+  }
+
+  Future<void> createInvite(String jobId) async {
+    if (!(await isInvited(jobId))) {
+      Invite invite = Invite(
+        id: Guid.newGuid,
+        createdDate: DateTime.now(),
+        status: 'Pending',
+        receivedBy: Guid(widget.id),
+        requirementId: Guid(jobId),
+      );
+
+      await InviteApi().postOne(invite);
+
+      showInviteSuccessPopUp();
+    } else {
+      throw Exception();
+    }
   }
 }

@@ -63,6 +63,7 @@ bool isCustomer = false;
 bool isArtist = false;
 bool isFavorite = false;
 const String currencySign = '\$';
+double menuMaxHeight = 170.0;
 
 //__________Gender______________________________________________________
 List<String> gender = [

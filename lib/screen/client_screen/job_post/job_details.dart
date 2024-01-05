@@ -131,7 +131,7 @@ class _JobDetailsState extends State<JobDetails> {
               ).visible(status.contains('Cancelled')),
               Expanded(
                 child: ButtonGlobalWithoutIcon(
-                  buttontext: 'Invite',
+                  buttontext: 'Invite Artists',
                   buttonDecoration: kButtonDecoration.copyWith(
                     color: kPrimaryColor,
                   ),
@@ -140,8 +140,7 @@ class _JobDetailsState extends State<JobDetails> {
                   },
                   buttonTextColor: kWhite,
                 ),
-              ).visible(
-                  !status.contains('Cancelled') && status.contains('Private')),
+              ).visible(!status.contains('Cancelled')),
             ],
           ),
         ),
