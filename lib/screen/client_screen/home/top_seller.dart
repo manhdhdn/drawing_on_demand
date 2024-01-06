@@ -20,6 +20,11 @@ class TopSeller extends StatefulWidget {
 }
 
 class _TopSellerState extends State<TopSeller> {
+  final ScrollController _scrollController = ScrollController();
+
+  bool isScrollDown = false;
+  int height = 390;
+
   late Future<Accounts?> artists;
 
   int skip = 0;
@@ -33,11 +38,26 @@ class _TopSellerState extends State<TopSeller> {
     'Top Artists',
   ];
 
+  bool get _isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
   @override
   void initState() {
     super.initState();
 
     artists = getArtists();
+
+    _scrollController.addListener(scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(scrollListener);
+    _scrollController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -58,6 +78,15 @@ class _TopSellerState extends State<TopSeller> {
                 color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: kPrimaryColor,
+          child: const Icon(
+            Icons.arrow_upward,
+          ),
+          onPressed: () {
+            scrollUp();
+          },
+        ).visible(isScrollDown),
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Container(
@@ -70,6 +99,7 @@ class _TopSellerState extends State<TopSeller> {
             ),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
+              controller: _scrollController,
               child: Column(
                 children: [
                   const SizedBox(height: 15.0),
@@ -113,13 +143,11 @@ class _TopSellerState extends State<TopSeller> {
                       physics: const NeverScrollableScrollPhysics(),
                       mainAxisSpacing: 10.0,
                       crossAxisSpacing: 10.0,
-                      childAspectRatio: 0.7,
+                      childAspectRatio: 0.79,
                       crossAxisCount: 2,
                       children: List.generate(
                         count,
                         (i) => Container(
-                          height: 220,
-                          width: 156,
                           decoration: BoxDecoration(
                             color: kWhite,
                             borderRadius: BorderRadius.circular(8.0),
@@ -175,7 +203,7 @@ class _TopSellerState extends State<TopSeller> {
                                               style: kTextStyle.copyWith(
                                                   color: kNeutralColor,
                                                   fontWeight: FontWeight.bold),
-                                              maxLines: 1,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             const SizedBox(height: 6.0),
@@ -265,9 +293,7 @@ class _TopSellerState extends State<TopSeller> {
       )
           .then((accountRoles) {
         if (accountRoles.count! < count) {
-          setState(() {
-            count = accountRoles.count!;
-          });
+          count = accountRoles.count!;
         }
 
         return accountRoles;
@@ -282,6 +308,41 @@ class _TopSellerState extends State<TopSeller> {
     }
 
     return null;
+  }
+
+  void scrollUp() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  void scrollListener() {
+    if (_isShrink != isScrollDown) {
+      setState(() {
+        isScrollDown = _isShrink;
+      });
+    }
+
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (count % top == 0) {
+        skip = count;
+
+        setState(() {
+          artists = artists.then((artists) async {
+            artists!.value.addAll((await getArtists())!.value);
+
+            setState(() {
+              count += artists.value.length - count;
+            });
+
+            return artists;
+          });
+        });
+      }
+    }
   }
 
   void onDetail(String id) {
