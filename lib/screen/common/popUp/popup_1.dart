@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -871,7 +872,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
               Row(
                 children: [
                   Text(
-                    'Why are you Cancel Order',
+                    'Why are you Cancel Order?',
                     style: kTextStyle.copyWith(
                         color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
@@ -892,10 +893,14 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 maxLines: 2,
                 cursorColor: kNeutralColor,
                 textInputAction: TextInputAction.next,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(300),
+                ],
+                maxLength: 300,
                 decoration: kInputDecoration.copyWith(
                   labelText: 'Enter Reason',
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                  hintText: 'Describe why you want to cancel the order.',
+                  hintText: 'Describe why you want to cancel the order',
                   hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   focusColor: kNeutralColor,

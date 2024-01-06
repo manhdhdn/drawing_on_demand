@@ -471,7 +471,7 @@ class _OrderListState extends State<OrderList> {
                                               ),
                                               TextSpan(
                                                 text: DateFormat('dd-MM-yyyy')
-                                                    .format(paidOrders[i]
+                                                    .format(depositedOrders[i]
                                                         .orderDate!),
                                                 style: kTextStyle.copyWith(
                                                     color: kLightNeutralColor),

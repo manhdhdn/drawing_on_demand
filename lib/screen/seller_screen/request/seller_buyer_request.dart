@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/invite_api.dart';
+import '../../../data/apis/requirement_api.dart';
+import '../../../data/models/invite.dart';
+import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../common/popUp/popup_1.dart';
@@ -14,7 +22,50 @@ class SellerBuyerReq extends StatefulWidget {
 }
 
 class _SellerBuyerReqState extends State<SellerBuyerReq> {
-  //__________send_Offer_PopUp________________________________________________
+  final ScrollController _scrollController = ScrollController();
+
+  bool isScrollDown = false;
+  int height = 790;
+
+  late Future<Requirements?> requirements;
+  late Future<Invites?> invites;
+
+  List<String> listTab = [
+    'Public',
+    'Invites',
+  ];
+
+  int requirementSkip = 0;
+  int requirementTop = 10;
+  int requirementCount = 10;
+
+  int inviteSkip = 0;
+  int inviteTop = 10;
+  int inviteCount = 10;
+
+  bool get _isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    requirements = getRequirements();
+    invites = getInvites();
+
+    _scrollController.addListener(scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(scrollListener);
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
   void sendOfferPopUp() {
     showDialog(
       barrierDismissible: false,
@@ -50,10 +101,20 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         ),
         centerTitle: true,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kPrimaryColor,
+        child: const Icon(
+          Icons.arrow_upward,
+        ),
+        onPressed: () {
+          scrollUp();
+        },
+      ).visible(isScrollDown),
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           width: context.width(),
+          height: context.height(),
           decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
@@ -63,163 +124,343 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
           ),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 HorizontalList(
                   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                  itemCount: titleList.length,
+                  itemCount: listTab.length,
                   itemBuilder: (_, i) {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          isSelected = titleList[i];
+                          selectedJobApplyTab = listTab[i];
                         });
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
-                          color: isSelected == titleList[i]
+                          color: selectedJobApplyTab == listTab[i]
                               ? kPrimaryColor
                               : kDarkWhite,
                         ),
                         child: Text(
-                          titleList[i],
+                          listTab[i],
                           style: kTextStyle.copyWith(
-                              color: isSelected == titleList[i]
-                                  ? kWhite
-                                  : kNeutralColor),
+                            color: selectedJobApplyTab == listTab[i]
+                                ? kWhite
+                                : kNeutralColor,
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 20),
-                ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: (_, i) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
-                        onTap: () =>
-                            const BuyerRequestDetails().launch(context),
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: kWhite,
-                            border: Border.all(color: kBorderColorTextField),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: kBorderColorTextField,
-                                spreadRadius: 0.2,
-                                blurRadius: 4.0,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Container(
-                                  height: 44,
-                                  width: 44,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: AssetImage('images/profile1.png'),
-                                      fit: BoxFit.cover,
+                FutureBuilder(
+                  future: requirements,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: requirementCount,
+                        itemBuilder: (_, i) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                onDetail();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: kWhite,
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: kBorderColorTextField,
+                                      spreadRadius: 0.2,
+                                      blurRadius: 4.0,
+                                      offset: Offset(0, 2),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                title: Text(
-                                  'Shaidul Islam',
-                                  style: kTextStyle.copyWith(
-                                      color: kNeutralColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  '28 Jun 2023',
-                                  style: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
-                                ),
-                              ),
-                              const Divider(
-                                height: 0,
-                                thickness: 1.0,
-                                color: kBorderColorTextField,
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                'I Need UI UX Designer',
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 5.0),
-                              ReadMoreText(
-                                'Lorem ipsum dolor sit amet consectetur. Elementum nulla quis nunc Lorem ipsum dolor sit amet consectetur. O rci pulvinar sit nec donec pellentesque ve nenatis nunc vel pretium. Dictumst bib en dum pharetra hendrerit tortor nisl. Nulla accumsan ',
-                                style: kTextStyle.copyWith(
-                                    color: kLightNeutralColor),
-                                trimLines: 2,
-                                colorClickableText: kPrimaryColor,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText: '..read more',
-                                trimExpandedText: ' read less',
-                              ),
-                              const SizedBox(height: 10.0),
-                              RichText(
-                                text: TextSpan(
-                                    text: 'Category: ',
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor,
-                                        fontWeight: FontWeight.bold),
-                                    children: [
-                                      TextSpan(
-                                        text: 'UI UX Designer',
-                                        style: kTextStyle.copyWith(
-                                            color: kSubTitleColor),
-                                      )
-                                    ]),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Button(
-                                      containerBg: kWhite,
-                                      borderColor: Colors.red,
-                                      buttonText: 'Cancel Offer',
-                                      textColor: Colors.red,
-                                      onPressed: () {},
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: ListTile(
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: Container(
+                                              height: 44,
+                                              width: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    snapshot
+                                                            .data!
+                                                            .value[i]
+                                                            .createdByNavigation!
+                                                            .avatar ??
+                                                        defaultImage,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              snapshot.data!.value[i]
+                                                  .createdByNavigation!.name!,
+                                              style: kTextStyle.copyWith(
+                                                color: kNeutralColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              timeago.format(snapshot
+                                                  .data!.value[i].createdDate!),
+                                              style: kTextStyle.copyWith(
+                                                color: kSubTitleColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: context.width() / 3,
+                                          child: Button(
+                                            containerBg: kWhite,
+                                            borderColor: kPrimaryColor,
+                                            buttonText: 'Send Offer',
+                                            textColor: kPrimaryColor,
+                                            onPressed: () {
+                                              onSendOffer();
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Button(
-                                      containerBg: kPrimaryColor,
-                                      borderColor: kPrimaryColor,
-                                      buttonText: 'Send Offer',
-                                      textColor: kWhite,
-                                      onPressed: () {
-                                        setState(() {
-                                          sendOfferPopUp();
-                                        });
-                                      },
+                                    const Divider(
+                                      height: 0,
+                                      thickness: 1.0,
+                                      color: kBorderColorTextField,
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      snapshot.data!.value[i].title!,
+                                      style: kTextStyle.copyWith(
+                                          color: kNeutralColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    ReadMoreText(
+                                      snapshot.data!.value[i].description!,
+                                      style: kTextStyle.copyWith(
+                                          color: kLightNeutralColor),
+                                      trimLines: 3,
+                                      colorClickableText: kPrimaryColor,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: '..read more',
+                                      trimExpandedText: ' read less',
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: 'Category: ',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.bold),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data!.value[i]
+                                                  .category!.name,
+                                              style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor),
+                                            )
+                                          ]),
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ).visible(selectedJobApplyTab == 'Public');
+                    }
+
+                    return SizedBox(
+                      width: context.width(),
+                      height: context.height() - 270.0,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
                         ),
                       ),
                     );
+                  },
+                ),
+                FutureBuilder(
+                  future: invites,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: inviteCount,
+                        itemBuilder: (_, i) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                onDetail();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: kWhite,
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: kBorderColorTextField,
+                                      spreadRadius: 0.2,
+                                      blurRadius: 4.0,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: ListTile(
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: Container(
+                                              height: 44,
+                                              width: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    snapshot
+                                                            .data!
+                                                            .value[i]
+                                                            .requirement!
+                                                            .createdByNavigation!
+                                                            .avatar ??
+                                                        defaultImage,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              snapshot
+                                                  .data!
+                                                  .value[i]
+                                                  .requirement!
+                                                  .createdByNavigation!
+                                                  .name!,
+                                              style: kTextStyle.copyWith(
+                                                color: kNeutralColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              timeago.format(snapshot
+                                                  .data!.value[i].createdDate!),
+                                              style: kTextStyle.copyWith(
+                                                color: kSubTitleColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: context.width() / 3,
+                                          child: Button(
+                                            containerBg: kWhite,
+                                            borderColor: kPrimaryColor,
+                                            buttonText: 'Send Offer',
+                                            textColor: kPrimaryColor,
+                                            onPressed: () {
+                                              setState(() {
+                                                sendOfferPopUp();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Divider(
+                                      height: 0,
+                                      thickness: 1.0,
+                                      color: kBorderColorTextField,
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      snapshot
+                                          .data!.value[i].requirement!.title!,
+                                      style: kTextStyle.copyWith(
+                                          color: kNeutralColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    ReadMoreText(
+                                      snapshot.data!.value[i].requirement!
+                                          .description!,
+                                      style: kTextStyle.copyWith(
+                                          color: kLightNeutralColor),
+                                      trimLines: 3,
+                                      colorClickableText: kPrimaryColor,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: '..read more',
+                                      trimExpandedText: ' read less',
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: 'Category: ',
+                                          style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.bold),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data!.value[i]
+                                                  .requirement!.category!.name,
+                                              style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor),
+                                            )
+                                          ]),
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ).visible(selectedJobApplyTab == 'Invites');
+                    }
+
+                    return const SizedBox();
                   },
                 ),
               ],
@@ -228,5 +469,111 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         ),
       ),
     );
+  }
+
+  Future<Requirements?> getRequirements() async {
+    try {
+      return RequirementApi()
+          .gets(
+        requirementSkip,
+        top: requirementTop,
+        filter: 'status eq \'Public\'',
+        count: 'true',
+        orderBy: 'createdDate desc',
+        expand: 'createdByNavigation,category',
+      )
+          .then((requirements) {
+        if (requirements.count! < requirementCount) {
+          requirementCount = requirements.count!;
+        }
+
+        return requirements;
+      });
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get requirements failed');
+    }
+
+    return null;
+  }
+
+  Future<Invites?> getInvites() async {
+    try {
+      return InviteApi()
+          .gets(
+        inviteSkip,
+        top: inviteTop,
+        filter:
+            'receivedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and requirement/status in (\'Private\',\'Public\')',
+        count: 'true',
+        orderBy: 'createdDate desc',
+        expand: 'requirement(expand=createdByNavigation,category)',
+      )
+          .then((invites) {
+        if (invites.count! < inviteCount) {
+          inviteCount = invites.count!;
+        }
+
+        return invites;
+      });
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get invites failed');
+    }
+
+    return null;
+  }
+
+  void scrollListener() {
+    if (_isShrink != isScrollDown) {
+      setState(() {
+        isScrollDown = _isShrink;
+      });
+    }
+
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (requirementCount % requirementTop == 0) {
+        requirementSkip = requirementCount;
+
+        setState(() {
+          requirements = requirements.then((requirements) async {
+            requirements!.value.addAll((await getRequirements())!.value);
+
+            requirementCount += requirements.value.length - requirementCount;
+
+            return requirements;
+          });
+        });
+      }
+
+      if (inviteCount % inviteTop == 0) {
+        inviteSkip = inviteCount;
+
+        setState(() {
+          invites = invites.then((invites) async {
+            invites!.value.addAll((await getInvites())!.value);
+
+            inviteCount += invites.value.length - inviteCount;
+
+            return invites;
+          });
+        });
+      }
+    }
+  }
+
+  void scrollUp() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  void onDetail() {
+    const BuyerRequestDetails().launch(context);
+  }
+
+  void onSendOffer() {
+    // sendOfferPopUp();
   }
 }

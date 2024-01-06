@@ -89,7 +89,6 @@ class _ServiceDetailsState extends State<ServiceDetails>
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
-    // PrefUtils().clearTermId();
 
     super.dispose();
   }

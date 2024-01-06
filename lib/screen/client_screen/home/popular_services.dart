@@ -22,7 +22,7 @@ class PopularServices extends StatefulWidget {
 }
 
 class _PopularServicesState extends State<PopularServices> {
-  late Future<Artworks?> popularArtworks;
+  late Future<Artworks?> artworks;
 
   int skip = 0;
   int top = 10;
@@ -32,7 +32,7 @@ class _PopularServicesState extends State<PopularServices> {
   void initState() {
     super.initState();
 
-    popularArtworks = getArtworks();
+    artworks = getArtworks();
   }
 
   @override
@@ -74,7 +74,7 @@ class _PopularServicesState extends State<PopularServices> {
               ),
             ),
             child: FutureBuilder(
-              future: popularArtworks,
+              future: artworks,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(

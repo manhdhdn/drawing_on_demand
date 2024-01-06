@@ -1,3 +1,4 @@
+import 'package:drawing_on_demand/data/models/requirement.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -25,6 +26,7 @@ class Invite {
   String? status;
   Guid? receivedBy;
   Guid? requirementId;
+  Requirement? requirement;
 
   Invite({
     this.id,
@@ -32,6 +34,7 @@ class Invite {
     this.status,
     this.receivedBy,
     this.requirementId,
+    this.requirement,
   });
 
   Invite.fromJson(Map<String, dynamic> json) {
@@ -40,6 +43,9 @@ class Invite {
     status = json['Status'];
     receivedBy = Guid(json['ReceivedBy']);
     requirementId = Guid(json['RequirementId']);
+    requirement = json['Requirement'] != null
+        ? Requirement.fromJson(json['Requirement'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

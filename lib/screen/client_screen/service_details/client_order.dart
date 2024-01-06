@@ -18,6 +18,7 @@ import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/vnpay_request.dart';
+import '../../common/orders/order_list.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -1172,6 +1173,7 @@ class _ClientOrderState extends State<ClientOrder> {
 
           // ignore: use_build_context_synchronously
           context.goNamed(OrderRoute.name);
+
           return null;
         } else {
           showFailedPopUp();
@@ -1548,6 +1550,10 @@ class _ClientOrderState extends State<ClientOrder> {
       setState(() {
         isSelected = status == 'Pending' ? 'Active' : 'Paid';
       });
+
+      if (OrderList.state != null) {
+        OrderList.refresh();
+      }
     } catch (error) {
       Fluttertoast.showToast(msg: 'Update data failed');
     }

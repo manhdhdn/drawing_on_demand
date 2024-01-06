@@ -96,13 +96,6 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                        path: JobCreateRoute.tag,
-                        name: JobCreateRoute.name,
-                        builder: (context, state) {
-                          return const CreateNewJobPost();
-                        },
-                      ),
-                      GoRoute(
                         path: JobDetailRoute.tag,
                         name: JobDetailRoute.name,
                         builder: (context, state) {
@@ -416,7 +409,7 @@ class AppRoutes {
                             name: '${ArtworkDetailRoute.name} cart',
                             builder: (context, state) {
                               return ServiceDetails(
-                                id: state.pathParameters['id'],
+                                id: state.pathParameters['artworkId'],
                               );
                             },
                           ),

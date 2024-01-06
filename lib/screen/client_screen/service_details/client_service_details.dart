@@ -8,7 +8,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../widgets/review.dart';
-import 'client_order.dart';
 
 class ClientServiceDetails extends StatefulWidget {
   const ClientServiceDetails({Key? key}) : super(key: key);
@@ -68,7 +67,7 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails>
           onPressed: () {
             setState(
               () {
-                const ClientOrder().launch(context);
+                // const ClientOrder().launch(context);
               },
             );
           },

@@ -1,6 +1,7 @@
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account.dart';
 import 'category.dart';
 import 'material.dart';
 import 'size.dart';
@@ -39,6 +40,7 @@ class Requirement {
   Guid? surfaceId;
   Guid? materialId;
   Guid? createdBy;
+  Account? createdByNavigation;
   Category? category;
   Surface? surface;
   Material? material;
@@ -59,6 +61,7 @@ class Requirement {
     this.surfaceId,
     this.materialId,
     this.createdBy,
+    this.createdByNavigation,
     this.category,
     this.surface,
     this.material,
@@ -82,6 +85,9 @@ class Requirement {
     surfaceId = Guid(json['SurfaceId']);
     materialId = Guid(json['MaterialId']);
     createdBy = Guid(json['CreatedBy']);
+    createdByNavigation = json['CreatedByNavigation'] != null
+        ? Account.fromJson(json['CreatedByNavigation'])
+        : null;
     category =
         json['Category'] != null ? Category.fromJson(json['Category']) : null;
     surface =

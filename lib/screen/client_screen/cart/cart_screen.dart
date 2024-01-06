@@ -583,8 +583,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onArtworkDetail(String id) {
-    context
-        .goNamed('${ArtworkDetailRoute.name} cart', pathParameters: {'id': id});
+    context.goNamed('${ArtworkDetailRoute.name} cart',
+        pathParameters: {'artworkId': id});
   }
 
   void refresh() {

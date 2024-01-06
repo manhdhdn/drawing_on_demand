@@ -195,6 +195,8 @@ List<TitleModel> list = [
   TitleModel("Source file", false),
 ];
 
+String selectedJobApplyTab = 'Public';
+
 List<String> serviceList = [
   'All',
   'Popular',
