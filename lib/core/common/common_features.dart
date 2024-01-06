@@ -77,7 +77,17 @@ Future<void> pickMultipleImages() async {
   final image = await ImagePicker().pickMultiImage();
 
   if (image.isNotEmpty) {
-    images.addAll(image);
+    if (images.isEmpty) {
+      images.addAll(image);
+    } else {
+      for (var i = 0; i < 3; i++) {
+        try {
+          images[i] = image[i];
+        } catch (error) {
+          images.add(image[i]);
+        }
+      }
+    }
   }
 }
 
@@ -85,7 +95,11 @@ Future<void> pickImage() async {
   final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
   if (image != null) {
-    images.add(image);
+    if (images.isEmpty) {
+      images.add(image);
+    } else {
+      images[0] = image;
+    }
   }
 }
 
@@ -176,6 +190,7 @@ Future<Order> getCart() async {
       status: 'Cart',
       total: 0,
       orderedBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
+      orderDetails: [],
     );
 
     await OrderApi().postOne(order);

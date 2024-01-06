@@ -91,7 +91,7 @@ class _FailedPopUpState extends State<FailedPopUp> {
   }
 
   void init() async {
-    await Future.delayed(const Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 2), () {
       finish(context);
     });
   }

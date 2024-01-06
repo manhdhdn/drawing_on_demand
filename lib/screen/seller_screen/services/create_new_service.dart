@@ -1,6 +1,5 @@
 import 'package:drawing_on_demand/app_routes/named_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
@@ -271,9 +270,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
                           keyboardType: TextInputType.name,
                           cursorColor: kNeutralColor,
                           textInputAction: TextInputAction.next,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(60),
-                          ],
                           maxLength: 60,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'Service Title',
@@ -367,9 +363,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
                           cursorColor: kNeutralColor,
                           textInputAction: TextInputAction.next,
                           maxLines: 5,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(80),
-                          ],
                           maxLength: 800,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'Service Description',
@@ -929,41 +922,41 @@ class _CreateNewServiceState extends State<CreateNewService> {
                         ),
                         const SizedBox(height: 15.0),
                         ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: 3,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (_, i) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: Container(
-                                  width: context.width(),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                        color: kBorderColorTextField),
-                                  ),
-                                  padding: const EdgeInsets.all(30.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        IconlyBold.image,
-                                        color: kLightNeutralColor,
-                                        size: 50,
-                                      ),
-                                      const SizedBox(height: 10.0),
-                                      Text(
-                                        'Upload Image',
-                                        style: kTextStyle.copyWith(
-                                            color: kSubTitleColor),
-                                      ),
-                                    ],
-                                  ),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: 3,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, i) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Container(
+                                width: context.width(),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
                                 ),
-                              );
-                            })
+                                padding: const EdgeInsets.all(30.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      IconlyBold.image,
+                                      color: kLightNeutralColor,
+                                      size: 50,
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      'Upload Image',
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ).visible(currentIndexPage == 2),
                   ],

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
@@ -41,7 +41,6 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController quantityController = TextEditingController(text: '1');
   TextEditingController budgetController = TextEditingController();
-  TextEditingController imageController = TextEditingController();
 
   List<Category> categories = [];
   List<material_model.Material> materials = [];
@@ -62,6 +61,8 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     super.initState();
 
     getData();
+
+    images.clear();
   }
 
   DropdownButton<Guid> getCategories() {
@@ -235,9 +236,6 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       keyboardType: TextInputType.name,
                       cursorColor: kNeutralColor,
                       textInputAction: TextInputAction.next,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(60),
-                      ],
                       maxLength: 60,
                       decoration: kInputDecoration.copyWith(
                         labelText: 'Title',
@@ -556,10 +554,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                     TextFormField(
                       keyboardType: TextInputType.multiline,
                       cursorColor: kNeutralColor,
-                      textInputAction: TextInputAction.next,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(700),
-                      ],
+                      textInputAction: TextInputAction.newline,
                       maxLength: 700,
                       maxLines: 3,
                       decoration: kInputDecoration.copyWith(
@@ -602,35 +597,79 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       },
                     ),
                     const SizedBox(height: 20.0),
-                    TextFormField(
-                      showCursor: false,
-                      readOnly: true,
-                      cursorColor: kNeutralColor,
-                      textInputAction: TextInputAction.next,
-                      decoration: kInputDecoration.copyWith(
-                        labelText: 'Upload Image',
-                        labelStyle: kTextStyle.copyWith(
-                          color: kNeutralColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        hintText: 'Upload image here',
-                        hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
-                        focusColor: kNeutralColor,
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        border: const OutlineInputBorder(),
-                        suffixIcon: const Icon(
-                          FeatherIcons.upload,
-                          color: kLightNeutralColor,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await pickImage();
+
+                          setState(() {
+                            images = images;
+                          });
+                        },
+                        child: Container(
+                          width: context.width(),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(color: kBorderColorTextField),
+                          ),
+                          padding: const EdgeInsets.all(20.0),
+                          child: images.isEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      IconlyBold.image,
+                                      color: kLightNeutralColor,
+                                      size: 50,
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      'Upload Image',
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
+                                    ),
+                                  ],
+                                )
+                              : FutureBuilder(
+                                  future: images.last.readAsBytes(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Center(
+                                        child: Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            Image.memory(
+                                              snapshot.data!,
+                                              scale: 3.0,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  images.clear();
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.cancel,
+                                                color: Colors.red[700],
+                                                size: 27.0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        color: kPrimaryColor,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
                       ),
-                      controller: imageController,
-                      onTap: () async {
-                        await pickImage();
-                        imageController.text =
-                            images.isNotEmpty ? images.last.name : '';
-                      },
                     ),
-                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
@@ -675,10 +714,6 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
       selectedMaterial = materials.first.id;
       selectedSurface = surfaces.first.id;
     });
-  }
-
-  void onUploadImage() {
-    pickImage();
   }
 
   void onDone() async {

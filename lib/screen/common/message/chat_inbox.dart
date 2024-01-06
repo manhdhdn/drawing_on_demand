@@ -370,6 +370,8 @@ class _ChatInboxState extends State<ChatInbox> {
                     child: AppTextField(
                       controller: messageController,
                       textFieldType: TextFieldType.OTHER,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
                       focus: msgFocus,
                       autoFocus: true,
                       maxLines: 7,

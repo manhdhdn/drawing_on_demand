@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/rank_api.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
+import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
-import '../../widgets/icons.dart';
-import '../../common/popUp/popup_1.dart';
 
 class BuyerRequestDetails extends StatefulWidget {
   final String? id;
@@ -31,26 +32,6 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
     requirement = getRequirement();
   }
 
-  void sendOfferPopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const SendOfferPopUp(),
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,16 +50,15 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(color: kWhite),
-        child: Button(
-          containerBg: kPrimaryColor,
-          borderColor: kPrimaryColor,
-          buttonText: 'Send Offer',
-          textColor: kWhite,
+        child: ButtonGlobalWithoutIcon(
+          buttontext: 'Send Offer',
+          buttonDecoration: kButtonDecoration.copyWith(
+            color: kPrimaryColor,
+          ),
           onPressed: () {
-            setState(() {
-              sendOfferPopUp();
-            });
+            onOffer();
           },
+          buttonTextColor: kWhite,
         ),
       ),
       body: Padding(
@@ -400,5 +380,9 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
     }
 
     return connect.toString();
+  }
+
+  void onOffer() {
+    context.goNamed(JobOfferRoute.name, pathParameters: {'jobId': widget.id!});
   }
 }

@@ -29,6 +29,7 @@ import '../screen/seller_screen/home/seller_home_screen.dart';
 import '../screen/seller_screen/profile/seller_profile.dart';
 import '../screen/seller_screen/profile/seller_profile_details.dart';
 import '../screen/seller_screen/request/buyer_request_details.dart';
+import '../screen/seller_screen/request/create_customer_offer.dart';
 import '../screen/seller_screen/request/seller_buyer_request.dart';
 import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
@@ -96,6 +97,15 @@ class AppRoutes {
                     },
                     redirect: (context, state) => _unAuthened(),
                     routes: [
+                      GoRoute(
+                        path: JobOfferRoute.tag,
+                        name: JobOfferRoute.name,
+                        builder: (context, state) {
+                          return CreateCustomerOffer(
+                            id: state.pathParameters['jobId'],
+                          );
+                        },
+                      ),
                       GoRoute(
                         path: JobDetailRoute.tag,
                         name: JobDetailRoute.name,

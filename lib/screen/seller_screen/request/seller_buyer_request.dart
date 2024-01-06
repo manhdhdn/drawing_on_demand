@@ -13,7 +13,6 @@ import '../../../data/models/invite.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../../common/popUp/popup_1.dart';
 
 class SellerBuyerReq extends StatefulWidget {
   const SellerBuyerReq({Key? key}) : super(key: key);
@@ -65,26 +64,6 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
     _scrollController.dispose();
 
     super.dispose();
-  }
-
-  void sendOfferPopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const SendOfferPopUp(),
-            );
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -246,7 +225,9 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                             buttonText: 'Send Offer',
                                             textColor: kPrimaryColor,
                                             onPressed: () {
-                                              onSendOffer();
+                                              onSendOffer(snapshot
+                                                  .data!.value[i].id
+                                                  .toString());
                                             },
                                           ),
                                         ),
@@ -403,9 +384,9 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                             buttonText: 'Send Offer',
                                             textColor: kPrimaryColor,
                                             onPressed: () {
-                                              setState(() {
-                                                sendOfferPopUp();
-                                              });
+                                              onSendOffer(snapshot.data!
+                                                  .value[i].requirement!.id
+                                                  .toString());
                                             },
                                           ),
                                         ),
@@ -575,7 +556,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
     context.goNamed(JobDetailRoute.name, pathParameters: {'jobId': id});
   }
 
-  void onSendOffer() {
-    // sendOfferPopUp();
+  void onSendOffer(String id) {
+    context.goNamed(JobOfferRoute.name, pathParameters: {'jobId': id});
   }
 }

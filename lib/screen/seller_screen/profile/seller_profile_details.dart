@@ -797,24 +797,6 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     }
   }
 
-  Future<bool> isInvited(String jobId) async {
-    try {
-      Invites invites = await InviteApi().gets(
-        0,
-        count: 'true',
-        filter: 'receivedBy eq ${widget.id} and requirementId eq $jobId',
-      );
-
-      if (invites.count != 0) {
-        return true;
-      }
-    } catch (error) {
-      Fluttertoast.showToast(msg: 'Check invited failed');
-    }
-
-    return false;
-  }
-
   Future<void> createInvite(String jobId) async {
     if (!(await isInvited(jobId))) {
       Invite invite = Invite(
@@ -831,5 +813,25 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     } else {
       throw Exception();
     }
+  }
+
+  Future<bool> isInvited(String jobId) async {
+    try {
+      Invites invites = await InviteApi().gets(
+        0,
+        count: 'true',
+        filter: 'receivedBy eq ${widget.id} and requirementId eq $jobId',
+      );
+
+      if (invites.count != 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Check invited failed');
+    }
+
+    return true;
   }
 }

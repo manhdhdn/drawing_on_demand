@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -893,9 +892,6 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 maxLines: 2,
                 cursorColor: kNeutralColor,
                 textInputAction: TextInputAction.next,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(300),
-                ],
                 maxLength: 300,
                 decoration: kInputDecoration.copyWith(
                   labelText: 'Enter Reason',

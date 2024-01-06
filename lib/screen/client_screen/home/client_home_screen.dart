@@ -42,8 +42,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     popularArtworks = getPoppularArtworks();
     topArtists = getTopArtists();
     newArtworks = getNewArtworks();
-
-    PrefUtils().clearCartId();
   }
 
   @override

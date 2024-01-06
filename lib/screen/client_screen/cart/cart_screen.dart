@@ -67,9 +67,9 @@ class _CartScreenState extends State<CartScreen> {
                 if (snapshot.hasData) {
                   List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
 
-                  orderDetails.sort(((a, b) => a
+                  orderDetails.sort((a, b) => a
                       .artwork!.createdByNavigation!.email!
-                      .compareTo(b.artwork!.createdByNavigation!.email!)));
+                      .compareTo(b.artwork!.createdByNavigation!.email!));
 
                   List<int> packList = [0];
                   int packCount = 0;
