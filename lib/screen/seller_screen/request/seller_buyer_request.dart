@@ -522,6 +522,14 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
     return null;
   }
 
+  void scrollUp() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
   void scrollListener() {
     if (_isShrink != isScrollDown) {
       setState(() {
@@ -559,14 +567,6 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         });
       }
     }
-  }
-
-  void scrollUp() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
   }
 
   void onDetail() {

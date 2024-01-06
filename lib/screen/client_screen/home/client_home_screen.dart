@@ -31,7 +31,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   late Future<Accounts?> topArtists;
   late Future<Artworks?> newArtworks;
 
-  int top = 10;
+  int poppularArtworkTop = 10;
+  int newArtworkTop = 10;
+  int artistTop = 10;
 
   @override
   void initState() {
@@ -308,7 +310,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             padding: const EdgeInsets.only(
                                 top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
-                            itemCount: snapshot.data!.value.length,
+                            itemCount: poppularArtworkTop,
                             itemBuilder: (_, i) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -645,7 +647,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             padding: const EdgeInsets.only(
                                 top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
-                            itemCount: snapshot.data!.value.length,
+                            itemCount: artistTop,
                             itemBuilder: (_, i) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -808,7 +810,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             padding: const EdgeInsets.only(
                                 top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
-                            itemCount: snapshot.data!.value.length,
+                            itemCount: newArtworkTop,
                             itemBuilder: (_, i) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -1123,11 +1125,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   Future<Artworks?> getPoppularArtworks() async {
     try {
-      return ArtworkApi().gets(
+      return ArtworkApi()
+          .gets(
         0,
-        top: top,
+        top: poppularArtworkTop,
+        count: 'true',
         expand: 'artworkReviews,arts,createdByNavigation(expand=rank)',
-      );
+      )
+          .then((artworks) {
+        if (poppularArtworkTop > artworks.count!) {
+          poppularArtworkTop = artworks.count!;
+        }
+
+        return artworks;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get popular artworks failed');
     }
@@ -1137,12 +1148,21 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   Future<Accounts?> getTopArtists() async {
     try {
-      var accountRoles = await AccountRoleApi().gets(
+      var accountRoles = await AccountRoleApi()
+          .gets(
         0,
-        top: top,
+        top: artistTop,
+        count: 'true',
         filter: "role/name eq 'Artist'",
         expand: 'account(expand=rank, accountReviewAccounts), role',
-      );
+      )
+          .then((artists) {
+        if (artistTop > artists.count!) {
+          artistTop = artists.count!;
+        }
+
+        return artists;
+      });
 
       List<Account> accounts =
           List<Account>.from(accountRoles.value.map((ar) => ar.account!));
@@ -1157,12 +1177,21 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   Future<Artworks?> getNewArtworks() async {
     try {
-      return ArtworkApi().gets(
+      return ArtworkApi()
+          .gets(
         0,
-        top: top,
+        top: newArtworkTop,
+        count: 'true',
         expand: 'artworkreviews,arts,createdbynavigation(expand=rank)',
         orderBy: 'createdDate desc',
-      );
+      )
+          .then((artworks) {
+        if (newArtworkTop > artworks.count!) {
+          newArtworkTop = artworks.count!;
+        }
+
+        return artworks;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get new artworks failed');
     }

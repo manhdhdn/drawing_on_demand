@@ -22,17 +22,37 @@ class PopularServices extends StatefulWidget {
 }
 
 class _PopularServicesState extends State<PopularServices> {
+  final ScrollController _scrollController = ScrollController();
+
+  bool isScrollDown = false;
+  int height = 390;
+
   late Future<Artworks?> artworks;
 
   int skip = 0;
   int top = 10;
   int count = 10;
 
+  bool get _isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
   @override
   void initState() {
     super.initState();
 
     artworks = getArtworks();
+
+    _scrollController.addListener(scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(scrollListener);
+    _scrollController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -62,6 +82,15 @@ class _PopularServicesState extends State<PopularServices> {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: kPrimaryColor,
+          child: const Icon(
+            Icons.arrow_upward,
+          ),
+          onPressed: () {
+            scrollUp();
+          },
+        ).visible(isScrollDown),
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Container(
@@ -79,6 +108,7 @@ class _PopularServicesState extends State<PopularServices> {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
+                    controller: _scrollController,
                     child: Column(
                       children: [
                         const SizedBox(height: 15.0),
@@ -91,9 +121,7 @@ class _PopularServicesState extends State<PopularServices> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    widget.tab = serviceList[i];
-                                  });
+                                  onChangeTab(serviceList[i]);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
@@ -120,7 +148,7 @@ class _PopularServicesState extends State<PopularServices> {
                           padding: const EdgeInsets.all(15.0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: snapshot.data!.value.length,
+                            itemCount: count,
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
                             itemBuilder: (_, i) {
@@ -438,11 +466,36 @@ class _PopularServicesState extends State<PopularServices> {
 
   Future<Artworks?> getArtworks() async {
     try {
-      return ArtworkApi().gets(
+      String? orderBy;
+
+      switch (widget.tab) {
+        case 'All':
+          orderBy = 'createdDate desc';
+          break;
+        case 'Popular':
+          break;
+        case 'New':
+          orderBy = 'createdDate desc';
+          break;
+        default:
+      }
+
+      return ArtworkApi()
+          .gets(
         skip,
         top: top,
+        filter: 'status eq \'Available\'',
+        count: 'true',
+        orderBy: orderBy,
         expand: 'artworkReviews,arts,createdByNavigation(expand=rank)',
-      );
+      )
+          .then((artworks) {
+        if (top > artworks.count!) {
+          top = artworks.count!;
+        }
+
+        return artworks;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get artworks failed');
     }
@@ -450,11 +503,61 @@ class _PopularServicesState extends State<PopularServices> {
     return null;
   }
 
+  void scrollUp() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  void scrollListener() {
+    if (_isShrink != isScrollDown) {
+      setState(() {
+        isScrollDown = _isShrink;
+      });
+    }
+
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (count % top == 0) {
+        skip = count;
+
+        setState(() {
+          artworks = artworks.then((artworks) async {
+            artworks!.value.addAll((await getArtworks())!.value);
+
+            count += artworks.value.length - count;
+
+            return artworks;
+          });
+        });
+      }
+    }
+  }
+
   void onArtworkDetail(String id) {
     context.goNamed(
       '${ArtworkDetailRoute.name} in',
       pathParameters: {'artworkId': id},
       queryParameters: {'tab': widget.tab},
+    );
+  }
+
+  void onChangeTab(String tab) {
+    context.goNamed(ArtworkRoute.name, queryParameters: {'tab': tab});
+
+    skip = 0;
+    top = 10;
+    count = 10;
+
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        setState(() {
+          artworks = getArtworks();
+        });
+      },
     );
   }
 }

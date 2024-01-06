@@ -81,6 +81,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
     super.initState();
 
     artwork = getArtwork();
+
     _scrollController = ScrollController()..addListener(_scrollListener);
     tabController = TabController(length: 3, vsync: this);
   }
