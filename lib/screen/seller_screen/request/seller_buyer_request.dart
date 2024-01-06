@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/invite_api.dart';
 import '../../../data/apis/requirement_api.dart';
@@ -12,7 +14,6 @@ import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../common/popUp/popup_1.dart';
-import 'buyer_request_details.dart';
 
 class SellerBuyerReq extends StatefulWidget {
   const SellerBuyerReq({Key? key}) : super(key: key);
@@ -174,7 +175,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                             padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
                               onTap: () {
-                                onDetail();
+                                onDetail(snapshot.data!.value[i].id.toString());
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10.0),
@@ -325,7 +326,8 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                             padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
                               onTap: () {
-                                onDetail();
+                                onDetail(snapshot.data!.value[i].requirement!.id
+                                    .toString());
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10.0),
@@ -569,8 +571,8 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
     }
   }
 
-  void onDetail() {
-    const BuyerRequestDetails().launch(context);
+  void onDetail(String id) {
+    context.goNamed(JobDetailRoute.name, pathParameters: {'jobId': id});
   }
 
   void onSendOffer() {

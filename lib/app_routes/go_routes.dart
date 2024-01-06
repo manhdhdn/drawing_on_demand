@@ -28,6 +28,7 @@ import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/home/seller_home_screen.dart';
 import '../screen/seller_screen/profile/seller_profile.dart';
 import '../screen/seller_screen/profile/seller_profile_details.dart';
+import '../screen/seller_screen/request/buyer_request_details.dart';
 import '../screen/seller_screen/request/seller_buyer_request.dart';
 import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
@@ -99,7 +100,7 @@ class AppRoutes {
                         path: JobDetailRoute.tag,
                         name: JobDetailRoute.name,
                         builder: (context, state) {
-                          return JobDetails(
+                          return BuyerRequestDetails(
                             id: state.pathParameters['jobId'],
                           );
                         },

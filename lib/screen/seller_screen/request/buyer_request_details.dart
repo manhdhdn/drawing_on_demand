@@ -1,19 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:photo_view/photo_view.dart';
 
+import '../../../data/apis/rank_api.dart';
+import '../../../data/apis/requirement_api.dart';
+import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../common/popUp/popup_1.dart';
 
 class BuyerRequestDetails extends StatefulWidget {
-  const BuyerRequestDetails({Key? key}) : super(key: key);
+  final String? id;
+
+  const BuyerRequestDetails({Key? key, this.id}) : super(key: key);
 
   @override
   State<BuyerRequestDetails> createState() => _BuyerRequestDetailsState();
 }
 
 class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
-  //__________send_Offer_PopUp________________________________________________
+  late Future<Requirement?> requirement;
+
+  int maxConnect = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    requirement = getRequirement();
+  }
+
   void sendOfferPopUp() {
     showDialog(
       barrierDismissible: false,
@@ -50,33 +67,18 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         centerTitle: true,
       ),
       bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(color: kWhite),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: Button(
-                containerBg: kWhite,
-                borderColor: Colors.red,
-                buttonText: 'Cancel Offer',
-                textColor: Colors.red,
-                onPressed: () {},
-              ),
-            ),
-            Expanded(
-              child: Button(
-                containerBg: kPrimaryColor,
-                borderColor: kPrimaryColor,
-                buttonText: 'Send Offer',
-                textColor: kWhite,
-                onPressed: () {
-                  setState(() {
-                    sendOfferPopUp();
-                  });
-                },
-              ),
-            ),
-          ],
+        child: Button(
+          containerBg: kPrimaryColor,
+          borderColor: kPrimaryColor,
+          buttonText: 'Send Offer',
+          textColor: kWhite,
+          onPressed: () {
+            setState(() {
+              sendOfferPopUp();
+            });
+          },
         ),
       ),
       body: Padding(
@@ -92,137 +94,311 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
               topRight: Radius.circular(30.0),
             ),
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: kWhite,
-                    border: Border.all(color: kBorderColorTextField),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: kBorderColorTextField,
-                        spreadRadius: 0.2,
-                        blurRadius: 4.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
+          child: FutureBuilder(
+            future: requirement,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Container(
-                          height: 44,
-                          width: 44,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage('images/profile1.png'),
-                              fit: BoxFit.cover,
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: kWhite,
+                          border: Border.all(color: kBorderColorTextField),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: kBorderColorTextField,
+                              spreadRadius: 0.2,
+                              blurRadius: 4.0,
+                              offset: Offset(0, 2),
                             ),
-                          ),
+                          ],
                         ),
-                        title: Text(
-                          'Shaidul Islam',
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '28 Jun 2023',
-                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                        ),
-                      ),
-                      const Divider(
-                        height: 0,
-                        thickness: 1.0,
-                        color: kBorderColorTextField,
-                      ),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        'I Need UI UX Designer',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 5.0),
-                      Text(
-                        'Lorem ipsum dolor sit amet consectetur. Elementum nulla quis nunc Lorem ipsum dolor sit amet consectetur. O rci pulvinar sit nec donec pellentesque ve nenatis nunc vel pretium. Dictumst bib en dum pharetra hendrerit tortor nisl. Nulla accumsan ',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const SizedBox(height: 20.0),
-                      RichText(
-                        text: TextSpan(
-                            text: 'Category: ',
-                            style: kTextStyle.copyWith(
-                                color: kSubTitleColor,
-                                fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: 'UI UX Designer',
-                                style:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              )
-                            ]),
-                      ),
-                      const SizedBox(height: 10.0),
-                      RichText(
-                        text: TextSpan(
-                            text: 'Duration: ',
-                            style: kTextStyle.copyWith(
-                                color: kSubTitleColor,
-                                fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: '3 Days',
-                                style:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              )
-                            ]),
-                      ),
-                      const SizedBox(height: 10.0),
-                      RichText(
-                        text: TextSpan(
-                            text: 'Price: ',
-                            style: kTextStyle.copyWith(
-                                color: kSubTitleColor,
-                                fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: '$currencySign 50',
-                                style:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              )
-                            ]),
-                      ),
-                      const SizedBox(height: 10.0),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Offer Sent: ',
-                          style: kTextStyle.copyWith(
-                              color: kSubTitleColor,
-                              fontWeight: FontWeight.bold),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextSpan(
-                              text: '17',
-                              style: kTextStyle.copyWith(color: kNeutralColor),
-                            )
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: Container(
+                                height: 44,
+                                width: 44,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(snapshot.data!
+                                            .createdByNavigation!.avatar ??
+                                        defaultImage),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                snapshot.data!.createdByNavigation!.name!,
+                                style: kTextStyle.copyWith(
+                                    color: kNeutralColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                DateFormat('dd-MM-yyyy')
+                                    .format(snapshot.data!.createdDate!),
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
+                              ),
+                            ),
+                            const Divider(
+                              height: 0,
+                              thickness: 1.0,
+                              color: kBorderColorTextField,
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              snapshot.data!.title!,
+                              style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              snapshot.data!.description!,
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                            ),
+                            const SizedBox(height: 20.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Category: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data!.category!.name,
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Material: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data!.material!.name,
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Surface: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data!.surface!.name,
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data!.sizes!.isNotEmpty
+                                    ? snapshot.data!.sizes!.length
+                                    : 1,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 10.0),
+                                      RichText(
+                                        text: TextSpan(
+                                          text: 'Pieces: ',
+                                          style: kTextStyle.copyWith(
+                                            color: index == 0
+                                                ? kSubTitleColor
+                                                : kWhite,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: snapshot.data!.pieces
+                                                  .toString(),
+                                              style: kTextStyle.copyWith(
+                                                color: index == 0
+                                                    ? kNeutralColor
+                                                    : kWhite,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: snapshot.data!.sizes!
+                                                          .isNotEmpty
+                                                      ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
+                                                      : null,
+                                                  style: kTextStyle.copyWith(
+                                                    color: kNeutralColor,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                            const SizedBox(height: 10.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Quantity: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data!.quantity.toString(),
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Budget: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: NumberFormat.simpleCurrency(
+                                      locale: 'vi-VN',
+                                    ).format(snapshot.data!.budget),
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Connect require: ',
+                                style: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: calculateConnect(
+                                        snapshot.data!.budget!),
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0)
+                                .visible(snapshot.data!.image != null),
+                            Text(
+                              'Attach file:',
+                              style: kTextStyle.copyWith(
+                                color: kSubTitleColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ).visible(snapshot.data!.image != null),
+                            const SizedBox(height: 8.0)
+                                .visible(snapshot.data!.image != null),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  width: context.width() * 0.85,
+                                  height: context.width() * 0.85 * 0.7,
+                                  child: PhotoView(
+                                    backgroundDecoration: BoxDecoration(
+                                      color: kDarkWhite,
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    imageProvider: NetworkImage(
+                                      snapshot.data!.image ?? defaultImage,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ).visible(snapshot.data!.image != null),
                           ],
                         ),
                       ),
                     ],
                   ),
+                );
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
     );
+  }
+
+  Future<Requirement?> getRequirement() async {
+    try {
+      await RankApi().gets(0, orderBy: 'connect').then((ranks) {
+        maxConnect = ranks.value.last.connect!;
+      });
+
+      return RequirementApi().getOne(
+        widget.id!,
+        'createdByNavigation,category,surface,material,sizes',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get requirement detail failed');
+    }
+
+    return null;
+  }
+
+  String calculateConnect(double budget) {
+    int connect = budget ~/ 1000000;
+
+    if (connect < 1) {
+      connect = 1;
+    }
+
+    if (connect > maxConnect) {
+      connect = maxConnect;
+    }
+
+    return connect.toString();
   }
 }
