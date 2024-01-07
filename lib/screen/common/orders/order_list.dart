@@ -1605,7 +1605,7 @@ class _OrderListState extends State<OrderList> {
   }
 
   void onDetail(String id) {
-    context.goNamed(OrderDetailRoute.name, pathParameters: {'id': id});
+    context.goNamed(OrderDetailRoute.name, pathParameters: {'orderId': id});
   }
 
   void refresh() {

@@ -12,7 +12,10 @@ class ButtonGlobal extends StatelessWidget {
   var onPressed;
 
   // ignore: use_key_in_widget_constructors
-  ButtonGlobal({required this.buttontext, required this.buttonDecoration, required this.onPressed});
+  ButtonGlobal(
+      {required this.buttontext,
+      required this.buttonDecoration,
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,10 @@ class ButtonGlobal extends StatelessWidget {
         child: Center(
           child: Text(
             buttontext,
-            style: kTextStyle.copyWith(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+                fontSize: 20.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -43,7 +49,11 @@ class ButtonGlobalWithoutIcon extends StatelessWidget {
   final Color buttonTextColor;
 
   // ignore: use_key_in_widget_constructors
-  ButtonGlobalWithoutIcon({required this.buttontext, required this.buttonDecoration, required this.onPressed, required this.buttonTextColor});
+  ButtonGlobalWithoutIcon(
+      {required this.buttontext,
+      required this.buttonDecoration,
+      required this.onPressed,
+      required this.buttonTextColor});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +115,10 @@ class ButtonGlobalWithIcon extends StatelessWidget {
             const SizedBox(width: 5.0),
             Text(
               buttontext,
-              style: GoogleFonts.jost(fontSize: 20.0, color: buttonTextColor),
+              style: GoogleFonts.jost(
+                fontSize: 20.0,
+                color: buttonTextColor,
+              ),
             ),
           ],
         ),

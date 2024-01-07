@@ -15,10 +15,16 @@ import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 
 class SellerBuyerReq extends StatefulWidget {
+  static dynamic state;
+
   const SellerBuyerReq({Key? key}) : super(key: key);
 
   @override
   State<SellerBuyerReq> createState() => _SellerBuyerReqState();
+
+  static refresh() {
+    state.refresh();
+  }
 }
 
 class _SellerBuyerReqState extends State<SellerBuyerReq> {
@@ -51,6 +57,8 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
   @override
   void initState() {
     super.initState();
+
+    SellerBuyerReq.state = this;
 
     requirements = getRequirements();
     invites = getInvites();
@@ -460,10 +468,11 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
           .gets(
         requirementSkip,
         top: requirementTop,
-        filter: 'status eq \'Public\'',
+        filter:
+            'status eq \'Public\' and proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
         count: 'true',
         orderBy: 'createdDate desc',
-        expand: 'createdByNavigation,category',
+        expand: 'createdByNavigation,category,proposals',
       )
           .then((requirements) {
         if (requirements.count! < requirementCount) {
@@ -486,7 +495,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         inviteSkip,
         top: inviteTop,
         filter:
-            'receivedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and requirement/status in (\'Private\',\'Public\')',
+            'receivedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and requirement/status in (\'Private\',\'Public\') and requirement/proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'requirement(expand=createdByNavigation,category)',
@@ -558,5 +567,12 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
 
   void onSendOffer(String id) {
     context.goNamed(JobOfferRoute.name, pathParameters: {'jobId': id});
+  }
+
+  void refresh() {
+    setState(() {
+      requirements = getRequirements();
+      invites = getInvites();
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'package:drawing_on_demand/data/models/account.dart';
+import 'package:drawing_on_demand/data/models/artwork.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
@@ -28,6 +30,8 @@ class Proposal {
   Guid? requirementId;
   Guid? createdBy;
   Guid? artworkId;
+  Account? createdByNavigation;
+  Artwork? artwork;
 
   Proposal({
     this.id,
@@ -51,6 +55,11 @@ class Proposal {
     requirementId = Guid(json['RequirementId']);
     createdBy = Guid(json['CreatedBy']);
     artworkId = Guid(json['ArtworkId']);
+    createdByNavigation = json['CreatedByNavigation'] != null
+        ? Account.fromJson(json['CreatedByNavigation'])
+        : null;
+    artwork =
+        json['Artwork'] != null ? Artwork.fromJson(json['Artwork']) : null;
   }
 
   Map<String, dynamic> toJson() {

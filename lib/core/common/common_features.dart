@@ -215,7 +215,7 @@ void onAddToCart(Artwork artwork) async {
   }
 
   try {
-    OrderDetail orderDetai = OrderDetail(
+    OrderDetail orderDetail = OrderDetail(
       id: Guid.newGuid,
       price: artwork.price,
       quantity: 1,
@@ -224,7 +224,7 @@ void onAddToCart(Artwork artwork) async {
       orderId: order.id,
     );
 
-    await OrderDetailApi().postOne(orderDetai);
+    await OrderDetailApi().postOne(orderDetail);
 
     Fluttertoast.showToast(msg: 'Add to cart successfully');
   } catch (error) {

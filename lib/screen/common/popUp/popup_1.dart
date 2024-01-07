@@ -1,25 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
-import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_api.dart';
-import '../../../data/apis/requirement_api.dart';
-import '../../../data/models/requirement.dart';
 import '../../seller_screen/profile/seller_profile.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../../seller_screen/request/create_customer_offer.dart';
 import '../authentication/log_in.dart';
 import '../authentication/opt_verification.dart';
 
@@ -269,162 +261,6 @@ class _SellerAddSkillPopUpState extends State<SellerAddSkillPopUp> {
         ),
       ),
     );
-  }
-}
-
-class InvitePopUp extends StatefulWidget {
-  const InvitePopUp({Key? key}) : super(key: key);
-
-  @override
-  State<InvitePopUp> createState() => _InvitePopUpState();
-}
-
-class _InvitePopUpState extends State<InvitePopUp> {
-  List<Requirement> requirements = [];
-
-  Guid? selectedRequirement;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getRequirements();
-  }
-
-  DropdownButton<Guid> getRequirement() {
-    List<DropdownMenuItem<Guid>> dropDownItems = [];
-    for (Requirement des in requirements) {
-      var item = DropdownMenuItem(
-        value: des.id,
-        child: Text(des.status == 'Private'
-            ? '${des.title!} - ${AppLocalizations.of(context)!.private}'
-            : des.title!),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      icon: const Icon(FeatherIcons.chevronDown),
-      items: dropDownItems,
-      value: selectedRequirement,
-      style: kTextStyle.copyWith(
-        color: kLightNeutralColor,
-      ),
-      isExpanded: true,
-      menuMaxHeight: menuMaxHeight,
-      onChanged: (value) {
-        setState(() {
-          selectedRequirement = value!;
-        });
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Choose Requirement',
-                  style: kTextStyle.copyWith(color: kNeutralColor),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    onCancel();
-                  },
-                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            FormField(
-              builder: (FormFieldState<dynamic> field) {
-                return InputDecorator(
-                  decoration: kInputDecoration.copyWith(
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8.0),
-                      ),
-                      borderSide:
-                          BorderSide(color: kBorderColorTextField, width: 2),
-                    ),
-                    contentPadding: const EdgeInsets.all(7.0),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelText: 'Requirement',
-                    labelStyle: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
-                  ),
-                  child: DropdownButtonHideUnderline(child: getRequirement()),
-                );
-              },
-            ),
-            const SizedBox(height: 10.0),
-            Row(
-              children: [
-                Expanded(
-                  child: Button(
-                    containerBg: kWhite,
-                    borderColor: Colors.red,
-                    buttonText: 'Cancel',
-                    textColor: Colors.red,
-                    onPressed: () {
-                      onCancel();
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Button(
-                    containerBg: kPrimaryColor,
-                    borderColor: Colors.transparent,
-                    buttonText: 'Invite',
-                    textColor: kWhite,
-                    onPressed: () {
-                      onInvite();
-                    },
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  void getRequirements() async {
-    try {
-      var response = await RequirementApi().gets(
-        0,
-        orderBy: 'status,title',
-        filter:
-            'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Processing\' and status ne \'Completed\' and not endswith(status, \'Cancelled\')',
-      );
-
-      if (response.value.isNotEmpty) {
-        setState(() {
-          requirements = response.value;
-          selectedRequirement = response.value.first.id!;
-        });
-      }
-    } catch (error) {
-      Fluttertoast.showToast(msg: 'Get requirement failed');
-    }
-  }
-
-  void onCancel() {
-    GoRouter.of(context).pop(null);
-  }
-
-  void onInvite() {
-    GoRouter.of(context).pop(selectedRequirement.toString());
   }
 }
 
@@ -1023,16 +859,12 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
               height: 124,
               width: 124,
               decoration: BoxDecoration(
-                color: kPrimaryColor,
+                color: kPrimaryColor.withOpacity(0.2),
                 shape: BoxShape.circle,
-                gradient: LinearGradient(colors: [
-                  kPrimaryColor,
-                  kPrimaryColor.withOpacity(0.3),
-                ], begin: Alignment.bottomRight, end: Alignment.topLeft),
               ),
               child: const Icon(
                 Icons.check_rounded,
-                color: kWhite,
+                color: kPrimaryColor,
                 size: 50,
               ),
             ),
@@ -1046,107 +878,6 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
             const SizedBox(height: 10.0),
             Text(
               'Your Earned \$5.00',
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20.0),
-            GestureDetector(
-              onTap: () {
-                setState(
-                  () {
-                    finish(context);
-                  },
-                );
-              },
-              child: Container(
-                height: 40,
-                width: 135,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: kPrimaryColor),
-                child: Center(
-                  child: Text(
-                    'Got it!',
-                    style: kTextStyle.copyWith(
-                        color: kWhite, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class InviteSuccessPopUp extends StatefulWidget {
-  const InviteSuccessPopUp({Key? key}) : super(key: key);
-
-  @override
-  State<InviteSuccessPopUp> createState() => _InviteSuccessPopUpState();
-}
-
-class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Invite Successful',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => finish(context),
-                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
-                ),
-              ],
-            ),
-            const Divider(
-              thickness: 1.0,
-              color: kBorderColorTextField,
-            ),
-            const SizedBox(height: 20.0),
-            Container(
-              height: 124,
-              width: 124,
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                shape: BoxShape.circle,
-                gradient: LinearGradient(colors: [
-                  kPrimaryColor,
-                  kPrimaryColor.withOpacity(0.3),
-                ], begin: Alignment.bottomRight, end: Alignment.topLeft),
-              ),
-              child: const Icon(
-                Icons.check_rounded,
-                color: kWhite,
-                size: 50,
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            Text(
-              'Your invite has been sent successfully.',
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(color: kLightNeutralColor),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              'Please wait for Artist\'s response!',
               maxLines: 1,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(
@@ -1228,7 +959,7 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Thank you so much you\'ve just publish your review',
+              'Thank you so much, you\'ve just publish your review',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -1254,176 +985,6 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
     finish(context);
 
     context.goNamed(OrderRoute.name);
-  }
-}
-
-class SendOfferPopUp extends StatefulWidget {
-  const SendOfferPopUp({Key? key}) : super(key: key);
-
-  @override
-  State<SendOfferPopUp> createState() => _SendOfferPopUpState();
-}
-
-class _SendOfferPopUpState extends State<SendOfferPopUp> {
-  List<String> titleList = [
-    'Mobile UI UX design or app design',
-    'Make a custom font for your projects',
-    'MAke a html Template for your website',
-    'Make Flyer for your project',
-  ];
-  List<String> selectedTitleList = ['Mobile UI UX design or app design'];
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              children: [
-                Text(
-                  'Select a Service to offer',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => finish(context),
-                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
-                ),
-              ],
-            ),
-          ),
-          HorizontalList(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            physics: const BouncingScrollPhysics(),
-            spacing: 10.0,
-            itemCount: titleList.length,
-            itemBuilder: (_, i) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTitleList.contains(titleList[i])
-                        ? selectedTitleList.remove(titleList[i])
-                        : selectedTitleList.add(
-                            titleList[i],
-                          );
-                  });
-                },
-                child: Container(
-                  height: 154,
-                  width: 156,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: selectedTitleList.contains(titleList[i])
-                            ? kPrimaryColor
-                            : kBorderColorTextField,
-                      ),
-                      borderRadius: BorderRadius.circular(6.0),
-                      color: kWhite),
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.topLeft,
-                        children: [
-                          Container(
-                            height: 99,
-                            width: 154,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                              image: DecorationImage(
-                                  image: AssetImage('images/file.png'),
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  selectedTitleList.contains(titleList[i])
-                                      ? Icons.check_circle
-                                      : Icons.circle_outlined,
-                                  color:
-                                      selectedTitleList.contains(titleList[i])
-                                          ? kPrimaryColor
-                                          : kSubTitleColor,
-                                ),
-                                const Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isFavorite = !isFavorite;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 24,
-                                    width: 24,
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle),
-                                    child: isFavorite
-                                        ? const Center(
-                                            child: Icon(
-                                              Icons.favorite,
-                                              size: 18.0,
-                                              color: Colors.red,
-                                            ),
-                                          )
-                                        : const Center(
-                                            child: Icon(
-                                            Icons.favorite_border,
-                                            size: 18.0,
-                                          )),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Text(
-                          titleList[i],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 20.0),
-          ButtonGlobalWithoutIcon(
-              buttontext: 'Send Offer',
-              buttonDecoration: kButtonDecoration.copyWith(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              onPressed: () {
-                setState(() {
-                  finish(context);
-                  const CreateCustomerOffer().launch(context);
-                });
-              },
-              buttonTextColor: kWhite),
-          const SizedBox(height: 15.0),
-        ],
-      ),
-    );
   }
 }
 

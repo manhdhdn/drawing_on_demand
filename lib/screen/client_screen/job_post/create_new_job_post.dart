@@ -756,6 +756,8 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
           id: Guid.newGuid,
           width: widths[i],
           length: lengths[i],
+          height: 1,
+          weight: 1000,
           requirementId: requirement.id,
         );
 

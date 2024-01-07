@@ -46,6 +46,7 @@ class ChatFunction {
   static Future<void> createChat({
     required dynamic senderId,
     required dynamic receiverId,
+    required String orderId,
   }) async {
     await FirebaseFirestore.instance
         .collection('users')
@@ -66,7 +67,7 @@ class ChatFunction {
         .collection('chats')
         .doc(receiverId)
         .update({
-      'lastMessage': 'artist you want to chat with',
+      'lastMessage': 'Artist on order #$orderId',
       'isSeen': false,
     });
 
@@ -89,7 +90,7 @@ class ChatFunction {
         .collection('chats')
         .doc(senderId)
         .update({
-      'lastMessage': 'want to chat with you',
+      'lastMessage': 'Customer on order #$orderId',
       'isSeen': false,
     });
   }
@@ -103,12 +104,20 @@ class ChatFunction {
         .doc(senderId)
         .collection('chats')
         .doc(receiverId)
-        .set(
+        .update(
           await FirebaseFirestore.instance
               .collection('users')
               .doc(receiverId)
               .get()
-              .then((value) => value.data()!),
+              .then((value) {
+            var data = value.data()!;
+            var newData = {
+              'image': data['image'],
+              'name': data['name'],
+            };
+
+            return newData;
+          }),
         );
 
     await FirebaseFirestore.instance
@@ -116,12 +125,20 @@ class ChatFunction {
         .doc(receiverId)
         .collection('chats')
         .doc(senderId)
-        .set(
+        .update(
           await FirebaseFirestore.instance
               .collection('users')
               .doc(senderId)
               .get()
-              .then((value) => value.data()!),
+              .then((value) {
+            var data = value.data()!;
+            var newData = {
+              'image': data['image'],
+              'name': data['name'],
+            };
+
+            return newData;
+          }),
         );
   }
 

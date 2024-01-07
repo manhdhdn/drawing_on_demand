@@ -52,7 +52,7 @@ class _ClientOrderState extends State<ClientOrder> {
   int heavyServiceTypeId = 5;
   String requiredNote = 'KHONGCHOXEMHANG';
 
-  String status = '';
+  String status = 'Pending';
   double total = 0;
   double discount = 0.3;
   String? discountId;
@@ -459,67 +459,6 @@ class _ClientOrderState extends State<ClientOrder> {
                                                                       .cover),
                                                             ),
                                                           ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                isFavorite =
-                                                                    !isFavorite;
-                                                              });
-                                                            },
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(5.0),
-                                                              child: Container(
-                                                                height: 25,
-                                                                width: 25,
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: Colors
-                                                                          .black12,
-                                                                      blurRadius:
-                                                                          10.0,
-                                                                      spreadRadius:
-                                                                          1.0,
-                                                                      offset:
-                                                                          Offset(
-                                                                              0,
-                                                                              2),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child: isFavorite
-                                                                    ? const Center(
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .favorite,
-                                                                          color:
-                                                                              Colors.red,
-                                                                          size:
-                                                                              16.0,
-                                                                        ),
-                                                                      )
-                                                                    : const Center(
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .favorite_border,
-                                                                          color:
-                                                                              kNeutralColor,
-                                                                          size:
-                                                                              16.0,
-                                                                        ),
-                                                                      ),
-                                                              ),
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
                                                       Padding(
@@ -639,8 +578,7 @@ class _ClientOrderState extends State<ClientOrder> {
                                               const SizedBox(width: 15.0),
                                             ],
                                           ),
-                                        ),
-                                        const SizedBox(height: 10.0),
+                                        ).visible(status != 'Pending'),
                                       ],
                                     ),
                                   );
@@ -659,273 +597,281 @@ class _ClientOrderState extends State<ClientOrder> {
                       );
                     },
                   ),
-                  const SizedBox(height: 15.0),
-                  SizedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Delivery Address',
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Row(
+                  Column(
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Checkbox(
-                              activeColor: kPrimaryColor,
-                              visualDensity:
-                                  const VisualDensity(horizontal: -4),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0),
+                            Text(
+                              'Delivery Address',
+                              style: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: kPrimaryColor,
+                                  visualDensity:
+                                      const VisualDensity(horizontal: -4),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                  ),
+                                  value: isCheck,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isCheck = !isCheck;
+                                    });
+
+                                    if (!isCheck) {
+                                      setState(() {
+                                        nameController.text = jsonDecode(
+                                            PrefUtils().getAccount())['Name'];
+                                        phoneController.text = jsonDecode(
+                                            PrefUtils().getAccount())['Phone'];
+                                        addressController.text = jsonDecode(
+                                            PrefUtils()
+                                                .getAccount())['Address'];
+                                      });
+
+                                      getProvince();
+                                    }
+                                  },
+                                ),
+                                const SizedBox(width: 2.0),
+                                Text(
+                                  'Use this address instead',
+                                  style: kTextStyle.copyWith(
+                                      color: kSubTitleColor),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Name',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: TextFormField(
+                              keyboardType: TextInputType.name,
+                              cursorColor: kNeutralColor,
+                              textInputAction: TextInputAction.next,
+                              decoration: kInputDecoration.copyWith(
+                                labelText: 'Receiver name',
+                                labelStyle: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontSize: 14.0,
+                                ),
+                                hintText: 'Enter receiver name',
+                                hintStyle: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontSize: 14.0,
+                                ),
+                                focusColor: kNeutralColor,
+                                border: const OutlineInputBorder(),
                               ),
-                              value: isCheck,
-                              onChanged: (value) {
-                                setState(() {
-                                  isCheck = !isCheck;
-                                });
-
-                                if (!isCheck) {
-                                  setState(() {
-                                    nameController.text = jsonDecode(
-                                        PrefUtils().getAccount())['Name'];
-                                    phoneController.text = jsonDecode(
-                                        PrefUtils().getAccount())['Phone'];
-                                    addressController.text = jsonDecode(
-                                        PrefUtils().getAccount())['Address'];
-                                  });
-
-                                  getProvince();
-                                }
+                              readOnly: !isCheck,
+                              controller: nameController,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Phone',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                              cursorColor: kNeutralColor,
+                              textInputAction: TextInputAction.next,
+                              decoration: kInputDecoration.copyWith(
+                                labelText: 'Receiver phone',
+                                labelStyle: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontSize: 14.0,
+                                ),
+                                hintText: 'Enter receiver phone',
+                                hintStyle: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontSize: 14.0,
+                                ),
+                                focusColor: kNeutralColor,
+                                border: const OutlineInputBorder(),
+                              ),
+                              readOnly: !isCheck,
+                              controller: phoneController,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Province',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: FormField(
+                              builder: (FormFieldState<dynamic> field) {
+                                return InputDecorator(
+                                  decoration: kInputDecoration.copyWith(
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: kBorderColorTextField,
+                                          width: 2),
+                                    ),
+                                    contentPadding: const EdgeInsets.all(7.0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Choose a Province',
+                                    labelStyle: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: getProvinces(),
+                                  ),
+                                );
                               },
                             ),
-                            const SizedBox(width: 2.0),
-                            Text(
-                              'Use this address instead',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'Name',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: TextFormField(
-                          keyboardType: TextInputType.name,
-                          cursorColor: kNeutralColor,
-                          textInputAction: TextInputAction.next,
-                          decoration: kInputDecoration.copyWith(
-                            labelText: 'Receiver name',
-                            labelStyle: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontSize: 14.0,
-                            ),
-                            hintText: 'Enter receiver name',
-                            hintStyle: kTextStyle.copyWith(
-                              color: kSubTitleColor,
-                              fontSize: 14.0,
-                            ),
-                            focusColor: kNeutralColor,
-                            border: const OutlineInputBorder(),
                           ),
-                          readOnly: !isCheck,
-                          controller: nameController,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'Phone',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                        ],
                       ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: TextFormField(
-                          keyboardType: TextInputType.phone,
-                          cursorColor: kNeutralColor,
-                          textInputAction: TextInputAction.next,
-                          decoration: kInputDecoration.copyWith(
-                            labelText: 'Receiver phone',
-                            labelStyle: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontSize: 14.0,
-                            ),
-                            hintText: 'Enter receiver phone',
-                            hintStyle: kTextStyle.copyWith(
-                              color: kSubTitleColor,
-                              fontSize: 14.0,
-                            ),
-                            focusColor: kNeutralColor,
-                            border: const OutlineInputBorder(),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'District',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
                           ),
-                          readOnly: !isCheck,
-                          controller: phoneController,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'Province',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: FormField(
-                          builder: (FormFieldState<dynamic> field) {
-                            return InputDecorator(
-                              decoration: kInputDecoration.copyWith(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: FormField(
+                              builder: (FormFieldState<dynamic> field) {
+                                return InputDecorator(
+                                  decoration: kInputDecoration.copyWith(
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: kBorderColorTextField,
+                                          width: 2),
+                                    ),
+                                    contentPadding: const EdgeInsets.all(7.0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Choose a District',
+                                    labelStyle: kTextStyle.copyWith(
+                                        color: kNeutralColor),
                                   ),
-                                  borderSide: BorderSide(
-                                      color: kBorderColorTextField, width: 2),
-                                ),
-                                contentPadding: const EdgeInsets.all(7.0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Choose a Province',
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: getProvinces(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'District',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: FormField(
-                          builder: (FormFieldState<dynamic> field) {
-                            return InputDecorator(
-                              decoration: kInputDecoration.copyWith(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
+                                  child: DropdownButtonHideUnderline(
+                                    child: getDistricts(),
                                   ),
-                                  borderSide: BorderSide(
-                                      color: kBorderColorTextField, width: 2),
-                                ),
-                                contentPadding: const EdgeInsets.all(7.0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Choose a District',
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: getDistricts(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'Ward',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: FormField(
-                          builder: (FormFieldState<dynamic> field) {
-                            return InputDecorator(
-                              decoration: kInputDecoration.copyWith(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                      color: kBorderColorTextField, width: 2),
-                                ),
-                                contentPadding: const EdgeInsets.all(7.0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Choose a Ward',
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: getWards(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
-                      Text(
-                        'Address',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: context.width() * 0.7,
-                        child: TextFormField(
-                          keyboardType: TextInputType.streetAddress,
-                          cursorColor: kNeutralColor,
-                          textInputAction: TextInputAction.done,
-                          decoration: kInputDecoration.copyWith(
-                            labelText: 'Address detail',
-                            labelStyle: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontSize: 14.0,
+                                );
+                              },
                             ),
-                            hintText: 'Enter address detail',
-                            hintStyle: kTextStyle.copyWith(
-                              color: kSubTitleColor,
-                              fontSize: 14.0,
-                            ),
-                            focusColor: kNeutralColor,
-                            border: const OutlineInputBorder(),
                           ),
-                          readOnly: !isCheck,
-                          controller: addressController,
-                          onEditingComplete: () {
-                            getProvince();
-                          },
-                        ),
-                      )
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Ward',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: FormField(
+                              builder: (FormFieldState<dynamic> field) {
+                                return InputDecorator(
+                                  decoration: kInputDecoration.copyWith(
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: kBorderColorTextField,
+                                          width: 2),
+                                    ),
+                                    contentPadding: const EdgeInsets.all(7.0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Choose a Ward',
+                                    labelStyle: kTextStyle.copyWith(
+                                        color: kNeutralColor),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: getWards(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Address',
+                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: context.width() * 0.7,
+                            child: TextFormField(
+                              keyboardType: TextInputType.streetAddress,
+                              cursorColor: kNeutralColor,
+                              textInputAction: TextInputAction.done,
+                              decoration: kInputDecoration.copyWith(
+                                labelText: 'Address detail',
+                                labelStyle: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontSize: 14.0,
+                                ),
+                                hintText: 'Enter address detail',
+                                hintStyle: kTextStyle.copyWith(
+                                  color: kSubTitleColor,
+                                  fontSize: 14.0,
+                                ),
+                                focusColor: kNeutralColor,
+                                border: const OutlineInputBorder(),
+                              ),
+                              readOnly: !isCheck,
+                              controller: addressController,
+                              onEditingComplete: () {
+                                getProvince();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
                     ],
-                  ),
-                  const SizedBox(height: 20.0),
+                  ).visible(status != 'Pending'),
                   Text(
                     'Payment Method',
                     style: kTextStyle.copyWith(
@@ -1005,7 +951,7 @@ class _ClientOrderState extends State<ClientOrder> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0).visible(status != 'Pending'),
                   Row(
                     children: [
                       Text(
@@ -1021,7 +967,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         style: kTextStyle.copyWith(color: kSubTitleColor),
                       ),
                     ],
-                  ),
+                  ).visible(status != 'Pending'),
                   const SizedBox(height: 10.0),
                   Row(
                     children: [
@@ -1047,8 +993,8 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 5.0),
+                  ).visible(status != 'Pending'),
+                  const SizedBox(height: 5.0).visible(status != 'Pending'),
                   Row(
                     children: [
                       Text(
@@ -1172,7 +1118,10 @@ class _ClientOrderState extends State<ClientOrder> {
           await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
           // ignore: use_build_context_synchronously
-          context.goNamed(OrderRoute.name);
+          context.goNamed(
+            OrderDetailRoute.name,
+            pathParameters: {'orderId': widget.id!},
+          );
 
           return null;
         } else {

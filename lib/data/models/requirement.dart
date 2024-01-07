@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'account.dart';
 import 'category.dart';
 import 'material.dart';
+import 'proposal.dart';
 import 'size.dart';
 import 'surface.dart';
 
@@ -45,6 +46,7 @@ class Requirement {
   Surface? surface;
   Material? material;
   List<Size>? sizes;
+  List<Proposal>? proposals;
 
   Requirement({
     this.id,
@@ -61,11 +63,6 @@ class Requirement {
     this.surfaceId,
     this.materialId,
     this.createdBy,
-    this.createdByNavigation,
-    this.category,
-    this.surface,
-    this.material,
-    this.sizes,
   });
 
   Requirement.fromJson(Map<String, dynamic> json) {
@@ -98,6 +95,13 @@ class Requirement {
         ? List<Size>.from(
             json['Sizes'].map(
               (x) => Size.fromJson(x),
+            ),
+          )
+        : null;
+    proposals = json['Proposals'] != null
+        ? List<Proposal>.from(
+            json['Proposals'].map(
+              (x) => Proposal.fromJson(x),
             ),
           )
         : null;

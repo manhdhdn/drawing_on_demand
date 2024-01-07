@@ -36,7 +36,6 @@ class OrderDetail {
     this.fee,
     this.artworkId,
     this.orderId,
-    this.artwork,
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {

@@ -317,6 +317,15 @@ class AppRoutes {
                               ),
                             ],
                           ),
+                          GoRoute(
+                            path: ArtistProfileDetailRoute.tag,
+                            name: '${ArtistProfileDetailRoute.name} jobOut',
+                            builder: (context, state) {
+                              return SellerProfileDetails(
+                                id: state.pathParameters['id'],
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ],
@@ -334,7 +343,7 @@ class AppRoutes {
                         name: OrderDetailRoute.name,
                         builder: (context, state) {
                           return OrderDetailScreen(
-                            id: state.pathParameters['id'],
+                            id: state.pathParameters['orderId'],
                           );
                         },
                       ),

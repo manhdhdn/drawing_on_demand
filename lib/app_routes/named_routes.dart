@@ -101,7 +101,7 @@ class OrderRoute {
 
 /// Order Detail
 class OrderDetailRoute {
-  static const String tag = 'detail/:id';
+  static const String tag = 'detail/:orderId';
   static const String name = 'Order Detail';
 }
 

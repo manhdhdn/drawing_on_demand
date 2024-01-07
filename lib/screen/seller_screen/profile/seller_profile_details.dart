@@ -16,7 +16,7 @@ import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/category.dart';
 import '../../../data/models/invite.dart';
-import '../../common/popUp/popup_1.dart';
+import '../../common/popUp/popup_2.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import 'seller_edit_profile_details.dart';
@@ -736,7 +736,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     try {
       return ArtworkApi().gets(
         0,
-        filter: 'createdBy eq ${widget.id}',
+        filter: 'createdBy eq ${widget.id} and status ne \'Proposed\'',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews,category',

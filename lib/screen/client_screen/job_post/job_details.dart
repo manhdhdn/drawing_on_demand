@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:drawing_on_demand/data/apis/size_api.dart';
+import 'package:drawing_on_demand/data/models/proposal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +11,17 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/order_api.dart';
+import '../../../data/apis/order_detail_api.dart';
+import '../../../data/apis/proposal_api.dart';
 import '../../../data/apis/requirement_api.dart';
+import '../../../data/models/order.dart';
+import '../../../data/models/order_detail.dart';
 import '../../../data/models/requirement.dart';
+import '../../../data/models/size.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
@@ -25,7 +39,7 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   late Future<Requirement?> requirement;
 
-  String status = 'Public';
+  String status = 'Cancelled';
 
   @override
   void initState() {
@@ -58,6 +72,70 @@ class _JobDetailsState extends State<JobDetails> {
 
     // ignore: use_build_context_synchronously
     result! ? {GoRouter.of(context).pop(), JobPost.refresh()} : null;
+  }
+
+  Future<bool> acceptProposalPopUp() async {
+    var result = await showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const AcceptProposalPopUp(),
+            );
+          },
+        );
+      },
+    );
+
+    return result!;
+  }
+
+  Future<bool> rejectProposalPopUp() async {
+    var result = await showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const RejectProposalPopUp(),
+            );
+          },
+        );
+      },
+    );
+
+    return result!;
+  }
+
+  void acceptProposalSuccessPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const AcceptProposalSuccessPopUp(),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -140,7 +218,8 @@ class _JobDetailsState extends State<JobDetails> {
                   },
                   buttonTextColor: kWhite,
                 ),
-              ).visible(!status.contains('Cancelled')),
+              ).visible(!status.contains('Cancelled') &&
+                  !status.contains('Processing')),
             ],
           ),
         ),
@@ -576,6 +655,319 @@ class _JobDetailsState extends State<JobDetails> {
                                       ),
                               ],
                             ),
+                            const SizedBox(height: 8.0)
+                                .visible(snapshot.data!.proposals!.isNotEmpty),
+                            Text(
+                              'Proposals:',
+                              style: kTextStyle.copyWith(
+                                color: kSubTitleColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ).visible(snapshot.data!.proposals!.isNotEmpty),
+                            const SizedBox(height: 8.0),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.proposals!.length,
+                              itemBuilder: (context, index) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                      dividerColor: Colors.transparent),
+                                  child: ExpansionTile(
+                                    initiallyExpanded: true,
+                                    tilePadding:
+                                        const EdgeInsets.only(bottom: 5.0),
+                                    childrenPadding: EdgeInsets.zero,
+                                    collapsedIconColor: kLightNeutralColor,
+                                    iconColor: kLightNeutralColor,
+                                    title: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            onArtistDetail(snapshot
+                                                .data!
+                                                .proposals![index]
+                                                .createdByNavigation!
+                                                .id
+                                                .toString());
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: 32,
+                                                width: 32,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(snapshot
+                                                              .data!
+                                                              .proposals![index]
+                                                              .createdByNavigation!
+                                                              .avatar ??
+                                                          defaultImage),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 5.0),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Artist',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
+                                                  ),
+                                                  Text(
+                                                    snapshot
+                                                        .data!
+                                                        .proposals![index]
+                                                        .createdByNavigation!
+                                                        .name!,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        IconButton(
+                                          onPressed: () async {
+                                            if (snapshot.data!.proposals![index]
+                                                    .status ==
+                                                'Pending') {
+                                              if (await rejectProposalPopUp()) {
+                                                onReject(snapshot
+                                                    .data!.proposals![index]);
+                                              }
+                                            }
+                                          },
+                                          icon: const Icon(
+                                            Icons.cancel,
+                                            color: Colors.red,
+                                          ),
+                                        ).visible(snapshot.data!
+                                                .proposals![index].status !=
+                                            'Accepted'),
+                                        IconButton(
+                                          onPressed: () async {
+                                            if (snapshot.data!.proposals![index]
+                                                    .status ==
+                                                'Pending') {
+                                              if (await acceptProposalPopUp()) {
+                                                onAccept(
+                                                    snapshot.data!.sizes!,
+                                                    snapshot.data!
+                                                        .proposals![index],
+                                                    snapshot.data!.proposals!);
+                                              }
+                                            }
+                                          },
+                                          icon: const Icon(
+                                            Icons.check_circle_rounded,
+                                            color: kPrimaryColor,
+                                          ),
+                                        ).visible(snapshot.data!
+                                                .proposals![index].status !=
+                                            'Rejected'),
+                                        Text(
+                                          snapshot
+                                              .data!.proposals![index].status!,
+                                          style: kTextStyle.copyWith(
+                                            color: kSubTitleColor,
+                                            fontSize: 14,
+                                          ),
+                                        ).visible(snapshot.data!
+                                                .proposals![index].status !=
+                                            'Pending')
+                                      ],
+                                    ),
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
+                                        child: GestureDetector(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: context.height() * 0.135,
+                                            decoration: BoxDecoration(
+                                              color: kWhite,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                  color: kBorderColorTextField),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: kDarkWhite,
+                                                  blurRadius: 5.0,
+                                                  spreadRadius: 2.0,
+                                                  offset: Offset(0, 5),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Stack(
+                                                  alignment: Alignment.topLeft,
+                                                  children: [
+                                                    Container(
+                                                      height: context.height() *
+                                                          0.135,
+                                                      width: context.height() *
+                                                          0.135,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  8.0),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  8.0),
+                                                        ),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                snapshot
+                                                                    .data!
+                                                                    .proposals![
+                                                                        index]
+                                                                    .artwork!
+                                                                    .arts!
+                                                                    .first
+                                                                    .image!),
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Flexible(
+                                                        flex: 1,
+                                                        child: SizedBox(
+                                                          width: 190,
+                                                          child: Text(
+                                                            'Introduce',
+                                                            style: kTextStyle.copyWith(
+                                                                color:
+                                                                    kNeutralColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 5.0),
+                                                      Flexible(
+                                                        flex: 4,
+                                                        child: SizedBox(
+                                                          width:
+                                                              context.width() /
+                                                                  2,
+                                                          child: ReadMoreText(
+                                                            snapshot
+                                                                .data!
+                                                                .proposals![
+                                                                    index]
+                                                                .introduction!,
+                                                            style: kTextStyle
+                                                                .copyWith(
+                                                                    color:
+                                                                        kSubTitleColor),
+                                                            trimLines: 3,
+                                                            colorClickableText:
+                                                                kPrimaryColor,
+                                                            trimMode:
+                                                                TrimMode.Line,
+                                                            trimCollapsedText:
+                                                                '..read more',
+                                                            trimExpandedText:
+                                                                ' read less',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 5.0),
+                                                      SizedBox(
+                                                        width: context.width() *
+                                                            0.5,
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Amount: ',
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                color:
+                                                                    kSubTitleColor,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              NumberFormat.simpleCurrency(
+                                                                      locale:
+                                                                          'vi_VN')
+                                                                  .format(snapshot
+                                                                      .data!
+                                                                      .proposals![
+                                                                          index]
+                                                                      .artwork!
+                                                                      .price),
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         );
                       }
@@ -601,7 +993,7 @@ class _JobDetailsState extends State<JobDetails> {
       return RequirementApi()
           .getOne(
         widget.id!,
-        'category,surface,material,sizes',
+        'category,surface,material,sizes,proposals(expand=createdByNavigation(expand=rank),artwork(expand=arts))',
       )
           .then((value) {
         setState(() {
@@ -629,5 +1021,109 @@ class _JobDetailsState extends State<JobDetails> {
   void onInvite() {
     context.goNamed('${ArtistRoute.name} job',
         pathParameters: {'jobId': widget.id!});
+  }
+
+  void onArtistDetail(String id) {
+    context.goNamed(
+      '${ArtistProfileDetailRoute.name} jobOut',
+      pathParameters: {
+        'jobId': widget.id!,
+        'id': id,
+      },
+    );
+  }
+
+  void onReject(Proposal proposal) async {
+    if (proposal.status == 'Pending') {
+      try {
+        ProgressDialogUtils.showProgress(context);
+
+        await ProposalApi().patchOne(proposal.id.toString(), {
+          'Status': 'Rejected',
+        });
+
+        setState(() {
+          requirement = getData();
+        });
+
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+      } catch (error) {
+        Fluttertoast.showToast(msg: 'Reject failed');
+      }
+    }
+  }
+
+  void onAccept(
+      List<Size> sizes, Proposal proposal, List<Proposal> proposals) async {
+    if (proposal.status == 'Pending') {
+      try {
+        ProgressDialogUtils.showProgress(context);
+
+        for (var proposalIL in proposals) {
+          if (proposal.id != proposalIL.id) {
+            await ProposalApi().patchOne(proposalIL.id.toString(), {
+              'Status': 'Rejected',
+            });
+          } else {
+            await ProposalApi().patchOne(proposalIL.id.toString(), {
+              'Status': 'Accepted',
+            });
+          }
+        }
+
+        for (var size in sizes) {
+          await SizeApi().patchOne(size.id.toString(), {
+            'ArtworkId': proposal.artworkId.toString(),
+          });
+        }
+
+        await RequirementApi().patchOne(widget.id!, {
+          'Status': '$status|Processing',
+        });
+
+        var order = Order(
+          id: Guid.newGuid,
+          orderType: 'Requirement',
+          orderDate: DateTime.now(),
+          status: 'Pending',
+          total: 0,
+          orderedBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
+        );
+
+        var orderDetail = OrderDetail(
+          id: Guid.newGuid,
+          price: proposal.artwork!.price,
+          quantity: 1,
+          fee: proposal.createdByNavigation!.rank!.fee,
+          artworkId: proposal.artworkId,
+          orderId: order.id,
+        );
+
+        await OrderApi().postOne(order);
+        await OrderDetailApi().postOne(orderDetail);
+
+        setState(() {
+          requirement = getData();
+        });
+
+        JobPost.refresh();
+
+        ChatFunction.createChat(
+          senderId: jsonDecode(PrefUtils().getAccount())['Id'],
+          receiverId: proposal.createdByNavigation!.id.toString(),
+          orderId: order.id.toString().split('-').first.toUpperCase(),
+        );
+
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+
+        acceptProposalSuccessPopUp();
+      } catch (error) {
+        Fluttertoast.showToast(msg: 'Accept failed');
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+      }
+    }
   }
 }

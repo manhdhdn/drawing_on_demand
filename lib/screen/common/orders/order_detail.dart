@@ -13,7 +13,6 @@ import '../../../data/models/order_detail.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
-import '../../widgets/nothing_yet.dart';
 import 'order_list.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -95,10 +94,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Icon(IconlyBold.chat, color: kPrimaryColor),
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                onPressed: () {
+                  onChat();
+                },
+                icon: const Icon(IconlyBold.chat, color: kPrimaryColor),
+              ),
             ),
           ],
         ),
@@ -253,7 +257,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       const SizedBox(width: 10.0),
                                       Flexible(
                                         child: Text(
-                                          'Mobile UI UX design or app UI UX design',
+                                          snapshot.data!.orderDetails!.first
+                                              .artwork!.title!,
                                           style: kTextStyle.copyWith(
                                               color: kSubTitleColor),
                                           overflow: TextOverflow.ellipsis,
@@ -294,7 +299,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       const SizedBox(width: 10.0),
                                       Flexible(
                                         child: ReadMoreText(
-                                          'Lorem ipsum dolor sit amet consectetur. Tortor sapien aliquam amet elit. Quis varius amet grav ida molestie rhoncus. Lorem ipsum dolor sit amet consectetur. Tortor sapien aliquam amet elit. Quis varius amet grav ida molestie rhoncus.',
+                                          snapshot.data!.orderDetails!.first
+                                              .artwork!.description!,
                                           style: kTextStyle.copyWith(
                                               color: kLightNeutralColor),
                                           trimLines: 3,
@@ -781,8 +787,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
                                       return Column(
                                         children: [
-                                          NothingYet(
-                                              visible: orderDetails.isEmpty),
                                           Padding(
                                             padding: EdgeInsets.zero,
                                             child: ListView.builder(
@@ -949,51 +953,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                                 DecorationImage(image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!), fit: BoxFit.cover),
                                                                           ),
                                                                         ),
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isFavorite = !isFavorite;
-                                                                            });
-                                                                          },
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(5.0),
-                                                                            child:
-                                                                                Container(
-                                                                              height: 25,
-                                                                              width: 25,
-                                                                              decoration: const BoxDecoration(
-                                                                                color: Colors.white,
-                                                                                shape: BoxShape.circle,
-                                                                                boxShadow: [
-                                                                                  BoxShadow(
-                                                                                    color: Colors.black12,
-                                                                                    blurRadius: 10.0,
-                                                                                    spreadRadius: 1.0,
-                                                                                    offset: Offset(0, 2),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              child: isFavorite
-                                                                                  ? const Center(
-                                                                                      child: Icon(
-                                                                                        Icons.favorite,
-                                                                                        color: Colors.red,
-                                                                                        size: 16.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  : const Center(
-                                                                                      child: Icon(
-                                                                                        Icons.favorite_border,
-                                                                                        color: kNeutralColor,
-                                                                                        size: 16.0,
-                                                                                      ),
-                                                                                    ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
                                                                       ],
                                                                     ),
                                                                     Padding(
@@ -1142,5 +1101,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     // orderCompletePopUp();
     context.goNamed('${CheckoutRoute.name} order',
         pathParameters: {'id': widget.id!});
+  }
+
+  void onChat() {
+    context.goNamed(ChatRoute.name, pathParameters: {'id': accountId});
   }
 }
