@@ -7,6 +7,11 @@ class LoginRoute {
   static const String name = 'Login';
 }
 
+class WelcomeRoute {
+  static const String tag = '/welcome';
+  static const String name = 'Welcome';
+}
+
 ///// User
 
 //// Home

@@ -79,7 +79,7 @@ Future<void> pickMultipleImages() async {
     if (images.isEmpty) {
       images.addAll(image);
     } else {
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < (image.length > 3 ? 3 : image.length); i++) {
         try {
           images[i] = image[i];
         } catch (error) {

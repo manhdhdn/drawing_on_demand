@@ -184,6 +184,8 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
                         future: artwork,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            snapshot.data!.arts!.sort(((a, b) => a.createdDate!.compareTo(b.createdDate!)));
+
                             return CarouselSlider.builder(
                               carouselController: _controller,
                               options: CarouselOptions(

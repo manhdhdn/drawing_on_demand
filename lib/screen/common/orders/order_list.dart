@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:drawing_on_demand/screen/widgets/nothing_yet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -110,6 +111,7 @@ class _OrderListState extends State<OrderList> {
                           },
                         ),
                         const SizedBox(height: 15.0),
+                        NothingYet(visible: (isSelected == 'Pending' && pendingOrders.isEmpty) || (isSelected == 'Active' && depositedOrders.isEmpty) || (isSelected == 'Paid' && paidOrders.isEmpty) || (isSelected == 'Completed' && completedOrders.isEmpty) || (isSelected == 'Cancelled' && cancelledOrders.isEmpty)),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),

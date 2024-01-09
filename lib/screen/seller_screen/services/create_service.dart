@@ -48,8 +48,7 @@ class _CreateServiceState extends State<CreateService> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Artworks',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -97,18 +96,13 @@ class _CreateServiceState extends State<CreateService> {
                             height: 213,
                             width: 269,
                             decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('images/emptyservice.png'),
-                                  fit: BoxFit.cover),
+                              image: DecorationImage(image: AssetImage('images/emptyservice.png'), fit: BoxFit.cover),
                             ),
                           ),
                           const SizedBox(height: 20.0),
                           Text(
                             'Empty  Service',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.0),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 24.0),
                           ),
                         ],
                       ).visible(snapshot.data!.value.isEmpty),
@@ -123,16 +117,12 @@ class _CreateServiceState extends State<CreateService> {
                           snapshot.data!.count!,
                           (index) => GestureDetector(
                             onTap: () {
-                              onDetail(snapshot.data!.value
-                                  .elementAt(index)
-                                  .id
-                                  .toString());
+                              onDetail(snapshot.data!.value.elementAt(index).id.toString());
                             },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                border:
-                                    Border.all(color: kBorderColorTextField),
+                                border: Border.all(color: kBorderColorTextField),
                                 boxShadow: const [
                                   BoxShadow(
                                     color: kDarkWhite,
@@ -154,47 +144,7 @@ class _CreateServiceState extends State<CreateService> {
                                             topRight: Radius.circular(8.0),
                                             topLeft: Radius.circular(8.0),
                                           ),
-                                          image: DecorationImage(
-                                              image: NetworkImage(snapshot
-                                                  .data!.value
-                                                  .elementAt(index)
-                                                  .arts!
-                                                  .first
-                                                  .image!),
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isFavorite = !isFavorite;
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: isFavorite
-                                                ? const Center(
-                                                    child: Icon(
-                                                      Icons.favorite,
-                                                      color: Colors.red,
-                                                      size: 18.0,
-                                                    ),
-                                                  )
-                                                : const Center(
-                                                    child: Icon(
-                                                      Icons.favorite_border,
-                                                      color: kNeutralColor,
-                                                      size: 18.0,
-                                                    ),
-                                                  ),
-                                          ),
+                                          image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(index).arts!.first.image!), fit: BoxFit.cover),
                                         ),
                                       ),
                                     ],
@@ -202,23 +152,17 @@ class _CreateServiceState extends State<CreateService> {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          snapshot.data!.value
-                                              .elementAt(index)
-                                              .title!,
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor,
-                                              fontWeight: FontWeight.bold),
+                                          snapshot.data!.value.elementAt(index).title!,
+                                          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 5.0),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             const Icon(
                                               IconlyBold.star,
@@ -227,18 +171,13 @@ class _CreateServiceState extends State<CreateService> {
                                             ),
                                             const SizedBox(width: 2.0),
                                             Text(
-                                              getReviewPoint(snapshot
-                                                  .data!.value
-                                                  .elementAt(index)
-                                                  .artworkReviews!),
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor),
+                                              getReviewPoint(snapshot.data!.value.elementAt(index).artworkReviews!),
+                                              style: kTextStyle.copyWith(color: kNeutralColor),
                                             ),
                                             const SizedBox(width: 2.0),
                                             Text(
                                               '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
-                                              style: kTextStyle.copyWith(
-                                                  color: kLightNeutralColor),
+                                              style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             ),
                                           ],
                                         ),
@@ -246,25 +185,31 @@ class _CreateServiceState extends State<CreateService> {
                                         RichText(
                                           text: TextSpan(
                                             text: 'Price: ',
-                                            style: kTextStyle.copyWith(
-                                                color: kLightNeutralColor),
+                                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
                                               TextSpan(
-                                                text:
-                                                    NumberFormat.simpleCurrency(
-                                                            locale: 'vi_VN')
-                                                        .format(snapshot
-                                                            .data!.value
-                                                            .elementAt(index)
-                                                            .price),
-                                                style: kTextStyle.copyWith(
-                                                    color: kPrimaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                text: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index).price),
+                                                style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                               )
                                             ],
                                           ),
-                                        )
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Status: ',
+                                            style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                            children: [
+                                              TextSpan(
+                                                text: snapshot.data!.value[index].status,
+                                                style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -293,11 +238,13 @@ class _CreateServiceState extends State<CreateService> {
 
   Future<Artworks?> getArtworks() async {
     try {
-      return ArtworkApi().gets(0,
-          filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
-          count: 'true',
-          orderBy: 'createdDate desc',
-          expand: 'arts,artworkReviews');
+      return ArtworkApi().gets(
+        0,
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\'',
+        count: 'true',
+        orderBy: 'createdDate desc',
+        expand: 'arts,artworkReviews',
+      );
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get artworks failed');
     }
@@ -310,8 +257,7 @@ class _CreateServiceState extends State<CreateService> {
   }
 
   void onDetail(String id) {
-    context.goNamed('${ArtworkDetailRoute.name} in',
-        pathParameters: {'artworkId': id});
+    context.goNamed('${ArtworkDetailRoute.name} in', pathParameters: {'artworkId': id});
   }
 
   void refresh() {

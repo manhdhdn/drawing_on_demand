@@ -13,6 +13,7 @@ import '../../../data/models/invite.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import '../../widgets/nothing_yet.dart';
 
 class SellerBuyerReq extends StatefulWidget {
   static dynamic state;
@@ -50,8 +51,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
   int inviteCount = 10;
 
   bool get _isShrink {
-    return _scrollController.hasClients &&
-        _scrollController.offset > (height - kToolbarHeight);
+    return _scrollController.hasClients && _scrollController.offset > (height - kToolbarHeight);
   }
 
   @override
@@ -84,8 +84,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Requirements',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -131,16 +130,12 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
-                          color: selectedJobApplyTab == listTab[i]
-                              ? kPrimaryColor
-                              : kDarkWhite,
+                          color: selectedJobApplyTab == listTab[i] ? kPrimaryColor : kDarkWhite,
                         ),
                         child: Text(
                           listTab[i],
                           style: kTextStyle.copyWith(
-                            color: selectedJobApplyTab == listTab[i]
-                                ? kWhite
-                                : kNeutralColor,
+                            color: selectedJobApplyTab == listTab[i] ? kWhite : kNeutralColor,
                           ),
                         ),
                       ),
@@ -169,8 +164,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kWhite,
-                                  border:
-                                      Border.all(color: kBorderColorTextField),
+                                  border: Border.all(color: kBorderColorTextField),
                                   boxShadow: const [
                                     BoxShadow(
                                       color: kBorderColorTextField,
@@ -184,8 +178,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: ListTile(
@@ -197,28 +190,21 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                                 shape: BoxShape.circle,
                                                 image: DecorationImage(
                                                   image: NetworkImage(
-                                                    snapshot
-                                                            .data!
-                                                            .value[i]
-                                                            .createdByNavigation!
-                                                            .avatar ??
-                                                        defaultImage,
+                                                    snapshot.data!.value[i].createdByNavigation!.avatar ?? defaultImage,
                                                   ),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
                                             title: Text(
-                                              snapshot.data!.value[i]
-                                                  .createdByNavigation!.name!,
+                                              snapshot.data!.value[i].createdByNavigation!.name!,
                                               style: kTextStyle.copyWith(
                                                 color: kNeutralColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             subtitle: Text(
-                                              timeago.format(snapshot
-                                                  .data!.value[i].createdDate!),
+                                              timeago.format(snapshot.data!.value[i].createdDate!),
                                               style: kTextStyle.copyWith(
                                                 color: kSubTitleColor,
                                               ),
@@ -233,9 +219,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                             buttonText: 'Send Offer',
                                             textColor: kPrimaryColor,
                                             onPressed: () {
-                                              onSendOffer(snapshot
-                                                  .data!.value[i].id
-                                                  .toString());
+                                              onSendOffer(snapshot.data!.value[i].id.toString());
                                             },
                                           ),
                                         ),
@@ -249,15 +233,12 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                     const SizedBox(height: 10.0),
                                     Text(
                                       snapshot.data!.value[i].title!,
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 5.0),
                                     ReadMoreText(
                                       snapshot.data!.value[i].description!,
-                                      style: kTextStyle.copyWith(
-                                          color: kLightNeutralColor),
+                                      style: kTextStyle.copyWith(color: kLightNeutralColor),
                                       trimLines: 3,
                                       colorClickableText: kPrimaryColor,
                                       trimMode: TrimMode.Line,
@@ -266,19 +247,12 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                                     ),
                                     const SizedBox(height: 10.0),
                                     RichText(
-                                      text: TextSpan(
-                                          text: 'Category: ',
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor,
-                                              fontWeight: FontWeight.bold),
-                                          children: [
-                                            TextSpan(
-                                              text: snapshot.data!.value[i]
-                                                  .category!.name,
-                                              style: kTextStyle.copyWith(
-                                                  color: kSubTitleColor),
-                                            )
-                                          ]),
+                                      text: TextSpan(text: 'Category: ', style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold), children: [
+                                        TextSpan(
+                                          text: snapshot.data!.value[i].category!.name,
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        )
+                                      ]),
                                     ),
                                     const SizedBox(height: 10.0),
                                   ],
@@ -305,149 +279,125 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                   future: invites,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: inviteCount,
-                        itemBuilder: (_, i) {
-                          return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                onDetail(snapshot.data!.value[i].requirement!.id
-                                    .toString());
-                              },
-                              child: Container(
+                      return Column(
+                        children: [
+                          NothingYet(visible: snapshot.data!.count == 0),
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: inviteCount,
+                            itemBuilder: (_, i) {
+                              return Padding(
                                 padding: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: kWhite,
-                                  border:
-                                      Border.all(color: kBorderColorTextField),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: kBorderColorTextField,
-                                      spreadRadius: 0.2,
-                                      blurRadius: 4.0,
-                                      offset: Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: ListTile(
-                                            contentPadding: EdgeInsets.zero,
-                                            leading: Container(
-                                              height: 44,
-                                              width: 44,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    snapshot
-                                                            .data!
-                                                            .value[i]
-                                                            .requirement!
-                                                            .createdByNavigation!
-                                                            .avatar ??
-                                                        defaultImage,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            title: Text(
-                                              snapshot
-                                                  .data!
-                                                  .value[i]
-                                                  .requirement!
-                                                  .createdByNavigation!
-                                                  .name!,
-                                              style: kTextStyle.copyWith(
-                                                color: kNeutralColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              timeago.format(snapshot
-                                                  .data!.value[i].createdDate!),
-                                              style: kTextStyle.copyWith(
-                                                color: kSubTitleColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: context.width() / 3,
-                                          child: Button(
-                                            containerBg: kWhite,
-                                            borderColor: kPrimaryColor,
-                                            buttonText: 'Send Offer',
-                                            textColor: kPrimaryColor,
-                                            onPressed: () {
-                                              onSendOffer(snapshot.data!
-                                                  .value[i].requirement!.id
-                                                  .toString());
-                                            },
-                                          ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    onDetail(snapshot.data!.value[i].requirement!.id.toString());
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: kWhite,
+                                      border: Border.all(color: kBorderColorTextField),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: kBorderColorTextField,
+                                          spreadRadius: 0.2,
+                                          blurRadius: 4.0,
+                                          offset: Offset(0, 2),
                                         ),
                                       ],
                                     ),
-                                    const Divider(
-                                      height: 0,
-                                      thickness: 1.0,
-                                      color: kBorderColorTextField,
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                    Text(
-                                      snapshot
-                                          .data!.value[i].requirement!.title!,
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 5.0),
-                                    ReadMoreText(
-                                      snapshot.data!.value[i].requirement!
-                                          .description!,
-                                      style: kTextStyle.copyWith(
-                                          color: kLightNeutralColor),
-                                      trimLines: 3,
-                                      colorClickableText: kPrimaryColor,
-                                      trimMode: TrimMode.Line,
-                                      trimCollapsedText: '..read more',
-                                      trimExpandedText: ' read less',
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                    RichText(
-                                      text: TextSpan(
-                                          text: 'Category: ',
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor,
-                                              fontWeight: FontWeight.bold),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
+                                            Expanded(
+                                              child: ListTile(
+                                                contentPadding: EdgeInsets.zero,
+                                                leading: Container(
+                                                  height: 44,
+                                                  width: 44,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        snapshot.data!.value[i].requirement!.createdByNavigation!.avatar ?? defaultImage,
+                                                      ),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                title: Text(
+                                                  snapshot.data!.value[i].requirement!.createdByNavigation!.name!,
+                                                  style: kTextStyle.copyWith(
+                                                    color: kNeutralColor,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                subtitle: Text(
+                                                  timeago.format(snapshot.data!.value[i].createdDate!),
+                                                  style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: context.width() / 3,
+                                              child: Button(
+                                                containerBg: kWhite,
+                                                borderColor: kPrimaryColor,
+                                                buttonText: 'Send Offer',
+                                                textColor: kPrimaryColor,
+                                                onPressed: () {
+                                                  onSendOffer(snapshot.data!.value[i].requirement!.id.toString());
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          height: 0,
+                                          thickness: 1.0,
+                                          color: kBorderColorTextField,
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        Text(
+                                          snapshot.data!.value[i].requirement!.title!,
+                                          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        ReadMoreText(
+                                          snapshot.data!.value[i].requirement!.description!,
+                                          style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                          trimLines: 3,
+                                          colorClickableText: kPrimaryColor,
+                                          trimMode: TrimMode.Line,
+                                          trimCollapsedText: '..read more',
+                                          trimExpandedText: ' read less',
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        RichText(
+                                          text: TextSpan(text: 'Category: ', style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold), children: [
                                             TextSpan(
-                                              text: snapshot.data!.value[i]
-                                                  .requirement!.category!.name,
-                                              style: kTextStyle.copyWith(
-                                                  color: kSubTitleColor),
+                                              text: snapshot.data!.value[i].requirement!.category!.name,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
                                             )
                                           ]),
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                      ],
                                     ),
-                                    const SizedBox(height: 10.0),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ],
                       ).visible(selectedJobApplyTab == 'Invites');
                     }
 
@@ -468,8 +418,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
           .gets(
         requirementSkip,
         top: requirementTop,
-        filter:
-            'status eq \'Public\' and proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
+        filter: 'status eq \'Public\' and proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'createdByNavigation,category,proposals',
@@ -494,8 +443,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
           .gets(
         inviteSkip,
         top: inviteTop,
-        filter:
-            'receivedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and requirement/status in (\'Private\',\'Public\') and requirement/proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
+        filter: 'receivedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and requirement/status in (\'Private\',\'Public\') and requirement/proposals/all(p:p/createdBy ne ${jsonDecode(PrefUtils().getAccount())['Id']})',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'requirement(expand=createdByNavigation,category)',
@@ -529,8 +477,7 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
       });
     }
 
-    if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
       if (requirementCount % requirementTop == 0) {
         requirementSkip = requirementCount;
 

@@ -24,6 +24,7 @@ import '../screen/common/message/provider/data_provider.dart';
 import '../screen/common/orders/order_review.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
+import '../screen/common/welcome_screen/welcome_screen.dart';
 import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/home/seller_home_screen.dart';
 import '../screen/seller_screen/profile/seller_profile.dart';
@@ -57,6 +58,13 @@ class AppRoutes {
             return const Login();
           },
           redirect: (context, state) => _authened(),
+        ),
+        GoRoute(
+          path: WelcomeRoute.tag,
+          name: WelcomeRoute.name,
+          builder: (context, state) {
+            return const WelcomeScreen();
+          },
         ),
         PrefUtils().getRole() == 'Artist'
             ? ShellRoute(
@@ -349,15 +357,6 @@ class AppRoutes {
                     redirect: (context, state) => _unAuthened(),
                     routes: [
                       GoRoute(
-                        path: OrderDetailRoute.tag,
-                        name: OrderDetailRoute.name,
-                        builder: (context, state) {
-                          return OrderDetailScreen(
-                            id: state.pathParameters['orderId'],
-                          );
-                        },
-                      ),
-                      GoRoute(
                         path: CheckoutRoute.tag,
                         name: '${CheckoutRoute.name} order',
                         builder: (context, state) {
@@ -374,6 +373,26 @@ class AppRoutes {
                             id: state.pathParameters['id'],
                           );
                         },
+                      ),
+                      GoRoute(
+                        path: OrderDetailRoute.tag,
+                        name: OrderDetailRoute.name,
+                        builder: (context, state) {
+                          return OrderDetailScreen(
+                            id: state.pathParameters['orderId'],
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            path: ArtworkDetailRoute.tag,
+                            name: '${ArtworkDetailRoute.name} order',
+                            builder: (context, state) {
+                              return ServiceDetails(
+                                id: state.pathParameters['artworkId'],
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),

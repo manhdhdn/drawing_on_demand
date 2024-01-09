@@ -21,6 +21,7 @@ import '../../../data/models/step.dart' as modal;
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import '../popUp/popup_2.dart';
 import 'order_list.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -44,10 +45,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   String status = 'Cancelled';
   String accountId = '';
+  String artworkId = '';
 
   String requirementId = '';
   bool isCreatedTimeline = true;
   bool isCompletedTimeline = false;
+  bool isUpdatePackage = false;
 
   List<modal.Step> steps = [
     modal.Step(
@@ -104,6 +107,25 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: const OrderCompletePopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void deliveryPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: DeliveryPopUp(id: artworkId),
             );
           },
         );
@@ -184,27 +206,35 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                         Expanded(
                           child: ButtonGlobalWithoutIcon(
-                            buttontext: role == 'Customer' ? 'Checkout' : 'Create Timeline',
+                            buttontext: role == 'Customer'
+                                ? 'Checkout'
+                                : role == 'Artist' && !isCreatedTimeline
+                                    ? 'Create Timeline'
+                                    : 'Delivery work',
                             buttonDecoration: kButtonDecoration.copyWith(
-                              color: (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isCompletedTimeline)
+                              color: (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
                                   ? kPrimaryColor
                                   : role == 'Artist' && !isCreatedTimeline
                                       ? kPrimaryColor
-                                      : kLightNeutralColor,
+                                      : role == 'Artist' && isCompletedTimeline
+                                          ? kPrimaryColor
+                                          : kLightNeutralColor,
                             ),
                             onPressed: () {
-                              (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isCompletedTimeline)
+                              (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
                                   ? onCheckout()
                                   : role == 'Artist' && !isCreatedTimeline
                                       ? onCreateTimeline()
-                                      : null;
+                                      : role == 'Artist' && isCompletedTimeline
+                                          ? onCompleteArtwork()
+                                          : null;
                             },
                             buttonTextColor: kWhite,
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ).visible((role == 'Artist' && !isUpdatePackage) || role == 'Customer')
                 : null,
         body: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
@@ -933,6 +963,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     ),
                                   ),
                                   child: Stepper(
+                                    physics: const NeverScrollableScrollPhysics(),
                                     currentStep: stepIndex,
                                     controlsBuilder: (context, details) {
                                       return const SizedBox.shrink();
@@ -946,7 +977,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       steps.length,
                                       (index) {
                                         return Step(
-                                          isActive: nextStep - 1 == index,
+                                          isActive: nextStep > index,
                                           title: Row(
                                             children: [
                                               Text('Step ${index + 1}'),
@@ -1019,7 +1050,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ),
                                 ),
                               ],
-                            ).visible(steps.first.number != 0),
+                            ).visible(steps.first.number != 0 && (status == 'Pending' || status == 'Deposited')),
                           ],
                         ),
                       ),
@@ -1056,23 +1087,29 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             requirementId = order.orderDetails!.first.artwork!.proposal!.requirement!.id.toString();
             isCreatedTimeline = order.orderDetails!.first.artwork!.proposal!.requirement!.steps!.isNotEmpty;
 
-            steps.clear();
-            arts.clear();
-            steps.addAll(order.orderDetails!.first.artwork!.proposal!.requirement!.steps!.toList());
-            steps.sort(((a, b) => a.number!.compareTo(b.number!)));
-            stepIndex = steps.lastIndexWhere((step) => step.status == 'Completed');
+            var stepsData = order.orderDetails!.first.artwork!.proposal!.requirement!.steps!.toList();
 
-            if (stepIndex != -1) {
-              nextStep = stepIndex + 1;
-            } else {
-              stepIndex = 0;
-            }
+            if (stepsData.isNotEmpty) {
+              steps.clear();
+              arts.clear();
+              steps.addAll(stepsData);
+              steps.sort(((a, b) => a.number!.compareTo(b.number!)));
+              stepIndex = steps.lastIndexWhere((step) => step.status == 'Completed');
 
-            for (var step in steps) {
-              arts.add(order.orderDetails!.first.artwork!.arts!.where((art) => art.createdDate == step.completedDate).toList());
+              if (stepIndex != -1) {
+                nextStep = stepIndex + 1;
+              } else {
+                stepIndex = 0;
+              }
+
+              for (var step in steps) {
+                arts.add(order.orderDetails!.first.artwork!.arts!.where((art) => art.createdDate == step.completedDate).toList());
+              }
             }
 
             isCompletedTimeline = !steps.any((step) => step.status == 'Pending');
+            artworkId = order.orderDetails!.first.artwork!.id.toString();
+            isUpdatePackage = !order.orderDetails!.first.artwork!.sizes!.any((size) => size.height == 1 && size.weight == 1000);
           }
         });
 
@@ -1141,8 +1178,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           await ArtApi().postOne(art);
         }
 
+        images.clear();
+
         await StepApi().patchOne(stepId.toString(), {
-          'CompletedDate': completedDate,
+          'CompletedDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(completedDate),
           'Status': 'Completed',
         });
 
@@ -1156,6 +1195,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         Fluttertoast.showToast(msg: 'Deliver step failed');
       }
     }
+  }
+
+  void onCompleteArtwork() {
+    deliveryPopUp();
   }
 
   void refresh() {

@@ -11,11 +11,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../core/utils/validation_function.dart';
+import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/requirement_api.dart';
+import '../../../data/apis/size_api.dart';
+import '../../../data/models/artwork.dart';
 import '../../../data/models/requirement.dart';
+import '../../../data/models/size.dart' as model;
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../client_screen/home/client_home_screen.dart';
+import '../orders/order_detail.dart';
 
 class ProcessingPopUp extends StatefulWidget {
   const ProcessingPopUp({Key? key}) : super(key: key);
@@ -624,7 +630,10 @@ class _InvitePopUpState extends State<InvitePopUp> {
               children: [
                 Text(
                   'Choose Requirement',
-                  style: kTextStyle.copyWith(color: kNeutralColor),
+                  style: kTextStyle.copyWith(
+                    color: kNeutralColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -989,5 +998,299 @@ class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp>
         ),
       ),
     );
+  }
+}
+
+class DeliveryPopUp extends StatefulWidget {
+  final String? id;
+
+  const DeliveryPopUp({Key? key, this.id}) : super(key: key);
+
+  @override
+  State<DeliveryPopUp> createState() => _DeliveryPopUpState();
+}
+
+class _DeliveryPopUpState extends State<DeliveryPopUp> {
+  final _formKey = GlobalKey<FormState>();
+
+  late Future<Artwork?> artwork;
+
+  int selectedPieces = 0;
+  List<model.Size> sizes = [];
+
+  List<int> weights = [];
+  List<int> heights = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    artwork = getArtwork();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: FutureBuilder(
+          future: artwork,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Add Package Details for Delivery',
+                        style: kTextStyle.copyWith(
+                          color: kNeutralColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () => finish(context),
+                        child: const Icon(FeatherIcons.x, color: kSubTitleColor),
+                      ),
+                    ],
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20.0),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.sizes!.isNotEmpty ? snapshot.data!.sizes!.length : 1,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 5.0),
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Pieces: ',
+                                    style: kTextStyle.copyWith(
+                                      color: index == 0 ? kSubTitleColor : kWhite,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: snapshot.data!.pieces.toString(),
+                                        style: kTextStyle.copyWith(
+                                          color: index == 0 ? kNeutralColor : kWhite,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: snapshot.data!.sizes!.isNotEmpty ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : null,
+                                            style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 10.0),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: selectedPieces,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                const SizedBox(height: 10.0),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${index + 1}: ',
+                                      style: kTextStyle.copyWith(
+                                        color: kSubTitleColor,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Expanded(
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        cursorColor: kNeutralColor,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: kInputDecoration.copyWith(
+                                          labelText: 'Weight',
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                          hintText: 'g',
+                                          hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                                          focusColor: kNeutralColor,
+                                          border: const OutlineInputBorder(),
+                                        ),
+                                        onChanged: (value) {
+                                          try {
+                                            setState(() {
+                                              weights[index] = int.tryParse(value)!;
+                                            });
+                                          } catch (error) {
+                                            setState(() {
+                                              weights.add(int.tryParse(value)!);
+                                            });
+                                          }
+                                        },
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        validator: (value) {
+                                          if (!isFloatNumber(value, isRequired: true)) {
+                                            return 'Number is required';
+                                          }
+
+                                          if (int.tryParse(value!)! < 100) {
+                                            return 'Minimum weight is\n100 g';
+                                          }
+
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Expanded(
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        cursorColor: kNeutralColor,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: kInputDecoration.copyWith(
+                                          labelText: 'Height',
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                          hintText: 'cm',
+                                          hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
+                                          focusColor: kNeutralColor,
+                                          border: const OutlineInputBorder(),
+                                        ),
+                                        onChanged: (value) {
+                                          try {
+                                            setState(() {
+                                              heights[index] = int.tryParse(value)!;
+                                            });
+                                          } catch (error) {
+                                            setState(() {
+                                              heights.add(int.tryParse(value)!);
+                                            });
+                                          }
+                                        },
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        validator: (value) {
+                                          if (!isFloatNumber(value, isRequired: true)) {
+                                            return 'Number is required';
+                                          }
+
+                                          if (int.tryParse(value!)! < 1) {
+                                            return 'Minimum height \nis 1 cm';
+                                          }
+
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Button(
+                          containerBg: kWhite,
+                          borderColor: Colors.red,
+                          buttonText: 'Cancel',
+                          textColor: Colors.red,
+                          onPressed: () {
+                            finish(context);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Button(
+                          containerBg: kPrimaryColor,
+                          borderColor: Colors.transparent,
+                          buttonText: 'Deliver',
+                          textColor: kWhite,
+                          onPressed: () {
+                            onDeliver();
+                          },
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              );
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<Artwork?> getArtwork() async {
+    try {
+      return ArtworkApi().getOne(widget.id!, 'sizes').then((artwork) {
+        setState(() {
+          selectedPieces = artwork.pieces!;
+          sizes.addAll(artwork.sizes!);
+        });
+
+        return artwork;
+      });
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get pieces failed');
+    }
+
+    return null;
+  }
+
+  void onDeliver() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    try {
+      ProgressDialogUtils.showProgress(context);
+
+      for (int i = 0; i < selectedPieces; i++) {
+        await SizeApi().patchOne(sizes[i].id.toString(), {
+          'Weight': weights[i],
+          'Height': heights[i],
+        });
+      }
+
+      OrderDetailScreen.refresh();
+
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+
+      // ignore: use_build_context_synchronously
+      finish(context);
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Update pieces failed');
+    }
   }
 }
