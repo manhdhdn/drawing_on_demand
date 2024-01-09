@@ -46,8 +46,7 @@ class _CartScreenState extends State<CartScreen> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             'Cart',
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
         ),
         body: Padding(
@@ -67,24 +66,19 @@ class _CartScreenState extends State<CartScreen> {
                 if (snapshot.hasData) {
                   List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
 
-                  orderDetails.sort((a, b) => a
-                      .artwork!.createdByNavigation!.email!
-                      .compareTo(b.artwork!.createdByNavigation!.email!));
+                  orderDetails.sort((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!));
 
                   List<int> packList = [0];
                   int packCount = 0;
 
                   if (orderDetails.isNotEmpty) {
-                    String tempEmail =
-                        orderDetails.first.artwork!.createdByNavigation!.email!;
+                    String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
 
                     for (var orderDetail in orderDetails) {
-                      if (orderDetail.artwork!.createdByNavigation!.email ==
-                          tempEmail) {
+                      if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
                         packList[packCount]++;
                       } else {
-                        tempEmail =
-                            orderDetail.artwork!.createdByNavigation!.email!;
+                        tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
 
                         packCount++;
                         packList.add(1);
@@ -106,12 +100,12 @@ class _CartScreenState extends State<CartScreen> {
                             itemCount: packList[0] != 0 ? packList.length : 0,
                             itemBuilder: (_, i) {
                               return Theme(
-                                data: Theme.of(context)
-                                    .copyWith(dividerColor: Colors.transparent),
+                                data: Theme.of(context).copyWith(
+                                  dividerColor: Colors.transparent,
+                                ),
                                 child: ExpansionTile(
                                   initiallyExpanded: true,
-                                  tilePadding:
-                                      const EdgeInsets.only(bottom: 5.0),
+                                  tilePadding: const EdgeInsets.only(bottom: 5.0),
                                   childrenPadding: EdgeInsets.zero,
                                   collapsedIconColor: kLightNeutralColor,
                                   iconColor: kLightNeutralColor,
@@ -122,38 +116,24 @@ class _CartScreenState extends State<CartScreen> {
                                         width: 32,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: NetworkImage(orderDetails[
-                                                      getCartIndex(i, packList)]
-                                                  .artwork!
-                                                  .createdByNavigation!
-                                                  .avatar!),
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: NetworkImage(orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.avatar!), fit: BoxFit.cover),
                                         ),
                                       ),
                                       const SizedBox(width: 5.0),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Artist',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
                                           ),
                                           Text(
-                                            orderDetails[
-                                                    getCartIndex(i, packList)]
-                                                .artwork!
-                                                .createdByNavigation!
-                                                .name!,
+                                            orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.name!,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: kTextStyle.copyWith(
-                                                color: kNeutralColor,
-                                                fontWeight: FontWeight.bold),
+                                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -162,33 +142,24 @@ class _CartScreenState extends State<CartScreen> {
                                   children: [
                                     ListView.builder(
                                       shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
                                       itemCount: packList[i],
                                       itemBuilder: (_, j) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
+                                          padding: const EdgeInsets.only(bottom: 10.0),
                                           child: GestureDetector(
                                             onTap: () {
                                               onArtworkDetail(
-                                                orderDetails[j +
-                                                        getCartIndex(
-                                                            i, packList)]
-                                                    .artworkId
-                                                    .toString(),
+                                                orderDetails[j + getCartIndex(i, packList)].artworkId.toString(),
                                               );
                                             },
                                             child: Container(
                                               height: context.height() * 0.135,
                                               decoration: BoxDecoration(
                                                 color: kWhite,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                    color:
-                                                        kBorderColorTextField),
+                                                borderRadius: BorderRadius.circular(8.0),
+                                                border: Border.all(color: kBorderColorTextField),
                                                 boxShadow: const [
                                                   BoxShadow(
                                                     color: kDarkWhite,
@@ -200,99 +171,58 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
                                                   Stack(
-                                                    alignment:
-                                                        Alignment.topLeft,
+                                                    alignment: Alignment.topLeft,
                                                     children: [
                                                       Container(
-                                                        height:
-                                                            context.height() *
-                                                                0.135,
-                                                        width:
-                                                            context.height() *
-                                                                0.135,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    8.0),
+                                                        height: context.height() * 0.135,
+                                                        width: context.height() * 0.135,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.only(
+                                                            bottomLeft: Radius.circular(8.0),
+                                                            topLeft: Radius.circular(8.0),
                                                           ),
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  orderDetails[j +
-                                                                          getCartIndex(
-                                                                              i,
-                                                                              packList)]
-                                                                      .artwork!
-                                                                      .arts!
-                                                                      .first
-                                                                      .image!),
-                                                              fit:
-                                                                  BoxFit.cover),
+                                                          image: DecorationImage(image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!), fit: BoxFit.cover),
                                                         ),
                                                       ),
                                                       GestureDetector(
                                                         onTap: () {
                                                           setState(() {
-                                                            isFavorite =
-                                                                !isFavorite;
+                                                            isFavorite = !isFavorite;
                                                           });
                                                         },
                                                         child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(5.0),
+                                                          padding: const EdgeInsets.all(5.0),
                                                           child: Container(
                                                             height: 25,
                                                             width: 25,
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              color:
-                                                                  Colors.white,
-                                                              shape: BoxShape
-                                                                  .circle,
+                                                            decoration: const BoxDecoration(
+                                                              color: Colors.white,
+                                                              shape: BoxShape.circle,
                                                               boxShadow: [
                                                                 BoxShadow(
-                                                                  color: Colors
-                                                                      .black12,
-                                                                  blurRadius:
-                                                                      10.0,
-                                                                  spreadRadius:
-                                                                      1.0,
-                                                                  offset:
-                                                                      Offset(
-                                                                          0, 2),
+                                                                  color: Colors.black12,
+                                                                  blurRadius: 10.0,
+                                                                  spreadRadius: 1.0,
+                                                                  offset: Offset(0, 2),
                                                                 ),
                                                               ],
                                                             ),
                                                             child: isFavorite
                                                                 ? const Center(
                                                                     child: Icon(
-                                                                      Icons
-                                                                          .favorite,
-                                                                      color: Colors
-                                                                          .red,
-                                                                      size:
-                                                                          16.0,
+                                                                      Icons.favorite,
+                                                                      color: Colors.red,
+                                                                      size: 16.0,
                                                                     ),
                                                                   )
                                                                 : const Center(
                                                                     child: Icon(
-                                                                      Icons
-                                                                          .favorite_border,
-                                                                      color:
-                                                                          kNeutralColor,
-                                                                      size:
-                                                                          16.0,
+                                                                      Icons.favorite_border,
+                                                                      color: kNeutralColor,
+                                                                      size: 16.0,
                                                                     ),
                                                                   ),
                                                           ),
@@ -301,198 +231,107 @@ class _CartScreenState extends State<CartScreen> {
                                                     ],
                                                   ),
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
+                                                    padding: const EdgeInsets.all(5.0),
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisSize: MainAxisSize.min,
                                                       children: [
                                                         Flexible(
                                                           child: SizedBox(
                                                             width: 190,
                                                             child: Text(
-                                                              orderDetails[j +
-                                                                      getCartIndex(
-                                                                          i,
-                                                                          packList)]
-                                                                  .artwork!
-                                                                  .title!,
-                                                              style: kTextStyle.copyWith(
-                                                                  color:
-                                                                      kNeutralColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                              orderDetails[j + getCartIndex(i, packList)].artwork!.title!,
+                                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                               maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              overflow: TextOverflow.ellipsis,
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                            height: 5.0),
+                                                        const SizedBox(height: 5.0),
                                                         Text(
                                                           'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
-                                                          style: kTextStyle
-                                                              .copyWith(
-                                                                  color:
-                                                                      kSubTitleColor),
+                                                          style: kTextStyle.copyWith(color: kSubTitleColor),
                                                         ),
-                                                        const SizedBox(
-                                                            height: 5.0),
+                                                        const SizedBox(height: 5.0),
                                                         SizedBox(
-                                                          width:
-                                                              context.width() *
-                                                                  0.58,
+                                                          width: context.width() * 0.58,
                                                           child: Row(
                                                             children: [
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  if (orderDetails[j +
-                                                                              getCartIndex(i, packList)]
-                                                                          .quantity! >
-                                                                      1) {
-                                                                    decreaseQuantity(
-                                                                            orderDetails[j + getCartIndex(i, packList)]
-                                                                                .id
-                                                                                .toString(),
-                                                                            orderDetails[j + getCartIndex(i, packList)]
-                                                                                .quantity!)
-                                                                        .then((value) =>
-                                                                            refresh());
+                                                                  if (orderDetails[j + getCartIndex(i, packList)].quantity! > 1) {
+                                                                    decreaseQuantity(orderDetails[j + getCartIndex(i, packList)].id.toString(), orderDetails[j + getCartIndex(i, packList)].quantity!).then((value) => refresh());
                                                                   }
                                                                 },
-                                                                child:
-                                                                    Container(
+                                                                child: Container(
                                                                   width: 20,
                                                                   height: 20,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color:
-                                                                        kBorderColorTextField,
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
+                                                                  decoration: BoxDecoration(
+                                                                    color: kBorderColorTextField,
+                                                                    borderRadius: BorderRadius.circular(
                                                                       5.0,
                                                                     ),
                                                                   ),
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .remove_outlined,
+                                                                  child: const Icon(
+                                                                    Icons.remove_outlined,
                                                                     size: 16,
                                                                   ),
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                  width: 5.0),
+                                                              const SizedBox(width: 5.0),
                                                               Text(
-                                                                orderDetails[j +
-                                                                        getCartIndex(
-                                                                            i,
-                                                                            packList)]
-                                                                    .quantity
-                                                                    .toString(),
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kPrimaryColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                orderDetails[j + getCartIndex(i, packList)].quantity.toString(),
+                                                                style: kTextStyle.copyWith(
+                                                                  color: kPrimaryColor,
+                                                                  fontWeight: FontWeight.bold,
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                  width: 5.0),
+                                                              const SizedBox(width: 5.0),
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  increaseQuantity(
-                                                                          orderDetails[j + getCartIndex(i, packList)]
-                                                                              .id
-                                                                              .toString(),
-                                                                          orderDetails[j + getCartIndex(i, packList)]
-                                                                              .quantity!)
-                                                                      .then((value) =>
-                                                                          refresh());
+                                                                  increaseQuantity(orderDetails[j + getCartIndex(i, packList)].id.toString(), orderDetails[j + getCartIndex(i, packList)].quantity!).then((value) => refresh());
                                                                 },
-                                                                child:
-                                                                    Container(
+                                                                child: Container(
                                                                   width: 20,
                                                                   height: 20,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color:
-                                                                        kBorderColorTextField,
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
+                                                                  decoration: BoxDecoration(
+                                                                    color: kBorderColorTextField,
+                                                                    borderRadius: BorderRadius.circular(
                                                                       5.0,
                                                                     ),
                                                                   ),
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .add_rounded,
+                                                                  child: const Icon(
+                                                                    Icons.add_rounded,
                                                                     size: 16,
                                                                   ),
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                  width: 10.0),
+                                                              const SizedBox(width: 10.0),
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  onRemove(orderDetails[j +
-                                                                              getCartIndex(i,
-                                                                                  packList)]
-                                                                          .id
-                                                                          .toString())
-                                                                      .then((value) =>
-                                                                          refresh());
+                                                                  onRemove(orderDetails[j + getCartIndex(i, packList)].id.toString()).then((value) => refresh());
                                                                 },
-                                                                child:
-                                                                    Container(
+                                                                child: Container(
                                                                   height: 27,
                                                                   width: 20,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color:
-                                                                        kBorderColorTextField,
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
+                                                                  decoration: BoxDecoration(
+                                                                    color: kBorderColorTextField,
+                                                                    borderRadius: BorderRadius.circular(
                                                                       5.0,
                                                                     ),
                                                                   ),
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .delete,
+                                                                  child: const Icon(
+                                                                    Icons.delete,
                                                                     size: 18,
                                                                   ),
                                                                 ),
                                                               ),
                                                               const Spacer(),
                                                               Text(
-                                                                NumberFormat.simpleCurrency(
-                                                                        locale:
-                                                                            'vi_VN')
-                                                                    .format(orderDetails[j + getCartIndex(i, packList)]
-                                                                            .quantity! *
-                                                                        orderDetails[j +
-                                                                                getCartIndex(i, packList)]
-                                                                            .price!),
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kPrimaryColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j + getCartIndex(i, packList)].quantity! * orderDetails[j + getCartIndex(i, packList)].price!),
+                                                                style: kTextStyle.copyWith(
+                                                                  color: kPrimaryColor,
+                                                                  fontWeight: FontWeight.bold,
                                                                 ),
                                                               ),
                                                             ],
@@ -541,14 +380,11 @@ class _CartScreenState extends State<CartScreen> {
               RichText(
                 text: TextSpan(
                   text: 'Total:\n',
-                  style:
-                      kTextStyle.copyWith(color: kNeutralColor, fontSize: 16),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontSize: 16),
                   children: [
                     TextSpan(
-                      text: NumberFormat.simpleCurrency(locale: 'vi_VN')
-                          .format(total),
-                      style: kTextStyle.copyWith(
-                          color: kPrimaryColor, fontWeight: FontWeight.bold),
+                      text: NumberFormat.simpleCurrency(locale: 'vi_VN').format(total),
+                      style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -583,8 +419,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onArtworkDetail(String id) {
-    context.goNamed('${ArtworkDetailRoute.name} cart',
-        pathParameters: {'artworkId': id});
+    context.goNamed('${ArtworkDetailRoute.name} cart', pathParameters: {'artworkId': id});
   }
 
   void refresh() {
@@ -606,8 +441,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void onOrderNow() {
-    context.goNamed(CheckoutRoute.name,
-        pathParameters: {'id': PrefUtils().getCartId()});
+    context.goNamed(CheckoutRoute.name, pathParameters: {'id': PrefUtils().getCartId()});
   }
 
   Future<void> onRemove(String id) async {

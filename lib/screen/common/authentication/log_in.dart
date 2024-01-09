@@ -58,9 +58,7 @@ class _LoginState extends State<Login> {
                   height: 85,
                   width: 110,
                   decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('images/logo2.png'),
-                        fit: BoxFit.cover),
+                    image: DecorationImage(image: AssetImage('images/logo2.png'), fit: BoxFit.cover),
                   ),
                 ),
               )
@@ -81,9 +79,10 @@ class _LoginState extends State<Login> {
                     child: Text(
                       'Log In Your Account',
                       style: kTextStyle.copyWith(
-                          color: kNeutralColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0),
+                        color: kNeutralColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30.0),
@@ -100,6 +99,7 @@ class _LoginState extends State<Login> {
                       border: const OutlineInputBorder(),
                     ),
                     controller: emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (!isValidEmail(value, isRequired: true)) {
                         return 'Please enter a valid email address';
@@ -128,14 +128,13 @@ class _LoginState extends State<Login> {
                           });
                         },
                         icon: Icon(
-                          hidePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                          hidePassword ? Icons.visibility_off : Icons.visibility,
                           color: kLightNeutralColor,
                         ),
                       ),
                     ),
                     controller: passwordController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter your password';
@@ -146,9 +145,6 @@ class _LoginState extends State<Login> {
                     autofillHints: const [AutofillHints.password],
                     onEditingComplete: () {
                       onLogin();
-                    },
-                    onChanged: (value) {
-                      _formKey.currentState!.validate();
                     },
                   ),
                   const SizedBox(height: 5.0),
@@ -246,9 +242,7 @@ class _LoginState extends State<Login> {
                           children: [
                             TextSpan(
                               text: 'Create New Account',
-                              style: kTextStyle.copyWith(
-                                  color: kPrimaryColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -295,9 +289,7 @@ class _LoginState extends State<Login> {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
 
-      var roles = account.value.first.accountRoles!
-          .map((accountRole) => accountRole.role!.name)
-          .toSet();
+      var roles = account.value.first.accountRoles!.map((accountRole) => accountRole.role!.name).toSet();
 
       if (roles.contains('Artist')) {
         await PrefUtils().setRole('Artist');

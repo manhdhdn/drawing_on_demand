@@ -2,6 +2,7 @@ import 'package:drawing_on_demand/data/models/order_detail.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account.dart';
 import 'discount.dart';
 
 class Orders {
@@ -34,6 +35,7 @@ class Order {
   Guid? discountId;
   Discount? discount;
   List<OrderDetail>? orderDetails;
+  Account? orderedByNavigation;
 
   Order({
     this.id,
@@ -45,7 +47,6 @@ class Order {
     this.total,
     this.orderedBy,
     this.discountId,
-    this.discount,
     this.orderDetails,
   });
 
@@ -53,18 +54,13 @@ class Order {
     id = Guid(json['Id']);
     orderType = json['OrderType'];
     orderDate = DateTime.parse(json['OrderDate']);
-    depositDate = json['DepositDate'] != null
-        ? DateTime.parse(json['DepositDate'])
-        : null;
-    completedDate = json['CompletedDate'] != null
-        ? DateTime.parse(json['CompletedDate'])
-        : null;
+    depositDate = json['DepositDate'] != null ? DateTime.parse(json['DepositDate']) : null;
+    completedDate = json['CompletedDate'] != null ? DateTime.parse(json['CompletedDate']) : null;
     status = json['Status'];
     total = double.tryParse(json['Total'].toString());
     orderedBy = Guid(json['OrderedBy']);
     discountId = json['DiscountId'] != null ? Guid(json['DiscountId']) : null;
-    discount =
-        json['Discount'] != null ? Discount.fromJson(json['Discount']) : null;
+    discount = json['Discount'] != null ? Discount.fromJson(json['Discount']) : null;
     orderDetails = json['OrderDetails'] != null
         ? List<OrderDetail>.from(
             json['OrderDetails'].map(
@@ -72,6 +68,7 @@ class Order {
             ),
           )
         : null;
+    orderedByNavigation = json['OrderedByNavigation'] != null ? Account.fromJson(json['OrderedByNavigation']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -79,12 +76,8 @@ class Order {
       'Id': id.toString(),
       'OrderType': orderType,
       'OrderDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(orderDate!),
-      'DepositDate': depositDate != null
-          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(depositDate!)
-          : null,
-      'CompletedDate': completedDate != null
-          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(completedDate!)
-          : null,
+      'DepositDate': depositDate != null ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(depositDate!) : null,
+      'CompletedDate': completedDate != null ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(completedDate!) : null,
       'Status': status,
       'Total': total,
       'OrderedBy': orderedBy.toString(),

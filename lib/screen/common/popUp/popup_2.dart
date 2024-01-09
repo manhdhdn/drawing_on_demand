@@ -63,10 +63,7 @@ class _ProcessingPopUpState extends State<ProcessingPopUp> {
               'We’re processing\nyour Order',
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
@@ -128,10 +125,7 @@ class _FailedPopUpState extends State<FailedPopUp> {
               'Your payment was\nnot successful',
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
@@ -169,8 +163,7 @@ class _CompleteStepPopUpState extends State<CompleteStepPopUp> {
               children: [
                 Text(
                   'Choose your Action',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -245,21 +238,17 @@ class _UploadCompletePopUpState extends State<UploadCompletePopUp> {
               width: 209,
               decoration: const BoxDecoration(
                 shape: BoxShape.rectangle,
-                image: DecorationImage(
-                    image: AssetImage('images/success.png'), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage('images/success.png'), fit: BoxFit.cover),
               ),
             ),
             const SizedBox(height: 15.0),
             Text(
               'Congratulations!',
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Your profile is successfully completed. You can more changes after it\'s live.',
+              'Your profile is successfully completed. You can more changes after it\'s live',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.center,
             ),
@@ -309,8 +298,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                   'Are You Sure Cancel Your\nJob Post!',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -420,8 +408,7 @@ class _AcceptProposalPopUpState extends State<AcceptProposalPopUp> {
                   'Are You Sure Accept\nThis Proposal!',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -514,8 +501,7 @@ class _RejectProposalPopUpState extends State<RejectProposalPopUp> {
                   'Are You Sure Reject\nThis Proposal!',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -603,9 +589,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
     for (Requirement des in requirements) {
       var item = DropdownMenuItem(
         value: des.id,
-        child: Text(des.status == 'Private'
-            ? '${des.title!} - ${AppLocalizations.of(context)!.private}'
-            : des.title!),
+        child: Text(des.status == 'Private' ? '${des.title!} - ${AppLocalizations.of(context)!.private}' : des.title!),
       );
       dropDownItems.add(item);
     }
@@ -660,14 +644,12 @@ class _InvitePopUpState extends State<InvitePopUp> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8.0),
                       ),
-                      borderSide:
-                          BorderSide(color: kBorderColorTextField, width: 2),
+                      borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                     ),
                     contentPadding: const EdgeInsets.all(7.0),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Requirement',
-                    labelStyle: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   child: DropdownButtonHideUnderline(child: getRequirement()),
                 );
@@ -711,8 +693,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
       var response = await RequirementApi().gets(
         0,
         orderBy: 'status,title',
-        filter:
-            'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Processing\' and status ne \'Completed\' and not endswith(status, \'Cancelled\') and not endswith(status, \'Processing\')',
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Processing\' and status ne \'Completed\' and not endswith(status, \'Cancelled\') and not endswith(status, \'Processing\')',
       );
 
       if (response.value.isNotEmpty) {
@@ -757,8 +738,7 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
               children: [
                 Text(
                   'Invite Successful',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -787,7 +767,7 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your invite has been sent successfully.',
+              'Your invite has been sent successfully',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -797,8 +777,7 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
               'Please wait for Artist\'s response!',
               maxLines: 1,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20.0),
             GestureDetector(
@@ -812,14 +791,11 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
               child: Container(
                 height: 40,
                 width: 135,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: kPrimaryColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
                     'Got it!',
-                    style: kTextStyle.copyWith(
-                        color: kWhite, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -836,12 +812,10 @@ class AcceptProposalSuccessPopUp extends StatefulWidget {
   const AcceptProposalSuccessPopUp({Key? key}) : super(key: key);
 
   @override
-  State<AcceptProposalSuccessPopUp> createState() =>
-      _AcceptProposalSuccessPopUpState();
+  State<AcceptProposalSuccessPopUp> createState() => _AcceptProposalSuccessPopUpState();
 }
 
-class _AcceptProposalSuccessPopUpState
-    extends State<AcceptProposalSuccessPopUp> {
+class _AcceptProposalSuccessPopUpState extends State<AcceptProposalSuccessPopUp> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -856,8 +830,7 @@ class _AcceptProposalSuccessPopUpState
               children: [
                 Text(
                   'Accept Successful',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -886,18 +859,17 @@ class _AcceptProposalSuccessPopUpState
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your order has also been created.',
+              'Your order has also been created',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Please check your order and take your time to contact with Artist.',
-              maxLines: 2,
+              'You can make a deposit now or after the Artist creates the timeline\nTake your time to contact with Artist',
+              maxLines: 3,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20.0),
             GestureDetector(
@@ -911,14 +883,103 @@ class _AcceptProposalSuccessPopUpState
               child: Container(
                 height: 40,
                 width: 135,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: kPrimaryColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
                     'Got it!',
-                    style: kTextStyle.copyWith(
-                        color: kWhite, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateTimelineSuccessPopUp extends StatefulWidget {
+  const CreateTimelineSuccessPopUp({Key? key}) : super(key: key);
+
+  @override
+  State<CreateTimelineSuccessPopUp> createState() => _CreateTimelineSuccessPopUpState();
+}
+
+class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Create Timeline Successful',
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => finish(context),
+                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
+                ),
+              ],
+            ),
+            const Divider(
+              thickness: 1.0,
+              color: kBorderColorTextField,
+            ),
+            const SizedBox(height: 20.0),
+            Container(
+              height: 124,
+              width: 124,
+              decoration: BoxDecoration(
+                color: kPrimaryColor.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.check_rounded,
+                color: kPrimaryColor,
+                size: 50,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              'The timeline for your order has been created',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(color: kLightNeutralColor),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              'Please wait for Customer make a deposit\nThen working and update the timeline with images',
+              maxLines: 3,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20.0),
+            GestureDetector(
+              onTap: () {
+                setState(
+                  () {
+                    finish(context);
+                  },
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 135,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
+                child: Center(
+                  child: Text(
+                    'Got it!',
+                    style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),

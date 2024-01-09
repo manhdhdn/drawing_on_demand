@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'account.dart';
 import 'art.dart';
+import 'proposal.dart';
 import 'size.dart';
 import 'artwork_review.dart';
 import 'category.dart';
@@ -48,6 +49,7 @@ class Artwork {
   Category? category;
   Surface? surface;
   Material? material;
+  Proposal? proposal;
 
   Artwork({
     this.id,
@@ -63,13 +65,6 @@ class Artwork {
     this.surfaceId,
     this.materialId,
     this.createdBy,
-    this.artworkReviews,
-    this.arts,
-    this.sizes,
-    this.createdByNavigation,
-    this.category,
-    this.surface,
-    this.material,
   });
 
   Artwork.fromJson(Map<String, dynamic> json) {
@@ -80,9 +75,7 @@ class Artwork {
     pieces = json['Pieces'];
     inStock = json['InStock'];
     createdDate = DateTime.parse(json['CreatedDate']);
-    lastModifiedDate = json['LastModifiedDate'] != null
-        ? DateTime.parse(json['LastModifiedDate'])
-        : null;
+    lastModifiedDate = json['LastModifiedDate'] != null ? DateTime.parse(json['LastModifiedDate']) : null;
     status = json['Status'];
     categoryId = Guid(json['CategoryId']);
     surfaceId = Guid(json['SurfaceId']);
@@ -103,15 +96,11 @@ class Artwork {
             (x) => Size.fromJson(x),
           ))
         : null;
-    createdByNavigation = json['CreatedByNavigation'] != null
-        ? Account.fromJson(json['CreatedByNavigation'])
-        : null;
-    category =
-        json['Category'] != null ? Category.fromJson(json['Category']) : null;
-    surface =
-        json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
-    material =
-        json['Material'] != null ? Material.fromJson(json['Material']) : null;
+    createdByNavigation = json['CreatedByNavigation'] != null ? Account.fromJson(json['CreatedByNavigation']) : null;
+    category = json['Category'] != null ? Category.fromJson(json['Category']) : null;
+    surface = json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
+    material = json['Material'] != null ? Material.fromJson(json['Material']) : null;
+    proposal = json['Proposal'] != null ? Proposal.fromJson(json['Proposal']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -122,11 +111,8 @@ class Artwork {
       'Price': price,
       'Pieces': pieces,
       'InStock': inStock,
-      'CreatedDate':
-          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
-      'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
-          : null,
+      'CreatedDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
+      'LastModifiedDate': lastModifiedDate != null ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!) : null,
       'Status': status,
       'CategoryId': categoryId.toString(),
       'SurfaceId': surfaceId.toString(),

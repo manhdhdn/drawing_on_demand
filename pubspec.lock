@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  date_field:
+    dependency: "direct main"
+    description:
+      name: date_field
+      sha256: "22a85c16f4695c0255d8f45feb386933c8d0a75182e8bee5587f1299099e2802"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   dbus:
     dependency: transitive
     description:
@@ -874,6 +882,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: a2427697bfad5b611db78ea4c4daef82d3350b83c729a8dc37959662a31547f9
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.2.7"
+  syncfusion_flutter_datepicker:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datepicker
+      sha256: "5e0a9647232fbbd31d1734f4f8eba517e78a6ea955739671182c9c7cbdd05d42"
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.2.6"
   term_glyph:
     dependency: transitive
     description:

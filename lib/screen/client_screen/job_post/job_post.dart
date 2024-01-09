@@ -57,8 +57,7 @@ class _JobPostState extends State<JobPost> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             'Requirements',
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -100,8 +99,7 @@ class _JobPostState extends State<JobPost> {
                       children: [
                         const SizedBox(height: 15.0),
                         HorizontalList(
-                          padding:
-                              const EdgeInsets.only(left: 15.0, right: 15.0),
+                          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                           itemCount: serviceList.length,
                           itemBuilder: (_, i) {
                             return Padding(
@@ -113,18 +111,13 @@ class _JobPostState extends State<JobPost> {
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: selectedServiceList == serviceList[i]
-                                        ? kPrimaryColor
-                                        : kDarkWhite,
+                                    color: selectedServiceList == serviceList[i] ? kPrimaryColor : kDarkWhite,
                                     borderRadius: BorderRadius.circular(40.0),
                                   ),
                                   child: Text(
                                     serviceList[i],
                                     style: kTextStyle.copyWith(
-                                      color:
-                                          selectedServiceList == serviceList[i]
-                                              ? kWhite
-                                              : kNeutralColor,
+                                      color: selectedServiceList == serviceList[i] ? kWhite : kNeutralColor,
                                     ),
                                   ),
                                 ),
@@ -150,18 +143,13 @@ class _JobPostState extends State<JobPost> {
                             Text(
                               'Nothing just yet',
                               textAlign: TextAlign.center,
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24.0),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 24.0),
                             ),
                           ],
                         ).visible(snapshot.data!.value.isEmpty),
                         Text(
                           'Total requirement post (${snapshot.data!.count})',
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 15.0),
                         ListView.builder(
@@ -174,10 +162,7 @@ class _JobPostState extends State<JobPost> {
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  onDetail(snapshot.data!.value
-                                      .elementAt(index)
-                                      .id!
-                                      .toString());
+                                  onDetail(snapshot.data!.value.elementAt(index).id!.toString());
                                 },
                                 child: Container(
                                   width: context.width(),
@@ -185,45 +170,31 @@ class _JobPostState extends State<JobPost> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: kWhite,
-                                    border: Border.all(
-                                        color: kBorderColorTextField),
+                                    border: Border.all(color: kBorderColorTextField),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        snapshot.data!.value
-                                            .elementAt(index)
-                                            .title!,
-                                        style: kTextStyle.copyWith(
-                                            color: kNeutralColor,
-                                            fontWeight: FontWeight.bold),
+                                        snapshot.data!.value.elementAt(index).title!,
+                                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(height: 10.0),
                                       Text(
-                                        snapshot.data!.value
-                                            .elementAt(index)
-                                            .description!,
+                                        snapshot.data!.value.elementAt(index).description!,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: kTextStyle.copyWith(
-                                            color: kSubTitleColor),
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
                                       const SizedBox(height: 10.0),
                                       RichText(
                                         text: TextSpan(
                                           text: 'Category: ',
-                                          style: kTextStyle.copyWith(
-                                              color: kNeutralColor),
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
                                           children: [
                                             TextSpan(
-                                              text: snapshot.data!.value
-                                                  .elementAt(index)
-                                                  .category!
-                                                  .name,
-                                              style: kTextStyle.copyWith(
-                                                  color: kSubTitleColor),
+                                              text: snapshot.data!.value.elementAt(index).category!.name,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
                                             ),
                                           ],
                                         ),
@@ -232,28 +203,17 @@ class _JobPostState extends State<JobPost> {
                                       Row(
                                         children: [
                                           Container(
-                                            padding: const EdgeInsets.only(
-                                                top: 5.0,
-                                                bottom: 5.0,
-                                                left: 10,
-                                                right: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(30.0),
-                                                color: kDarkWhite),
+                                            padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10, right: 10),
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kDarkWhite),
                                             child: Text(
-                                              snapshot.data!.value
-                                                  .elementAt(index)
-                                                  .status!,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor),
+                                              snapshot.data!.value.elementAt(index).status!,
+                                              style: kTextStyle.copyWith(color: kNeutralColor),
                                             ),
                                           ),
                                           const Spacer(),
                                           Text(
                                             'Date: ${DateFormat('dd-MM-yyyy').format(snapshot.data!.value.elementAt(index).createdDate!)}',
-                                            style: kTextStyle.copyWith(
-                                                color: kLightNeutralColor),
+                                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                                           ),
                                         ],
                                       )
@@ -286,9 +246,7 @@ class _JobPostState extends State<JobPost> {
     try {
       return RequirementApi().gets(
         0,
-        filter: selectedServiceList != 'All'
-            ? 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and endswith(status, \'$selectedServiceList\')'
-            : 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Processing\' and status ne \'Completed\' and not endswith(status, \'Cancelled\')',
+        filter: selectedServiceList != 'All' ? 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and endswith(status, \'$selectedServiceList\')' : 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Completed\' and not endswith(status, \'Cancelled\') and not endswith(status, \'Processing\')',
         expand: 'category',
         orderBy: 'createdDate desc',
         count: 'true',

@@ -72,6 +72,8 @@ dependencies:
   document_analysis: ^0.2.0
   url_launcher: ^6.2.2
   url_launcher_web: ^2.2.0
+  date_field: ^4.0.0
+  syncfusion_flutter_datepicker: 23.2.6
 
 flutter_launcher_icons:
   image_path: "images/icon.png"

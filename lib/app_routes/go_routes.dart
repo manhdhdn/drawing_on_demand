@@ -30,15 +30,14 @@ import '../screen/seller_screen/profile/seller_profile.dart';
 import '../screen/seller_screen/profile/seller_profile_details.dart';
 import '../screen/seller_screen/request/buyer_request_details.dart';
 import '../screen/seller_screen/request/create_customer_offer.dart';
+import '../screen/seller_screen/request/create_timeline.dart';
 import '../screen/seller_screen/request/seller_buyer_request.dart';
 import '../screen/seller_screen/services/create_new_service.dart';
 import '../screen/seller_screen/services/create_service.dart';
 import 'named_routes.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 get rootNavigatorState => _rootNavigatorKey.currentState;
 get shellNavigatorState => _shellNavigatorKey.currentState;
@@ -130,18 +129,29 @@ class AppRoutes {
                         name: OrderDetailRoute.name,
                         builder: (context, state) {
                           return OrderDetailScreen(
-                            id: state.pathParameters['id'],
+                            id: state.pathParameters['orderId'],
                           );
                         },
-                      ),
-                      GoRoute(
-                        path: CheckoutRoute.tag,
-                        name: '${CheckoutRoute.name} order',
-                        builder: (context, state) {
-                          return ClientOrder(
-                            id: state.pathParameters['id'],
-                          );
-                        },
+                        routes: [
+                          GoRoute(
+                            path: CreateTimelineRoute.tag,
+                            name: CreateTimelineRoute.name,
+                            builder: (context, state) {
+                              return CreateTimeline(
+                                id: state.pathParameters['requirementId'],
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: ArtworkDetailRoute.tag,
+                            name: '${ArtworkDetailRoute.name} order',
+                            builder: (context, state) {
+                              return ServiceDetails(
+                                id: state.pathParameters['artworkId'],
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       GoRoute(
                         path: ReviewRoute.tag,

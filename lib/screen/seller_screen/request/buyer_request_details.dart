@@ -42,8 +42,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Detail',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -109,24 +108,18 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                    image: NetworkImage(snapshot.data!
-                                            .createdByNavigation!.avatar ??
-                                        defaultImage),
+                                    image: NetworkImage(snapshot.data!.createdByNavigation!.avatar ?? defaultImage),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               title: Text(
                                 snapshot.data!.createdByNavigation!.name!,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                DateFormat('dd-MM-yyyy')
-                                    .format(snapshot.data!.createdDate!),
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                DateFormat('dd-MM-yyyy').format(snapshot.data!.createdDate!),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                             ),
                             const Divider(
@@ -158,8 +151,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.category!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -175,8 +167,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.material!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -192,62 +183,51 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.surface!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 5.0),
                             ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data!.sizes!.isNotEmpty
-                                    ? snapshot.data!.sizes!.length
-                                    : 1,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 10.0),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Pieces: ',
-                                          style: kTextStyle.copyWith(
-                                            color: index == 0
-                                                ? kSubTitleColor
-                                                : kWhite,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: snapshot.data!.pieces
-                                                  .toString(),
-                                              style: kTextStyle.copyWith(
-                                                color: index == 0
-                                                    ? kNeutralColor
-                                                    : kWhite,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text: snapshot.data!.sizes!
-                                                          .isNotEmpty
-                                                      ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
-                                                      : null,
-                                                  style: kTextStyle.copyWith(
-                                                    color: kNeutralColor,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.sizes!.isNotEmpty ? snapshot.data!.sizes!.length : 1,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 5.0),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Pieces: ',
+                                        style: kTextStyle.copyWith(
+                                          color: index == 0 ? kSubTitleColor : kWhite,
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                        children: [
+                                          TextSpan(
+                                            text: snapshot.data!.pieces.toString(),
+                                            style: kTextStyle.copyWith(
+                                              color: index == 0 ? kNeutralColor : kWhite,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: snapshot.data!.sizes!.isNotEmpty ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : null,
+                                                style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  );
-                                }),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
@@ -259,8 +239,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.quantity.toString(),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -278,8 +257,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                     text: NumberFormat.simpleCurrency(
                                       locale: 'vi-VN',
                                     ).format(snapshot.data!.budget),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -294,16 +272,13 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: calculateConnect(
-                                        snapshot.data!.budget!),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    text: calculateConnect(snapshot.data!.budget!),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10.0)
-                                .visible(snapshot.data!.image != null),
+                            const SizedBox(height: 10.0).visible(snapshot.data!.image != null),
                             Text(
                               'Attach file:',
                               style: kTextStyle.copyWith(
@@ -311,8 +286,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ).visible(snapshot.data!.image != null),
-                            const SizedBox(height: 8.0)
-                                .visible(snapshot.data!.image != null),
+                            const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [

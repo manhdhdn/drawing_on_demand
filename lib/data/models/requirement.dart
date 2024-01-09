@@ -6,6 +6,7 @@ import 'category.dart';
 import 'material.dart';
 import 'proposal.dart';
 import 'size.dart';
+import 'step.dart';
 import 'surface.dart';
 
 class Requirements {
@@ -47,6 +48,7 @@ class Requirement {
   Material? material;
   List<Size>? sizes;
   List<Proposal>? proposals;
+  List<Step>? steps;
 
   Requirement({
     this.id,
@@ -74,23 +76,16 @@ class Requirement {
     pieces = json['Pieces'];
     budget = double.tryParse(json['Budget'].toString());
     createdDate = DateTime.parse(json['CreatedDate']);
-    lastModifiedDate = json['LastModifiedDate'] != null
-        ? DateTime.parse(json['LastModifiedDate'])
-        : null;
+    lastModifiedDate = json['LastModifiedDate'] != null ? DateTime.parse(json['LastModifiedDate']) : null;
     status = json['Status'];
     categoryId = Guid(json['CategoryId']);
     surfaceId = Guid(json['SurfaceId']);
     materialId = Guid(json['MaterialId']);
     createdBy = Guid(json['CreatedBy']);
-    createdByNavigation = json['CreatedByNavigation'] != null
-        ? Account.fromJson(json['CreatedByNavigation'])
-        : null;
-    category =
-        json['Category'] != null ? Category.fromJson(json['Category']) : null;
-    surface =
-        json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
-    material =
-        json['Material'] != null ? Material.fromJson(json['Material']) : null;
+    createdByNavigation = json['CreatedByNavigation'] != null ? Account.fromJson(json['CreatedByNavigation']) : null;
+    category = json['Category'] != null ? Category.fromJson(json['Category']) : null;
+    surface = json['Surface'] != null ? Surface.fromJson(json['Surface']) : null;
+    material = json['Material'] != null ? Material.fromJson(json['Material']) : null;
     sizes = json['Sizes'] != null
         ? List<Size>.from(
             json['Sizes'].map(
@@ -105,6 +100,13 @@ class Requirement {
             ),
           )
         : null;
+    steps = json['Steps'] != null
+        ? List<Step>.from(
+            json['Steps'].map(
+              (x) => Step.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -116,11 +118,8 @@ class Requirement {
       'Quantity': quantity,
       'Pieces': pieces,
       'Budget': budget,
-      'CreatedDate':
-          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
-      'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
-          : null,
+      'CreatedDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
+      'LastModifiedDate': lastModifiedDate != null ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!) : null,
       'Status': status,
       'CategoryId': categoryId.toString(),
       'SurfaceId': surfaceId.toString(),

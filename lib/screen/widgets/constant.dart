@@ -72,25 +72,9 @@ List<String> gender = [
 ];
 String selectedGender = 'Male';
 
-List<String> catName = [
-  'Graphics Design',
-  'Video Editing',
-  'Digital Marketing',
-  'Business',
-  'Writing & Translation',
-  'Programming',
-  'Lifestyle'
-];
+List<String> catName = ['Graphics Design', 'Video Editing', 'Digital Marketing', 'Business', 'Writing & Translation', 'Programming', 'Lifestyle'];
 
-List<String> catIcon = [
-  'images/graphic.png',
-  'images/videoicon.png',
-  'images/dm.png',
-  'images/b.png',
-  'images/t.png',
-  'images/p.png',
-  'images/l.png'
-];
+List<String> catIcon = ['images/graphic.png', 'images/videoicon.png', 'images/dm.png', 'images/b.png', 'images/t.png', 'images/p.png', 'images/l.png'];
 
 //__________Language List_______________________________________________
 List<String> language = [
@@ -278,5 +262,4 @@ List<Color> colorList = [
   const Color(0xFFFF3B30),
 ];
 
-String defaultImage =
-    'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf';
+String defaultImage = 'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf';

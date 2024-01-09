@@ -76,8 +76,7 @@ class _SellerAddLanguagePopUpState extends State<SellerAddLanguagePopUp> {
               textInputAction: TextInputAction.next,
               decoration: kInputDecoration.copyWith(
                 labelText: 'Language',
-                labelStyle: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+                labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 hintText: 'Enter language ',
                 hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                 focusColor: kNeutralColor,
@@ -93,14 +92,12 @@ class _SellerAddLanguagePopUpState extends State<SellerAddLanguagePopUp> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8.0),
                       ),
-                      borderSide:
-                          BorderSide(color: kBorderColorTextField, width: 2),
+                      borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                     ),
                     contentPadding: const EdgeInsets.all(7.0),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Language Level',
-                    labelStyle: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   child: DropdownButtonHideUnderline(child: getLevel()),
                 );
@@ -200,8 +197,7 @@ class _SellerAddSkillPopUpState extends State<SellerAddSkillPopUp> {
               textInputAction: TextInputAction.next,
               decoration: kInputDecoration.copyWith(
                 labelText: 'Skill',
-                labelStyle: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+                labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 hintText: 'Enter skill ',
                 hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                 focusColor: kNeutralColor,
@@ -217,14 +213,12 @@ class _SellerAddSkillPopUpState extends State<SellerAddSkillPopUp> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8.0),
                       ),
-                      borderSide:
-                          BorderSide(color: kBorderColorTextField, width: 2),
+                      borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                     ),
                     contentPadding: const EdgeInsets.all(7.0),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Skill Level',
-                    labelStyle: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   child: DropdownButtonHideUnderline(child: getLevel()),
                 );
@@ -288,8 +282,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
               children: [
                 Text(
                   'Select Image',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -310,9 +303,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
                     children: [
                       Icon(
                         FontAwesomeIcons.images,
-                        color: choosedType == 'gallery'
-                            ? kPrimaryColor
-                            : kLightNeutralColor,
+                        color: choosedType == 'gallery' ? kPrimaryColor : kLightNeutralColor,
                         size: 40,
                       ),
                       const SizedBox(height: 10.0),
@@ -332,9 +323,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
                     children: [
                       Icon(
                         FontAwesomeIcons.camera,
-                        color: choosedType == 'camera'
-                            ? kPrimaryColor
-                            : kLightNeutralColor,
+                        color: choosedType == 'camera' ? kPrimaryColor : kLightNeutralColor,
                         size: 40,
                       ),
                       const SizedBox(height: 10.0),
@@ -359,7 +348,10 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
       choosedType = 'gallery';
     });
 
-    pickImage();
+    await pickImage();
+
+    // ignore: use_build_context_synchronously
+    GoRouter.of(context).pop();
   }
 
   void onCamera() async {
@@ -367,7 +359,10 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
       choosedType = 'camera';
     });
 
-    openCamera();
+    await openCamera();
+
+    // ignore: use_build_context_synchronously
+    GoRouter.of(context).pop();
   }
 }
 
@@ -394,17 +389,13 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
               width: 209,
               decoration: const BoxDecoration(
                 shape: BoxShape.rectangle,
-                image: DecorationImage(
-                    image: AssetImage('images/success.png'), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage('images/success.png'), fit: BoxFit.cover),
               ),
             ),
             const SizedBox(height: 15.0),
             Text(
               'Congratulations!',
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
@@ -421,9 +412,7 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
               onPressed: () {
                 setState(() {
                   finish(context);
-                  isArtist
-                      ? const Login().launch(context)
-                      : const Login().launch(context);
+                  isArtist ? const Login().launch(context) : const Login().launch(context);
                 });
               },
             )
@@ -456,8 +445,7 @@ class _BlockingReasonPopUpState extends State<BlockingReasonPopUp> {
               children: [
                 Text(
                   'Block on Messanger',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -527,8 +515,7 @@ class _ImportDocumentPopUpState extends State<ImportDocumentPopUp> {
               children: [
                 Text(
                   'Choose your Need',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -602,8 +589,7 @@ class _AddFAQPopUpState extends State<AddFAQPopUp> {
               children: [
                 Text(
                   'Add FAQ',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -635,8 +621,7 @@ class _AddFAQPopUpState extends State<AddFAQPopUp> {
               decoration: kInputDecoration.copyWith(
                 labelText: 'Add Answer',
                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                hintText:
-                    'I can use Figma , Adobe XD or Framer , whatever app your comfortable working with',
+                hintText: 'I can use Figma , Adobe XD or Framer , whatever app your comfortable working with',
                 hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                 focusColor: kNeutralColor,
                 border: const OutlineInputBorder(),
@@ -680,8 +665,7 @@ class CancelReasonPopUp extends StatefulWidget {
   final String? id;
   final String? accountId;
 
-  const CancelReasonPopUp({Key? key, this.id, this.accountId})
-      : super(key: key);
+  const CancelReasonPopUp({Key? key, this.id, this.accountId}) : super(key: key);
 
   @override
   State<CancelReasonPopUp> createState() => _CancelReasonPopUpState();
@@ -708,8 +692,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 children: [
                   Text(
                     'Why are you Cancel Order?',
-                    style: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -840,8 +823,7 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
               children: [
                 Text(
                   'Order Completed',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -880,8 +862,7 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
               'Your Earned \$5.00',
               maxLines: 1,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20.0),
             GestureDetector(
@@ -895,14 +876,11 @@ class _OrderCompletePopUpState extends State<OrderCompletePopUp> {
               child: Container(
                 height: 40,
                 width: 135,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: kPrimaryColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
                     'Got it!',
-                    style: kTextStyle.copyWith(
-                        color: kWhite, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -952,10 +930,7 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
               'Successfully',
               maxLines: 1,
               textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
@@ -1011,17 +986,13 @@ class _FavouriteWarningPopUpState extends State<FavouriteWarningPopUp> {
               width: 140,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                image: const DecorationImage(
-                    image: AssetImage('images/shot1.png'), fit: BoxFit.cover),
+                image: const DecorationImage(image: AssetImage('images/shot1.png'), fit: BoxFit.cover),
               ),
             ),
             const SizedBox(height: 20.0),
             Text(
               'Are You Sure!',
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 5.0),
             Padding(
@@ -1089,8 +1060,7 @@ class _VerifyPopUpState extends State<VerifyPopUp> {
               children: [
                 Text(
                   'Let’s Verify It’s You',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -1151,8 +1121,7 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
               children: [
                 Text(
                   'Withdraw Amount',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -1270,8 +1239,7 @@ class _WithdrawHistoryPopUpState extends State<WithdrawHistoryPopUp> {
               children: [
                 Text(
                   'Withdrawal Completed',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 GestureDetector(
