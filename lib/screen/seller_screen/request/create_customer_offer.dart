@@ -49,6 +49,13 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
   }
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kDarkWhite,
@@ -286,12 +293,11 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                             });
                           },
                           child: Container(
-                            width: context.width(),
+                            constraints: const BoxConstraints(maxWidth: 200),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(color: kBorderColorTextField),
                             ),
-                            padding: const EdgeInsets.all(20.0),
                             child: images.isEmpty
                                 ? Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -299,26 +305,27 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                       const Icon(
                                         IconlyBold.image,
                                         color: kLightNeutralColor,
-                                        size: 50,
                                       ),
                                       const SizedBox(height: 10.0),
                                       Text(
-                                        'Upload Image',
+                                        ' Upload Image ',
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
+                                      const SizedBox(height: 10.0),
                                     ],
                                   )
                                 : FutureBuilder(
                                     future: images.last.readAsBytes(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                                        return Center(
+                                        return ClipRRect(
+                                          borderRadius: BorderRadius.circular(10.0),
                                           child: Stack(
                                             alignment: Alignment.topRight,
                                             children: [
                                               Image.memory(
                                                 snapshot.data!,
-                                                scale: 3.0,
+                                                scale: 5,
                                               ),
                                               GestureDetector(
                                                 onTap: () {

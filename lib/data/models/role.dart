@@ -1,12 +1,14 @@
 import 'package:flutter_guid/flutter_guid.dart';
 
 class Roles {
+  int? count;
   List<Role> value;
 
-  Roles({required this.value});
+  Roles({this.count, required this.value});
 
   factory Roles.fromJson(Map<String, dynamic> json) {
     return Roles(
+      count: json['@odata.count'],
       value: List<Role>.from(
         json['value'].map(
           (x) => Role.fromJson(x),

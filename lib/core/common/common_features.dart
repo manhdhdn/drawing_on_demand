@@ -106,7 +106,11 @@ Future<void> openCamera() async {
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
   if (image != null) {
-    images.add(image);
+    if (images.isEmpty) {
+      images.add(image);
+    } else {
+      images[0] = image;
+    }
   }
 }
 

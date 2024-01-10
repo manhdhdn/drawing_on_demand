@@ -1029,6 +1029,13 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
   }
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -1292,5 +1299,97 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
     } catch (error) {
       Fluttertoast.showToast(msg: 'Update pieces failed');
     }
+  }
+}
+
+class VerifyEmailSuccessPopUp extends StatefulWidget {
+  const VerifyEmailSuccessPopUp({Key? key}) : super(key: key);
+
+  @override
+  State<VerifyEmailSuccessPopUp> createState() => _VerifyEmailSuccessPopUpState();
+}
+
+class _VerifyEmailSuccessPopUpState extends State<VerifyEmailSuccessPopUp> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Email Verified Successful',
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => finish(context),
+                  child: const Icon(FeatherIcons.x, color: kSubTitleColor),
+                ),
+              ],
+            ),
+            const Divider(
+              thickness: 1.0,
+              color: kBorderColorTextField,
+            ),
+            const SizedBox(height: 20.0),
+            Container(
+              height: 124,
+              width: 124,
+              decoration: BoxDecoration(
+                color: kPrimaryColor.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.check_rounded,
+                color: kPrimaryColor,
+                size: 50,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              'Thank you for verifying your email!',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(color: kLightNeutralColor),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              'Please login to continue',
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20.0),
+            GestureDetector(
+              onTap: () {
+                setState(
+                  () {
+                    finish(context);
+                  },
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 135,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
+                child: Center(
+                  child: Text(
+                    'Got it!',
+                    style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

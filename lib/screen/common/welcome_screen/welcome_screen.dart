@@ -1,6 +1,9 @@
+import 'package:drawing_on_demand/app_routes/named_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/utils/pref_utils.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 
@@ -38,9 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 125,
                   width: 160,
                   decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('images/logo2.png'),
-                        fit: BoxFit.cover),
+                    image: DecorationImage(image: AssetImage('images/logo2.png'), fit: BoxFit.cover),
                   ),
                 )
               ],
@@ -55,10 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Center(
                 child: Text(
                   AppLocalizations.of(context)!.joinAs,
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -91,8 +89,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       'I\'m a Customer',
-                      style: kTextStyle.copyWith(
-                          color: kNeutralColor, fontWeight: FontWeight.bold),
+                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       'Looking for help with a project.',
@@ -106,9 +103,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       decoration: BoxDecoration(
                         color: const Color(0xFFCCF2E3),
                         borderRadius: BorderRadius.circular(3.0),
-                        image: const DecorationImage(
-                            image: AssetImage('images/profile1.png'),
-                            fit: BoxFit.cover),
+                        image: const DecorationImage(image: AssetImage('images/profile1.png'), fit: BoxFit.cover),
                       ),
                     ),
                     autofocus: false,
@@ -118,8 +113,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     value: !isArtist,
                     onChanged: (value) {
                       setState(() {
-                        isArtist = !isArtist;
+                        isArtist = false;
                       });
+
+                      PrefUtils().setRole('Customer');
                     },
                   ),
                 ),
@@ -153,8 +150,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       'I\'m a Artist',
-                      style: kTextStyle.copyWith(
-                          color: kNeutralColor, fontWeight: FontWeight.bold),
+                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       'Looking for my favorite work ',
@@ -168,9 +164,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       decoration: BoxDecoration(
                         color: const Color(0xFFCCF2E3),
                         borderRadius: BorderRadius.circular(3.0),
-                        image: const DecorationImage(
-                            image: AssetImage('images/profile2.png'),
-                            fit: BoxFit.cover),
+                        image: const DecorationImage(image: AssetImage('images/profile2.png'), fit: BoxFit.cover),
                       ),
                     ),
                     autofocus: false,
@@ -180,8 +174,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     value: isArtist,
                     onChanged: (value) {
                       setState(() {
-                        isArtist = value!;
+                        isArtist = true;
                       });
+
+                      PrefUtils().setRole('Artist');
                     },
                   ),
                 ),
@@ -211,9 +207,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       children: [
                         TextSpan(
                           text: 'Log In',
-                          style: kTextStyle.copyWith(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -228,10 +222,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void onCreateAccount() {
-    // Navigator.pushNamed(context, SignUp.tag);
+    context.goNamed(RegisterRoute.name);
   }
 
   void onLogin() {
-    // Navigator.pushNamed(context, Login.tag);
+    context.goNamed(LoginRoute.name);
   }
 }

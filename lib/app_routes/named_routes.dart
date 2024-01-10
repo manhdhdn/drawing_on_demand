@@ -12,6 +12,21 @@ class WelcomeRoute {
   static const String name = 'Welcome';
 }
 
+class RegisterRoute {
+  static const String tag = 'register';
+  static const String name = 'Register';
+}
+
+class CreateProfileRoute {
+  static const String tag = 'create';
+  static const String name = 'Create Profile';
+}
+
+class VerifyRoute {
+  static const String tag = 'verify';
+  static const String name = 'Verify';
+}
+
 ///// User
 
 //// Home

@@ -1,8 +1,10 @@
+import 'package:drawing_on_demand/screen/common/authentication/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../core/utils/pref_utils.dart';
+import '../screen/client_screen/authentication/client_create_profile.dart';
 import '../screen/client_screen/cart/cart_screen.dart';
 import '../screen/client_screen/home/client_home.dart';
 import '../screen/client_screen/home/client_home_screen.dart';
@@ -11,6 +13,7 @@ import '../screen/client_screen/home/top_seller.dart';
 import '../screen/client_screen/job_post/create_new_job_post.dart';
 import '../screen/client_screen/job_post/job_details.dart';
 import '../screen/client_screen/job_post/job_post.dart';
+import '../screen/common/authentication/opt_verification.dart';
 import '../screen/common/orders/order_detail.dart';
 import '../screen/common/orders/order_list.dart';
 import '../screen/client_screen/profile/client_profile.dart';
@@ -25,6 +28,7 @@ import '../screen/common/orders/order_review.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
 import '../screen/common/welcome_screen/welcome_screen.dart';
+import '../screen/seller_screen/authentication/seller_create_profile.dart';
 import '../screen/seller_screen/home/seller_home.dart';
 import '../screen/seller_screen/home/seller_home_screen.dart';
 import '../screen/seller_screen/profile/seller_profile.dart';
@@ -55,7 +59,10 @@ class AppRoutes {
           path: LoginRoute.tag,
           name: LoginRoute.name,
           builder: (context, state) {
-            return const Login();
+            return Login(
+              apiKey: state.uri.queryParameters['apiKey'],
+              oobCode: state.uri.queryParameters['oobCode'],
+            );
           },
           redirect: (context, state) => _authened(),
         ),
@@ -65,6 +72,31 @@ class AppRoutes {
           builder: (context, state) {
             return const WelcomeScreen();
           },
+          routes: [
+            GoRoute(
+              path: RegisterRoute.tag,
+              name: RegisterRoute.name,
+              builder: (context, state) {
+                return const SignUp();
+              },
+              routes: [
+                GoRoute(
+                  path: VerifyRoute.tag,
+                  name: VerifyRoute.name,
+                  builder: (context, state) {
+                    return const OtpVerification();
+                  },
+                ),
+                GoRoute(
+                  path: CreateProfileRoute.tag,
+                  name: CreateProfileRoute.name,
+                  builder: (context, state) {
+                    return PrefUtils().getRole() == 'Customer' ? const ClientCreateProfile() : const SellerCreateProfile();
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
         PrefUtils().getRole() == 'Artist'
             ? ShellRoute(
@@ -543,10 +575,10 @@ class AppRoutes {
   }
 
   static String? _authened() {
-    return PrefUtils().getToken() != '{}' ? HomeRoute.tag : null;
+    return PrefUtils().getAccount() != '{}' ? HomeRoute.tag : null;
   }
 
   static String? _unAuthened() {
-    return PrefUtils().getToken() != '{}' ? null : LoginRoute.tag;
+    return PrefUtils().getAccount() != '{}' ? null : LoginRoute.tag;
   }
 }

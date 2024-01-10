@@ -39,8 +39,7 @@ class _OrderReviewState extends State<OrderReview> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -61,6 +60,13 @@ class _OrderReviewState extends State<OrderReview> {
   }
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Title(
       title: '$dod | Review',
@@ -73,8 +79,7 @@ class _OrderReviewState extends State<OrderReview> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             'Write a Review',
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -83,9 +88,7 @@ class _OrderReviewState extends State<OrderReview> {
           decoration: const BoxDecoration(color: kWhite),
           child: ButtonGlobalWithoutIcon(
               buttontext: 'Publish Review',
-              buttonDecoration: kButtonDecoration.copyWith(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.circular(30.0)),
+              buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
               onPressed: () {
                 onSubmit();
               },
@@ -108,8 +111,7 @@ class _OrderReviewState extends State<OrderReview> {
               future: order,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  Account account = snapshot
-                      .data!.orderDetails!.first.artwork!.createdByNavigation!;
+                  Account account = snapshot.data!.orderDetails!.first.artwork!.createdByNavigation!;
 
                   return SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -121,9 +123,7 @@ class _OrderReviewState extends State<OrderReview> {
                           const SizedBox(height: 15.0),
                           Text(
                             'Review your experience',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 5.0),
                           Text(
@@ -148,9 +148,7 @@ class _OrderReviewState extends State<OrderReview> {
                                 const SizedBox(height: 10.0),
                                 Text(
                                   account.name!,
-                                  style: kTextStyle.copyWith(
-                                      color: kNeutralColor,
-                                      fontWeight: FontWeight.bold),
+                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -179,14 +177,11 @@ class _OrderReviewState extends State<OrderReview> {
                             decoration: kInputDecoration.copyWith(
                               border: const OutlineInputBorder(),
                               labelText: 'Write a Comment',
-                              labelStyle:
-                                  kTextStyle.copyWith(color: kNeutralColor),
+                              labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                               hintText: 'Share your experience...',
-                              hintStyle: kTextStyle.copyWith(
-                                  color: kLightNeutralColor),
+                              hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                               focusColor: kNeutralColor,
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
                             ),
                             controller: reviewController,
                             validator: (value) {
@@ -229,8 +224,7 @@ class _OrderReviewState extends State<OrderReview> {
           .then((order) {
         setState(() {
           createdBy = order.orderedBy;
-          accountId =
-              order.orderDetails!.first.artwork!.createdByNavigation!.id;
+          accountId = order.orderDetails!.first.artwork!.createdByNavigation!.id;
         });
 
         return order;

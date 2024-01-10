@@ -62,6 +62,13 @@ class _CreateTimelineState extends State<CreateTimeline> {
   }
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kDarkWhite,

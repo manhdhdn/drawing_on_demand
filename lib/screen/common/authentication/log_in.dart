@@ -9,27 +9,71 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/account_api.dart';
+import '../../../data/apis/api_config.dart';
 import '../../../main.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../message/function/chat_function.dart';
+import '../popUp/popup_2.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  final String? apiKey;
+  final String? oobCode;
+
+  const Login({Key? key, this.apiKey, this.oobCode}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: PrefUtils().getSignInInfor()['Email'] ?? '');
+  TextEditingController passwordController = TextEditingController(text: PrefUtils().getSignInInfor()['Password'] ?? '');
 
   bool hidePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 1), () {
+      if (widget.apiKey != null && widget.oobCode != null) {
+        verifyEmailSuccessPopUp();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
+  void verifyEmailSuccessPopUp() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: const VerifyEmailSuccessPopUp(),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +145,17 @@ class _LoginState extends State<Login> {
                     controller: emailController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
-                      if (!isValidEmail(value, isRequired: true)) {
-                        return 'Please enter a valid email address';
+                      List<String> result = [];
+
+                      if (value!.isEmpty) {
+                        result.add('Please enter your email');
                       }
 
-                      return null;
+                      if (!isValidEmail(value)) {
+                        result.add('Please enter a valid email address');
+                      }
+
+                      return result.isNotEmpty ? result.join('\n') : null;
                     },
                     autofillHints: const [AutofillHints.username],
                   ),
@@ -200,7 +250,7 @@ class _LoginState extends State<Login> {
                   const Padding(
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SocialIcon(
                           bgColor: kNeutralColor,
@@ -208,24 +258,25 @@ class _LoginState extends State<Login> {
                           icon: FontAwesomeIcons.facebookF,
                           borderColor: Colors.transparent,
                         ),
+                        SizedBox(width: 15.0),
                         SocialIcon(
                           bgColor: kWhite,
                           iconColor: kNeutralColor,
                           icon: FontAwesomeIcons.google,
                           borderColor: kBorderColorTextField,
                         ),
-                        SocialIcon(
-                          bgColor: kWhite,
-                          iconColor: Color(0xFF76A9EA),
-                          icon: FontAwesomeIcons.twitter,
-                          borderColor: kBorderColorTextField,
-                        ),
-                        SocialIcon(
-                          bgColor: kWhite,
-                          iconColor: Color(0xFFFF554A),
-                          icon: FontAwesomeIcons.instagram,
-                          borderColor: kBorderColorTextField,
-                        ),
+                        // SocialIcon(
+                        //   bgColor: kWhite,
+                        //   iconColor: Color(0xFF76A9EA),
+                        //   icon: FontAwesomeIcons.twitter,
+                        //   borderColor: kBorderColorTextField,
+                        // ),
+                        // SocialIcon(
+                        //   bgColor: kWhite,
+                        //   iconColor: Color(0xFFFF554A),
+                        //   icon: FontAwesomeIcons.instagram,
+                        //   borderColor: kBorderColorTextField,
+                        // ),
                       ],
                     ),
                   ),
@@ -264,25 +315,62 @@ class _LoginState extends State<Login> {
     }
 
     try {
+      await PrefUtils().setSignInInfor({
+        'Email': emailController.text.trim(),
+        'Password': passwordController.text.trim(),
+      });
+
+      // ignore: use_build_context_synchronously
       ProgressDialogUtils.showProgress(context);
 
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+      await auth.signInWithEmailAndPassword(
+        email: PrefUtils().getSignInInfor()['Email']!,
+        password: PrefUtils().getSignInInfor()['Password']!,
       );
 
       var account = await AccountApi().gets(
         0,
-        filter: "email eq '${emailController.text.trim()}'",
+        filter: "email eq '${PrefUtils().getSignInInfor()['Email']}'",
         expand: 'accountRoles(expand=role),rank',
       );
+
+      if (account.value.first.status == 'Pending') {
+        if (widget.apiKey == null && widget.oobCode == null) {
+          // ignore: use_build_context_synchronously
+          ProgressDialogUtils.hideProgress(context);
+          Fluttertoast.showToast(msg: 'Please verify your email');
+
+          auth.sendSignInLinkToEmail(
+            email: PrefUtils().getSignInInfor()['Email']!,
+            actionCodeSettings: ActionCodeSettings(
+              url: '${ApiConfig.paymentUrl}${LoginRoute.tag}',
+              handleCodeInApp: true,
+            ),
+          );
+
+          return;
+        } else {
+          // ignore: use_build_context_synchronously
+          String? uri = GoRouterState.of(context).uri.toString();
+
+          if (auth.isSignInWithEmailLink('${ApiConfig.paymentUrl}$uri')) {
+            AccountApi().patchOne(
+              account.value.first.id.toString(),
+              {
+                'Status': 'Active',
+              },
+            );
+          } else {
+            throw Exception();
+          }
+        }
+      }
 
       // Save account information
       await PrefUtils().setAccount(account.value.first);
 
       // Save token
-      var token = await FirebaseAuth.instance.currentUser!.getIdToken();
-
+      var token = await auth.currentUser!.getIdToken();
       await PrefUtils().setToken(token!);
 
       // Navigator
@@ -299,6 +387,8 @@ class _LoginState extends State<Login> {
       } else {
         throw 'Account is not supported';
       }
+
+      await PrefUtils().clearSignInInfor();
 
       onLogedIn();
     } catch (error) {
@@ -326,6 +416,6 @@ class _LoginState extends State<Login> {
   }
 
   void onCreateNewAccount() {
-    // Navigator.pushNamed(context, WelcomeScreen.tag);
+    context.goNamed(WelcomeRoute.name);
   }
 }

@@ -156,17 +156,18 @@ class _OrderListState extends State<OrderList> {
                                           SlideCountdownSeparated(
                                             showZeroValue: true,
                                             duration: Duration(
-                                                milliseconds: pendingOrders[i]
-                                                        .orderDate!
-                                                        .add(const Duration(
-                                                          days: 2,
-                                                        ))
-                                                        .millisecondsSinceEpoch -
-                                                    DateTime.now()
-                                                        .add(const Duration(
-                                                          hours: 7,
-                                                        ))
-                                                        .millisecondsSinceEpoch),
+                                              milliseconds: pendingOrders[i]
+                                                      .orderDate!
+                                                      .add(const Duration(
+                                                        days: 2,
+                                                      ))
+                                                      .millisecondsSinceEpoch -
+                                                  DateTime.now()
+                                                      .add(const Duration(
+                                                        hours: 7,
+                                                      ))
+                                                      .millisecondsSinceEpoch,
+                                            ),
                                             separatorType: SeparatorType.symbol,
                                             separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
                                             decoration: BoxDecoration(

@@ -65,6 +65,13 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
     images.clear();
   }
 
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
+
   DropdownButton<Guid> getCategories() {
     List<DropdownMenuItem<Guid>> dropDownItems = [];
 
@@ -601,12 +608,11 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                           });
                         },
                         child: Container(
-                          width: context.width(),
+                          constraints: const BoxConstraints(maxWidth: 200),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(color: kBorderColorTextField),
                           ),
-                          padding: const EdgeInsets.all(20.0),
                           child: images.isEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -618,22 +624,23 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                     ),
                                     const SizedBox(height: 10.0),
                                     Text(
-                                      'Upload Image',
+                                      ' Upload Image ',
                                       style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
+                                    const SizedBox(height: 10.0),
                                   ],
                                 )
                               : FutureBuilder(
                                   future: images.last.readAsBytes(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
-                                      return Center(
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(10.0),
                                         child: Stack(
                                           alignment: Alignment.topRight,
                                           children: [
                                             Image.memory(
                                               snapshot.data!,
-                                              scale: 3.0,
                                             ),
                                             GestureDetector(
                                               onTap: () {

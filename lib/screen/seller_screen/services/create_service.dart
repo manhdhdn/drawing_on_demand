@@ -101,7 +101,7 @@ class _CreateServiceState extends State<CreateService> {
                           ),
                           const SizedBox(height: 20.0),
                           Text(
-                            'Empty  Service',
+                            'Nothing just yet',
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 24.0),
                           ),
                         ],

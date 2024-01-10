@@ -62,6 +62,10 @@ class PrefUtils {
     }
   }
 
+  Future<bool> clearToken() async {
+    return _sharedPreferences!.remove('token');
+  }
+
   Future<bool> setLanguage(String value) {
     return _sharedPreferences!.setString('language', value);
   }
@@ -172,5 +176,37 @@ class PrefUtils {
 
   Future<bool> clearDiscountId() async {
     return _sharedPreferences!.remove('discountId');
+  }
+
+  Future<bool> setSignUpInfor(Map<String, dynamic> info) {
+    return _sharedPreferences!.setString('signUpInfor', jsonEncode(info));
+  }
+
+  Map<String, dynamic> getSignUpInfor() {
+    try {
+      return jsonDecode(_sharedPreferences!.getString('signUpInfor')!);
+    } catch (error) {
+      return {};
+    }
+  }
+
+  Future<bool> clearSignUpInfor() async {
+    return _sharedPreferences!.remove('signUpInfor');
+  }
+
+  Future<bool> setSignInInfor(Map<String, dynamic> info) async {
+    return _sharedPreferences!.setString('signInInfor', jsonEncode(info));
+  }
+
+  Map<String, dynamic> getSignInInfor() {
+    try {
+      return jsonDecode(_sharedPreferences!.getString('signInInfor')!);
+    } catch (error) {
+      return {};
+    }
+  }
+
+  Future<bool> clearSignInInfor() async {
+    return _sharedPreferences!.remove('signInInfor');
   }
 }

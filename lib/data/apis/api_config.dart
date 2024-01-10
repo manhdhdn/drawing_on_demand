@@ -3,7 +3,8 @@ import '../../core/utils/pref_utils.dart';
 class ApiConfig {
   // static const String baseUrl = 'localhost:7257';
   static const String baseUrl = 'dond.azurewebsites.net';
-  static const String paymentUri = 'http://localhost:8000';
+  static const String paymentUrl = 'http://localhost:8000';
+  // static const String paymentUrl = 'http://localhost:8000';
 
   static Map<String, String> get headers {
     return {

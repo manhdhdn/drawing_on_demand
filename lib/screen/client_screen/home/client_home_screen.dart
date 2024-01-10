@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -39,9 +40,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   void initState() {
     super.initState();
 
-    popularArtworks = getPoppularArtworks();
+    popularArtworks = getPopularArtworks();
     topArtists = getTopArtists();
     newArtworks = getNewArtworks();
+
+    init();
   }
 
   @override
@@ -902,7 +905,23 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     );
   }
 
-  Future<Artworks?> getPoppularArtworks() async {
+  void init() async {
+    if (PrefUtils().getToken() == '{}') {
+      await FirebaseAuth.instance.signInAnonymously();
+
+      // Save token
+      var token = await FirebaseAuth.instance.currentUser!.getIdToken();
+      await PrefUtils().setToken(token!);
+
+      setState(() {
+        popularArtworks = getPopularArtworks();
+        topArtists = getTopArtists();
+        newArtworks = getNewArtworks();
+      });
+    }
+  }
+
+  Future<Artworks?> getPopularArtworks() async {
     try {
       return ArtworkApi()
           .gets(

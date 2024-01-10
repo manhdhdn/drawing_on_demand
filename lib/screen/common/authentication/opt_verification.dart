@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:drawing_on_demand/screen/widgets/button_global.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
+import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
 import '../../widgets/constant.dart';
 
 class OtpVerification extends StatefulWidget {
@@ -12,12 +18,28 @@ class OtpVerification extends StatefulWidget {
 }
 
 class _OtpVerificationState extends State<OtpVerification> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String verificationId = '';
+
   final defaultPinTheme = const PinTheme(
     width: 56,
     height: 56,
     textStyle: TextStyle(
-        fontSize: 20, color: kNeutralColor, fontWeight: FontWeight.w600),
+      fontSize: 20,
+      color: kNeutralColor,
+      fontWeight: FontWeight.w600,
+    ),
   );
+
+  Duration duration = const Duration(minutes: 1);
+
+  @override
+  void initState() {
+    super.initState();
+
+    PrefUtils().clearToken();
+    sendCode();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +60,7 @@ class _OtpVerificationState extends State<OtpVerification> {
         centerTitle: true,
         title: Text(
           'Verification',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
       ),
       body: Center(
@@ -50,16 +71,16 @@ class _OtpVerificationState extends State<OtpVerification> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'We’ve the code send to your email',
+                'We’ve send the code to your phone',
                 style: kTextStyle.copyWith(color: kSubTitleColor),
               ),
               Text(
-                'shadulislam@gmail.com',
-                style: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+                PrefUtils().getSignUpInfor()['Phone'],
+                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20.0),
               Pinput(
+                length: 6,
                 defaultPinTheme: defaultPinTheme.copyWith(
                   decoration: BoxDecoration(
                     border: Border.all(color: kBorderColorTextField),
@@ -72,39 +93,59 @@ class _OtpVerificationState extends State<OtpVerification> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                showCursor: false,
                 pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                showCursor: true,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a code';
+                  }
+
+                  if (value.length < 6) {
+                    return 'Please enter a valid code';
+                  }
+
+                  verifyCode(value);
+
+                  return null;
+                },
               ),
               const SizedBox(height: 20.0),
-              Text(
-                '00:56',
-                style: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+              SlideCountdownSeparated(
+                duration: duration,
+                decoration: const BoxDecoration(
+                  color: kPrimaryColor,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    duration = value;
+                  });
+                },
+                shouldShowMinutes: (p0) {
+                  return true;
+                },
+                shouldShowSeconds: (p0) {
+                  return true;
+                },
               ),
-              const SizedBox(height: 10.0),
-              RichText(
-                text: TextSpan(
-                  text: 'Didn’t receive code? ',
-                  style: kTextStyle.copyWith(color: kSubTitleColor),
-                  children: [
-                    TextSpan(
-                      text: 'Resend Code',
+              const SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Didn’t receive code? ',
+                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      onResend();
+                    },
+                    child: Text(
+                      'Resend Code',
                       style: kTextStyle.copyWith(color: kPrimaryColor),
                     ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              ButtonGlobalWithoutIcon(
-                  buttontext: 'Send',
-                  buttonDecoration: kButtonDecoration.copyWith(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(30.0),
                   ),
-                  onPressed: () {
-                    onSend();
-                  },
-                  buttonTextColor: kWhite),
+                ],
+              ),
             ],
           ),
         ),
@@ -112,11 +153,58 @@ class _OtpVerificationState extends State<OtpVerification> {
     );
   }
 
-  void onSend() {
-    // Navigator.pushNamedAndRemoveUntil(
-    //   context,
-    //   isArtist ? SellerCreateProfile.tag : ClientCreateProfile.tag,
-    //   (route) => false,
-    // );
+  void sendCode() async {
+    await auth.verifyPhoneNumber(
+      timeout: const Duration(minutes: 1),
+      phoneNumber: '+84 ${PrefUtils().getSignUpInfor()['Phone']}',
+      verificationCompleted: (PhoneAuthCredential credential) {
+        context.goNamed(CreateProfileRoute.name);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        Fluttertoast.showToast(msg: e.message.toString());
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        this.verificationId = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        this.verificationId = verificationId;
+      },
+    );
+  }
+
+  void verifyCode(String code) async {
+    try {
+      ProgressDialogUtils.showProgress(context);
+
+      var credential = await auth.signInWithCredential(
+        PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: code,
+        ),
+      );
+
+      if (credential.user != null) {
+        await PrefUtils().setToken((await credential.user!.getIdToken())!);
+        // ignore: use_build_context_synchronously
+        context.goNamed(CreateProfileRoute.name);
+      }
+
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+      Fluttertoast.showToast(msg: 'Invalid code');
+    }
+  }
+
+  void onResend() {
+    if (duration.inSeconds < 31) {
+      setState(() {
+        duration = const Duration(minutes: 1);
+      });
+    } else {
+      Fluttertoast.showToast(msg: 'Please wait for at least 30 seconds before resend code');
+    }
   }
 }

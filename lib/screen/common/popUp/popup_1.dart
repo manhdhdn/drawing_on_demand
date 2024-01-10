@@ -12,7 +12,6 @@ import '../../seller_screen/profile/seller_profile.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
-import '../authentication/log_in.dart';
 import '../authentication/opt_verification.dart';
 
 class SellerAddLanguagePopUp extends StatefulWidget {
@@ -399,7 +398,7 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Your profile is successfully completed. You can more changes after it\'s live.',
+              'Your profile is successfully completed\nVerify your email address to get started.',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.center,
             ),
@@ -412,7 +411,7 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
               onPressed: () {
                 setState(() {
                   finish(context);
-                  isArtist ? const Login().launch(context) : const Login().launch(context);
+                  context.goNamed(LoginRoute.name);
                 });
               },
             )
@@ -675,6 +674,13 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController reasonController = TextEditingController();
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
