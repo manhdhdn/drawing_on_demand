@@ -1160,7 +1160,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                           }
 
                                           if (int.tryParse(value!)! < 100) {
-                                            return 'Minimum weight is\n100 g';
+                                            return 'Minimum weight is\n100g';
                                           }
 
                                           return null;

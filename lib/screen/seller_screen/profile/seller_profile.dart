@@ -46,8 +46,7 @@ class _SellerProfileState extends State<SellerProfile> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(
-                        jsonDecode(PrefUtils().getAccount())['Avatar']),
+                    image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar']),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -56,8 +55,7 @@ class _SellerProfileState extends State<SellerProfile> {
           ),
           title: Text(
             jsonDecode(PrefUtils().getAccount())['Name'],
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           subtitle: RichText(
             text: TextSpan(
@@ -65,8 +63,7 @@ class _SellerProfileState extends State<SellerProfile> {
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               children: [
                 TextSpan(
-                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect']
-                      .toString(),
+                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect'].toString(),
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
               ],
@@ -233,12 +230,10 @@ class _SellerProfileState extends State<SellerProfile> {
                           FeatherIcons.chevronRight,
                           color: kLightNeutralColor,
                         ),
-                        onTap: () =>
-                            const SellerWithdrawMoney().launch(context),
+                        onTap: () => const SellerWithdrawMoney().launch(context),
                       ),
                       ListTile(
-                        onTap: () =>
-                            const SellerWithDrawHistory().launch(context),
+                        onTap: () => const SellerWithDrawHistory().launch(context),
                         visualDensity: const VisualDensity(vertical: -3),
                         horizontalTitleGap: 10,
                         contentPadding: const EdgeInsets.only(left: 60),
@@ -322,12 +317,12 @@ class _SellerProfileState extends State<SellerProfile> {
                       color: Color(0xFFD0F1FF),
                     ),
                     child: const Icon(
-                      IconlyBold.document,
+                      Icons.draw,
                       color: Color(0xFF06AEF3),
                     ),
                   ),
                   title: Text(
-                    'Seller Report',
+                    'Customer Centre',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),

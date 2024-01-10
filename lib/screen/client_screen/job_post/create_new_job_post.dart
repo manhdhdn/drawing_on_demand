@@ -56,22 +56,6 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
   List<int> lengths = [];
   List<String> status = ['Public', 'Private'];
 
-  @override
-  void initState() {
-    super.initState();
-
-    getData();
-
-    images.clear();
-  }
-
-  @override
-  void dispose() {
-    _formKey.currentState?.dispose();
-
-    super.dispose();
-  }
-
   DropdownButton<Guid> getCategories() {
     List<DropdownMenuItem<Guid>> dropDownItems = [];
 
@@ -190,6 +174,22 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
         });
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+
+    images.clear();
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+
+    super.dispose();
   }
 
   @override

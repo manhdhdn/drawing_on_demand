@@ -347,7 +347,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
       choosedType = 'gallery';
     });
 
-    await pickImage();
+    await pickMultipleImages();
 
     // ignore: use_build_context_synchronously
     GoRouter.of(context).pop();

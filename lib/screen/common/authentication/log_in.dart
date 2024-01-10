@@ -377,12 +377,12 @@ class _LoginState extends State<Login> {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
 
-      var roles = account.value.first.accountRoles!.map((accountRole) => accountRole.role!.name).toSet();
+      var accountRoles = account.value.first.accountRoles!.map((accountRole) => accountRole).toList();
 
-      if (roles.contains('Artist')) {
+      if (accountRoles.any((accountRole) => accountRole.role!.name == 'Artist' && accountRole.status == 'Active')) {
         await PrefUtils().setRole('Artist');
         await PrefUtils().setRank(account.value.first.rank!.name!);
-      } else if (roles.contains('Customer')) {
+      } else if (accountRoles.any((accountRole) => accountRole.role!.name == 'Customer')) {
         await PrefUtils().setRole('Customer');
       } else {
         throw 'Account is not supported';

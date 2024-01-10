@@ -73,7 +73,7 @@ Future<void> showImportPicturePopUp(BuildContext context) async {
 }
 
 Future<void> pickMultipleImages() async {
-  final image = await ImagePicker().pickMultiImage(imageQuality: 3);
+  final image = await ImagePicker().pickMultiImage();
 
   if (image.isNotEmpty) {
     if (images.isEmpty) {

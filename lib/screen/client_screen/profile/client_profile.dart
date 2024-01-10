@@ -47,18 +47,14 @@ class _ClientProfileState extends State<ClientProfile> {
                   width: 44,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            jsonDecode(PrefUtils().getAccount())['Avatar']),
-                        fit: BoxFit.cover),
+                    image: DecorationImage(image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar']), fit: BoxFit.cover),
                   ),
                 ),
               ),
             ),
             title: Text(
               jsonDecode(PrefUtils().getAccount())['Name'],
-              style: kTextStyle.copyWith(
-                  color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             subtitle: RichText(
               text: TextSpan(
@@ -319,12 +315,12 @@ class _ClientProfileState extends State<ClientProfile> {
                         color: Color(0xFFD0F1FF),
                       ),
                       child: const Icon(
-                        IconlyBold.document,
+                        Icons.draw,
                         color: Color(0xFF06AEF3),
                       ),
                     ),
                     title: Text(
-                      'Seller Report',
+                      'Artist Centre',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),

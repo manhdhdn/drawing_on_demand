@@ -148,7 +148,7 @@ bool isCurrency(
 
   if (inputString != null && inputString.isNotEmpty) {
     // 1.000.000
-    const pattern = r'^\d{1,9}|\d{1,3}\.\d{1,3}|\d{1,3}\.\d{1,3}\.\d{1,3}$';
+    const pattern = r'^[\d\.]+$';
 
     final regExp = RegExp(pattern);
 
