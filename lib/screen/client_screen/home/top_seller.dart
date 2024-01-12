@@ -31,16 +31,13 @@ class _TopSellerState extends State<TopSeller> {
   int top = 10;
   int count = 10;
 
-  String selectedServiceList = 'Top Artists';
-
   List<String> serviceList = [
     'All',
     'Top Artists',
   ];
 
   bool get _isShrink {
-    return _scrollController.hasClients &&
-        _scrollController.offset > (height - kToolbarHeight);
+    return _scrollController.hasClients && _scrollController.offset > (height - kToolbarHeight);
   }
 
   @override
@@ -74,8 +71,7 @@ class _TopSellerState extends State<TopSeller> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             'Artists',
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -112,23 +108,19 @@ class _TopSellerState extends State<TopSeller> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              selectedServiceList = serviceList[i];
+                              selectedTopSeller = serviceList[i];
                             });
                           },
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: selectedServiceList == serviceList[i]
-                                  ? kPrimaryColor
-                                  : kDarkWhite,
+                              color: selectedTopSeller == serviceList[i] ? kPrimaryColor : kDarkWhite,
                               borderRadius: BorderRadius.circular(40.0),
                             ),
                             child: Text(
                               serviceList[i],
                               style: kTextStyle.copyWith(
-                                color: selectedServiceList == serviceList[i]
-                                    ? kWhite
-                                    : kNeutralColor,
+                                color: selectedTopSeller == serviceList[i] ? kWhite : kNeutralColor,
                               ),
                             ),
                           ),
@@ -167,10 +159,7 @@ class _TopSellerState extends State<TopSeller> {
                               if (snapshot.hasData) {
                                 return GestureDetector(
                                   onTap: () {
-                                    onDetail(snapshot.data!.value
-                                        .elementAt(i)
-                                        .id
-                                        .toString());
+                                    onDetail(snapshot.data!.value.elementAt(i).id.toString());
                                   },
                                   child: Column(
                                     children: [
@@ -182,34 +171,23 @@ class _TopSellerState extends State<TopSeller> {
                                             topRight: Radius.circular(8.0),
                                             topLeft: Radius.circular(8.0),
                                           ),
-                                          image: DecorationImage(
-                                              image: NetworkImage(snapshot
-                                                  .data!.value
-                                                  .elementAt(i)
-                                                  .avatar!),
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).avatar!), fit: BoxFit.cover),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(6.0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              snapshot.data!.value
-                                                  .elementAt(i)
-                                                  .name!,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor,
-                                                  fontWeight: FontWeight.bold),
+                                              snapshot.data!.value.elementAt(i).name!,
+                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             const SizedBox(height: 6.0),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 const Icon(
                                                   IconlyBold.star,
@@ -218,19 +196,13 @@ class _TopSellerState extends State<TopSeller> {
                                                 ),
                                                 const SizedBox(width: 2.0),
                                                 Text(
-                                                  getAccountReviewPoint(snapshot
-                                                      .data!.value
-                                                      .elementAt(i)
-                                                      .accountReviewAccounts!),
-                                                  style: kTextStyle.copyWith(
-                                                      color: kNeutralColor),
+                                                  getAccountReviewPoint(snapshot.data!.value.elementAt(i).accountReviewAccounts!),
+                                                  style: kTextStyle.copyWith(color: kNeutralColor),
                                                 ),
                                                 const SizedBox(width: 2.0),
                                                 Text(
                                                   '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
-                                                  style: kTextStyle.copyWith(
-                                                      color:
-                                                          kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                 ),
                                               ],
                                             ),
@@ -238,17 +210,11 @@ class _TopSellerState extends State<TopSeller> {
                                             RichText(
                                               text: TextSpan(
                                                 text: 'Artist Rank - ',
-                                                style: kTextStyle.copyWith(
-                                                    color: kNeutralColor),
+                                                style: kTextStyle.copyWith(color: kNeutralColor),
                                                 children: [
                                                   TextSpan(
-                                                    text: snapshot.data!.value
-                                                        .elementAt(i)
-                                                        .rank!
-                                                        .name!,
-                                                    style: kTextStyle.copyWith(
-                                                        color:
-                                                            kLightNeutralColor),
+                                                    text: snapshot.data!.value.elementAt(i).rank!.name!,
+                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                   )
                                                 ],
                                               ),
@@ -286,8 +252,7 @@ class _TopSellerState extends State<TopSeller> {
           .gets(
         skip,
         top: top,
-        filter:
-            "role/name eq 'Artist' and accountId ne ${jsonDecode(PrefUtils().getAccount())['Id']}",
+        filter: "role/name eq 'Artist' and accountId ne ${jsonDecode(PrefUtils().getAccount())['Id']}",
         count: 'true',
         expand: 'account(expand=rank, accountReviewAccounts), role',
       )
@@ -299,8 +264,7 @@ class _TopSellerState extends State<TopSeller> {
         return accountRoles;
       });
 
-      List<Account> accounts =
-          List<Account>.from(accountRoles.value.map((ar) => ar.account!));
+      List<Account> accounts = List<Account>.from(accountRoles.value.map((ar) => ar.account!));
 
       return Accounts(value: accounts);
     } catch (error) {
@@ -325,8 +289,7 @@ class _TopSellerState extends State<TopSeller> {
       });
     }
 
-    if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
       if (count % top == 0) {
         skip = count;
 

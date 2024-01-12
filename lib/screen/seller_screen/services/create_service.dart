@@ -30,6 +30,13 @@ class CreateService extends StatefulWidget {
 class _CreateServiceState extends State<CreateService> {
   late Future<Artworks?> artworks;
 
+  List<String> serviceList = [
+    'All',
+    'Available',
+    'Paused',
+    'Deleted',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +95,34 @@ class _CreateServiceState extends State<CreateService> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 15.0),
+                      HorizontalList(
+                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        itemCount: serviceList.length,
+                        itemBuilder: (_, i) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                onChangeTab(i);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: selectedArtworkCreateTab == serviceList[i] ? kPrimaryColor : kDarkWhite,
+                                  borderRadius: BorderRadius.circular(40.0),
+                                ),
+                                child: Text(
+                                  serviceList[i],
+                                  style: kTextStyle.copyWith(
+                                    color: selectedArtworkCreateTab == serviceList[i] ? kWhite : kNeutralColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(height: 15.0),
                       Column(
                         children: [
@@ -197,6 +232,22 @@ class _CreateServiceState extends State<CreateService> {
                                         const SizedBox(height: 10.0),
                                         RichText(
                                           text: TextSpan(
+                                            text: 'In stock: ',
+                                            style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                            children: [
+                                              TextSpan(
+                                                text: snapshot.data!.value[index].inStock.toString(),
+                                                style: kTextStyle.copyWith(
+                                                  color: kSubTitleColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        RichText(
+                                          text: TextSpan(
                                             text: 'Status: ',
                                             style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
@@ -238,9 +289,24 @@ class _CreateServiceState extends State<CreateService> {
 
   Future<Artworks?> getArtworks() async {
     try {
+      String filter = 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\'';
+
+      switch (selectedArtworkCreateTab) {
+        case 'Available':
+          filter += ' and status eq \'Available\'';
+          break;
+        case 'Paused':
+          filter += ' and status eq \'Paused\'';
+          break;
+        case 'Deleted':
+          filter += ' and status eq \'Deleted\'';
+          break;
+        default:
+      }
+
       return ArtworkApi().gets(
         0,
-        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\'',
+        filter: filter,
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews',
@@ -262,6 +328,13 @@ class _CreateServiceState extends State<CreateService> {
 
   void refresh() {
     setState(() {
+      artworks = getArtworks();
+    });
+  }
+
+  void onChangeTab(int i) {
+    setState(() {
+      selectedArtworkCreateTab = serviceList[i];
       artworks = getArtworks();
     });
   }

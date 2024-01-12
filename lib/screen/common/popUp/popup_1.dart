@@ -796,7 +796,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
       finish(context);
 
       setState(() {
-        isSelected = 'Cancelled';
+        selectedOrderTab = 'Cancelled';
       });
 
       // ignore: use_build_context_synchronously

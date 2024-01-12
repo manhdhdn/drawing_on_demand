@@ -126,100 +126,21 @@ Map<String, double> dataMap = {
   "Reached-Out": 2,
 };
 
-//__________Category______________________________________________________
-List<String> category = [
-  'Digital Marketing',
-  'App Development',
-  'Graphics Design',
-];
-
-String selectedCategory = 'App Development';
-
-//__________SubCategory______________________________________________________
-List<String> subcategory = [
-  'Flutter',
-  'React Native',
-  'Java',
-];
-
-String selectedSubCategory = 'Flutter';
-
-//__________ServiceType______________________________________________________
-List<String> serviceType = [
-  'Online',
-  'Offline',
-];
-
-String selectedServiceType = 'Online';
-
-//__________time______________________________________________________
-List<String> deliveryTime = [
-  '3 days',
-  '5 days',
-  '7 days',
-  '12 days',
-  '15 days',
-  '20 days',
-];
-
-String selectedDeliveryTime = '3 days';
-
-//__________time______________________________________________________
-List<String> pageCount = [
-  '10 screen',
-  '15 days',
-  '20 days',
-];
-
-String selectedPageCount = '10 screen';
-
 List<TitleModel> list = [
   TitleModel("Responsive design", false),
   TitleModel("Prototype", false),
   TitleModel("Source file", false),
 ];
 
-String selectedJobApplyTab = 'Public';
+String selectedArtworkCreateTab = 'All';
 
-List<String> serviceList = [
-  'All',
-  'Popular',
-  'New',
-];
+String selectedTopSeller = 'Top Artist';
+
+String selectedJobApplyTab = 'Public';
 
 String selectedServiceList = 'All';
 
-List<TitleModel> selectedTitle = [];
-
-List<String> titleList = [
-  'Pending',
-  'Active',
-  'Paid',
-  'Completed',
-  'Cancelled',
-];
-
-String isSelected = 'Pending';
-
-List<String> deliveryTimeList = [
-  '3 days',
-  '5 days',
-  '7 days',
-  '12 days',
-  '15 days',
-  '20 days',
-];
-
-String selectedDeliveryTimeList = '3 days';
-
-List<String> revisionTime = [
-  '1 time',
-  '2 time',
-  '3 time',
-  '4 time',
-];
-
-String selectedRevisionTime = '1 time';
+String selectedOrderTab = 'Pending';
 
 List<String> reportTitle = [
   'Non original content',

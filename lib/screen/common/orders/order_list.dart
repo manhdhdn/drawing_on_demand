@@ -34,6 +34,14 @@ class _OrderListState extends State<OrderList> {
 
   String role = PrefUtils().getRole();
 
+  List<String> titleList = [
+    'Pending',
+    'Active',
+    'Paid',
+    'Completed',
+    'Cancelled',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -93,25 +101,25 @@ class _OrderListState extends State<OrderList> {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isSelected = titleList[i];
+                                  selectedOrderTab = titleList[i];
                                 });
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30.0),
-                                  color: isSelected == titleList[i] ? kPrimaryColor : kDarkWhite,
+                                  color: selectedOrderTab == titleList[i] ? kPrimaryColor : kDarkWhite,
                                 ),
                                 child: Text(
                                   titleList[i],
-                                  style: kTextStyle.copyWith(color: isSelected == titleList[i] ? kWhite : kNeutralColor),
+                                  style: kTextStyle.copyWith(color: selectedOrderTab == titleList[i] ? kWhite : kNeutralColor),
                                 ),
                               ),
                             );
                           },
                         ),
                         const SizedBox(height: 15.0),
-                        NothingYet(visible: (isSelected == 'Pending' && pendingOrders.isEmpty) || (isSelected == 'Active' && depositedOrders.isEmpty) || (isSelected == 'Paid' && paidOrders.isEmpty) || (isSelected == 'Completed' && completedOrders.isEmpty) || (isSelected == 'Cancelled' && cancelledOrders.isEmpty)),
+                        NothingYet(visible: (selectedOrderTab == 'Pending' && pendingOrders.isEmpty) || (selectedOrderTab == 'Active' && depositedOrders.isEmpty) || (selectedOrderTab == 'Paid' && paidOrders.isEmpty) || (selectedOrderTab == 'Completed' && completedOrders.isEmpty) || (selectedOrderTab == 'Cancelled' && cancelledOrders.isEmpty)),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -338,7 +346,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             );
                           },
-                        ).visible(isSelected == 'Pending'),
+                        ).visible(selectedOrderTab == 'Pending'),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -576,7 +584,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             );
                           },
-                        ).visible(isSelected == 'Active'),
+                        ).visible(selectedOrderTab == 'Active'),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -810,7 +818,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             );
                           },
-                        ).visible(isSelected == 'Paid'),
+                        ).visible(selectedOrderTab == 'Paid'),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -1044,7 +1052,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             );
                           },
-                        ).visible(isSelected == 'Completed'),
+                        ).visible(selectedOrderTab == 'Completed'),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -1281,7 +1289,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             );
                           },
-                        ).visible(isSelected == 'Cancelled'),
+                        ).visible(selectedOrderTab == 'Cancelled'),
                       ],
                     ),
                   );

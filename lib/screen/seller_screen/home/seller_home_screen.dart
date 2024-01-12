@@ -656,7 +656,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     try {
       return ArtworkApi().gets(
         0,
-        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\'',
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\' and status ne \'Deleted\'',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews',

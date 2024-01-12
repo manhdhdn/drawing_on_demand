@@ -1297,7 +1297,7 @@ class _ClientOrderState extends State<ClientOrder> {
       await PrefUtils().clearDiscountId();
 
       setState(() {
-        isSelected = status == 'Pending' ? 'Active' : 'Paid';
+        selectedOrderTab = status == 'Pending' ? 'Active' : 'Paid';
       });
 
       if (OrderList.state != null) {

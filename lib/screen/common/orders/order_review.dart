@@ -261,7 +261,7 @@ class _OrderReviewState extends State<OrderReview> {
       OrderList.refresh();
 
       setState(() {
-        isSelected = 'Completed';
+        selectedOrderTab = 'Completed';
       });
 
       reviewSubmittedPopUp();

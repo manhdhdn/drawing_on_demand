@@ -1166,7 +1166,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
           id: Guid.newGuid,
           name: 'Education|${educationNames[i]}',
           image: 'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fog-image.webp?alt=media&token=07973317-de31-470f-bde1-4d285d416222',
-          achievedDate: DateTime.now(),
+          achievedDate: account.createdDate,
           description: educationDescriptions[i],
           accountId: account.id,
         ));
@@ -1179,7 +1179,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
           id: Guid.newGuid,
           name: certificateNames[i],
           image: image,
-          achievedDate: DateTime.now(),
+          achievedDate: account.createdDate,
           description: certificateDescriptions[i],
           accountId: account.id,
         ));
@@ -1188,14 +1188,14 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
       var accountRoles = [
         AccountRole(
           id: Guid.newGuid,
-          addedDate: DateTime.now(),
+          addedDate: account.createdDate,
           status: 'Active',
           accountId: account.id,
           roleId: roles.last.id,
         ),
         AccountRole(
           id: Guid.newGuid,
-          addedDate: DateTime.now(),
+          addedDate: account.createdDate,
           status: 'Pending',
           accountId: account.id,
           roleId: roles.first.id,

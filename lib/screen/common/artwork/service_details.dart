@@ -12,6 +12,7 @@ import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
 import '../../client_screen/service_details/client_order.dart';
+import '../../seller_screen/services/create_service.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/review.dart';
@@ -30,8 +31,10 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
 
   ScrollController? _scrollController;
   TabController? tabController;
+
   int totalImage = 3;
   int totalReview = 0;
+  String status = 'Available';
   int currentIndex = 0;
   bool lastStatus = false;
   double height = 200;
@@ -177,6 +180,99 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
                             ),
                           ),
                         ),
+                  actions: PrefUtils().getRole() == 'Artist' && status != 'Proposed'
+                      ? _isShrink
+                          ? [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: PopupMenuButton(
+                                    itemBuilder: (BuildContext bc) => [
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          onEdit();
+                                        },
+                                        child: Text(
+                                          'Edit',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          onPause();
+                                        },
+                                        child: Text(
+                                          status == 'Paused' ? 'Resume' : 'Pause',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          onDelete();
+                                        },
+                                        child: Text(
+                                          status == 'Deleted' ? 'Restore' : 'Delete',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      Navigator.pushNamed(context, '$value');
+                                    },
+                                    child: const Icon(
+                                      FeatherIcons.moreVertical,
+                                      color: kNeutralColor,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ]
+                          : [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: kWhite,
+                                  ),
+                                  child: PopupMenuButton(
+                                    itemBuilder: (BuildContext bc) => [
+                                      PopupMenuItem(
+                                        onTap: () => onEdit(),
+                                        child: Text(
+                                          'Edit',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        onTap: () => onPause(),
+                                        child: Text(
+                                          status == 'Paused' ? 'Resume' : 'Pause',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        onTap: () => onDelete(),
+                                        child: Text(
+                                          status == 'Deleted' ? 'Restore' : 'Delete',
+                                          style: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      Navigator.pushNamed(context, '$value');
+                                    },
+                                    child: const Icon(
+                                      FeatherIcons.moreVertical,
+                                      color: kNeutralColor,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ]
+                      : null,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
                     background: SafeArea(
@@ -240,87 +336,6 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
                       ),
                     ),
                   ),
-                  actions: PrefUtils().getRole() == 'Artist'
-                      ? _isShrink
-                          ? [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: PopupMenuButton(
-                                    itemBuilder: (BuildContext bc) => [
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Edit',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Pause',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Delete',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                    ],
-                                    onSelected: (value) {
-                                      Navigator.pushNamed(context, '$value');
-                                    },
-                                    child: const Icon(
-                                      FeatherIcons.moreVertical,
-                                      color: kNeutralColor,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ]
-                          : [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kWhite,
-                                  ),
-                                  child: PopupMenuButton(
-                                    itemBuilder: (BuildContext bc) => [
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Edit',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Pause',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'Delete',
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                        ),
-                                      ),
-                                    ],
-                                    onSelected: (value) {
-                                      Navigator.pushNamed(context, '$value');
-                                    },
-                                    child: const Icon(
-                                      FeatherIcons.moreVertical,
-                                      color: kNeutralColor,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ]
-                      : null,
                   bottom: _isShrink
                       ? null
                       : PreferredSize(
@@ -733,15 +748,17 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
         'arts,artworkReviews(expand=createdByNavigation),createdByNavigation(expand=rank),category,surface,material,sizes',
       )
           .then(
-        (value) {
+        (artwork) {
           setState(
             () {
-              totalImage = value.arts!.length;
-              totalReview = value.artworkReviews!.isEmpty ? 0 : 1;
+              totalImage = artwork.arts!.length;
+              totalReview = artwork.artworkReviews!.isEmpty ? 0 : 1;
+
+              status = artwork.status!;
             },
           );
 
-          return value;
+          return artwork;
         },
       );
     } catch (error) {
@@ -754,6 +771,42 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
   void onViewAllReview(int totalReview) {
     setState(() {
       this.totalReview = totalReview;
+    });
+  }
+
+  void onEdit() {}
+
+  void onPause() async {
+    setState(() {
+      status = status == 'Paused' ? 'Available' : 'Paused';
+    });
+
+    await ArtworkApi().patchOne(
+      widget.id!,
+      {'Status': status},
+    );
+
+    CreateService.refresh();
+  }
+
+  void onDelete() async {
+    setState(() {
+      status = status == 'Deleted' ? 'Available' : 'Deleted';
+    });
+
+    await ArtworkApi().patchOne(
+      widget.id!,
+      {'Status': status},
+    );
+
+    Fluttertoast.showToast(msg: 'Artwork has been ${status == 'Deleted' ? 'deleted' : 'restored'}');
+
+    CreateService.refresh();
+  }
+
+  void refresh() {
+    setState(() {
+      artwork = getArtwork();
     });
   }
 }

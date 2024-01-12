@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -9,17 +11,25 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
+import '../../../data/apis/art_api.dart';
+import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/category_api.dart';
 import '../../../data/apis/material_api.dart';
+import '../../../data/apis/size_api.dart';
 import '../../../data/apis/surface_api.dart';
+import '../../../data/models/art.dart';
+import '../../../data/models/artwork.dart';
 import '../../../data/models/category.dart';
 import '../../../data/models/material.dart' as material_model;
+import '../../../data/models/size.dart';
 import '../../../data/models/surface.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import 'create_service.dart';
 
 class CreateNewService extends StatefulWidget {
   const CreateNewService({Key? key}) : super(key: key);
@@ -148,32 +158,6 @@ class _CreateNewServiceState extends State<CreateNewService> {
       onChanged: (value) {
         setState(() {
           selectedPieces = value!;
-        });
-      },
-    );
-  }
-
-  DropdownButton<String> getTotalScreen() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in pageCount) {
-      var item = DropdownMenuItem(
-        value: des,
-        child: Text(des),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      icon: const Icon(
-        FeatherIcons.chevronDown,
-        color: kLightNeutralColor,
-        size: 18,
-      ),
-      items: dropDownItems,
-      value: selectedPageCount,
-      style: kTextStyle.copyWith(color: kSubTitleColor),
-      onChanged: (value) {
-        setState(() {
-          selectedPageCount = value!;
         });
       },
     );
@@ -742,9 +726,12 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                         arts.removeLast();
                                       }
                                     });
+
+                                    images.clear();
                                   },
                                   child: Container(
                                     width: context.width(),
+                                    constraints: const BoxConstraints(minHeight: 130),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -893,7 +880,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
     });
   }
 
-  void onDone() {
+  void onDone() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -902,7 +889,73 @@ class _CreateNewServiceState extends State<CreateNewService> {
       Fluttertoast.showToast(msg: 'Please add at least one image');
     }
 
-    try {} catch (error) {
+    try {
+      ProgressDialogUtils.showProgress(context);
+
+      var artwork = Artwork(
+        id: Guid.newGuid,
+        title: titleController.text.trim(),
+        description: descriptionController.text.trim(),
+        price: budgetController.text.replaceAll('.', '').toDouble(),
+        pieces: selectedPieces,
+        inStock: quantityController.text.toInt(),
+        createdDate: DateTime.now(),
+        status: 'Available',
+        categoryId: selectedCategory,
+        materialId: selectedMaterial,
+        surfaceId: selectedSurface,
+        createdBy: Guid(jsonDecode(PrefUtils().getAccount())['Id']),
+      );
+
+      List<Art> images = [];
+
+      for (var art in arts) {
+        var image = await uploadImage(art);
+
+        images.add(
+          Art(
+            id: Guid.newGuid,
+            image: image,
+            createdDate: artwork.createdDate,
+            artworkId: artwork.id,
+          ),
+        );
+      }
+
+      List<Size> sizes = [];
+
+      for (var i = 0; i < selectedPieces; i++) {
+        sizes.add(
+          Size(
+            id: Guid.newGuid,
+            width: widths[i],
+            length: lengths[i],
+            height: heights[i],
+            weight: weights[i],
+            artworkId: artwork.id,
+          ),
+        );
+      }
+
+      await ArtworkApi().postOne(artwork);
+
+      for (var image in images) {
+        await ArtApi().postOne(image);
+      }
+
+      for (var size in sizes) {
+        await SizeApi().postOne(size);
+      }
+
+      CreateService.refresh();
+
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+      // ignore: use_build_context_synchronously
+      GoRouter.of(context).pop();
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
       Fluttertoast.showToast(msg: 'Create service failed');
     }
   }
