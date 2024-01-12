@@ -578,7 +578,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                               topRight: Radius.circular(8.0),
                                               topLeft: Radius.circular(8.0),
                                             ),
-                                            image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).avatar!), fit: BoxFit.cover),
+                                            image: DecorationImage(
+                                              image: NetworkImage(snapshot.data!.value.elementAt(i).avatar ?? defaultImage),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         Padding(

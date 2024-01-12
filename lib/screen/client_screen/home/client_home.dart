@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../../app_routes/named_routes.dart';
+import '../../common/message/chat_list.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart' as layout;
 
 class ClientHome extends StatelessWidget {
   final Widget child;
@@ -12,51 +15,128 @@ class ClientHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kWhite,
-      body: child,
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: const BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(15.0),
-              topLeft: Radius.circular(15.0),
+    return layout.Responsive(
+      mobile: Scaffold(
+        backgroundColor: kWhite,
+        body: child,
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: const BoxDecoration(
+              color: kWhite,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15.0),
+                topLeft: Radius.circular(15.0),
+              ),
+              boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
+          child: BottomNavigationBar(
+            elevation: 0.0,
+            selectedItemColor: kPrimaryColor,
+            unselectedItemColor: kLightNeutralColor,
+            backgroundColor: kWhite,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(IconlyBold.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(IconlyBold.chat),
+                label: "Message",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(IconlyBold.paperPlus),
+                label: "Job Post",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(IconlyBold.document),
+                label: "Orders",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(IconlyBold.profile),
+                label: "Profile",
+              ),
+            ],
+            onTap: (int index) {
+              _onItemTapped(index, context);
+            },
+            currentIndex: _calculateSelectedIndex(context),
+          ),
+        ),
+      ),
+      desktop: Scaffold(
+        body: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: NavigationRail(
+                selectedIndex: _calculateSelectedIndex(context),
+                onDestinationSelected: (int index) {
+                  _onItemTapped(index, context);
+                },
+                selectedIconTheme: const IconThemeData(color: kPrimaryColor),
+                selectedLabelTextStyle: kTextStyle.copyWith(color: kPrimaryColor),
+                unselectedIconTheme: const IconThemeData(color: kLightNeutralColor),
+                unselectedLabelTextStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                backgroundColor: kWhite,
+                labelType: NavigationRailLabelType.all,
+                elevation: 5.0,
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(IconlyBold.home),
+                    label: Text(
+                      'Home',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(IconlyBold.chat),
+                    label: Text(
+                      'Message',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(IconlyBold.paperPlus),
+                    label: Text(
+                      'Job Post',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(IconlyBold.document),
+                    label: Text(
+                      'Orders',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(IconlyBold.profile),
+                    label: Text(
+                      'Profile',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
-        child: BottomNavigationBar(
-          elevation: 0.0,
-          selectedItemColor: kPrimaryColor,
-          unselectedItemColor: kLightNeutralColor,
-          backgroundColor: kWhite,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(IconlyBold.home),
-              label: "Home",
+            const Expanded(
+              flex: 1,
+              child: SizedBox.shrink(),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(IconlyBold.chat),
-              label: "Message",
+            Expanded(
+              flex: 8,
+              child: child,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(IconlyBold.paperPlus),
-              label: "Job Post",
+            const Expanded(
+              flex: 1,
+              child: SizedBox.shrink(),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(IconlyBold.document),
-              label: "Orders",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(IconlyBold.profile),
-              label: "Profile",
-            ),
+            const Expanded(
+              flex: 3,
+              child: ChatScreen(),
+            ).visible(layout.Responsive.isDesktop(context)),
           ],
-          onTap: (int index) {
-            _onItemTapped(index, context);
-          },
-          currentIndex: _calculateSelectedIndex(context),
         ),
       ),
     );

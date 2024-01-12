@@ -134,7 +134,7 @@ List<TitleModel> list = [
 
 String selectedArtworkCreateTab = 'All';
 
-String selectedTopSeller = 'Top Artist';
+String selectedTopSeller = 'Top Artists';
 
 String selectedJobApplyTab = 'Public';
 
