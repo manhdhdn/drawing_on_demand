@@ -52,6 +52,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Key notifierKey = GlobalKey();
+
   Locale locale = const Locale('vi');
   GoRouter routes = AppRoutes.routes();
 
@@ -65,6 +67,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+      key: notifierKey,
       create: (_) => ChatProvider(),
       child: MaterialApp.router(
         title: dod,
@@ -100,6 +103,7 @@ class _MyAppState extends State<MyApp> {
 
   void setRoutes() {
     setState(() {
+      notifierKey = GlobalKey();
       routes = AppRoutes.routes();
     });
   }

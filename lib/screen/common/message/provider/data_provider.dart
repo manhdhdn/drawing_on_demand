@@ -16,11 +16,7 @@ class ChatProvider extends ChangeNotifier {
   List<Message> messages = [];
 
   UserModel getUser(dynamic uid) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .snapshots(includeMetadataChanges: true)
-        .listen((user) {
+    FirebaseFirestore.instance.collection('users').doc(uid).snapshots(includeMetadataChanges: true).listen((user) {
       this.user = UserModel.fromJson(user.data()!);
 
       notifyListeners();
@@ -30,14 +26,8 @@ class ChatProvider extends ChangeNotifier {
   }
 
   List<UserModel> getChatedUsers() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(jsonDecode(PrefUtils().getAccount())['Id'])
-        .collection('chats')
-        .snapshots(includeMetadataChanges: true)
-        .listen((users) {
-      this.users =
-          users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+    FirebaseFirestore.instance.collection('users').doc(jsonDecode(PrefUtils().getAccount())['Id']).collection('chats').snapshots(includeMetadataChanges: true).listen((users) {
+      this.users = users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
 
       notifyListeners();
     });
@@ -46,25 +36,14 @@ class ChatProvider extends ChangeNotifier {
   }
 
   List<InboxData> getMessages(dynamic receiverId) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(jsonDecode(PrefUtils().getAccount())['Id'])
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        .orderBy('sentTime', descending: true)
-        .snapshots(includeMetadataChanges: true)
-        .listen((messages) {
-      this.messages =
-          messages.docs.map((doc) => Message.fromJson(doc.data())).toList();
+    FirebaseFirestore.instance.collection('users').doc(jsonDecode(PrefUtils().getAccount())['Id']).collection('chats').doc(receiverId).collection('messages').orderBy('sentTime', descending: true).snapshots(includeMetadataChanges: true).listen((messages) {
+      this.messages = messages.docs.map((doc) => Message.fromJson(doc.data())).toList();
 
       inboxDatas.clear();
       for (var message in this.messages) {
         inboxDatas.add(
           InboxData(
-            id: message.senderId == jsonDecode(PrefUtils().getAccount())['Id']
-                ? 0
-                : 1,
+            id: message.senderId == jsonDecode(PrefUtils().getAccount())['Id'] ? 0 : 1,
             message: message.content,
             sentTime: message.sentTime,
           ),
