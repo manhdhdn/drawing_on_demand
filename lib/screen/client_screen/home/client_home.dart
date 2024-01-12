@@ -12,61 +12,51 @@ class ClientHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Title(
-      title: '$dod | Home',
-      color: kPrimaryColor,
-      child: Scaffold(
-        backgroundColor: kWhite,
-        body: child,
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: const BoxDecoration(
-              color: kWhite,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(15.0),
-                topLeft: Radius.circular(15.0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                    color: kDarkWhite,
-                    blurRadius: 5.0,
-                    spreadRadius: 3.0,
-                    offset: Offset(0, -2))
-              ]),
-          child: BottomNavigationBar(
-            elevation: 0.0,
-            selectedItemColor: kPrimaryColor,
-            unselectedItemColor: kLightNeutralColor,
-            backgroundColor: kWhite,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.home),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.chat),
-                label: "Message",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.paperPlus),
-                label: "Job Post",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.document),
-                label: "Orders",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.profile),
-                label: "Profile",
-              ),
-            ],
-            onTap: (int index) {
-              _onItemTapped(index, context);
-            },
-            currentIndex: _calculateSelectedIndex(context),
-          ),
+    return Scaffold(
+      backgroundColor: kWhite,
+      body: child,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: const BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
+            ),
+            boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
+        child: BottomNavigationBar(
+          elevation: 0.0,
+          selectedItemColor: kPrimaryColor,
+          unselectedItemColor: kLightNeutralColor,
+          backgroundColor: kWhite,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(IconlyBold.home),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(IconlyBold.chat),
+              label: "Message",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(IconlyBold.paperPlus),
+              label: "Job Post",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(IconlyBold.document),
+              label: "Orders",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(IconlyBold.profile),
+              label: "Profile",
+            ),
+          ],
+          onTap: (int index) {
+            _onItemTapped(index, context);
+          },
+          currentIndex: _calculateSelectedIndex(context),
         ),
       ),
     );

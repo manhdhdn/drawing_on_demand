@@ -1,7 +1,6 @@
 import 'package:drawing_on_demand/screen/common/authentication/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../core/utils/pref_utils.dart';
 import '../screen/client_screen/authentication/client_create_profile.dart';
@@ -23,7 +22,6 @@ import '../screen/common/artwork/service_details.dart';
 import '../screen/common/authentication/log_in.dart';
 import '../screen/common/message/chat_inbox.dart';
 import '../screen/common/message/chat_list.dart';
-import '../screen/common/message/provider/data_provider.dart';
 import '../screen/common/orders/order_review.dart';
 import '../screen/common/setting/language.dart';
 import '../screen/common/setting/settings.dart';
@@ -117,11 +115,7 @@ class AppRoutes {
                         path: ChatRoute.tag,
                         name: ChatRoute.name,
                         builder: (context, state) {
-                          var extra = Provider.of<ChatProvider>(context).user;
-
                           return ChatInbox(
-                            img: extra.image,
-                            name: extra.name,
                             receiverId: state.pathParameters['id'],
                           );
                         },
@@ -303,11 +297,7 @@ class AppRoutes {
                         path: ChatRoute.tag,
                         name: ChatRoute.name,
                         builder: (context, state) {
-                          var extra = Provider.of<ChatProvider>(context).user;
-
                           return ChatInbox(
-                            img: extra.image,
-                            name: extra.name,
                             receiverId: state.pathParameters['id'],
                           );
                         },

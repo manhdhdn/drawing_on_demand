@@ -15,14 +15,10 @@ import 'function/chat_function.dart';
 import 'provider/data_provider.dart';
 
 class ChatInbox extends StatefulWidget {
-  final String? img;
-  final String? name;
   final dynamic receiverId;
 
   const ChatInbox({
     Key? key,
-    this.img,
-    this.name,
     this.receiverId,
   }) : super(key: key);
 
@@ -37,8 +33,7 @@ class _ChatInboxState extends State<ChatInbox> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
@@ -57,8 +52,7 @@ class _ChatInboxState extends State<ChatInbox> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
@@ -111,26 +105,34 @@ class _ChatInboxState extends State<ChatInbox> {
           leadingWidth: 24,
           iconTheme: const IconThemeData(color: kNeutralColor),
           backgroundColor: kDarkWhite,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(widget.img.validate())),
-              8.width,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          title: Consumer<ChatProvider>(
+            builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(widget.name.validate(), style: boldTextStyle()),
-                  Consumer<ChatProvider>(
-                    builder: (context, value, child) => value.user.isOnline!
-                        ? Text('Online',
-                            style: secondaryTextStyle(color: kPrimaryColor))
-                        : Text('Offline', style: secondaryTextStyle()),
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(value.user.image ?? defaultImage),
+                  ),
+                  8.width,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.user.name ?? 'Drawing On Demand',
+                        style: boldTextStyle(),
+                      ),
+                      value.user.isOnline!
+                          ? Text('Online', style: secondaryTextStyle(color: kPrimaryColor))
+                          : Text(
+                              'Offline',
+                              style: secondaryTextStyle(),
+                            ),
+                    ],
                   ),
                 ],
-              ),
-            ],
+              );
+            },
           ),
           actions: [
             Padding(
@@ -157,9 +159,7 @@ class _ChatInboxState extends State<ChatInbox> {
                       ),
                     ),
                   ],
-                  onSelected: (value) {
-                    Navigator.pushNamed(context, '$value');
-                  },
+                  onSelected: (value) {},
                   child: const Icon(
                     FeatherIcons.moreVertical,
                     color: kNeutralColor,
@@ -175,8 +175,7 @@ class _ChatInboxState extends State<ChatInbox> {
           height: context.height(),
           decoration: const BoxDecoration(color: kWhite),
           child: SingleChildScrollView(
-            controller: Provider.of<ChatProvider>(context, listen: false)
-                .scrollController,
+            controller: Provider.of<ChatProvider>(context, listen: false).scrollController,
             physics: const BouncingScrollPhysics(),
             child: Container(
               constraints: BoxConstraints(
@@ -202,18 +201,15 @@ class _ChatInboxState extends State<ChatInbox> {
                                     8.height,
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         Container(
                                           constraints: BoxConstraints(
                                             maxWidth: context.width() * 0.6,
                                           ),
-                                          decoration:
-                                              boxDecorationWithRoundedCorners(
+                                          decoration: boxDecorationWithRoundedCorners(
                                             backgroundColor: kPrimaryColor,
-                                            borderRadius:
-                                                const BorderRadius.only(
+                                            borderRadius: const BorderRadius.only(
                                               topRight: Radius.circular(20.0),
                                               topLeft: Radius.circular(20.0),
                                               bottomLeft: Radius.circular(20.0),
@@ -222,21 +218,16 @@ class _ChatInboxState extends State<ChatInbox> {
                                           ),
                                           padding: const EdgeInsets.all(12.0),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
                                             children: [
                                               Text(
-                                                (value.inboxDatas[index]
-                                                        .message)
-                                                    .validate(),
+                                                (value.inboxDatas[index].message).validate(),
                                                 style: primaryTextStyle(
                                                   color: white,
                                                 ),
                                               ),
                                               Text(
-                                                timeago.format(value
-                                                    .inboxDatas[index]
-                                                    .sentTime!),
+                                                timeago.format(value.inboxDatas[index].sentTime!),
                                                 style: secondaryTextStyle(
                                                   size: 9,
                                                   color: kNeutralColor,
@@ -249,8 +240,7 @@ class _ChatInboxState extends State<ChatInbox> {
                                         CircleAvatar(
                                           radius: 20,
                                           backgroundImage: NetworkImage(
-                                            jsonDecode(PrefUtils()
-                                                .getAccount())['Avatar'],
+                                            jsonDecode(PrefUtils().getAccount())['Avatar'],
                                           ),
                                         ),
                                       ],
@@ -262,47 +252,41 @@ class _ChatInboxState extends State<ChatInbox> {
                                   children: [
                                     8.height,
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
-                                        CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: NetworkImage(
-                                                widget.img.validate())),
+                                        Consumer<ChatProvider>(
+                                          builder: (context, value, child) {
+                                            return CircleAvatar(
+                                              radius: 20,
+                                              backgroundImage: NetworkImage(value.user.image ?? defaultImage),
+                                            );
+                                          },
+                                        ),
                                         8.width,
                                         Container(
                                           constraints: BoxConstraints(
                                             maxWidth: context.width() * 0.6,
                                           ),
-                                          decoration:
-                                              boxDecorationWithRoundedCorners(
-                                            borderRadius:
-                                                const BorderRadius.only(
+                                          decoration: boxDecorationWithRoundedCorners(
+                                            borderRadius: const BorderRadius.only(
                                               topRight: Radius.circular(20.0),
                                               topLeft: Radius.circular(20.0),
                                               bottomLeft: Radius.circular(0.0),
-                                              bottomRight:
-                                                  Radius.circular(20.0),
+                                              bottomRight: Radius.circular(20.0),
                                             ),
                                             backgroundColor: kDarkWhite,
                                           ),
                                           padding: const EdgeInsets.all(12.0),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                (value.inboxDatas[index]
-                                                        .message)
-                                                    .validate(),
+                                                (value.inboxDatas[index].message).validate(),
                                                 style: primaryTextStyle(),
                                               ),
                                               Text(
-                                                timeago.format(value
-                                                    .inboxDatas[index]
-                                                    .sentTime!),
+                                                timeago.format(value.inboxDatas[index].sentTime!),
                                                 style: secondaryTextStyle(
                                                   size: 9,
                                                   color: kNeutralColor,
@@ -351,8 +335,7 @@ class _ChatInboxState extends State<ChatInbox> {
                     },
                     child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: kDarkWhite),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: kDarkWhite),
                         child: const Icon(
                           FeatherIcons.link,
                           color: kNeutralColor,

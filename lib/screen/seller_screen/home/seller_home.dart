@@ -10,14 +10,6 @@ class SellerHome extends StatelessWidget {
 
   const SellerHome({Key? key, required this.child}) : super(key: key);
 
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   SellerHomeScreen(),
-  //   ChatScreen(),
-  //   SellerBuyerReq(),
-  //   OrderList(),
-  //   SellerProfile(),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,13 +23,7 @@ class SellerHome extends StatelessWidget {
               topRight: Radius.circular(15.0),
               topLeft: Radius.circular(15.0),
             ),
-            boxShadow: [
-              BoxShadow(
-                  color: kDarkWhite,
-                  blurRadius: 5.0,
-                  spreadRadius: 3.0,
-                  offset: Offset(0, -2))
-            ]),
+            boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
         child: BottomNavigationBar(
           elevation: 0.0,
           selectedItemColor: kPrimaryColor,
