@@ -10,6 +10,7 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
 import '../invite/client_invite.dart';
@@ -31,9 +32,8 @@ class _ClientProfileState extends State<ClientProfile> {
       title: '$dod | Profile',
       color: kPrimaryColor,
       child: Scaffold(
-        backgroundColor: kDarkWhite,
         appBar: AppBar(
-          backgroundColor: kDarkWhite,
+          backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
           elevation: 0,
           automaticallyImplyLeading: false,
           title: ListTile(
@@ -68,26 +68,50 @@ class _ClientProfileState extends State<ClientProfile> {
                 ],
               ),
             ),
-            trailing: GestureDetector(
-              onTap: () => const ClientNotification().launch(context),
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: kPrimaryColor.withOpacity(0.2),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    onCart();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: kPrimaryColor.withOpacity(0.2),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: kNeutralColor,
+                    ),
                   ),
                 ),
-                child: const Icon(
-                  IconlyLight.notification,
-                  color: kNeutralColor,
+                const SizedBox(width: 9.0),
+                GestureDetector(
+                  onTap: () => const ClientNotification().launch(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: kPrimaryColor.withOpacity(0.2),
+                      ),
+                    ),
+                    child: const Icon(
+                      IconlyLight.notification,
+                      color: kNeutralColor,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Container(
             height: context.height(),
             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
@@ -450,8 +474,8 @@ class _ClientProfileState extends State<ClientProfile> {
     );
   }
 
-  void onLogout() async {
-    logout(context);
+  void onCart() {
+    context.goNamed(CartRoute.name);
   }
 
   void onProfile() {
@@ -460,5 +484,9 @@ class _ClientProfileState extends State<ClientProfile> {
 
   void onSetting() {
     context.goNamed(SettingRoute.name);
+  }
+
+  void onLogout() async {
+    logout(context);
   }
 }

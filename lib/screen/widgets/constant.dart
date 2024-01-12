@@ -127,7 +127,7 @@ Map<String, double> dataMap = {
 };
 
 List<TitleModel> list = [
-  TitleModel("Responsive design", false),
+  TitleModel("ResponsiveCt design", false),
   TitleModel("Prototype", false),
   TitleModel("Source file", false),
 ];

@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../app_routes/named_routes.dart';
-import '../../common/message/chat_list.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
-import '../../widgets/responsive.dart' as layout;
+import '../../widgets/responsive.dart';
+import '../profile/client_profile.dart';
 
 class ClientHome extends StatelessWidget {
   final Widget child;
@@ -15,25 +16,32 @@ class ClientHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return layout.Responsive(
+    return ResponsiveCt(
       mobile: Scaffold(
         backgroundColor: kWhite,
         body: child,
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: const BoxDecoration(
-              color: kWhite,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(15.0),
-                topLeft: Radius.circular(15.0),
+            color: kWhite,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15.0),
+              topLeft: Radius.circular(15.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: kDarkWhite,
+                blurRadius: 5.0,
+                spreadRadius: 3.0,
+                offset: Offset(0, -2),
               ),
-              boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
+            ],
+          ),
           child: BottomNavigationBar(
             elevation: 0.0,
             selectedItemColor: kPrimaryColor,
             unselectedItemColor: kLightNeutralColor,
             backgroundColor: kWhite,
-            showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
@@ -68,7 +76,7 @@ class ClientHome extends StatelessWidget {
         body: Row(
           children: [
             Expanded(
-              flex: 1,
+              flex: 7,
               child: NavigationRail(
                 selectedIndex: _calculateSelectedIndex(context),
                 onDestinationSelected: (int index) {
@@ -79,8 +87,38 @@ class ClientHome extends StatelessWidget {
                 unselectedIconTheme: const IconThemeData(color: kLightNeutralColor),
                 unselectedLabelTextStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                 backgroundColor: kWhite,
-                labelType: NavigationRailLabelType.all,
                 elevation: 5.0,
+                groupAlignment: -0.7,
+                leading: GestureDetector(
+                  onTap: () {
+                    context.go('/');
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 85,
+                        width: 110,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('images/drawing_on_demand.jpg'),
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      const Text(
+                        'DRAWING\nON DEMAND',
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                labelType: NavigationRailLabelType.selected,
                 destinations: const [
                   NavigationRailDestination(
                     icon: Icon(IconlyBold.home),
@@ -116,6 +154,7 @@ class ClientHome extends StatelessWidget {
                       'Profile',
                       textAlign: TextAlign.center,
                     ),
+                    disabled: true,
                   ),
                 ],
               ),
@@ -125,7 +164,7 @@ class ClientHome extends StatelessWidget {
               child: SizedBox.shrink(),
             ),
             Expanded(
-              flex: 8,
+              flex: 60,
               child: child,
             ),
             const Expanded(
@@ -133,9 +172,9 @@ class ClientHome extends StatelessWidget {
               child: SizedBox.shrink(),
             ),
             const Expanded(
-              flex: 3,
-              child: ChatScreen(),
-            ).visible(layout.Responsive.isDesktop(context)),
+              flex: 18,
+              child: ClientProfile(),
+            ).visible(ResponsiveCt.isDesktop(context) && PrefUtils().getAccount() != '{}'),
           ],
         ),
       ),

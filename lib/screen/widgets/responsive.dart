@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class Responsive extends StatelessWidget {
+class ResponsiveCt extends StatelessWidget {
   final Widget mobile;
   final Widget desktop;
 
-  const Responsive({
+  const ResponsiveCt({
     Key? key,
     required this.mobile,
     required this.desktop,
@@ -13,8 +13,7 @@ class Responsive extends StatelessWidget {
 
   static bool isMobile(BuildContext context) => context.width() < 650;
 
-  static bool isTablet(BuildContext context) =>
-      context.width() < 1100 && context.width() >= 650;
+  static bool isTablet(BuildContext context) => context.width() < 1100 && context.width() >= 650;
 
   static bool isDesktop(BuildContext context) => context.width() >= 1100;
 

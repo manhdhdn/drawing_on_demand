@@ -9,7 +9,7 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/nothing_yet.dart';
-import 'chat_inbox.dart';
+import '../../widgets/responsive.dart';
 import 'function/chat_function.dart';
 import 'model/chat_model.dart';
 import 'provider/data_provider.dart';
@@ -62,11 +62,10 @@ class _ChatScreenState extends State<ChatScreen> {
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: kDarkWhite,
           appBar: AppBar(
             automaticallyImplyLeading: false,
             iconTheme: const IconThemeData(color: kNeutralColor),
-            backgroundColor: kDarkWhite,
+            backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
             elevation: 0.0,
             centerTitle: true,
             title: Text(
@@ -138,11 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onChat(UserModel user) {
-    isMobile
-        ? context.goNamed(
-            ChatRoute.name,
-            pathParameters: {'id': user.uid.validate()},
-          )
-        : ChatInbox(receiverId: user.uid).launch(context);
+    context.goNamed(
+      ChatRoute.name,
+      pathParameters: {'id': user.uid.validate()},
+    );
   }
 }

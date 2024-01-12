@@ -71,7 +71,10 @@ class _TopSellerState extends State<TopSeller> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             'Artists',
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+              color: kNeutralColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -171,7 +174,10 @@ class _TopSellerState extends State<TopSeller> {
                                             topRight: Radius.circular(8.0),
                                             topLeft: Radius.circular(8.0),
                                           ),
-                                          image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).avatar!), fit: BoxFit.cover),
+                                          image: DecorationImage(
+                                            image: NetworkImage(snapshot.data!.value.elementAt(i).avatar ?? defaultImage),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       Padding(

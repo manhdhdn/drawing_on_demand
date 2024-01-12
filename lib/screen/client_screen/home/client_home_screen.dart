@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -16,6 +14,7 @@ import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import '../notification/client_notification.dart';
 import '../search/search.dart';
 import 'client_all_categories.dart';
@@ -54,78 +53,80 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: kDarkWhite,
           appBar: AppBar(
-            backgroundColor: kDarkWhite,
+            backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
             elevation: 0,
             automaticallyImplyLeading: false,
-            title: ListTile(
-              contentPadding: const EdgeInsets.only(top: 10),
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: GestureDetector(
-                  onTap: () {
-                    onProfile();
-                  },
-                  child: Container(
-                    height: 44,
-                    width: 44,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar'] ?? defaultImage), fit: BoxFit.cover),
-                    ),
-                  ),
+            title: Container(
+              margin: const EdgeInsets.only(top: 10.0),
+              decoration: BoxDecoration(
+                color: kWhite,
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: ListTile(
+                horizontalTitleGap: 0,
+                visualDensity: const VisualDensity(vertical: -2),
+                leading: const Icon(
+                  FeatherIcons.search,
+                  color: kNeutralColor,
                 ),
-              ),
-              title: Text(
-                jsonDecode(PrefUtils().getAccount())['Name'] ?? 'Drawing on demand',
-                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                'I’m a Customer',
-                style: kTextStyle.copyWith(color: kLightNeutralColor),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      onCart();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: kPrimaryColor.withOpacity(0.2),
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
-                        color: kNeutralColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 9.0),
-                  GestureDetector(
-                    onTap: () => const ClientNotification().launch(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: kPrimaryColor.withOpacity(0.2),
-                        ),
-                      ),
-                      child: const Icon(
-                        IconlyLight.notification,
-                        color: kNeutralColor,
-                      ),
-                    ),
-                  ),
-                ],
+                title: Text(
+                  'Search services...',
+                  style: kTextStyle.copyWith(color: kSubTitleColor),
+                ),
+                onTap: () {
+                  showSearch(
+                    context: context,
+                    delegate: CustomSearchDelegate(),
+                  );
+                },
               ),
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 15.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        onCart();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: kPrimaryColor.withOpacity(0.2),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.shopping_cart_outlined,
+                          color: kNeutralColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 9.0),
+                    GestureDetector(
+                      onTap: () => const ClientNotification().launch(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: kPrimaryColor.withOpacity(0.2),
+                          ),
+                        ),
+                        child: const Icon(
+                          IconlyLight.notification,
+                          color: kNeutralColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ).visible(ResponsiveCt.isMobile(context)),
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.only(top: 15.0),
@@ -142,40 +143,13 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: kDarkWhite,
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: ListTile(
-                          horizontalTitleGap: 0,
-                          visualDensity: const VisualDensity(vertical: -2),
-                          leading: const Icon(
-                            FeatherIcons.search,
-                            color: kNeutralColor,
-                          ),
-                          title: Text(
-                            'Search services...',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          onTap: () {
-                            showSearch(
-                              context: context,
-                              delegate: CustomSearchDelegate(),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 25.0),
                     HorizontalList(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(left: 15),
                       spacing: 10.0,
-                      itemCount: 3,
+                      itemCount: 4,
                       itemBuilder: (_, i) {
                         return Container(
                           height: 140,
