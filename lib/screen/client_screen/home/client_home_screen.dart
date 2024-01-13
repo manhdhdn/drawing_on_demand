@@ -125,7 +125,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     ),
                   ],
                 ),
-              ).visible(ResponsiveCt.isMobile(context)),
+              ).visible(!ResponsiveCt.isDesktop(context)),
             ],
           ),
           body: Padding(
@@ -149,7 +149,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     HorizontalList(
                       physics: const BouncingScrollPhysics(),
                       spacing: 10.0,
-                      itemCount: 4,
+                      itemCount: PrefUtils().getAccount() != '{}' ? 3 : 5,
                       itemBuilder: (_, i) {
                         return Container(
                           height: 140,

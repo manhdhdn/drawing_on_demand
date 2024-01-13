@@ -13,10 +13,12 @@ import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
 import '../favourite/client_favourite_list.dart';
+import '../home/client_home.dart';
 import '../invite/client_invite.dart';
 import '../notification/client_notification.dart';
 import '../report/client_report.dart';
 import '../transaction/transaction.dart';
+import 'client_profile_details.dart';
 
 class ClientProfile extends StatefulWidget {
   const ClientProfile({Key? key}) : super(key: key);
@@ -56,17 +58,10 @@ class _ClientProfileState extends State<ClientProfile> {
               jsonDecode(PrefUtils().getAccount())['Name'],
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
-            subtitle: RichText(
-              text: TextSpan(
-                text: 'Deposit Balance: ',
-                style: kTextStyle.copyWith(color: kLightNeutralColor),
-                children: [
-                  TextSpan(
-                    text: '$currencySign 500.00',
-                    style: kTextStyle.copyWith(color: kNeutralColor),
-                  ),
-                ],
-              ),
+            subtitle: Text(
+              'I\'m a Customer',
+              style: kTextStyle.copyWith(color: kLightNeutralColor),
+              maxLines: 1,
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -479,7 +474,7 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onProfile() {
-    context.goNamed(ProfileDetailRoute.name);
+    ResponsiveCt.isDesktop(context) ? ClientHome.changeProfile(const ClientProfileDetails()) : context.goNamed(ProfileDetailRoute.name);
   }
 
   void onSetting() {

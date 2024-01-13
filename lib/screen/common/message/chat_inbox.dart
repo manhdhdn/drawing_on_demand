@@ -9,6 +9,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import '../popUp/popup_1.dart';
 import 'empty_widget.dart';
 import 'function/chat_function.dart';
@@ -99,12 +100,11 @@ class _ChatInboxState extends State<ChatInbox> {
       title: '$dod | Chat',
       color: kPrimaryColor,
       child: Scaffold(
-        backgroundColor: kDarkWhite,
         appBar: AppBar(
           automaticallyImplyLeading: true,
+          backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
           leadingWidth: 24,
           iconTheme: const IconThemeData(color: kNeutralColor),
-          backgroundColor: kDarkWhite,
           title: Consumer<ChatProvider>(
             builder: (context, value, child) {
               return Row(
@@ -173,142 +173,147 @@ class _ChatInboxState extends State<ChatInbox> {
         ),
         body: Container(
           height: context.height(),
-          decoration: const BoxDecoration(color: kWhite),
+          decoration: const BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+          ),
           child: SingleChildScrollView(
             controller: Provider.of<ChatProvider>(context, listen: false).scrollController,
             physics: const BouncingScrollPhysics(),
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: context.height() * 0.7,
-              ),
-              decoration: const BoxDecoration(color: kWhite),
-              child: Consumer<ChatProvider>(
-                builder: (context, value, child) => value.inboxDatas.isNotEmpty
-                    ? Column(
-                        children: [
-                          8.height,
-                          ListView.builder(
-                            padding: const EdgeInsets.all(16.0),
-                            scrollDirection: Axis.vertical,
-                            reverse: true,
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: value.inboxDatas.length,
-                            itemBuilder: (context, index) {
-                              if (value.inboxDatas[index].id == 0) {
-                                return Column(
-                                  children: [
-                                    8.height,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
+            child: Consumer<ChatProvider>(
+              builder: (context, value, child) => value.inboxDatas.isNotEmpty
+                  ? Column(
+                      children: [
+                        8.height,
+                        ListView.builder(
+                          padding: const EdgeInsets.all(16.0),
+                          scrollDirection: Axis.vertical,
+                          reverse: true,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: value.inboxDatas.length,
+                          itemBuilder: (context, index) {
+                            if (value.inboxDatas[index].id == 0) {
+                              return Column(
+                                children: [
+                                  8.height,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: context.width() * 0.6,
+                                        ),
+                                        decoration: boxDecorationWithRoundedCorners(
+                                          backgroundColor: kPrimaryColor,
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20.0),
+                                            topLeft: Radius.circular(20.0),
+                                            bottomLeft: Radius.circular(20.0),
+                                            bottomRight: Radius.circular(0.0),
                                           ),
-                                          decoration: boxDecorationWithRoundedCorners(
-                                            backgroundColor: kPrimaryColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topRight: Radius.circular(20.0),
-                                              topLeft: Radius.circular(20.0),
-                                              bottomLeft: Radius.circular(20.0),
-                                              bottomRight: Radius.circular(0.0),
+                                        ),
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              (value.inboxDatas[index].message).validate(),
+                                              style: primaryTextStyle(
+                                                color: white,
+                                              ),
                                             ),
-                                          ),
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                (value.inboxDatas[index].message).validate(),
-                                                style: primaryTextStyle(
-                                                  color: white,
-                                                ),
+                                            Text(
+                                              timeago.format(value.inboxDatas[index].sentTime!),
+                                              style: secondaryTextStyle(
+                                                size: 9,
+                                                color: kNeutralColor,
                                               ),
-                                              Text(
-                                                timeago.format(value.inboxDatas[index].sentTime!),
-                                                style: secondaryTextStyle(
-                                                  size: 9,
-                                                  color: kNeutralColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        8.width,
-                                        CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage: NetworkImage(
-                                            jsonDecode(PrefUtils().getAccount())['Avatar'],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Column(
-                                  children: [
-                                    8.height,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Consumer<ChatProvider>(
-                                          builder: (context, value, child) {
-                                            return CircleAvatar(
-                                              radius: 20,
-                                              backgroundImage: NetworkImage(value.user.image ?? defaultImage),
-                                            );
-                                          },
-                                        ),
-                                        8.width,
-                                        Container(
-                                          constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
-                                          ),
-                                          decoration: boxDecorationWithRoundedCorners(
-                                            borderRadius: const BorderRadius.only(
-                                              topRight: Radius.circular(20.0),
-                                              topLeft: Radius.circular(20.0),
-                                              bottomLeft: Radius.circular(0.0),
-                                              bottomRight: Radius.circular(20.0),
                                             ),
-                                            backgroundColor: kDarkWhite,
-                                          ),
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                (value.inboxDatas[index].message).validate(),
-                                                style: primaryTextStyle(),
-                                              ),
-                                              Text(
-                                                timeago.format(value.inboxDatas[index].sentTime!),
-                                                style: secondaryTextStyle(
-                                                  size: 9,
-                                                  color: kNeutralColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      )
-                    : const EmptyWidget(
-                        icon: Icons.waving_hand,
-                        text: 'Say Hello!',
-                      ),
-              ),
+                                      ),
+                                      8.width,
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: NetworkImage(
+                                          jsonDecode(PrefUtils().getAccount())['Avatar'],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Column(
+                                children: [
+                                  8.height,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Consumer<ChatProvider>(
+                                        builder: (context, value, child) {
+                                          return CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(value.user.image ?? defaultImage),
+                                          );
+                                        },
+                                      ),
+                                      8.width,
+                                      Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: context.width() * 0.6,
+                                        ),
+                                        decoration: boxDecorationWithRoundedCorners(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20.0),
+                                            topLeft: Radius.circular(20.0),
+                                            bottomLeft: Radius.circular(0.0),
+                                            bottomRight: Radius.circular(20.0),
+                                          ),
+                                          backgroundColor: kDarkWhite,
+                                        ),
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              (value.inboxDatas[index].message).validate(),
+                                              style: primaryTextStyle(),
+                                            ),
+                                            Text(
+                                              timeago.format(value.inboxDatas[index].sentTime!),
+                                              style: secondaryTextStyle(
+                                                size: 9,
+                                                color: kNeutralColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        SizedBox(height: context.height() * 0.3),
+                        const EmptyWidget(
+                          icon: Icons.waving_hand,
+                          text: 'Say Hello!',
+                        ),
+                      ],
+                    ),
             ),
           ),
         ),

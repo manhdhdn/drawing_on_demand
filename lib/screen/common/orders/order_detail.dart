@@ -210,7 +210,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 ? 'Checkout'
                                 : role == 'Artist' && !isCreatedTimeline
                                     ? 'Create Timeline'
-                                    : 'Delivery work',
+                                    : 'Delivery Work',
                             buttonDecoration: kButtonDecoration.copyWith(
                               color: (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
                                   ? kPrimaryColor

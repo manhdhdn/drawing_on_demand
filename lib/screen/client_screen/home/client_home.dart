@@ -9,17 +9,37 @@ import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../profile/client_profile.dart';
 
-class ClientHome extends StatelessWidget {
+class ClientHome extends StatefulWidget {
+  static dynamic state;
+
   final Widget child;
 
   const ClientHome({Key? key, required this.child}) : super(key: key);
+
+  @override
+  State<ClientHome> createState() => _ClientHomeState();
+
+  static changeProfile(Widget profile) {
+    state.changeProfile(profile);
+  }
+}
+
+class _ClientHomeState extends State<ClientHome> {
+  Widget profile = const ClientProfile();
+
+  @override
+  void initState() {
+    super.initState();
+
+    ClientHome.state = this;
+  }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveCt(
       mobile: Scaffold(
         backgroundColor: kWhite,
-        body: child,
+        body: widget.child,
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: const BoxDecoration(
@@ -76,7 +96,7 @@ class ClientHome extends StatelessWidget {
         body: Row(
           children: [
             Expanded(
-              flex: 7,
+              flex: 4,
               child: NavigationRail(
                 selectedIndex: _calculateSelectedIndex(context),
                 onDestinationSelected: (int index) {
@@ -164,16 +184,16 @@ class ClientHome extends StatelessWidget {
               child: SizedBox.shrink(),
             ),
             Expanded(
-              flex: 60,
-              child: child,
+              flex: 32,
+              child: widget.child,
             ),
             const Expanded(
               flex: 1,
               child: SizedBox.shrink(),
             ),
-            const Expanded(
-              flex: 18,
-              child: ClientProfile(),
+            Expanded(
+              flex: 12,
+              child: profile,
             ).visible(ResponsiveCt.isDesktop(context) && PrefUtils().getAccount() != '{}'),
           ],
         ),
@@ -181,7 +201,7 @@ class ClientHome extends StatelessWidget {
     );
   }
 
-  static int _calculateSelectedIndex(BuildContext context) {
+  int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
 
     if (location.startsWith(MessageRoute.tag)) {
@@ -219,5 +239,11 @@ class ClientHome extends StatelessWidget {
       case 4:
         context.goNamed(ProfileRoute.name);
     }
+  }
+
+  void changeProfile(Widget profile) {
+    setState(() {
+      this.profile = profile;
+    });
   }
 }

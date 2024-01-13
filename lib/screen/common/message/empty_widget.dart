@@ -15,12 +15,12 @@ class EmptyWidget extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 100,
+              size: 80,
               color: kPrimaryColor,
             ),
             Text(
               text,
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 24),
             ),
           ],
         ),
