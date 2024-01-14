@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>680472686977-j393ccufmj3vq6mb7opjj11jo3ok7o3d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.680472686977-j393ccufmj3vq6mb7opjj11jo3ok7o3d</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>680472686977-hmugit8n98v950pitflr06m32evvkag2.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBB7Y9PE5HsENd4RRvwO5337HADHTPlNMk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>680472686977</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fa23se047.drawingondemand</string>
+	<key>PROJECT_ID</key>
+	<string>drawing-on-demand</string>
+	<key>STORAGE_BUCKET</key>
+	<string>drawing-on-demand.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:680472686977:ios:cf7ae30529d4cfd446b880</string>
+</dict>
+</plist>

@@ -35,7 +35,14 @@ class SocialIcon extends StatelessWidget {
 
 // ignore: must_be_immutable
 class Button extends StatelessWidget {
-  Button({Key? key, required this.containerBg, required this.borderColor, required this.buttonText, required this.textColor, required this.onPressed}) : super(key: key);
+  Button(
+      {Key? key,
+      required this.containerBg,
+      required this.borderColor,
+      required this.buttonText,
+      required this.textColor,
+      required this.onPressed})
+      : super(key: key);
 
   final Color containerBg;
   final Color borderColor;
@@ -67,4 +74,3 @@ class Button extends StatelessWidget {
     );
   }
 }
-

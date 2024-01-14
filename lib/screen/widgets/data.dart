@@ -307,7 +307,7 @@ class LevelSummary extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 50.0),
             child: Text(
-              'Receive and complete at least 30 orders (all time)',
+              subTitle,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               maxLines: 2,
             ),
@@ -320,9 +320,9 @@ class LevelSummary extends StatelessWidget {
 
 class TitleModel {
   String title;
-  bool isSelected;
+  bool selectedOrderTab;
 
-  TitleModel(this.title, this.isSelected);
+  TitleModel(this.title, this.selectedOrderTab);
 }
 
 class DashBoardInfo extends StatelessWidget {
@@ -376,6 +376,3 @@ class DashBoardInfo extends StatelessWidget {
     );
   }
 }
-
-
-

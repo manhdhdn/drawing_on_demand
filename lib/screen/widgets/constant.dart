@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'data.dart';
 
@@ -58,10 +59,11 @@ final otpInputDecoration = InputDecoration(
   enabledBorder: outlineInputBorder(),
 );
 
-bool isClient = false;
-bool isFreelancer = false;
+bool isCustomer = false;
+bool isArtist = false;
 bool isFavorite = false;
 const String currencySign = '\$';
+double menuMaxHeight = 170.0;
 
 //__________Gender______________________________________________________
 List<String> gender = [
@@ -70,33 +72,17 @@ List<String> gender = [
 ];
 String selectedGender = 'Male';
 
-List<String> catName = [
-  'Graphics Design',
-  'Video Editing',
-  'Digital Marketing',
-  'Business',
-  'Writing & Translation',
-  'Programming',
-  'Lifestyle'
-];
+List<String> catName = ['Graphics Design', 'Video Editing', 'Digital Marketing', 'Business', 'Writing & Translation', 'Programming', 'Lifestyle'];
 
-List<String> catIcon = [
-  'images/graphic.png',
-  'images/videoicon.png',
-  'images/dm.png',
-  'images/b.png',
-  'images/t.png',
-  'images/p.png',
-  'images/l.png'
-];
-
+List<String> catIcon = ['images/graphic.png', 'images/videoicon.png', 'images/dm.png', 'images/b.png', 'images/t.png', 'images/p.png', 'images/l.png'];
 
 //__________Language List_______________________________________________
 List<String> language = [
   'English',
-  'Bengali',
+  'Vietnamese',
 ];
-String selectedLanguage = 'English';
+
+String selectedLanguage = 'Vietnamese';
 
 //__________Language Level_______________________________________________
 List<String> languageLevel = [
@@ -124,6 +110,7 @@ List<String> staticsPeriod = [
   'Last Month',
   'This Month',
 ];
+
 String selectedStaticsPeriod = 'Last Month';
 
 //__________statistics_period___________________________________________________
@@ -139,89 +126,21 @@ Map<String, double> dataMap = {
   "Reached-Out": 2,
 };
 
-//__________Category______________________________________________________
-List<String> category = [
-  'Digital Marketing',
-  'App Development',
-  'Graphics Design',
-];
-
-String selectedCategory = 'App Development';
-
-//__________SubCategory______________________________________________________
-List<String> subcategory = [
-  'Flutter',
-  'React Native',
-  'Java',
-];
-
-String selectedSubCategory = 'Flutter';
-
-//__________ServiceType______________________________________________________
-List<String> serviceType = [
-  'Online',
-  'Offline',
-];
-
-String selectedServiceType = 'Online';
-
-//__________time______________________________________________________
-List<String> deliveryTime = [
-  '3 days',
-  '5 days',
-  '7 days',
-  '12 days',
-  '15 days',
-  '20 days',
-];
-
-String selectedDeliveryTime = '3 days';
-
-//__________time______________________________________________________
-List<String> pageCount = [
-  '10 screen',
-  '15 days',
-  '20 days',
-];
-
-String selectedPageCount = '10 screen';
-
 List<TitleModel> list = [
-  TitleModel("Responsive design", false),
+  TitleModel("DodResponsive design", false),
   TitleModel("Prototype", false),
   TitleModel("Source file", false),
 ];
 
-List<TitleModel> selectedTitle = [];
+String selectedArtworkCreateTab = 'All';
 
-List<String> titleList = [
-  'Active',
-  'Pending',
-  'Completed',
-  'Cancelled',
-];
+String selectedTopSeller = 'Top Artists';
 
-String isSelected = 'Active';
+String selectedJobApplyTab = 'Public';
 
-List<String> deliveryTimeList = [
-  '3 days',
-  '5 days',
-  '7 days',
-  '12 days',
-  '15 days',
-  '20 days',
-];
+String selectedServiceList = 'All';
 
-String selectedDeliveryTimeList = '3 days';
-
-List<String> revisionTime = [
-  '1 time',
-  '2 time',
-  '3 time',
-  '4 time',
-];
-
-String selectedRevisionTime = '1 time';
+String selectedOrderTab = 'Pending';
 
 List<String> reportTitle = [
   'Non original content',
@@ -247,9 +166,21 @@ List<String> currency = [
 
 String selectedCurrency = 'USD';
 
+List<int> pieces = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+];
+
+List<XFile> images = [];
 
 List<Color> colorList = [
   const Color(0xFF69B22A),
   const Color(0xFF144BD6),
   const Color(0xFFFF3B30),
 ];
+
+String defaultImage = 'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf';

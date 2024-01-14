@@ -1,0 +1,12 @@
+{
+    "@@locale": "vi",
+    "language": "Ngôn ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "setting": "Cài đặt",
+    "pushNotifications": "Thông báo đẩy",
+    "privacyPolicy": "Chính sách bảo mật",
+    "termsOfService": "Điều khoản dịch vụ",
+    "joinAs": "Tham gia với tư cách \n Khách hàng hoặc Họa sĩ",
+    "private": "Cá nhân"
+}

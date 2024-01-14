@@ -1,0 +1,12 @@
+{
+    "@@locale": "en",
+    "language": "Language",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "setting": "Setting",
+    "pushNotifications": "Push Notifications",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "joinAs": "Join as Customer or Artist",
+    "private": "Private"
+}
