@@ -11,7 +11,6 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
-import '../../widgets/responsive.dart';
 
 class JobPost extends StatefulWidget {
   static dynamic state;
@@ -50,9 +49,10 @@ class _JobPostState extends State<JobPost> {
       title: '$dod | Requirements',
       color: kPrimaryColor,
       child: Scaffold(
+        backgroundColor: kDarkWhite,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
+          backgroundColor: kDarkWhite,
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(

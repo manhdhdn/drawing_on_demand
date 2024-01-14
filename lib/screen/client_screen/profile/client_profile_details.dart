@@ -34,7 +34,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           leading: IconButton(
             onPressed: () {
-              ResponsiveCt.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : context.pop();
+              DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : context.pop();
             },
             icon: const Icon(Icons.arrow_back),
           ),
@@ -63,7 +63,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Container(
             height: context.height(),
             padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),

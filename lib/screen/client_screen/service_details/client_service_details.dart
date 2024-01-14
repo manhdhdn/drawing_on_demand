@@ -441,7 +441,7 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails> with Ticker
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            'ResponsiveCt design',
+                                                            'DodResponsive design',
                                                             maxLines: 1,
                                                             style: kTextStyle.copyWith(color: kNeutralColor),
                                                           ),
@@ -594,7 +594,7 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails> with Ticker
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            'ResponsiveCt design',
+                                                            'DodResponsive design',
                                                             maxLines: 1,
                                                             style: kTextStyle.copyWith(color: kNeutralColor),
                                                           ),
@@ -748,7 +748,7 @@ class _ClientServiceDetailsState extends State<ClientServiceDetails> with Ticker
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            'ResponsiveCt design',
+                                                            'DodResponsive design',
                                                             maxLines: 1,
                                                             style: kTextStyle.copyWith(color: kNeutralColor),
                                                           ),

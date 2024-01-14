@@ -10,7 +10,6 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
-import '../../common/add_payment_method/add_payment_method.dart';
 import '../notification/seller_notification.dart';
 import '../favourite/seller_favourite_list.dart';
 import '../report/seller_report.dart';
@@ -112,7 +111,7 @@ class _SellerProfileState extends State<SellerProfile> {
                   },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
-                  contentPadding: const EdgeInsets.only(bottom: 20),
+                  contentPadding: const EdgeInsets.only(bottom: 10),
                   leading: Container(
                     padding: const EdgeInsets.all(10.0),
                     decoration: const BoxDecoration(
@@ -126,60 +125,6 @@ class _SellerProfileState extends State<SellerProfile> {
                   ),
                   title: Text(
                     'My Profile',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: kTextStyle.copyWith(color: kNeutralColor),
-                  ),
-                  trailing: const Icon(
-                    FeatherIcons.chevronRight,
-                    color: kLightNeutralColor,
-                  ),
-                ),
-                // ListTile(
-                //   onTap: () => const SellerBuyerReq().launch(context),
-                //   visualDensity: const VisualDensity(vertical: -3),
-                //   horizontalTitleGap: 10,
-                //   contentPadding: const EdgeInsets.only(bottom: 20),
-                //   leading: Container(
-                //     padding: const EdgeInsets.all(10.0),
-                //     decoration: const BoxDecoration(
-                //       shape: BoxShape.circle,
-                //       color: Color(0xFFE3EDFF),
-                //     ),
-                //     child: const Icon(
-                //       IconlyBold.paper,
-                //       color: Color(0xFF144BD6),
-                //     ),
-                //   ),
-                //   title: Text(
-                //     'Buyer Request',
-                //     overflow: TextOverflow.ellipsis,
-                //     maxLines: 1,
-                //     style: kTextStyle.copyWith(color: kNeutralColor),
-                //   ),
-                //   trailing: const Icon(
-                //     FeatherIcons.chevronRight,
-                //     color: kLightNeutralColor,
-                //   ),
-                // ),
-                ListTile(
-                  onTap: () => const AddPaymentMethod().launch(context),
-                  visualDensity: const VisualDensity(vertical: -3),
-                  horizontalTitleGap: 10,
-                  contentPadding: const EdgeInsets.only(bottom: 12),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFFFE5E3),
-                    ),
-                    child: const Icon(
-                      IconlyBold.ticketStar,
-                      color: Color(0xFFFF3B30),
-                    ),
-                  ),
-                  title: Text(
-                    'Add Payment method',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -211,10 +156,10 @@ class _SellerProfileState extends State<SellerProfile> {
                         color: Color(0xFFFF7A00),
                       ),
                     ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronDown,
-                      color: kLightNeutralColor,
-                    ),
+                    // trailing: const Icon(
+                    //   FeatherIcons.chevronDown,
+                    //   color: kLightNeutralColor,
+                    // ),
                     children: [
                       ListTile(
                         visualDensity: const VisualDensity(vertical: -3),
@@ -251,33 +196,6 @@ class _SellerProfileState extends State<SellerProfile> {
                     ],
                   ),
                 ),
-                // ListTile(
-                //   onTap: () => const SellerTransaction().launch(context),
-                //   visualDensity: const VisualDensity(vertical: -3),
-                //   horizontalTitleGap: 10,
-                //   contentPadding: const EdgeInsets.only(bottom: 15),
-                //   leading: Container(
-                //     padding: const EdgeInsets.all(10.0),
-                //     decoration: const BoxDecoration(
-                //       shape: BoxShape.circle,
-                //       color: Color(0xFFE8E1FF),
-                //     ),
-                //     child: const Icon(
-                //       IconlyBold.ticketStar,
-                //       color: Color(0xFF7E5BFF),
-                //     ),
-                //   ),
-                //   title: Text(
-                //     'Transaction',
-                //     overflow: TextOverflow.ellipsis,
-                //     maxLines: 1,
-                //     style: kTextStyle.copyWith(color: kNeutralColor),
-                //   ),
-                //   trailing: const Icon(
-                //     FeatherIcons.chevronRight,
-                //     color: kLightNeutralColor,
-                //   ),
-                // ),
                 ListTile(
                   onTap: () => const SellerFavList().launch(context),
                   visualDensity: const VisualDensity(vertical: -3),

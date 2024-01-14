@@ -9,6 +9,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
@@ -34,8 +35,9 @@ class _ClientProfileState extends State<ClientProfile> {
       title: '$dod | Profile',
       color: kPrimaryColor,
       child: Scaffold(
+        backgroundColor: kDarkWhite,
         appBar: AppBar(
-          backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
+          backgroundColor: kDarkWhite,
           elevation: 0,
           automaticallyImplyLeading: false,
           title: ListTile(
@@ -56,7 +58,11 @@ class _ClientProfileState extends State<ClientProfile> {
             ),
             title: Text(
               jsonDecode(PrefUtils().getAccount())['Name'],
-              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(
+                color: kNeutralColor,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
             ),
             subtitle: Text(
               'I\'m a Customer',
@@ -106,7 +112,7 @@ class _ClientProfileState extends State<ClientProfile> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             height: context.height(),
             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
@@ -126,7 +132,7 @@ class _ClientProfileState extends State<ClientProfile> {
                   ListTile(
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
-                    contentPadding: const EdgeInsets.only(bottom: 20),
+                    contentPadding: const EdgeInsets.only(bottom: 15),
                     leading: Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: const BoxDecoration(
@@ -156,7 +162,7 @@ class _ClientProfileState extends State<ClientProfile> {
                     onTap: () => const ClientDashBoard().launch(context),
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
-                    contentPadding: const EdgeInsets.only(bottom: 20),
+                    contentPadding: const EdgeInsets.only(bottom: 15),
                     leading: Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: const BoxDecoration(
@@ -474,11 +480,11 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onProfile() {
-    ResponsiveCt.isDesktop(context) ? ClientHome.changeProfile(const ClientProfileDetails()) : context.goNamed(ProfileDetailRoute.name);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfileDetails()) : context.goNamed(ProfileDetailRoute.name);
   }
 
   void onSetting() {
-    context.goNamed(SettingRoute.name);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
   }
 
   void onLogout() async {

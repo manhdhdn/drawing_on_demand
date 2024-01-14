@@ -221,11 +221,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  void onCreateAccount() {
-    context.goNamed(RegisterRoute.name);
-  }
-
   void onLogin() {
     context.goNamed(LoginRoute.name);
+  }
+
+  void onCreateAccount() {
+    context.goNamed(RegisterRoute.name);
   }
 }

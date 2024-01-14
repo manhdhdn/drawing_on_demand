@@ -36,7 +36,7 @@ class _ClientHomeState extends State<ClientHome> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveCt(
+    return DodResponsive(
       mobile: Scaffold(
         backgroundColor: kWhite,
         body: widget.child,
@@ -93,10 +93,11 @@ class _ClientHomeState extends State<ClientHome> {
         ),
       ),
       desktop: Scaffold(
+        backgroundColor: kDarkWhite,
         body: Row(
           children: [
             Expanded(
-              flex: 4,
+              flex: 8,
               child: NavigationRail(
                 selectedIndex: _calculateSelectedIndex(context),
                 onDestinationSelected: (int index) {
@@ -184,7 +185,7 @@ class _ClientHomeState extends State<ClientHome> {
               child: SizedBox.shrink(),
             ),
             Expanded(
-              flex: 32,
+              flex: 62,
               child: widget.child,
             ),
             const Expanded(
@@ -192,9 +193,9 @@ class _ClientHomeState extends State<ClientHome> {
               child: SizedBox.shrink(),
             ),
             Expanded(
-              flex: 12,
+              flex: 22,
               child: profile,
-            ).visible(ResponsiveCt.isDesktop(context) && PrefUtils().getAccount() != '{}'),
+            ).visible(DodResponsive.isDesktop(context) && PrefUtils().getAccount() != '{}'),
           ],
         ),
       ),

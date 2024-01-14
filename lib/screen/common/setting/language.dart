@@ -5,7 +5,9 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../main.dart';
+import '../../client_screen/home/client_home.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import 'settings.dart';
 
 class Language extends StatefulWidget {
@@ -29,10 +31,15 @@ class _LanguageState extends State<Language> {
           backgroundColor: kDarkWhite,
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
+          leading: IconButton(
+            onPressed: () {
+              DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
           title: Text(
             AppLocalizations.of(context)!.language,
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -68,9 +75,7 @@ class _LanguageState extends State<Language> {
                       horizontalTitleGap: 10,
                       contentPadding: const EdgeInsets.only(bottom: 15),
                       title: Text(
-                        language[i] == 'English'
-                            ? AppLocalizations.of(context)!.english
-                            : AppLocalizations.of(context)!.vietnamese,
+                        language[i] == 'English' ? AppLocalizations.of(context)!.english : AppLocalizations.of(context)!.vietnamese,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: kTextStyle.copyWith(color: kNeutralColor),
@@ -99,6 +104,7 @@ class _LanguageState extends State<Language> {
 
     // ignore: use_build_context_synchronously
     MyApp.refreshLocale(context);
-    Settings.refresh();
+    // ignore: use_build_context_synchronously
+    DodResponsive.isMobile(context) ? Settings.refresh() : null;
   }
 }

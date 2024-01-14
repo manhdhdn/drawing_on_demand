@@ -9,7 +9,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
-import '../../widgets/responsive.dart';
 import '../popUp/popup_1.dart';
 import 'empty_widget.dart';
 import 'function/chat_function.dart';
@@ -100,9 +99,10 @@ class _ChatInboxState extends State<ChatInbox> {
       title: '$dod | Chat',
       color: kPrimaryColor,
       child: Scaffold(
+        backgroundColor: kDarkWhite,
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
+          backgroundColor: kDarkWhite,
           leadingWidth: 24,
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Consumer<ChatProvider>(

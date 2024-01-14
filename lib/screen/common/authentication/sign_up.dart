@@ -356,16 +356,21 @@ class _SignUpState extends State<SignUp> {
                   ),
                   const SizedBox(height: 20.0),
                   Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Already have an account? ',
-                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                        children: [
-                          TextSpan(
-                            text: 'Log In',
-                            style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                    child: GestureDetector(
+                      onTap: () {
+                        onLogin();
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Already have an account? ',
+                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                          children: [
+                            TextSpan(
+                              text: 'Log In',
+                              style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -376,6 +381,10 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void onLogin() {
+    context.goNamed(LoginRoute.name);
   }
 
   void onSignUp() async {

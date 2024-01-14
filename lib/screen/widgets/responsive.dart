@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class ResponsiveCt extends StatelessWidget {
+class DodResponsive extends StatelessWidget {
   final Widget mobile;
   final Widget desktop;
 
-  const ResponsiveCt({
+  const DodResponsive({
     Key? key,
     required this.mobile,
     required this.desktop,

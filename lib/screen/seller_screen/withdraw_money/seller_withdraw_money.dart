@@ -44,8 +44,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -68,8 +67,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Withdraw Money',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -91,6 +89,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
             right: 15.0,
           ),
           width: context.width(),
+          height: context.height(),
           decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
@@ -120,9 +119,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
                           children: [
                             Text(
                               '$currencySign 220',
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8.0),
                             Text(
@@ -147,9 +144,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
                           children: [
                             Text(
                               '$currencySign 7,000',
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8.0),
                             Text(
@@ -166,8 +161,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
                 const SizedBox(height: 20.0),
                 Text(
                   'Withdraw Method',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20.0),
                 FormField(
@@ -178,8 +172,7 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
                           borderRadius: BorderRadius.all(
                             Radius.circular(8.0),
                           ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
+                          borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                         ),
                         contentPadding: const EdgeInsets.all(7.0),
                         floatingLabelBehavior: FloatingLabelBehavior.always,

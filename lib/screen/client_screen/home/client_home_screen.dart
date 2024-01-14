@@ -53,8 +53,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       color: kPrimaryColor,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: kDarkWhite,
           appBar: AppBar(
-            backgroundColor: ResponsiveCt.isDesktop(context) ? Colors.transparent : kDarkWhite,
+            backgroundColor: kDarkWhite,
             elevation: 0,
             automaticallyImplyLeading: false,
             title: Container(
@@ -125,11 +126,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     ),
                   ],
                 ),
-              ).visible(!ResponsiveCt.isDesktop(context)),
+              ).visible(!DodResponsive.isDesktop(context)),
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.only(top: 15.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Container(
               height: context.height(),
               width: context.width(),
@@ -149,7 +150,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     HorizontalList(
                       physics: const BouncingScrollPhysics(),
                       spacing: 10.0,
-                      itemCount: PrefUtils().getAccount() != '{}' ? 3 : 5,
+                      itemCount: PrefUtils().getAccount() != '{}' ? 3 : 4,
                       itemBuilder: (_, i) {
                         return Container(
                           height: 140,
@@ -180,7 +181,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           ),
                         ],
                       ),
-                    ),
+                    ).visible(false),
                     HorizontalList(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15.0, right: 15.0),
@@ -231,7 +232,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           ),
                         );
                       },
-                    ),
+                    ).visible(false),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
                       child: Row(

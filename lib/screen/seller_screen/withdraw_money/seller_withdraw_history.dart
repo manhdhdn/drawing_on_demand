@@ -19,8 +19,7 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -43,8 +42,7 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Withdraw Money',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -56,6 +54,7 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
             right: 15.0,
           ),
           width: context.width(),
+          height: context.height(),
           decoration: const BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.only(
@@ -101,24 +100,19 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
                                   children: [
                                     Text(
                                       'Withdrawal Completed',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                     ),
                                     const Spacer(),
                                     Text(
                                       '$currencySign 5,000',
-                                      style: kTextStyle.copyWith(
-                                          color: kNeutralColor,
-                                          fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 8.0),
                                 Text(
                                   '10 Jun 2023',
-                                  style: kTextStyle.copyWith(
-                                      color: kLightNeutralColor),
+                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
                                   maxLines: 2,
                                 ),
                               ],
@@ -149,24 +143,19 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
                                 children: [
                                   Text(
                                     'Withdrawal Initiated',
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor,
-                                        fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                   ),
                                   const Spacer(),
                                   Text(
                                     '$currencySign 5,000',
-                                    style: kTextStyle.copyWith(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8.0),
                               Text(
                                 '10 Jun 2023',
-                                style: kTextStyle.copyWith(
-                                    color: kLightNeutralColor),
+                                style: kTextStyle.copyWith(color: kLightNeutralColor),
                                 maxLines: 2,
                               ),
                             ],

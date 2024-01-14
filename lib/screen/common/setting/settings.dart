@@ -7,8 +7,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../client_screen/home/client_home.dart';
+import '../../client_screen/profile/client_profile.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import 'about_us.dart';
+import 'language.dart';
 import 'policy.dart';
 
 class Settings extends StatefulWidget {
@@ -25,7 +29,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool isNotificationOn = false;
+  bool isNotificationOn = PrefUtils().getPushNotifications();
   String selectedLanguage = PrefUtils().getLanguage();
 
   @override
@@ -46,10 +50,15 @@ class _SettingsState extends State<Settings> {
           backgroundColor: kDarkWhite,
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
+          leading: IconButton(
+            onPressed: () {
+              DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : GoRouter.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
           title: Text(
             AppLocalizations.of(context)!.setting,
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -95,9 +104,7 @@ class _SettingsState extends State<Settings> {
                   trailing: CupertinoSwitch(
                     value: isNotificationOn,
                     onChanged: (value) {
-                      setState(() {
-                        isNotificationOn = value;
-                      });
+                      onPushNotification(value);
                     },
                   ),
                 ),
@@ -126,9 +133,7 @@ class _SettingsState extends State<Settings> {
                     style: kTextStyle.copyWith(color: kNeutralColor),
                   ),
                   trailing: Text(
-                    selectedLanguage == 'English'
-                        ? AppLocalizations.of(context)!.english
-                        : AppLocalizations.of(context)!.vietnamese,
+                    selectedLanguage == 'English' ? AppLocalizations.of(context)!.english : AppLocalizations.of(context)!.vietnamese,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -188,8 +193,16 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  onPushNotification(bool value) {
+    setState(() {
+      isNotificationOn = value;
+    });
+
+    PrefUtils().setPushNotifications(value);
+  }
+
   onLanguage() {
-    context.goNamed(LanguageRoute.name);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Language()) : context.goNamed(LanguageRoute.name);
   }
 
   refresh() {
