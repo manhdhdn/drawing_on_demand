@@ -14,6 +14,7 @@ import '../../../main.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
+import '../../widgets/responsive.dart';
 import '../message/function/chat_function.dart';
 import '../popUp/popup_2.dart';
 import 'forgot_password.dart';
@@ -80,231 +81,481 @@ class _LoginState extends State<Login> {
     return Title(
       title: '$dod | Login',
       color: kPrimaryColor,
-      child: Scaffold(
-        backgroundColor: kWhite,
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: kDarkWhite,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(50.0),
-              bottomRight: Radius.circular(50.0),
-            ),
-          ),
-          toolbarHeight: 180,
-          flexibleSpace: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  height: 85,
-                  width: 110,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/logo2.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+      child: SafeArea(
+        child: DodResponsive(
+          mobile: Scaffold(
+            backgroundColor: kWhite,
+            appBar: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              backgroundColor: kDarkWhite,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50.0),
+                  bottomRight: Radius.circular(50.0),
                 ),
-              )
-            ],
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20.0),
-                  Center(
-                    child: Text(
-                      'Log In Your Account',
-                      style: kTextStyle.copyWith(
-                        color: kNeutralColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+              ),
+              toolbarHeight: 250,
+              flexibleSpace: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 125,
+                      width: 160,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(image: AssetImage('images/logo2.png'), fit: BoxFit.cover),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 30.0),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    cursorColor: kNeutralColor,
-                    textInputAction: TextInputAction.next,
-                    decoration: kInputDecoration.copyWith(
-                      labelText: 'Email',
-                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      hintText: 'Enter your email',
-                      hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                      focusColor: kNeutralColor,
-                      border: const OutlineInputBorder(),
-                    ),
-                    controller: emailController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      List<String> result = [];
+                    )
+                  ],
+                ),
+              ),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20.0),
+                      Center(
+                        child: Text(
+                          'Log In Your Account',
+                          style: kTextStyle.copyWith(
+                            color: kNeutralColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30.0),
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: kNeutralColor,
+                        textInputAction: TextInputAction.next,
+                        decoration: kInputDecoration.copyWith(
+                          labelText: 'Email',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                          hintText: 'Enter your email',
+                          hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                          focusColor: kNeutralColor,
+                          border: const OutlineInputBorder(),
+                        ),
+                        controller: emailController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          List<String> result = [];
 
-                      if (value!.isEmpty) {
-                        result.add('Please enter your email');
-                      }
+                          if (value!.isEmpty) {
+                            result.add('Please enter your email');
+                          }
 
-                      if (!isValidEmail(value)) {
-                        result.add('Please enter a valid email address');
-                      }
+                          if (!isValidEmail(value)) {
+                            result.add('Please enter a valid email address');
+                          }
 
-                      return result.isNotEmpty ? result.join('\n') : null;
-                    },
-                    autofillHints: const [AutofillHints.username],
-                  ),
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    cursorColor: kNeutralColor,
-                    obscureText: hidePassword,
-                    textInputAction: TextInputAction.done,
-                    decoration: kInputDecoration.copyWith(
-                      border: const OutlineInputBorder(),
-                      labelText: 'Password',
-                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      hintText: 'Please enter your password',
-                      hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            hidePassword = !hidePassword;
-                          });
+                          return result.isNotEmpty ? result.join('\n') : null;
                         },
-                        icon: Icon(
-                          hidePassword ? Icons.visibility_off : Icons.visibility,
-                          color: kLightNeutralColor,
-                        ),
+                        autofillHints: const [AutofillHints.username],
                       ),
-                    ),
-                    controller: passwordController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password';
-                      }
-
-                      return null;
-                    },
-                    autofillHints: const [AutofillHints.password],
-                    onEditingComplete: () {
-                      onLogin();
-                    },
-                  ),
-                  const SizedBox(height: 5.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () => const ForgotPassword().launch(context),
-                        child: Text(
-                          'Forgot Password?',
-                          style: kTextStyle.copyWith(color: kLightNeutralColor),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
-                  ButtonGlobalWithoutIcon(
-                      buttontext: 'Log In',
-                      buttonDecoration: kButtonDecoration.copyWith(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      onPressed: () {
-                        onLogin();
-                      },
-                      buttonTextColor: kWhite),
-                  const SizedBox(height: 20.0),
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1.0,
-                          color: kBorderColorTextField,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Text(
-                          'Or Sign up with',
-                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                        ),
-                      ),
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1.0,
-                          color: kBorderColorTextField,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SocialIcon(
-                          bgColor: kNeutralColor,
-                          iconColor: kWhite,
-                          icon: FontAwesomeIcons.facebookF,
-                          borderColor: Colors.transparent,
-                        ),
-                        SizedBox(width: 15.0),
-                        SocialIcon(
-                          bgColor: kWhite,
-                          iconColor: kNeutralColor,
-                          icon: FontAwesomeIcons.google,
-                          borderColor: kBorderColorTextField,
-                        ),
-                        // SocialIcon(
-                        //   bgColor: kWhite,
-                        //   iconColor: Color(0xFF76A9EA),
-                        //   icon: FontAwesomeIcons.twitter,
-                        //   borderColor: kBorderColorTextField,
-                        // ),
-                        // SocialIcon(
-                        //   bgColor: kWhite,
-                        //   iconColor: Color(0xFFFF554A),
-                        //   icon: FontAwesomeIcons.instagram,
-                        //   borderColor: kBorderColorTextField,
-                        // ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        onCreateNewAccount();
-                      },
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Don’t have an account? ',
-                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                          children: [
-                            TextSpan(
-                              text: 'Create New Account',
-                              style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                      const SizedBox(height: 20.0),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        cursorColor: kNeutralColor,
+                        obscureText: hidePassword,
+                        textInputAction: TextInputAction.done,
+                        decoration: kInputDecoration.copyWith(
+                          border: const OutlineInputBorder(),
+                          labelText: 'Password',
+                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                          hintText: 'Please enter your password',
+                          hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword ? Icons.visibility_off : Icons.visibility,
+                              color: kLightNeutralColor,
                             ),
+                          ),
+                        ),
+                        controller: passwordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your password';
+                          }
+
+                          return null;
+                        },
+                        autofillHints: const [AutofillHints.password],
+                        onEditingComplete: () {
+                          onLogin();
+                        },
+                      ),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () => const ForgotPassword().launch(context),
+                            child: Text(
+                              'Forgot Password?',
+                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      ButtonGlobalWithoutIcon(
+                          buttontext: 'Log In',
+                          buttonDecoration: kButtonDecoration.copyWith(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          onPressed: () {
+                            onLogin();
+                          },
+                          buttonTextColor: kWhite),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        children: [
+                          const Expanded(
+                            child: Divider(
+                              thickness: 1.0,
+                              color: kBorderColorTextField,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                            child: Text(
+                              'Or Sign up with',
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                            ),
+                          ),
+                          const Expanded(
+                            child: Divider(
+                              thickness: 1.0,
+                              color: kBorderColorTextField,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SocialIcon(
+                              bgColor: kNeutralColor,
+                              iconColor: kWhite,
+                              icon: FontAwesomeIcons.facebookF,
+                              borderColor: Colors.transparent,
+                            ),
+                            SizedBox(width: 15.0),
+                            SocialIcon(
+                              bgColor: kWhite,
+                              iconColor: kNeutralColor,
+                              icon: FontAwesomeIcons.google,
+                              borderColor: kBorderColorTextField,
+                            ),
+                            // SocialIcon(
+                            //   bgColor: kWhite,
+                            //   iconColor: Color(0xFF76A9EA),
+                            //   icon: FontAwesomeIcons.twitter,
+                            //   borderColor: kBorderColorTextField,
+                            // ),
+                            // SocialIcon(
+                            //   bgColor: kWhite,
+                            //   iconColor: Color(0xFFFF554A),
+                            //   icon: FontAwesomeIcons.instagram,
+                            //   borderColor: kBorderColorTextField,
+                            // ),
                           ],
                         ),
                       ),
+                      const SizedBox(height: 20.0),
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            onCreateNewAccount();
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Don’t have an account? ',
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                              children: [
+                                TextSpan(
+                                  text: 'Create New Account',
+                                  style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          desktop: Scaffold(
+            backgroundColor: kWhite,
+            body: Row(
+              children: [
+                const Expanded(
+                  flex: 4,
+                  child: SizedBox.shrink(),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Material(
+                    elevation: 5.0,
+                    child: Scaffold(
+                      backgroundColor: kWhite,
+                      appBar: AppBar(
+                        elevation: 0,
+                        automaticallyImplyLeading: false,
+                        backgroundColor: kDarkWhite,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(50.0),
+                            bottomRight: Radius.circular(50.0),
+                          ),
+                        ),
+                        toolbarHeight: 250,
+                        flexibleSpace: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 125,
+                                width: 160,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('images/logo2.png'), fit: BoxFit.cover),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      body: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20.0),
+                                Center(
+                                  child: Text(
+                                    'Log In Your Account',
+                                    style: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 30.0),
+                                TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  cursorColor: kNeutralColor,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: kInputDecoration.copyWith(
+                                    labelText: 'Email',
+                                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                    hintText: 'Enter your email',
+                                    hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                                    focusColor: kNeutralColor,
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                  controller: emailController,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    List<String> result = [];
+
+                                    if (value!.isEmpty) {
+                                      result.add('Please enter your email');
+                                    }
+
+                                    if (!isValidEmail(value)) {
+                                      result.add('Please enter a valid email address');
+                                    }
+
+                                    return result.isNotEmpty ? result.join('\n') : null;
+                                  },
+                                  autofillHints: const [AutofillHints.username],
+                                ),
+                                const SizedBox(height: 20.0),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  cursorColor: kNeutralColor,
+                                  obscureText: hidePassword,
+                                  textInputAction: TextInputAction.done,
+                                  decoration: kInputDecoration.copyWith(
+                                    border: const OutlineInputBorder(),
+                                    labelText: 'Password',
+                                    labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                    hintText: 'Please enter your password',
+                                    hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          hidePassword = !hidePassword;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        hidePassword ? Icons.visibility_off : Icons.visibility,
+                                        color: kLightNeutralColor,
+                                      ),
+                                    ),
+                                  ),
+                                  controller: passwordController,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your password';
+                                    }
+
+                                    return null;
+                                  },
+                                  autofillHints: const [AutofillHints.password],
+                                  onEditingComplete: () {
+                                    onLogin();
+                                  },
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => const ForgotPassword().launch(context),
+                                      child: Text(
+                                        'Forgot Password?',
+                                        style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                        textAlign: TextAlign.end,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20.0),
+                                ButtonGlobalWithoutIcon(
+                                    buttontext: 'Log In',
+                                    buttonDecoration: kButtonDecoration.copyWith(
+                                      color: kPrimaryColor,
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    onPressed: () {
+                                      onLogin();
+                                    },
+                                    buttonTextColor: kWhite),
+                                const SizedBox(height: 20.0),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      child: Divider(
+                                        thickness: 1.0,
+                                        color: kBorderColorTextField,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                      child: Text(
+                                        'Or Sign up with',
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    const Expanded(
+                                      child: Divider(
+                                        thickness: 1.0,
+                                        color: kBorderColorTextField,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SocialIcon(
+                                        bgColor: kNeutralColor,
+                                        iconColor: kWhite,
+                                        icon: FontAwesomeIcons.facebookF,
+                                        borderColor: Colors.transparent,
+                                      ),
+                                      SizedBox(width: 15.0),
+                                      SocialIcon(
+                                        bgColor: kWhite,
+                                        iconColor: kNeutralColor,
+                                        icon: FontAwesomeIcons.google,
+                                        borderColor: kBorderColorTextField,
+                                      ),
+                                      // SocialIcon(
+                                      //   bgColor: kWhite,
+                                      //   iconColor: Color(0xFF76A9EA),
+                                      //   icon: FontAwesomeIcons.twitter,
+                                      //   borderColor: kBorderColorTextField,
+                                      // ),
+                                      // SocialIcon(
+                                      //   bgColor: kWhite,
+                                      //   iconColor: Color(0xFFFF554A),
+                                      //   icon: FontAwesomeIcons.instagram,
+                                      //   borderColor: kBorderColorTextField,
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20.0),
+                                Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      onCreateNewAccount();
+                                    },
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: 'Don’t have an account? ',
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Create New Account',
+                                            style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                const Expanded(
+                  flex: 4,
+                  child: SizedBox.shrink(),
+                ),
+              ],
             ),
           ),
         ),

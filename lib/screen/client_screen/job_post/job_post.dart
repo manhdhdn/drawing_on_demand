@@ -11,6 +11,7 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 
 class JobPost extends StatefulWidget {
   static dynamic state;
@@ -80,7 +81,7 @@ class _JobPostState extends State<JobPost> {
           child: Container(
             width: context.width(),
             height: context.height(),
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            padding: EdgeInsets.only(left: DodResponsive.isDesktop(context) ? 150.0 : 15.0, right: DodResponsive.isDesktop(context) ? 150.0 : 15.0),
             decoration: const BoxDecoration(
               color: kWhite,
               borderRadius: BorderRadius.only(

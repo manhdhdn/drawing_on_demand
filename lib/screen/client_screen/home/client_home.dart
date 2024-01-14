@@ -109,7 +109,36 @@ class _ClientHomeState extends State<ClientHome> {
                 unselectedLabelTextStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                 backgroundColor: kWhite,
                 elevation: 5.0,
-                groupAlignment: -0.7,
+                trailing: Flexible(
+                  fit: FlexFit.tight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          onLogin();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              IconlyBold.login,
+                              color: kPrimaryColor,
+                            ),
+                            const SizedBox(width: 5.0),
+                            Text(
+                              'Login',
+                              style: kTextStyle.copyWith(
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 50.0),
+                    ],
+                  ).visible(PrefUtils().getAccount() == '{}'),
+                ),
                 leading: GestureDetector(
                   onTap: () {
                     context.go('/');
@@ -136,33 +165,34 @@ class _ClientHomeState extends State<ClientHome> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      const SizedBox(height: 50.0),
                     ],
                   ),
                 ),
                 labelType: NavigationRailLabelType.selected,
-                destinations: const [
-                  NavigationRailDestination(
+                destinations: [
+                  const NavigationRailDestination(
                     icon: Icon(IconlyBold.home),
                     label: Text(
                       'Home',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  NavigationRailDestination(
+                  const NavigationRailDestination(
                     icon: Icon(IconlyBold.chat),
                     label: Text(
                       'Message',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  NavigationRailDestination(
+                  const NavigationRailDestination(
                     icon: Icon(IconlyBold.paperPlus),
                     label: Text(
                       'Job Post',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  NavigationRailDestination(
+                  const NavigationRailDestination(
                     icon: Icon(IconlyBold.document),
                     label: Text(
                       'Orders',
@@ -170,12 +200,12 @@ class _ClientHomeState extends State<ClientHome> {
                     ),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(IconlyBold.profile),
-                    label: Text(
+                    icon: const Icon(IconlyBold.profile),
+                    label: const Text(
                       'Profile',
                       textAlign: TextAlign.center,
                     ),
-                    disabled: true,
+                    disabled: DodResponsive.isDesktop(context),
                   ),
                 ],
               ),
@@ -246,5 +276,9 @@ class _ClientHomeState extends State<ClientHome> {
     setState(() {
       this.profile = profile;
     });
+  }
+
+  void onLogin() {
+    context.goNamed(LoginRoute.name);
   }
 }

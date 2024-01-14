@@ -25,6 +25,7 @@ import '../../common/message/function/chat_function.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
+import '../../widgets/responsive.dart';
 import 'job_post.dart';
 
 class JobDetails extends StatefulWidget {
@@ -218,7 +219,7 @@ class _JobDetailsState extends State<JobDetails> {
           ),
         ),
         body: Container(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+          padding: EdgeInsets.only(left: DodResponsive.isDesktop(context) ? 150.0 : 15.0, right: DodResponsive.isDesktop(context) ? 150.0 : 15.0),
           width: context.width(),
           height: context.height(),
           decoration: const BoxDecoration(
@@ -567,44 +568,38 @@ class _JobDetailsState extends State<JobDetails> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8.0),
+                            const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
                             Text(
                               'Attach file:',
                               style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                snapshot.data!.image != null
-                                    ? SizedBox(
-                                        width: context.width() * 0.85,
-                                        height: context.width() * 0.85 * 0.7,
-                                        child: PhotoView(
-                                          backgroundDecoration: BoxDecoration(
-                                            color: kDarkWhite,
-                                            borderRadius: BorderRadius.circular(6.0),
-                                          ),
-                                          imageProvider: NetworkImage(
-                                            snapshot.data!.image!,
-                                          ),
+                            ).visible(snapshot.data!.image != null),
+                            const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
+                            snapshot.data!.image != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(maxHeight: 390, maxWidth: 390),
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(
+                                          snapshot.data!.image!,
                                         ),
-                                      )
-                                    : Container(
-                                        width: 100,
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          color: kDarkWhite,
-                                          borderRadius: BorderRadius.circular(6.0),
-                                        ),
-                                        child: Icon(
-                                          IconlyBold.document,
-                                          color: kNeutralColor.withOpacity(0.7),
-                                          size: 50,
-                                        ),
+                                        tightMode: true,
                                       ),
-                              ],
-                            ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 100,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: kDarkWhite,
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    child: Icon(
+                                      IconlyBold.document,
+                                      color: kNeutralColor.withOpacity(0.7),
+                                      size: 50,
+                                    ),
+                                  ).visible(snapshot.data!.image != null),
                             const SizedBox(height: 8.0).visible(snapshot.data!.proposals!.isNotEmpty),
                             Text(
                               'Proposals:',
