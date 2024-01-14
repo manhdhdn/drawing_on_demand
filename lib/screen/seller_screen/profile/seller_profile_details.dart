@@ -48,8 +48,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
@@ -68,8 +67,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
@@ -94,8 +92,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'My Profile',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -121,7 +118,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                 ],
               ),
             ),
-          ),
+          ).visible(PrefUtils().getRole() == 'Customer'),
         ],
       ),
       body: Padding(
@@ -146,8 +143,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
 
                 for (var certificate in snapshot.data!.certificates!) {
                   if (certificate.name!.contains('Education|')) {
-                    certificate.name = certificate.name!
-                        .replaceFirstMapped('Education|', (match) => '');
+                    certificate.name = certificate.name!.replaceFirstMapped('Education|', (match) => '');
 
                     educations.add(certificate);
                   } else {
@@ -185,15 +181,10 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                 snapshot.data!.name!,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                               ),
                               Text(
-                                PrefUtils().getRole() == 'Artist'
-                                    ? snapshot.data!.email!
-                                    : generateHide(snapshot.data!.email!),
+                                PrefUtils().getRole() == 'Artist' ? snapshot.data!.email! : generateHide(snapshot.data!.email!),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: kTextStyle.copyWith(
@@ -209,9 +200,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                         children: [
                           Text(
                             'About Me',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           const Icon(
@@ -219,11 +208,9 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                             size: 18.0,
                             color: kSubTitleColor,
                           ).visible(PrefUtils().getRole() == 'Artist'),
-                          const SizedBox(width: 2.0)
-                              .visible(PrefUtils().getRole() == 'Artist'),
+                          const SizedBox(width: 2.0).visible(PrefUtils().getRole() == 'Artist'),
                           GestureDetector(
-                            onTap: () =>
-                                const SellerEditProfile().launch(context),
+                            onTap: () => const SellerEditProfile().launch(context),
                             child: Text(
                               'Edit',
                               style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -234,9 +221,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                       const SizedBox(height: 15.0),
                       Container(
                         padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: Border.all(color: kBorderColorTextField)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: kBorderColorTextField)),
                         child: ReadMoreText(
                           snapshot.data!.bio ?? '',
                           style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -252,9 +237,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                         children: [
                           Text(
                             'Information',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                         ],
@@ -278,17 +261,13 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               children: [
                                 Text(
                                   ':',
-                                  style: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
                                 ),
                                 const SizedBox(width: 10.0),
                                 Flexible(
                                   child: Text(
-                                    PrefUtils().getRole() == 'Artist'
-                                        ? snapshot.data!.phone!
-                                        : '**********',
-                                    style: kTextStyle.copyWith(
-                                        color: kSubTitleColor),
+                                    PrefUtils().getRole() == 'Artist' ? snapshot.data!.phone! : '**********',
+                                    style: kTextStyle.copyWith(color: kSubTitleColor),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                   ),
@@ -317,15 +296,13 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               children: [
                                 Text(
                                   ':',
-                                  style: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
                                 ),
                                 const SizedBox(width: 10.0),
                                 Flexible(
                                   child: Text(
                                     snapshot.data!.gender!,
-                                    style: kTextStyle.copyWith(
-                                        color: kSubTitleColor),
+                                    style: kTextStyle.copyWith(color: kSubTitleColor),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                   ),
@@ -354,17 +331,13 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               children: [
                                 Text(
                                   ':',
-                                  style: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
                                 ),
                                 const SizedBox(width: 10.0),
                                 Flexible(
                                   child: Text(
-                                    PrefUtils().getRole() == 'Artist'
-                                        ? snapshot.data!.address!
-                                        : generateHide(snapshot.data!.address!),
-                                    style: kTextStyle.copyWith(
-                                        color: kSubTitleColor),
+                                    PrefUtils().getRole() == 'Artist' ? snapshot.data!.address! : generateHide(snapshot.data!.address!),
+                                    style: kTextStyle.copyWith(color: kSubTitleColor),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                   ),
@@ -379,9 +352,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                         children: [
                           Text(
                             'Skills',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                         ],
@@ -394,8 +365,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                             List<Category> categories = [];
 
                             for (var artwork in snapshot.data!.value) {
-                              if (!categories.any((category) =>
-                                  category.id == artwork.category!.id)) {
+                              if (!categories.any((category) => category.id == artwork.category!.id)) {
                                 categories.add(artwork.category!);
                               }
                             }
@@ -404,17 +374,14 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: EdgeInsets.zero,
-                                itemCount: categories.length > 3
-                                    ? 3
-                                    : categories.length,
+                                itemCount: categories.length > 3 ? 3 : categories.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
                                       const SizedBox(height: 10.0),
                                       InfoShowCaseWithoutIcon(
                                         title: categories[index].name!,
-                                        subTitle:
-                                            categories[index].description!,
+                                        subTitle: categories[index].description!,
                                       ),
                                     ],
                                   );
@@ -428,15 +395,12 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           );
                         },
                       ),
-                      const SizedBox(height: 25.0)
-                          .visible(educations.isNotEmpty),
+                      const SizedBox(height: 25.0).visible(educations.isNotEmpty),
                       Row(
                         children: [
                           Text(
                             'Education',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                         ],
@@ -463,9 +427,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                         children: [
                           Text(
                             'Certification',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                         ],
@@ -492,9 +454,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                         children: [
                           Text(
                             'My artworks',
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -503,21 +463,17 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                             },
                             child: Text(
                               'View All',
-                              style: kTextStyle.copyWith(
-                                  color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                           ).visible(PrefUtils().getRole() == 'Artist'),
                         ],
                       ).visible(PrefUtils().getRole() != 'Artist'),
-                      const SizedBox(height: 20.0)
-                          .visible(PrefUtils().getRole() != 'Artist'),
+                      const SizedBox(height: 20.0).visible(PrefUtils().getRole() != 'Artist'),
                       FutureBuilder(
                         future: artworks,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            int itemCount = snapshot.data!.count! < 10
-                                ? snapshot.data!.count!
-                                : 10;
+                            int itemCount = snapshot.data!.count! < 10 ? snapshot.data!.count! : 10;
 
                             return HorizontalList(
                               spacing: 10.0,
@@ -526,18 +482,14 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                               itemBuilder: (_, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    onArtworkDetail(snapshot.data!.value
-                                        .elementAt(index)
-                                        .id
-                                        .toString());
+                                    onArtworkDetail(snapshot.data!.value.elementAt(index).id.toString());
                                   },
                                   child: Container(
                                     height: 205,
                                     width: 156,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          color: kBorderColorTextField),
+                                      border: Border.all(color: kBorderColorTextField),
                                       boxShadow: const [
                                         BoxShadow(
                                           color: kDarkWhite,
@@ -556,19 +508,12 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                               height: 100,
                                               width: 156,
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topRight:
-                                                      Radius.circular(8.0),
+                                                borderRadius: const BorderRadius.only(
+                                                  topRight: Radius.circular(8.0),
                                                   topLeft: Radius.circular(8.0),
                                                 ),
                                                 image: DecorationImage(
-                                                  image: NetworkImage(snapshot
-                                                      .data!.value
-                                                      .elementAt(index)
-                                                      .arts!
-                                                      .first
-                                                      .image!),
+                                                  image: NetworkImage(snapshot.data!.value.elementAt(index).arts!.first.image!),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
@@ -580,13 +525,11 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                                 });
                                               },
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
+                                                padding: const EdgeInsets.all(5.0),
                                                 child: Container(
                                                   height: 30,
                                                   width: 30,
-                                                  decoration:
-                                                      const BoxDecoration(
+                                                  decoration: const BoxDecoration(
                                                     color: Colors.white,
                                                     shape: BoxShape.circle,
                                                   ),
@@ -600,10 +543,8 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                                         )
                                                       : const Center(
                                                           child: Icon(
-                                                            Icons
-                                                                .favorite_border,
-                                                            color:
-                                                                kNeutralColor,
+                                                            Icons.favorite_border,
+                                                            color: kNeutralColor,
                                                             size: 18.0,
                                                           ),
                                                         ),
@@ -615,24 +556,17 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                snapshot.data!.value
-                                                    .elementAt(index)
-                                                    .title!,
-                                                style: kTextStyle.copyWith(
-                                                    color: kNeutralColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                snapshot.data!.value.elementAt(index).title!,
+                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               const SizedBox(height: 5.0),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
                                                   const Icon(
                                                     IconlyBold.star,
@@ -641,19 +575,13 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
-                                                    getReviewPoint(snapshot
-                                                        .data!.value
-                                                        .elementAt(index)
-                                                        .artworkReviews!),
-                                                    style: kTextStyle.copyWith(
-                                                        color: kNeutralColor),
+                                                    getReviewPoint(snapshot.data!.value.elementAt(index).artworkReviews!),
+                                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
                                                     '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
-                                                    style: kTextStyle.copyWith(
-                                                        color:
-                                                            kLightNeutralColor),
+                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                   ),
                                                 ],
                                               ),
@@ -661,26 +589,11 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                               RichText(
                                                 text: TextSpan(
                                                   text: 'Price: ',
-                                                  style: kTextStyle.copyWith(
-                                                      color:
-                                                          kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                   children: [
                                                     TextSpan(
-                                                      text: NumberFormat
-                                                              .simpleCurrency(
-                                                                  locale:
-                                                                      'vi_VN')
-                                                          .format(snapshot
-                                                              .data!.value
-                                                              .elementAt(index)
-                                                              .price),
-                                                      style:
-                                                          kTextStyle.copyWith(
-                                                              color:
-                                                                  kPrimaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                      text: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index).price),
+                                                      style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                                     )
                                                   ],
                                                 ),
@@ -736,7 +649,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
     try {
       return ArtworkApi().gets(
         0,
-        filter: 'createdBy eq ${widget.id} and status ne \'Proposed\'',
+        filter: 'createdBy eq ${widget.id} and status ne \'Proposed\' and status ne \'Paused\' and status ne \'Deleted\'',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews,category',
