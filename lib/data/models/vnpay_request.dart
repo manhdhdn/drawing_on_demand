@@ -1,6 +1,6 @@
 class VNPayRequest {
   String? orderId;
-  double? price;
+  int? price;
   int? method;
   String? lang;
   String? returnUrl;
@@ -17,7 +17,7 @@ class VNPayRequest {
 
   VNPayRequest.fromJson(Map<String, dynamic> json) {
     orderId = json['OrderId'];
-    price = double.tryParse(json['Price'].toString());
+    price = json['Price'];
     method = json['Method'];
     lang = json['Lang'];
     returnUrl = json['ReturnUrl'];

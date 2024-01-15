@@ -1,6 +1,8 @@
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
+import 'account.dart';
+
 class AccountReviews {
   int? count;
   List<AccountReview> value;
@@ -28,6 +30,7 @@ class AccountReview {
   String? status;
   Guid? createdBy;
   Guid? accountId;
+  Account? createdByNavigation;
 
   AccountReview({
     this.id,
@@ -45,12 +48,11 @@ class AccountReview {
     star = json['Star'];
     comment = json['Comment'];
     createdDate = DateTime.parse(json['CreatedDate']);
-    lastModifiedDate = json['LastModifiedDate'] != null
-        ? DateTime.parse(json['LastModifiedDate'])
-        : null;
+    lastModifiedDate = json['LastModifiedDate'] != null ? DateTime.parse(json['LastModifiedDate']) : null;
     status = json['Status'];
     createdBy = Guid(json['CreatedBy']);
     accountId = Guid(json['AccountId']);
+    createdByNavigation = json['CreatedByNavigation'] != null ? Account.fromJson(json['CreatedByNavigation']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -58,11 +60,8 @@ class AccountReview {
       'Id': id.toString(),
       'Star': star,
       'Comment': comment,
-      'CreatedDate':
-          DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
-      'LastModifiedDate': lastModifiedDate != null
-          ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!)
-          : null,
+      'CreatedDate': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(createdDate!),
+      'LastModifiedDate': lastModifiedDate != null ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(lastModifiedDate!) : null,
       'Status': status,
       'CreatedBy': createdBy.toString(),
       'AccountId': accountId.toString(),

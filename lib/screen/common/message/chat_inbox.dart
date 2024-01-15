@@ -9,6 +9,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 import '../popUp/popup_1.dart';
 import 'empty_widget.dart';
 import 'function/chat_function.dart';
@@ -207,7 +208,7 @@ class _ChatInboxState extends State<ChatInbox> {
                                       children: [
                                         Container(
                                           constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
+                                            maxWidth: DodResponsive.isDesktop(context) ? context.width() * 0.6 * 0.7 : context.width() * 0.6,
                                           ),
                                           decoration: boxDecorationWithRoundedCorners(
                                             backgroundColor: kPrimaryColor,
@@ -268,7 +269,7 @@ class _ChatInboxState extends State<ChatInbox> {
                                         8.width,
                                         Container(
                                           constraints: BoxConstraints(
-                                            maxWidth: context.width() * 0.6,
+                                            maxWidth: DodResponsive.isDesktop(context) ? context.width() * 0.6 * 0.7 : context.width() * 0.6,
                                           ),
                                           decoration: boxDecorationWithRoundedCorners(
                                             borderRadius: const BorderRadius.only(
@@ -350,7 +351,7 @@ class _ChatInboxState extends State<ChatInbox> {
                   ),
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: DodResponsive.isDesktop(context) ? 10 : 5,
                   child: Container(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                     decoration: BoxDecoration(
@@ -363,7 +364,6 @@ class _ChatInboxState extends State<ChatInbox> {
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
                       focus: msgFocus,
-                      autoFocus: true,
                       maxLines: 7,
                       decoration: InputDecoration(
                         border: InputBorder.none,

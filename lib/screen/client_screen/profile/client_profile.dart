@@ -13,9 +13,7 @@ import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
-import '../favourite/client_favourite_list.dart';
 import '../home/client_home.dart';
-import '../invite/client_invite.dart';
 import '../notification/client_notification.dart';
 import '../report/client_report.dart';
 import '../transaction/transaction.dart';
@@ -301,33 +299,33 @@ class _ClientProfileState extends State<ClientProfile> {
                       color: kLightNeutralColor,
                     ),
                   ),
-                  ListTile(
-                    onTap: () => const ClientFavList().launch(context),
-                    visualDensity: const VisualDensity(vertical: -3),
-                    horizontalTitleGap: 10,
-                    contentPadding: const EdgeInsets.only(bottom: 15),
-                    leading: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFE8E1FF),
-                      ),
-                      child: const Icon(
-                        IconlyBold.heart,
-                        color: Color(0xFF7E5BFF),
-                      ),
-                    ),
-                    title: Text(
-                      'Favorite',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: kTextStyle.copyWith(color: kNeutralColor),
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronRight,
-                      color: kLightNeutralColor,
-                    ),
-                  ),
+                  // ListTile(
+                  //   onTap: () => const ClientFavList().launch(context),
+                  //   visualDensity: const VisualDensity(vertical: -3),
+                  //   horizontalTitleGap: 10,
+                  //   contentPadding: const EdgeInsets.only(bottom: 15),
+                  //   leading: Container(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     decoration: const BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       color: Color(0xFFE8E1FF),
+                  //     ),
+                  //     child: const Icon(
+                  //       IconlyBold.heart,
+                  //       color: Color(0xFF7E5BFF),
+                  //     ),
+                  //   ),
+                  //   title: Text(
+                  //     'Favorite',
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 1,
+                  //     style: kTextStyle.copyWith(color: kNeutralColor),
+                  //   ),
+                  //   trailing: const Icon(
+                  //     FeatherIcons.chevronRight,
+                  //     color: kLightNeutralColor,
+                  //   ),
+                  // ),
                   ListTile(
                     onTap: () => const ClientReport().launch(context),
                     visualDensity: const VisualDensity(vertical: -3),
@@ -384,33 +382,33 @@ class _ClientProfileState extends State<ClientProfile> {
                       color: kLightNeutralColor,
                     ),
                   ),
-                  ListTile(
-                    onTap: () => const ClientInvite().launch(context),
-                    visualDensity: const VisualDensity(vertical: -3),
-                    horizontalTitleGap: 10,
-                    contentPadding: const EdgeInsets.only(bottom: 15),
-                    leading: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFE2EED8),
-                      ),
-                      child: const Icon(
-                        IconlyBold.addUser,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                    title: Text(
-                      'Invite Friends',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: kTextStyle.copyWith(color: kNeutralColor),
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronRight,
-                      color: kLightNeutralColor,
-                    ),
-                  ),
+                  // ListTile(
+                  //   onTap: () => const ClientInvite().launch(context),
+                  //   visualDensity: const VisualDensity(vertical: -3),
+                  //   horizontalTitleGap: 10,
+                  //   contentPadding: const EdgeInsets.only(bottom: 15),
+                  //   leading: Container(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     decoration: const BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       color: Color(0xFFE2EED8),
+                  //     ),
+                  //     child: const Icon(
+                  //       IconlyBold.addUser,
+                  //       color: kPrimaryColor,
+                  //     ),
+                  //   ),
+                  //   title: Text(
+                  //     'Invite Friends',
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 1,
+                  //     style: kTextStyle.copyWith(color: kNeutralColor),
+                  //   ),
+                  //   trailing: const Icon(
+                  //     FeatherIcons.chevronRight,
+                  //     color: kLightNeutralColor,
+                  //   ),
+                  // ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,

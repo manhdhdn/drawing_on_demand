@@ -188,34 +188,40 @@ class _JobDetailsState extends State<JobDetails> {
           decoration: const BoxDecoration(
             color: kWhite,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: ButtonGlobalWithoutIcon(
-                  buttontext: 'Re-Post',
-                  buttonDecoration: kButtonDecoration.copyWith(
-                    color: kPrimaryColor,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+              right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: ButtonGlobalWithoutIcon(
+                    buttontext: 'Re-Post',
+                    buttonDecoration: kButtonDecoration.copyWith(
+                      color: kPrimaryColor,
+                    ),
+                    onPressed: () {
+                      onRePost();
+                    },
+                    buttonTextColor: kWhite,
                   ),
-                  onPressed: () {
-                    onRePost();
-                  },
-                  buttonTextColor: kWhite,
-                ),
-              ).visible(status.contains('Cancelled')),
-              Expanded(
-                child: ButtonGlobalWithoutIcon(
-                  buttontext: 'Invite Artists',
-                  buttonDecoration: kButtonDecoration.copyWith(
-                    color: kPrimaryColor,
+                ).visible(status.contains('Cancelled')),
+                Expanded(
+                  child: ButtonGlobalWithoutIcon(
+                    buttontext: 'Invite Artists',
+                    buttonDecoration: kButtonDecoration.copyWith(
+                      color: kPrimaryColor,
+                    ),
+                    onPressed: () {
+                      onInvite();
+                    },
+                    buttonTextColor: kWhite,
                   ),
-                  onPressed: () {
-                    onInvite();
-                  },
-                  buttonTextColor: kWhite,
-                ),
-              ).visible(!status.contains('Cancelled') && !status.contains('Processing')),
-            ],
+                ).visible(!status.contains('Cancelled') && !status.contains('Processing')),
+              ],
+            ),
           ),
         ),
         body: Container(
@@ -276,14 +282,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Category',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,14 +317,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Material',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,14 +352,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Surface',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,7 +394,7 @@ class _JobDetailsState extends State<JobDetails> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          flex: 2,
+                                          flex: 1,
                                           child: Text(
                                             'Pieces',
                                             style: kTextStyle.copyWith(
@@ -397,7 +403,7 @@ class _JobDetailsState extends State<JobDetails> {
                                           ),
                                         ),
                                         Expanded(
-                                          flex: 4,
+                                          flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,14 +437,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Quantity',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -466,14 +472,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Budget',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -503,14 +509,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Status',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -538,14 +544,14 @@ class _JobDetailsState extends State<JobDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'Created Date',
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 4,
+                                  flex: DodResponsive.isDesktop(context) ? 6 : 3,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -635,7 +641,10 @@ class _JobDetailsState extends State<JobDetails> {
                                                 width: 32,
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  image: DecorationImage(image: NetworkImage(snapshot.data!.proposals![index].createdByNavigation!.avatar ?? defaultImage), fit: BoxFit.cover),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(snapshot.data!.proposals![index].createdByNavigation!.avatar ?? defaultImage),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(width: 5.0),
@@ -716,7 +725,6 @@ class _JobDetailsState extends State<JobDetails> {
                                               ],
                                             ),
                                             child: Row(
-                                              mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Stack(
@@ -730,7 +738,10 @@ class _JobDetailsState extends State<JobDetails> {
                                                           bottomLeft: Radius.circular(8.0),
                                                           topLeft: Radius.circular(8.0),
                                                         ),
-                                                        image: DecorationImage(image: NetworkImage(snapshot.data!.proposals![index].artwork!.arts!.first.image!), fit: BoxFit.cover),
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(snapshot.data!.proposals![index].artwork!.arts!.first.image!),
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -740,12 +751,10 @@ class _JobDetailsState extends State<JobDetails> {
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisSize: MainAxisSize.max,
                                                     children: [
                                                       Flexible(
                                                         flex: 1,
                                                         child: SizedBox(
-                                                          width: 190,
                                                           child: Text(
                                                             'Introduce',
                                                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -756,9 +765,9 @@ class _JobDetailsState extends State<JobDetails> {
                                                       ),
                                                       const SizedBox(height: 5.0),
                                                       Flexible(
-                                                        flex: 4,
+                                                        flex: 3,
                                                         child: SizedBox(
-                                                          width: context.width() / 2,
+                                                          width: DodResponsive.isDesktop(context) ? context.width() / 3 : context.width() / 2,
                                                           child: ReadMoreText(
                                                             snapshot.data!.proposals![index].introduction!,
                                                             style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -771,8 +780,8 @@ class _JobDetailsState extends State<JobDetails> {
                                                         ),
                                                       ),
                                                       const SizedBox(height: 5.0),
-                                                      SizedBox(
-                                                        width: context.width() * 0.5,
+                                                      Flexible(
+                                                        flex: 1,
                                                         child: Row(
                                                           children: [
                                                             Text(

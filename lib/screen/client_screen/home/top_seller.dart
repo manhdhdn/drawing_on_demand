@@ -11,6 +11,7 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/account_role_api.dart';
 import '../../../data/models/account.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 
 class TopSeller extends StatefulWidget {
   const TopSeller({Key? key}) : super(key: key);
@@ -28,8 +29,8 @@ class _TopSellerState extends State<TopSeller> {
   late Future<Accounts?> artists;
 
   int skip = 0;
-  int top = 10;
-  int count = 10;
+  int top = 12;
+  int count = 12;
 
   List<String> serviceList = [
     'All',
@@ -89,6 +90,8 @@ class _TopSellerState extends State<TopSeller> {
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Container(
+            height: context.height(),
+            width: context.width(),
             decoration: const BoxDecoration(
               color: kWhite,
               borderRadius: BorderRadius.only(
@@ -96,154 +99,160 @@ class _TopSellerState extends State<TopSeller> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  const SizedBox(height: 15.0),
-                  HorizontalList(
-                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                    itemCount: serviceList.length,
-                    itemBuilder: (_, i) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedTopSeller = serviceList[i];
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15.0),
+                    HorizontalList(
+                      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                      itemCount: serviceList.length,
+                      itemBuilder: (_, i) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedTopSeller = serviceList[i];
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: selectedTopSeller == serviceList[i] ? kPrimaryColor : kDarkWhite,
+                                borderRadius: BorderRadius.circular(40.0),
+                              ),
+                              child: Text(
+                                serviceList[i],
+                                style: kTextStyle.copyWith(
+                                  color: selectedTopSeller == serviceList[i] ? kWhite : kNeutralColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                        childAspectRatio: DodResponsive.isDesktop(context) ? 0.75 : 0.79,
+                        crossAxisCount: DodResponsive.isDesktop(context) ? 3 : 2,
+                        children: List.generate(
+                          count,
+                          (i) => Container(
                             decoration: BoxDecoration(
-                              color: selectedTopSeller == serviceList[i] ? kPrimaryColor : kDarkWhite,
-                              borderRadius: BorderRadius.circular(40.0),
+                              color: kWhite,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: kBorderColorTextField),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: kDarkWhite,
+                                  blurRadius: 5.0,
+                                  spreadRadius: 2.0,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
                             ),
-                            child: Text(
-                              serviceList[i],
-                              style: kTextStyle.copyWith(
-                                color: selectedTopSeller == serviceList[i] ? kWhite : kNeutralColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: 0.79,
-                      crossAxisCount: 2,
-                      children: List.generate(
-                        count,
-                        (i) => Container(
-                          decoration: BoxDecoration(
-                            color: kWhite,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: kBorderColorTextField),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: kDarkWhite,
-                                blurRadius: 5.0,
-                                spreadRadius: 2.0,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: FutureBuilder(
-                            future: artists,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    onDetail(snapshot.data!.value.elementAt(i).id.toString());
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 135,
-                                        width: context.width(),
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(8.0),
-                                            topLeft: Radius.circular(8.0),
-                                          ),
-                                          image: DecorationImage(
-                                            image: NetworkImage(snapshot.data!.value.elementAt(i).avatar ?? defaultImage),
-                                            fit: BoxFit.cover,
+                            child: FutureBuilder(
+                              future: artists,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      onDetail(snapshot.data!.value.elementAt(i).id.toString());
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: DodResponsive.isDesktop(context) ? 200 : 150,
+                                          width: context.width(),
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(8.0),
+                                              topLeft: Radius.circular(8.0),
+                                            ),
+                                            image: DecorationImage(
+                                              image: NetworkImage(snapshot.data!.value.elementAt(i).avatar ?? defaultImage),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              snapshot.data!.value.elementAt(i).name!,
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 6.0),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                const Icon(
-                                                  IconlyBold.star,
-                                                  color: Colors.amber,
-                                                  size: 18.0,
-                                                ),
-                                                const SizedBox(width: 2.0),
-                                                Text(
-                                                  getAccountReviewPoint(snapshot.data!.value.elementAt(i).accountReviewAccounts!),
-                                                  style: kTextStyle.copyWith(color: kNeutralColor),
-                                                ),
-                                                const SizedBox(width: 2.0),
-                                                Text(
-                                                  '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 6.0),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Artist Rank - ',
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                        Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data!.value.elementAt(i).name!,
+                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(height: 6.0),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
-                                                  TextSpan(
-                                                    text: snapshot.data!.value.elementAt(i).rank!.name!,
+                                                  const Icon(
+                                                    IconlyBold.star,
+                                                    color: Colors.amber,
+                                                    size: 18.0,
+                                                  ),
+                                                  const SizedBox(width: 2.0),
+                                                  Text(
+                                                    getAccountReviewPoint(snapshot.data!.value.elementAt(i).accountReviewAccounts!),
+                                                    style: kTextStyle.copyWith(color: kNeutralColor),
+                                                  ),
+                                                  const SizedBox(width: 2.0),
+                                                  Text(
+                                                    '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
                                                     style: kTextStyle.copyWith(color: kLightNeutralColor),
-                                                  )
+                                                  ),
                                                 ],
                                               ),
-                                            )
-                                          ],
+                                              const SizedBox(height: 6.0),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Artist Rank - ',
+                                                  style: kTextStyle.copyWith(color: kNeutralColor),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: snapshot.data!.value.elementAt(i).rank!.name!,
+                                                      style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: kPrimaryColor,
                                   ),
                                 );
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator(
-                                  color: kPrimaryColor,
-                                ),
-                              );
-                            },
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

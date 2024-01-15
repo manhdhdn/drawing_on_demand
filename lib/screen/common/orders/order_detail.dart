@@ -21,6 +21,7 @@ import '../../../data/models/step.dart' as modal;
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/responsive.dart';
 import '../popUp/popup_2.dart';
 import 'order_list.dart';
 
@@ -167,75 +168,84 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: status == 'Completed'
-            ? Container(
-                decoration: const BoxDecoration(
-                  color: kWhite,
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: ButtonGlobalWithoutIcon(
-                  buttontext: 'Review',
-                  buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor),
-                  onPressed: () {
-                    onReview();
-                  },
-                  buttonTextColor: kWhite,
-                ),
-              )
-            : status == 'Pending' || status == 'Deposited'
+        bottomNavigationBar: Container(
+          color: kWhite,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+              right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+            ),
+            child: status == 'Completed'
                 ? Container(
                     decoration: const BoxDecoration(
                       color: kWhite,
                     ),
                     padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: ButtonGlobalWithoutIcon(
-                            buttontext: 'Cancel Order',
-                            buttonDecoration: kButtonDecoration.copyWith(
-                              color: kWhite,
-                              border: Border.all(color: Colors.red),
-                            ),
-                            onPressed: () {
-                              onCancelOrder();
-                            },
-                            buttonTextColor: Colors.red,
-                          ),
-                        ),
-                        Expanded(
-                          child: ButtonGlobalWithoutIcon(
-                            buttontext: role == 'Customer'
-                                ? 'Checkout'
-                                : role == 'Artist' && !isCreatedTimeline
-                                    ? 'Create Timeline'
-                                    : 'Delivery Work',
-                            buttonDecoration: kButtonDecoration.copyWith(
-                              color: (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
-                                  ? kPrimaryColor
-                                  : role == 'Artist' && !isCreatedTimeline
-                                      ? kPrimaryColor
-                                      : role == 'Artist' && isCompletedTimeline
-                                          ? kPrimaryColor
-                                          : kLightNeutralColor,
-                            ),
-                            onPressed: () {
-                              (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
-                                  ? onCheckout()
-                                  : role == 'Artist' && !isCreatedTimeline
-                                      ? onCreateTimeline()
-                                      : role == 'Artist' && isCompletedTimeline
-                                          ? onCompleteArtwork()
-                                          : null;
-                            },
-                            buttonTextColor: kWhite,
-                          ),
-                        ),
-                      ],
+                    child: ButtonGlobalWithoutIcon(
+                      buttontext: 'Review',
+                      buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor),
+                      onPressed: () {
+                        onReview();
+                      },
+                      buttonTextColor: kWhite,
                     ),
-                  ).visible((role == 'Artist' && !isUpdatePackage) || role == 'Customer')
-                : null,
+                  )
+                : status == 'Pending' || status == 'Deposited'
+                    ? Container(
+                        decoration: const BoxDecoration(
+                          color: kWhite,
+                        ),
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: ButtonGlobalWithoutIcon(
+                                buttontext: 'Cancel Order',
+                                buttonDecoration: kButtonDecoration.copyWith(
+                                  color: kWhite,
+                                  border: Border.all(color: Colors.red),
+                                ),
+                                onPressed: () {
+                                  onCancelOrder();
+                                },
+                                buttonTextColor: Colors.red,
+                              ),
+                            ),
+                            Expanded(
+                              child: ButtonGlobalWithoutIcon(
+                                buttontext: role == 'Customer'
+                                    ? 'Checkout'
+                                    : role == 'Artist' && !isCreatedTimeline
+                                        ? 'Create Timeline'
+                                        : 'Delivery Work',
+                                buttonDecoration: kButtonDecoration.copyWith(
+                                  color: (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
+                                      ? kPrimaryColor
+                                      : role == 'Artist' && !isCreatedTimeline
+                                          ? kPrimaryColor
+                                          : role == 'Artist' && isCompletedTimeline
+                                              ? kPrimaryColor
+                                              : kLightNeutralColor,
+                                ),
+                                onPressed: () {
+                                  (role == 'Customer' && status == 'Pending') || (role == 'Customer' && status == 'Deposited' && isUpdatePackage)
+                                      ? onCheckout()
+                                      : role == 'Artist' && !isCreatedTimeline
+                                          ? onCreateTimeline()
+                                          : role == 'Artist' && isCompletedTimeline
+                                              ? onCompleteArtwork()
+                                              : null;
+                                },
+                                buttonTextColor: kWhite,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ).visible((role == 'Artist' && !isUpdatePackage) || role == 'Customer')
+                    : null,
+          ),
+        ),
         body: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -247,639 +257,637 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               topRight: Radius.circular(30.0),
             ),
           ),
-          child: FutureBuilder(
-            future: order,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 15.0),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        width: context.width(),
-                        decoration: BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: kBorderColorTextField),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: kDarkWhite,
-                              spreadRadius: 4.0,
-                              blurRadius: 4.0,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Order ID #${widget.id!.split('-').first.toUpperCase()}',
-                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                SlideCountdownSeparated(
-                                  duration: Duration(
-                                      milliseconds: status == 'Pending'
-                                          ? snapshot.data!.orderDate!
-                                                  .add(const Duration(
-                                                    days: 2,
-                                                  ))
-                                                  .millisecondsSinceEpoch -
-                                              DateTime.now()
-                                                  .add(const Duration(
-                                                    hours: 7,
-                                                  ))
-                                                  .millisecondsSinceEpoch
-                                          : 0),
-                                  separatorType: SeparatorType.symbol,
-                                  separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
-                                  decoration: BoxDecoration(
-                                    color: kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(3.0),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 10.0),
-                            const Divider(
-                              thickness: 1.0,
-                              color: kBorderColorTextField,
-                              height: 1.0,
-                            ),
-                            const SizedBox(height: 8.0).visible(snapshot.data!.orderType == 'Requirement'),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Title',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: Text(
-                                          snapshot.data!.orderDetails!.first.artwork!.title!,
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ).visible(snapshot.data!.orderType == 'Requirement'),
-                            const SizedBox(height: 8.0).visible(snapshot.data!.orderType == 'Requirement'),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Description',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: ReadMoreText(
-                                          snapshot.data!.orderDetails!.first.artwork!.description!,
-                                          style: kTextStyle.copyWith(color: kLightNeutralColor),
-                                          trimLines: 3,
-                                          colorClickableText: kPrimaryColor,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: '..read more',
-                                          trimExpandedText: ' read less',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ).visible(snapshot.data!.orderType == 'Requirement'),
-                            const SizedBox(height: 8.0),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Order type',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: Text(
-                                          snapshot.data!.orderType!,
-                                          style: kTextStyle.copyWith(
-                                            color: kSubTitleColor,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8.0).visible(snapshot.data!.depositDate != null),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Deposited',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: Text(
-                                          DateFormat('dd-MM-yyyy HH:mm').format(snapshot.data!.depositDate != null ? snapshot.data!.depositDate! : DateTime.now()),
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ).visible(snapshot.data!.depositDate != null),
-                            const SizedBox(height: 8.0).visible(snapshot.data!.completedDate != null),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Completed',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: Text(
-                                          DateFormat('dd-MM-yyyy HH:mm').format(snapshot.data!.completedDate != null ? snapshot.data!.completedDate! : DateTime.now()),
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ).visible(snapshot.data!.completedDate != null),
-                            const SizedBox(height: 8.0),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Status',
-                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ':',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Flexible(
-                                        child: Text(
-                                          status == 'Deposited' ? 'Active' : status,
-                                          style: kTextStyle.copyWith(color: kNeutralColor),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 15.0),
-                                Text(
-                                  'Order Summary',
-                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Subtotal',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ':',
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Flexible(
-                                            child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                locale: 'vi_VN',
-                                              ).format(
-                                                getSubtotal(
-                                                  snapshot.data!.orderDetails!,
-                                                ),
-                                              ),
-                                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8.0),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Shipping fee',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ':',
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Flexible(
-                                            child: Text(
-                                              status == 'Paid' || status == 'Completed'
-                                                  ? NumberFormat.simpleCurrency(
-                                                      locale: 'vi_VN',
-                                                    ).format(snapshot.data!.discountId != null ? snapshot.data!.total! / (1 - snapshot.data!.discount!.discountPercent!) - getSubtotal(snapshot.data!.orderDetails!) : snapshot.data!.total! - getSubtotal(snapshot.data!.orderDetails!))
-                                                  : 'Not yet calculated',
-                                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8.0).visible(snapshot.data!.discount != null && status != 'Deposited'),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Discount',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ':',
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Flexible(
-                                            child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                locale: 'vi_VN',
-                                              ).format(snapshot.data!.discount != null ? -(snapshot.data!.total! / (1 - snapshot.data!.discount!.discountPercent!) - snapshot.data!.total!) : -0),
-                                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ).visible(snapshot.data!.discount != null && status != 'Deposited'),
-                                const SizedBox(height: 8.0).visible(status == 'Deposited'),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Deposited',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ':',
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Flexible(
-                                            child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                locale: 'vi_VN',
-                                              ).format(snapshot.data!.total),
-                                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ).visible(status == 'Deposited'),
-                                const SizedBox(height: 8.0),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Total',
-                                        style: kTextStyle.copyWith(color: kSubTitleColor),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ':',
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Flexible(
-                                            child: Text(
-                                              status == 'Paid' || status == 'Completed'
-                                                  ? NumberFormat.simpleCurrency(
-                                                      locale: 'vi_VN',
-                                                    ).format(snapshot.data!.total)
-                                                  : NumberFormat.simpleCurrency(
-                                                      locale: 'vi_VN',
-                                                    ).format(getSubtotal(snapshot.data!.orderDetails!)),
-                                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ).visible(role == 'Customer'),
-                            const SizedBox(height: 15.0),
-                            Text(
-                              'Order Details',
-                              style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+              right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+            ),
+            child: FutureBuilder(
+              future: order,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15.0),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          width: context.width(),
+                          decoration: BoxDecoration(
+                            color: kWhite,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(color: kBorderColorTextField),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: kDarkWhite,
+                                spreadRadius: 4.0,
+                                blurRadius: 4.0,
+                                offset: Offset(0, 2),
                               ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            FutureBuilder(
-                              future: order,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Order ID #${widget.id!.split('-').first.toUpperCase()}',
+                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                  ),
+                                  const Spacer(),
+                                  SlideCountdownSeparated(
+                                    duration: Duration(
+                                        milliseconds: status == 'Pending'
+                                            ? snapshot.data!.orderDate!
+                                                    .add(const Duration(
+                                                      days: 2,
+                                                    ))
+                                                    .millisecondsSinceEpoch -
+                                                DateTime.now()
+                                                    .add(const Duration(
+                                                      hours: 7,
+                                                    ))
+                                                    .millisecondsSinceEpoch
+                                            : 0),
+                                    separatorType: SeparatorType.symbol,
+                                    separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                    decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                      borderRadius: BorderRadius.circular(3.0),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 10.0),
+                              const Divider(
+                                thickness: 1.0,
+                                color: kBorderColorTextField,
+                                height: 1.0,
+                              ),
+                              const SizedBox(height: 8.0).visible(snapshot.data!.orderType == 'Requirement'),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Title',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: Text(
+                                            snapshot.data!.orderDetails!.first.artwork!.title!,
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).visible(snapshot.data!.orderType == 'Requirement'),
+                              const SizedBox(height: 8.0).visible(snapshot.data!.orderType == 'Requirement'),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Description',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: ReadMoreText(
+                                            snapshot.data!.orderDetails!.first.artwork!.description!,
+                                            style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                            trimLines: 3,
+                                            colorClickableText: kPrimaryColor,
+                                            trimMode: TrimMode.Line,
+                                            trimCollapsedText: '..read more',
+                                            trimExpandedText: ' read less',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).visible(snapshot.data!.orderType == 'Requirement'),
+                              const SizedBox(height: 8.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Order type',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: Text(
+                                            snapshot.data!.orderType!,
+                                            style: kTextStyle.copyWith(
+                                              color: kSubTitleColor,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8.0).visible(snapshot.data!.depositDate != null),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Deposited',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: Text(
+                                            DateFormat('dd-MM-yyyy HH:mm').format(snapshot.data!.depositDate != null ? snapshot.data!.depositDate! : DateTime.now()),
+                                            style: kTextStyle.copyWith(color: kNeutralColor),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).visible(snapshot.data!.depositDate != null),
+                              const SizedBox(height: 8.0).visible(snapshot.data!.completedDate != null),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Completed',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: Text(
+                                            DateFormat('dd-MM-yyyy HH:mm').format(snapshot.data!.completedDate != null ? snapshot.data!.completedDate! : DateTime.now()),
+                                            style: kTextStyle.copyWith(color: kNeutralColor),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).visible(snapshot.data!.completedDate != null),
+                              const SizedBox(height: 8.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Status',
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ':',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Flexible(
+                                          child: Text(
+                                            status == 'Deposited' ? 'Active' : status,
+                                            style: kTextStyle.copyWith(color: kNeutralColor),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 15.0),
+                                  Text(
+                                    'Order Summary',
+                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Subtotal',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            ),
+                                            const SizedBox(width: 10.0),
+                                            Flexible(
+                                              child: Text(
+                                                NumberFormat.simpleCurrency(
+                                                  locale: 'vi_VN',
+                                                ).format(
+                                                  getSubtotal(
+                                                    snapshot.data!.orderDetails!,
+                                                  ),
+                                                ),
+                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Shipping fee',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            ),
+                                            const SizedBox(width: 10.0),
+                                            Flexible(
+                                              child: Text(
+                                                status == 'Paid' || status == 'Completed'
+                                                    ? NumberFormat.simpleCurrency(
+                                                        locale: 'vi_VN',
+                                                      ).format(snapshot.data!.discountId != null ? snapshot.data!.total! / (1 - snapshot.data!.discount!.discountPercent!) - getSubtotal(snapshot.data!.orderDetails!) : snapshot.data!.total! - getSubtotal(snapshot.data!.orderDetails!))
+                                                    : 'Not yet calculated',
+                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8.0).visible(snapshot.data!.discount != null && status != 'Deposited'),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Discount',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            ),
+                                            const SizedBox(width: 10.0),
+                                            Flexible(
+                                              child: Text(
+                                                NumberFormat.simpleCurrency(
+                                                  locale: 'vi_VN',
+                                                ).format(snapshot.data!.discount != null ? -(snapshot.data!.total! / (1 - snapshot.data!.discount!.discountPercent!) - snapshot.data!.total!) : -0),
+                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ).visible(snapshot.data!.discount != null && status != 'Deposited'),
+                                  const SizedBox(height: 8.0).visible(status == 'Deposited'),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Deposited',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            ),
+                                            const SizedBox(width: 10.0),
+                                            Flexible(
+                                              child: Text(
+                                                NumberFormat.simpleCurrency(
+                                                  locale: 'vi_VN',
+                                                ).format(snapshot.data!.total),
+                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ).visible(status == 'Deposited'),
+                                  const SizedBox(height: 8.0),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Total',
+                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            ),
+                                            const SizedBox(width: 10.0),
+                                            Flexible(
+                                              child: Text(
+                                                status == 'Paid' || status == 'Completed'
+                                                    ? NumberFormat.simpleCurrency(
+                                                        locale: 'vi_VN',
+                                                      ).format(snapshot.data!.total)
+                                                    : NumberFormat.simpleCurrency(
+                                                        locale: 'vi_VN',
+                                                      ).format(getSubtotal(snapshot.data!.orderDetails!)),
+                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ).visible(role == 'Customer'),
+                              const SizedBox(height: 15.0),
+                              Text(
+                                'Order Details',
+                                style: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10.0),
+                              FutureBuilder(
+                                future: order,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
 
-                                  orderDetails.sort(((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!)));
+                                    orderDetails.sort(((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!)));
 
-                                  List<int> packList = [0];
-                                  int packCount = 0;
+                                    List<int> packList = [0];
+                                    int packCount = 0;
 
-                                  if (orderDetails.isNotEmpty) {
-                                    String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
+                                    if (orderDetails.isNotEmpty) {
+                                      String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
 
-                                    for (var orderDetail in orderDetails) {
-                                      if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
-                                        packList[packCount]++;
-                                      } else {
-                                        tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
+                                      for (var orderDetail in orderDetails) {
+                                        if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
+                                          packList[packCount]++;
+                                        } else {
+                                          tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
 
-                                        packCount++;
-                                        packList.add(1);
+                                          packCount++;
+                                          packList.add(1);
+                                        }
                                       }
                                     }
-                                  }
 
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.zero,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: packList[0] != 0 ? packList.length : 0,
-                                          physics: const NeverScrollableScrollPhysics(),
+                                    return Column(
+                                      children: [
+                                        Padding(
                                           padding: EdgeInsets.zero,
-                                          itemBuilder: (_, i) {
-                                            return Theme(
-                                              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                                              child: ExpansionTile(
-                                                initiallyExpanded: true,
-                                                tilePadding: const EdgeInsets.only(bottom: 5.0),
-                                                childrenPadding: EdgeInsets.zero,
-                                                collapsedIconColor: kLightNeutralColor,
-                                                iconColor: kLightNeutralColor,
-                                                title: Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 32,
-                                                      width: 32,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        image: DecorationImage(
-                                                          image: NetworkImage(
-                                                            orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.avatar!,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: packList[0] != 0 ? packList.length : 0,
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            padding: EdgeInsets.zero,
+                                            itemBuilder: (_, i) {
+                                              return Theme(
+                                                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                                                child: ExpansionTile(
+                                                  initiallyExpanded: true,
+                                                  tilePadding: const EdgeInsets.only(bottom: 5.0),
+                                                  childrenPadding: EdgeInsets.zero,
+                                                  collapsedIconColor: kLightNeutralColor,
+                                                  iconColor: kLightNeutralColor,
+                                                  title: Row(
+                                                    children: [
+                                                      Container(
+                                                        height: 32,
+                                                        width: 32,
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                              orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.avatar!,
+                                                            ),
+                                                            fit: BoxFit.cover,
                                                           ),
-                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(width: 5.0),
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          'Artist',
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                        ),
-                                                        Text(
-                                                          orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.name!,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                children: [
-                                                  ListView.builder(
-                                                    shrinkWrap: true,
-                                                    itemCount: packList[i],
-                                                    physics: const NeverScrollableScrollPhysics(),
-                                                    padding: EdgeInsets.zero,
-                                                    itemBuilder: (_, j) {
-                                                      return Padding(
-                                                        padding: const EdgeInsets.only(bottom: 10.0),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            onArtworkDetail(orderDetails[j + getCartIndex(i, packList)].artwork!.id.toString());
-                                                          },
-                                                          child: Container(
-                                                            height: context.height() * 0.135,
-                                                            decoration: BoxDecoration(
-                                                              color: kWhite,
-                                                              borderRadius: BorderRadius.circular(8.0),
-                                                              border: Border.all(color: kBorderColorTextField),
-                                                              boxShadow: const [
-                                                                BoxShadow(
-                                                                  color: kDarkWhite,
-                                                                  blurRadius: 5.0,
-                                                                  spreadRadius: 2.0,
-                                                                  offset: Offset(0, 5),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisSize: MainAxisSize.min,
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children: [
-                                                                Stack(
-                                                                  alignment: Alignment.topLeft,
-                                                                  children: [
-                                                                    Container(
-                                                                      height: context.height() * 0.135,
-                                                                      width: context.height() * 0.135,
-                                                                      decoration: BoxDecoration(
-                                                                        borderRadius: const BorderRadius.only(
-                                                                          bottomLeft: Radius.circular(8.0),
-                                                                          topLeft: Radius.circular(8.0),
-                                                                        ),
-                                                                        image: DecorationImage(
-                                                                          image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!),
-                                                                          fit: BoxFit.cover,
-                                                                        ),
+                                                      const SizedBox(width: 5.0),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            'Artist',
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                          ),
+                                                          Text(
+                                                            orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.name!,
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  children: [
+                                                    ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: packList[i],
+                                                      physics: const NeverScrollableScrollPhysics(),
+                                                      padding: EdgeInsets.zero,
+                                                      itemBuilder: (_, j) {
+                                                        return Padding(
+                                                          padding: const EdgeInsets.only(bottom: 10.0),
+                                                          child: GestureDetector(
+                                                            onTap: () {
+                                                              onArtworkDetail(orderDetails[j + getCartIndex(i, packList)].artwork!.id.toString());
+                                                            },
+                                                            child: Container(
+                                                              height: context.height() * 0.135,
+                                                              decoration: BoxDecoration(
+                                                                color: kWhite,
+                                                                borderRadius: BorderRadius.circular(8.0),
+                                                                border: Border.all(color: kBorderColorTextField),
+                                                                boxShadow: const [
+                                                                  BoxShadow(
+                                                                    color: kDarkWhite,
+                                                                    blurRadius: 5.0,
+                                                                    spreadRadius: 2.0,
+                                                                    offset: Offset(0, 5),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                children: [
+                                                                  Container(
+                                                                    height: context.height() * 0.135,
+                                                                    width: context.height() * 0.135,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: const BorderRadius.only(
+                                                                        bottomLeft: Radius.circular(8.0),
+                                                                        topLeft: Radius.circular(8.0),
+                                                                      ),
+                                                                      image: DecorationImage(
+                                                                        image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!),
+                                                                        fit: BoxFit.cover,
                                                                       ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.all(5.0),
-                                                                  child: Column(
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    mainAxisSize: MainAxisSize.min,
-                                                                    children: [
-                                                                      Flexible(
-                                                                        child: SizedBox(
-                                                                          width: 190,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.all(5.0),
+                                                                    child: Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                      children: [
+                                                                        Flexible(
+                                                                          flex: 1,
                                                                           child: Text(
                                                                             orderDetails[j + getCartIndex(i, packList)].artwork!.title!,
                                                                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -887,184 +895,188 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                             overflow: TextOverflow.ellipsis,
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      const SizedBox(height: 5.0),
-                                                                      Text(
-                                                                        'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
-                                                                        style: kTextStyle.copyWith(
-                                                                          color: kSubTitleColor,
-                                                                        ),
-                                                                      ).visible(snapshot.data!.orderType == 'Artwork'),
-                                                                      const SizedBox(height: 5.0),
-                                                                      SizedBox(
-                                                                        width: context.width() * 0.5,
-                                                                        child: Row(
-                                                                          children: [
-                                                                            Text(
-                                                                              snapshot.data!.orderType == 'Artwork' ? 'Quantity: ${snapshot.data!.orderDetails![j + getCartIndex(i, packList)].quantity}' : 'Price: ',
+                                                                        const SizedBox(height: 5.0),
+                                                                        Flexible(
+                                                                            flex: 1,
+                                                                            child: Text(
+                                                                              'Unit price: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
                                                                               style: kTextStyle.copyWith(
                                                                                 color: kSubTitleColor,
                                                                               ),
-                                                                            ),
-                                                                            const Spacer().visible(snapshot.data!.orderType == 'Artwork'),
-                                                                            Text(
-                                                                              NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j + getCartIndex(i, packList)].quantity! * orderDetails[j + getCartIndex(i, packList)].price!),
-                                                                              style: kTextStyle.copyWith(
-                                                                                color: kPrimaryColor,
-                                                                                fontWeight: FontWeight.bold,
+                                                                            )).visible(snapshot.data!.orderType == 'Artwork'),
+                                                                        const SizedBox(height: 5.0),
+                                                                        SizedBox(
+                                                                          width: DodResponsive.isDesktop(context) ? context.width() * 0.3 : context.width() * 0.5,
+                                                                          // width: double.minPositive,
+                                                                          child: Row(
+                                                                            mainAxisSize: MainAxisSize.max,
+                                                                            children: [
+                                                                              Text(
+                                                                                snapshot.data!.orderType == 'Artwork' ? 'Quantity: ${snapshot.data!.orderDetails![j + getCartIndex(i, packList)].quantity}' : 'Price: ',
+                                                                                style: kTextStyle.copyWith(
+                                                                                  color: kSubTitleColor,
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                          ],
+                                                                              const Spacer().visible(snapshot.data!.orderType == 'Artwork'),
+                                                                              Text(
+                                                                                NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j + getCartIndex(i, packList)].quantity! * orderDetails[j + getCartIndex(i, packList)].price!),
+                                                                                style: kTextStyle.copyWith(
+                                                                                  color: kPrimaryColor,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    ],
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
+                                                        );
+                                                      },
+                                                    ),
+                                                    const SizedBox(height: 10.0),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }
+
+                                  return const Center(
+                                    heightFactor: 2.0,
+                                    child: CircularProgressIndicator(
+                                      color: kPrimaryColor,
+                                    ),
+                                  );
+                                },
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Timeline',
+                                    style: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: const ColorScheme.light(
+                                        primary: kPrimaryColor,
+                                      ),
+                                    ),
+                                    child: Stepper(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      currentStep: stepIndex,
+                                      controlsBuilder: (context, details) {
+                                        return const SizedBox.shrink();
+                                      },
+                                      onStepTapped: (index) {
+                                        setState(() {
+                                          stepIndex = index;
+                                        });
+                                      },
+                                      steps: List.generate(
+                                        steps.length,
+                                        (index) {
+                                          return Step(
+                                            isActive: nextStep > index,
+                                            title: Row(
+                                              children: [
+                                                Text('Step ${index + 1}'),
+                                                const SizedBox(width: 5.0),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    onDeliverStep(steps[index].id!, snapshot.data!.orderDetails!.first.artwork!.id!);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      const Icon(Icons.update, color: kPrimaryColor),
+                                                      Text(
+                                                        'Complete step',
+                                                        style: kTextStyle.copyWith(color: kPrimaryColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ).visible(nextStep == index && status == 'Deposited' && role == 'Artist'),
+                                              ],
+                                            ),
+                                            content: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Start date: ${DateFormat('dd-MM-yyyy').format((steps[index].startDate!))}',
+                                                  style: kTextStyle.copyWith(color: kNeutralColor),
+                                                ),
+                                                const SizedBox(height: 8.0),
+                                                Text(
+                                                  'Estimated date: ${DateFormat('dd-MM-yyyy').format((steps[index].estimatedEndDate!))}',
+                                                  style: kTextStyle.copyWith(color: kNeutralColor),
+                                                ),
+                                                const SizedBox(height: 8.0),
+                                                Text(
+                                                  steps[index].detail!,
+                                                  style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                ),
+                                                const SizedBox(height: 10.0),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: List.generate(
+                                                    arts[index].length,
+                                                    (outdex) {
+                                                      return Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 80,
+                                                            width: 80,
+                                                            child: PhotoView(
+                                                              backgroundDecoration: BoxDecoration(
+                                                                color: kDarkWhite,
+                                                                borderRadius: BorderRadius.circular(6.0),
+                                                              ),
+                                                              imageProvider: NetworkImage(
+                                                                arts[index][outdex].image!,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 5.0),
+                                                        ],
                                                       );
                                                     },
                                                   ),
-                                                  const SizedBox(height: 10.0),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    ],
-                                  );
-                                }
-
-                                return const Center(
-                                  heightFactor: 2.0,
-                                  child: CircularProgressIndicator(
-                                    color: kPrimaryColor,
-                                  ),
-                                );
-                              },
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Timeline',
-                                  style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: kPrimaryColor,
                                     ),
                                   ),
-                                  child: Stepper(
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    currentStep: stepIndex,
-                                    controlsBuilder: (context, details) {
-                                      return const SizedBox.shrink();
-                                    },
-                                    onStepTapped: (index) {
-                                      setState(() {
-                                        stepIndex = index;
-                                      });
-                                    },
-                                    steps: List.generate(
-                                      steps.length,
-                                      (index) {
-                                        return Step(
-                                          isActive: nextStep > index,
-                                          title: Row(
-                                            children: [
-                                              Text('Step ${index + 1}'),
-                                              const SizedBox(width: 5.0),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  onDeliverStep(steps[index].id!, snapshot.data!.orderDetails!.first.artwork!.id!);
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    const Icon(Icons.update, color: kPrimaryColor),
-                                                    Text(
-                                                      'Complete step',
-                                                      style: kTextStyle.copyWith(color: kPrimaryColor),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ).visible(nextStep == index && status == 'Deposited' && role == 'Artist'),
-                                            ],
-                                          ),
-                                          content: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Start date: ${DateFormat('dd-MM-yyyy').format((steps[index].startDate!))}',
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
-                                              ),
-                                              const SizedBox(height: 8.0),
-                                              Text(
-                                                'Estimated date: ${DateFormat('dd-MM-yyyy').format((steps[index].estimatedEndDate!))}',
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
-                                              ),
-                                              const SizedBox(height: 8.0),
-                                              Text(
-                                                steps[index].detail!,
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
-                                              ),
-                                              const SizedBox(height: 10.0),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: List.generate(
-                                                  arts[index].length,
-                                                  (outdex) {
-                                                    return Row(
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 80,
-                                                          width: 80,
-                                                          child: PhotoView(
-                                                            backgroundDecoration: BoxDecoration(
-                                                              color: kDarkWhite,
-                                                              borderRadius: BorderRadius.circular(6.0),
-                                                            ),
-                                                            imageProvider: NetworkImage(
-                                                              arts[index][outdex].image!,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(width: 5.0),
-                                                      ],
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ).visible(steps.first.number != 0 && (status == 'Pending' || status == 'Deposited')),
-                          ],
+                                ],
+                              ).visible(steps.first.number != 0 && (status == 'Pending' || status == 'Deposited')),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  );
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
                   ),
                 );
-              }
-
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: kPrimaryColor,
-                ),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),
