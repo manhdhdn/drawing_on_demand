@@ -99,14 +99,14 @@ class _TopSellerState extends State<TopSeller> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: _scrollController,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              controller: _scrollController,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                  right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                ),
                 child: Column(
                   children: [
                     const SizedBox(height: 15.0),

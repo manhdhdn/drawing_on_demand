@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -63,26 +64,26 @@ class _ClientHomeState extends State<ClientHome> {
             unselectedItemColor: kLightNeutralColor,
             backgroundColor: kWhite,
             type: BottomNavigationBarType.fixed,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(IconlyBold.home),
-                label: "Home",
+                icon: const Icon(IconlyBold.home),
+                label: AppLocalizations.of(context)!.home,
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyBold.chat),
-                label: "Message",
+                icon: const Icon(IconlyBold.chat),
+                label: AppLocalizations.of(context)!.message,
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyBold.paperPlus),
-                label: "Job Post",
+                icon: const Icon(IconlyBold.paperPlus),
+                label: AppLocalizations.of(context)!.jobPost,
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyBold.document),
-                label: "Orders",
+                icon: const Icon(IconlyBold.document),
+                label: AppLocalizations.of(context)!.orders,
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyBold.profile),
-                label: "Profile",
+                icon: const Icon(IconlyBold.profile),
+                label: AppLocalizations.of(context)!.profile,
               ),
             ],
             onTap: (int index) {
@@ -127,7 +128,7 @@ class _ClientHomeState extends State<ClientHome> {
                             ),
                             const SizedBox(width: 5.0),
                             Text(
-                              'Login',
+                              AppLocalizations.of(context)!.logIn,
                               style: kTextStyle.copyWith(
                                 color: kPrimaryColor,
                               ),
@@ -171,38 +172,38 @@ class _ClientHomeState extends State<ClientHome> {
                 ),
                 labelType: NavigationRailLabelType.selected,
                 destinations: [
-                  const NavigationRailDestination(
-                    icon: Icon(IconlyBold.home),
+                  NavigationRailDestination(
+                    icon: const Icon(IconlyBold.home),
                     label: Text(
-                      'Home',
+                      AppLocalizations.of(context)!.home,
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const NavigationRailDestination(
-                    icon: Icon(IconlyBold.chat),
+                  NavigationRailDestination(
+                    icon: const Icon(IconlyBold.chat),
                     label: Text(
-                      'Message',
+                      AppLocalizations.of(context)!.message,
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const NavigationRailDestination(
-                    icon: Icon(IconlyBold.paperPlus),
+                  NavigationRailDestination(
+                    icon: const Icon(IconlyBold.paperPlus),
                     label: Text(
-                      'Job Post',
+                      AppLocalizations.of(context)!.jobPost,
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const NavigationRailDestination(
-                    icon: Icon(IconlyBold.document),
+                  NavigationRailDestination(
+                    icon: const Icon(IconlyBold.document),
                     label: Text(
-                      'Orders',
+                      AppLocalizations.of(context)!.orders,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   NavigationRailDestination(
                     icon: const Icon(IconlyBold.profile),
-                    label: const Text(
-                      'Profile',
+                    label: Text(
+                      AppLocalizations.of(context)!.profile,
                       textAlign: TextAlign.center,
                     ),
                     disabled: DodResponsive.isDesktop(context),

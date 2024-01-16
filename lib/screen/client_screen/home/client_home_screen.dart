@@ -5,6 +5,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -72,7 +73,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   color: kNeutralColor,
                 ),
                 title: Text(
-                  'Search services...',
+                  AppLocalizations.of(context)!.search,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 onTap: () {
@@ -175,7 +176,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           GestureDetector(
                             onTap: () => const ClientAllCategories().launch(context),
                             child: Text(
-                              'View All',
+                              AppLocalizations.of(context)!.viewAll,
                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                           ),
@@ -238,7 +239,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'Popular Artworks',
+                            AppLocalizations.of(context)!.popularArtwork,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -247,7 +248,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               onPopularArtwork();
                             },
                             child: Text(
-                              'View All',
+                              AppLocalizations.of(context)!.viewAll,
                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                           ),
@@ -421,7 +422,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                   const SizedBox(width: 40),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: 'Price: ',
+                                                      text: AppLocalizations.of(context)!.price,
                                                       style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                       children: [
                                                         TextSpan(
@@ -462,7 +463,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                         style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                       ),
                                                       Text(
-                                                        'Artist Rank - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
+                                                        '${AppLocalizations.of(context)!.artistRank} - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -495,7 +496,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'Top Artists',
+                            AppLocalizations.of(context)!.topArtist,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -504,7 +505,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               onTopArtists();
                             },
                             child: Text(
-                              'View All',
+                              AppLocalizations.of(context)!.viewAll,
                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                           ),
@@ -594,7 +595,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                               const SizedBox(height: 6.0),
                                               RichText(
                                                 text: TextSpan(
-                                                  text: 'Artist Rank - ',
+                                                  text: '${AppLocalizations.of(context)!.artistRank} - ',
                                                   style: kTextStyle.copyWith(color: kNeutralColor),
                                                   children: [
                                                     TextSpan(
@@ -628,7 +629,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'New Artworks',
+                            AppLocalizations.of(context)!.newArtwork,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -637,7 +638,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                               onNewArtworks();
                             },
                             child: Text(
-                              'View All',
+                              AppLocalizations.of(context)!.viewAll,
                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                           ),
@@ -811,7 +812,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                   const SizedBox(width: 40),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: 'Price: ',
+                                                      text: AppLocalizations.of(context)!.price,
                                                       style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                       children: [
                                                         TextSpan(
@@ -845,7 +846,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                         style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                       ),
                                                       Text(
-                                                        'Artist Rank - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
+                                                        '${AppLocalizations.of(context)!..artistRank} - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         style: kTextStyle.copyWith(color: kSubTitleColor),
@@ -917,7 +918,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         return artworks;
       });
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get popular artworks failed');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getPopularArtworkFailed);
     }
 
     return null;
@@ -945,7 +946,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
       return Accounts(value: accounts);
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get top artists failed');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getTopArtistFailed);
     }
 
     return null;
@@ -970,7 +971,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         return artworks;
       });
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get new artworks failed');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getNewArtworkFaild);
     }
 
     return null;

@@ -25,8 +25,8 @@ class ApiConfig {
     'category': 'categories',
     'certificate': 'certificates',
     'discount': 'discounts',
-    'handoverItem': 'handoverItems',
-    'handover': 'handovers',
+    'handOverItem': 'handoverItems',
+    'handOver': 'handovers',
     'invite': 'invites',
     'material': 'materials',
     'orderDetail': 'orderDetails',
@@ -53,7 +53,6 @@ class ApiConfig {
     'district': '/master-data/district',
     'ward': '/master-data/ward',
     'fee': '/v2/shipping-order/fee',
-    'preview': '/v2/shipping-order/preview',
     'create': '/v2/shipping-order/create',
   };
 }

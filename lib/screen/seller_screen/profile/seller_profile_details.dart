@@ -168,30 +168,30 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              ),
-              child: FutureBuilder(
-                future: account,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<Certificate> educations = [];
-                    List<Certificate> certificates = [];
+            child: FutureBuilder(
+              future: account,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Certificate> educations = [];
+                  List<Certificate> certificates = [];
 
-                    for (var certificate in snapshot.data!.certificates!) {
-                      if (certificate.name!.contains('Education|')) {
-                        certificate.name = certificate.name!.replaceFirstMapped('Education|', (match) => '');
+                  for (var certificate in snapshot.data!.certificates!) {
+                    if (certificate.name!.contains('Education|')) {
+                      certificate.name = certificate.name!.replaceFirstMapped('Education|', (match) => '');
 
-                        educations.add(certificate);
-                      } else {
-                        certificates.add(certificate);
-                      }
+                      educations.add(certificate);
+                    } else {
+                      certificates.add(certificate);
                     }
+                  }
 
-                    return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                        right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -700,17 +700,17 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                           ).visible(snapshot.data!.accountReviewAccounts!.length > totalReview)
                         ],
                       ),
-                    );
-                  }
-
-                  return const Center(
-                    heightFactor: 2.0,
-                    child: CircularProgressIndicator(
-                      color: kPrimaryColor,
                     ),
                   );
-                },
-              ),
+                }
+
+                return const Center(
+                  heightFactor: 2.0,
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
+                  ),
+                );
+              },
             ),
           ),
         ),

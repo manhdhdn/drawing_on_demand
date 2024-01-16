@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -63,7 +64,7 @@ class _ClientProfileState extends State<ClientProfile> {
               maxLines: 1,
             ),
             subtitle: Text(
-              'I\'m a Customer',
+              AppLocalizations.of(context)!.iAmACustomer,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               maxLines: 1,
             ),
@@ -143,7 +144,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'My Profile',
+                      AppLocalizations.of(context)!.myProfile,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -173,7 +174,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Dashboard',
+                      AppLocalizations.of(context)!.dashboard,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -289,7 +290,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Transaction',
+                      AppLocalizations.of(context)!.transaction,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -343,7 +344,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Artist Centre',
+                      AppLocalizations.of(context)!.artistCentre,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -372,7 +373,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Settings',
+                      AppLocalizations.of(context)!.settings,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -425,7 +426,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Help & Support',
+                      AppLocalizations.of(context)!.helpSupport,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),
@@ -451,7 +452,7 @@ class _ClientProfileState extends State<ClientProfile> {
                       ),
                     ),
                     title: Text(
-                      'Log Out',
+                      AppLocalizations.of(context)!.logout,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: kTextStyle.copyWith(color: kNeutralColor),

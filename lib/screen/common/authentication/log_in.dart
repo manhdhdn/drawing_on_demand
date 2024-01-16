@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -125,7 +126,7 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 20.0),
                       Center(
                         child: Text(
-                          'Log In Your Account',
+                          AppLocalizations.of(context)!.logInYourAccount,
                           style: kTextStyle.copyWith(
                             color: kNeutralColor,
                             fontWeight: FontWeight.bold,
@@ -141,7 +142,7 @@ class _LoginState extends State<Login> {
                         decoration: kInputDecoration.copyWith(
                           labelText: 'Email',
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Enter your email',
+                          hintText: AppLocalizations.of(context)!.enterYourEmail,
                           hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                           focusColor: kNeutralColor,
                           border: const OutlineInputBorder(),
@@ -152,11 +153,11 @@ class _LoginState extends State<Login> {
                           List<String> result = [];
 
                           if (value!.isEmpty) {
-                            result.add('Please enter your email');
+                            result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                           }
 
                           if (!isValidEmail(value)) {
-                            result.add('Please enter a valid email address');
+                            result.add(AppLocalizations.of(context)!.enterValidEmail);
                           }
 
                           return result.isNotEmpty ? result.join('\n') : null;
@@ -171,9 +172,9 @@ class _LoginState extends State<Login> {
                         textInputAction: TextInputAction.done,
                         decoration: kInputDecoration.copyWith(
                           border: const OutlineInputBorder(),
-                          labelText: 'Password',
+                          labelText: AppLocalizations.of(context)!.password,
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Please enter your password',
+                          hintText: AppLocalizations.of(context)!.enterYourPassword,
                           hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -191,7 +192,7 @@ class _LoginState extends State<Login> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Please enter your password';
+                            return AppLocalizations.of(context)!.pleaseEnterPassword;
                           }
 
                           return null;
@@ -208,7 +209,7 @@ class _LoginState extends State<Login> {
                           GestureDetector(
                             onTap: () => const ForgotPassword().launch(context),
                             child: Text(
-                              'Forgot Password?',
+                              AppLocalizations.of(context)!.forgotPassword,
                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                               textAlign: TextAlign.end,
                             ),
@@ -217,7 +218,7 @@ class _LoginState extends State<Login> {
                       ),
                       const SizedBox(height: 20.0),
                       ButtonGlobalWithoutIcon(
-                          buttontext: 'Log In',
+                          buttontext: AppLocalizations.of(context)!.logIn,
                           buttonDecoration: kButtonDecoration.copyWith(
                             color: kPrimaryColor,
                             borderRadius: BorderRadius.circular(30.0),
@@ -238,7 +239,7 @@ class _LoginState extends State<Login> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                             child: Text(
-                              'Or Sign up with',
+                              AppLocalizations.of(context)!.orSignInWith,
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                             ),
                           ),
@@ -292,11 +293,11 @@ class _LoginState extends State<Login> {
                           },
                           child: RichText(
                             text: TextSpan(
-                              text: 'Don’t have an account? ',
+                              text: AppLocalizations.of(context)!.doNotHaveAnAccount,
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                               children: [
                                 TextSpan(
-                                  text: 'Create New Account',
+                                  text: AppLocalizations.of(context)!.createNewAccount,
                                   style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -364,7 +365,7 @@ class _LoginState extends State<Login> {
                                 const SizedBox(height: 20.0),
                                 Center(
                                   child: Text(
-                                    'Log In Your Account',
+                                    AppLocalizations.of(context)!.logInYourAccount,
                                     style: kTextStyle.copyWith(
                                       color: kNeutralColor,
                                       fontWeight: FontWeight.bold,
@@ -380,7 +381,7 @@ class _LoginState extends State<Login> {
                                   decoration: kInputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Enter your email',
+                                    hintText: AppLocalizations.of(context)!.enterYourEmail,
                                     hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                                     focusColor: kNeutralColor,
                                     border: const OutlineInputBorder(),
@@ -391,11 +392,11 @@ class _LoginState extends State<Login> {
                                     List<String> result = [];
 
                                     if (value!.isEmpty) {
-                                      result.add('Please enter your email');
+                                      result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                                     }
 
                                     if (!isValidEmail(value)) {
-                                      result.add('Please enter a valid email address');
+                                      result.add(AppLocalizations.of(context)!.enterValidEmail);
                                     }
 
                                     return result.isNotEmpty ? result.join('\n') : null;
@@ -410,9 +411,9 @@ class _LoginState extends State<Login> {
                                   textInputAction: TextInputAction.done,
                                   decoration: kInputDecoration.copyWith(
                                     border: const OutlineInputBorder(),
-                                    labelText: 'Password',
+                                    labelText: AppLocalizations.of(context)!.password,
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Please enter your password',
+                                    hintText: AppLocalizations.of(context)!.enterYourPassword,
                                     hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                                     suffixIcon: IconButton(
                                       onPressed: () {
@@ -430,7 +431,7 @@ class _LoginState extends State<Login> {
                                   autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter your password';
+                                      return AppLocalizations.of(context)!.pleaseEnterPassword;
                                     }
 
                                     return null;
@@ -447,7 +448,7 @@ class _LoginState extends State<Login> {
                                     GestureDetector(
                                       onTap: () => const ForgotPassword().launch(context),
                                       child: Text(
-                                        'Forgot Password?',
+                                        AppLocalizations.of(context)!.forgotPassword,
                                         style: kTextStyle.copyWith(color: kLightNeutralColor),
                                         textAlign: TextAlign.end,
                                       ),
@@ -456,7 +457,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 const SizedBox(height: 20.0),
                                 ButtonGlobalWithoutIcon(
-                                    buttontext: 'Log In',
+                                    buttontext: AppLocalizations.of(context)!.logIn,
                                     buttonDecoration: kButtonDecoration.copyWith(
                                       color: kPrimaryColor,
                                       borderRadius: BorderRadius.circular(30.0),
@@ -477,7 +478,7 @@ class _LoginState extends State<Login> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                       child: Text(
-                                        'Or Sign up with',
+                                        AppLocalizations.of(context)!.orSignInWith,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
                                     ),
@@ -531,11 +532,11 @@ class _LoginState extends State<Login> {
                                     },
                                     child: RichText(
                                       text: TextSpan(
-                                        text: 'Don’t have an account? ',
+                                        text: AppLocalizations.of(context)!.doNotHaveAnAccount,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                         children: [
                                           TextSpan(
-                                            text: 'Create New Account',
+                                            text: AppLocalizations.of(context)!.createNewAccount,
                                             style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -592,7 +593,8 @@ class _LoginState extends State<Login> {
         if (widget.apiKey == null && widget.oobCode == null) {
           // ignore: use_build_context_synchronously
           ProgressDialogUtils.hideProgress(context);
-          Fluttertoast.showToast(msg: 'Please verify your email');
+          // ignore: use_build_context_synchronously
+          Fluttertoast.showToast(msg: AppLocalizations.of(context)!.verifyEmail);
 
           auth.sendSignInLinkToEmail(
             email: PrefUtils().getSignInInfor()['Email']!,
@@ -639,7 +641,8 @@ class _LoginState extends State<Login> {
       } else if (accountRoles.any((accountRole) => accountRole.role!.name == 'Customer')) {
         await PrefUtils().setRole('Customer');
       } else {
-        throw 'Account is not supported';
+        // ignore: use_build_context_synchronously
+        throw AppLocalizations.of(context)!.accountNotsupported;
       }
 
       await PrefUtils().clearSignInInfor();
@@ -655,7 +658,8 @@ class _LoginState extends State<Login> {
       //     closeIconColor: Colors.red,
       //   ),
       // );
-      Fluttertoast.showToast(msg: 'Invalid email or password');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.invalidEmailOrPassword);
     }
   }
 

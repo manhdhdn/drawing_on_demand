@@ -116,39 +116,39 @@ class _CartScreenState extends State<CartScreen> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              ),
-              child: FutureBuilder(
-                future: cart,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
+            child: FutureBuilder(
+              future: cart,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
 
-                    orderDetails.sort((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!));
+                  orderDetails.sort((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!));
 
-                    List<int> packList = [0];
-                    int packCount = 0;
+                  List<int> packList = [0];
+                  int packCount = 0;
 
-                    if (orderDetails.isNotEmpty) {
-                      String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
+                  if (orderDetails.isNotEmpty) {
+                    String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
 
-                      for (var orderDetail in orderDetails) {
-                        if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
-                          packList[packCount]++;
-                        } else {
-                          tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
+                    for (var orderDetail in orderDetails) {
+                      if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
+                        packList[packCount]++;
+                      } else {
+                        tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
 
-                          packCount++;
-                          packList.add(1);
-                        }
+                        packCount++;
+                        packList.add(1);
                       }
                     }
+                  }
 
-                    return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                        right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      ),
                       child: Column(
                         children: [
                           NothingYet(visible: orderDetails.isEmpty),
@@ -419,17 +419,17 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ],
                       ),
-                    );
-                  }
-
-                  return const Center(
-                    heightFactor: 2.0,
-                    child: CircularProgressIndicator(
-                      color: kPrimaryColor,
                     ),
                   );
-                },
-              ),
+                }
+
+                return const Center(
+                  heightFactor: 2.0,
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
+                  ),
+                );
+              },
             ),
           ),
         ),

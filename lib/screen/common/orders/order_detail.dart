@@ -257,17 +257,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               topRight: Radius.circular(30.0),
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-            ),
-            child: FutureBuilder(
-              future: order,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
+          child: FutureBuilder(
+            future: order,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                    ),
                     child: Column(
                       children: [
                         const SizedBox(height: 15.0),
@@ -988,18 +988,20 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         steps.length,
                                         (index) {
                                           return Step(
+                                            state: nextStep > index ? StepState.complete : StepState.editing,
                                             isActive: nextStep > index,
                                             title: Row(
                                               children: [
-                                                Text('Step ${index + 1}'),
-                                                const SizedBox(width: 5.0),
                                                 GestureDetector(
                                                   onTap: () {
                                                     onDeliverStep(steps[index].id!, snapshot.data!.orderDetails!.first.artwork!.id!);
                                                   },
                                                   child: Row(
                                                     children: [
-                                                      const Icon(Icons.update, color: kPrimaryColor),
+                                                      const Icon(
+                                                        Icons.update,
+                                                        color: kPrimaryColor,
+                                                      ),
                                                       Text(
                                                         'Complete step',
                                                         style: kTextStyle.copyWith(color: kPrimaryColor),
@@ -1007,6 +1009,24 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                     ],
                                                   ),
                                                 ).visible(nextStep == index && status == 'Deposited' && role == 'Artist'),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    onEditStep(steps[index].completedDate!, arts[index], snapshot.data!.orderDetails!.first.artwork!.id!);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.mode_edit_outlined,
+                                                        color: kPrimaryColor,
+                                                        size: 18,
+                                                      ),
+                                                      Text(
+                                                        'Edit step',
+                                                        style: kTextStyle.copyWith(color: kPrimaryColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ).visible(nextStep > index && status == 'Deposited' && role == 'Artist'),
                                               ],
                                             ),
                                             content: Column(
@@ -1034,16 +1054,20 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                     (outdex) {
                                                       return Row(
                                                         children: [
-                                                          SizedBox(
-                                                            height: 80,
-                                                            width: 80,
-                                                            child: PhotoView(
-                                                              backgroundDecoration: BoxDecoration(
-                                                                color: kDarkWhite,
-                                                                borderRadius: BorderRadius.circular(6.0),
+                                                          ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10.0),
+                                                            child: ConstrainedBox(
+                                                              constraints: const BoxConstraints(
+                                                                maxHeight: 80,
+                                                                maxWidth: 80,
+                                                                minHeight: 80,
+                                                                minWidth: 80,
                                                               ),
-                                                              imageProvider: NetworkImage(
-                                                                arts[index][outdex].image!,
+                                                              child: PhotoView(
+                                                                backgroundDecoration: const BoxDecoration(color: kDarkWhite),
+                                                                imageProvider: NetworkImage(
+                                                                  arts[index][outdex].image!,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -1067,16 +1091,16 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                       ],
                     ),
-                  );
-                }
-
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: kPrimaryColor,
                   ),
                 );
-              },
-            ),
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -1165,6 +1189,43 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   void onArtworkDetail(String id) {
     context.goNamed('${ArtworkDetailRoute.name} order', pathParameters: {'orderId': widget.id!, 'artworkId': id});
+  }
+
+  Future<void> onEditStep(DateTime completedDate, List<Art> arts, Guid artworkId) async {
+    await pickMultipleImages();
+
+    if (images.isNotEmpty) {
+      try {
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.showProgress(context);
+
+        for (var art in arts) {
+          await ArtApi().deleteOne(art.id.toString());
+        }
+
+        for (var image in images) {
+          var imageUrl = await uploadImage(image);
+
+          var art = Art(
+            id: Guid.newGuid,
+            image: imageUrl,
+            createdDate: completedDate,
+            artworkId: artworkId,
+          );
+
+          await ArtApi().postOne(art);
+        }
+
+        images.clear();
+
+        refresh();
+
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+      } catch (error) {
+        Fluttertoast.showToast(msg: 'Edit step failed');
+      }
+    }
   }
 
   void onDeliverStep(Guid stepId, Guid artworkId) async {

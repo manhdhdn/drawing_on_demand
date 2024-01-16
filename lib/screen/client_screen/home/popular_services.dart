@@ -107,18 +107,18 @@ class _PopularServicesState extends State<PopularServices> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              ),
-              child: FutureBuilder(
-                future: artworks,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      controller: _scrollController,
+            child: FutureBuilder(
+              future: artworks,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                        right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      ),
                       child: Column(
                         children: [
                           const SizedBox(height: 15.0),
@@ -370,16 +370,16 @@ class _PopularServicesState extends State<PopularServices> {
                           ),
                         ],
                       ),
-                    );
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: kPrimaryColor,
                     ),
                   );
-                },
-              ),
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
+                  ),
+                );
+              },
             ),
           ),
         ),

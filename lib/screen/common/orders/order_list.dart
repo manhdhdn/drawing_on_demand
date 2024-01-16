@@ -80,23 +80,23 @@ class _OrderListState extends State<OrderList> {
                 topRight: Radius.circular(30.0),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-              ),
-              child: FutureBuilder(
-                future: orders,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<Order> pendingOrders = snapshot.data!.value.where(((order) => order.status == 'Pending')).toList();
-                    List<Order> depositedOrders = snapshot.data!.value.where(((order) => order.status == 'Deposited')).toList();
-                    List<Order> paidOrders = snapshot.data!.value.where(((order) => order.status == 'Paid')).toList();
-                    List<Order> completedOrders = snapshot.data!.value.where(((order) => order.status == 'Completed' || order.status == 'Reviewed')).toList();
-                    List<Order> cancelledOrders = snapshot.data!.value.where(((order) => order.status == 'Cancelled')).toList();
+            child: FutureBuilder(
+              future: orders,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Order> pendingOrders = snapshot.data!.value.where(((order) => order.status == 'Pending')).toList();
+                  List<Order> depositedOrders = snapshot.data!.value.where(((order) => order.status == 'Deposited')).toList();
+                  List<Order> paidOrders = snapshot.data!.value.where(((order) => order.status == 'Paid')).toList();
+                  List<Order> completedOrders = snapshot.data!.value.where(((order) => order.status == 'Completed' || order.status == 'Reviewed')).toList();
+                  List<Order> cancelledOrders = snapshot.data!.value.where(((order) => order.status == 'Cancelled')).toList();
 
-                    return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                        right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -1298,16 +1298,16 @@ class _OrderListState extends State<OrderList> {
                           ).visible(selectedOrderTab == 'Cancelled'),
                         ],
                       ),
-                    );
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: kPrimaryColor,
                     ),
                   );
-                },
-              ),
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
+                  ),
+                );
+              },
             ),
           ),
         ),

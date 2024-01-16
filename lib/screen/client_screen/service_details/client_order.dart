@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -10,11 +11,16 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/api_config.dart';
 import '../../../data/apis/ghn_api.dart';
+import '../../../data/apis/handover_api.dart';
+import '../../../data/apis/handoveritem_api.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/apis/vnpay_api.dart';
 import '../../../data/models/ghn_request.dart';
+import '../../../data/models/handover.dart';
+import '../../../data/models/handoveritem.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/vnpay_request.dart';
@@ -35,6 +41,8 @@ class ClientOrder extends StatefulWidget {
 }
 
 class _ClientOrderState extends State<ClientOrder> {
+  final _formKey = GlobalKey<FormState>();
+
   late Future<Order?> order;
 
   TextEditingController nameController = TextEditingController(
@@ -65,11 +73,17 @@ class _ClientOrderState extends State<ClientOrder> {
   List<Map<String, dynamic>> districts = [];
   List<Map<String, dynamic>> wards = [];
 
-  int? selectedProvince;
-  int? previousSelectedDistrict = 39;
-  int? selectedDistrict;
-  String? previousSelectedWard = '39';
-  String? selectedWard;
+  Map<String, dynamic>? selectedProvince;
+  Map<String, dynamic>? previousSelectedDistrict = {
+    'DistrictID': 0,
+    'DistrictName': '',
+  };
+  Map<String, dynamic>? selectedDistrict;
+  Map<String, dynamic>? previousSelectedWard = {
+    'WardCode': 0,
+    'WardName': '',
+  };
+  Map<String, dynamic>? selectedWard;
 
   int selectedPaymentMethod = 0;
 
@@ -123,12 +137,12 @@ class _ClientOrderState extends State<ClientOrder> {
     );
   }
 
-  DropdownButton<int> getProvinces() {
-    List<DropdownMenuItem<int>> dropDownItems = [];
+  DropdownButton<Map<String, dynamic>> getProvinces() {
+    List<DropdownMenuItem<Map<String, dynamic>>> dropDownItems = [];
 
     for (Map<String, dynamic> des in provinces) {
       var item = DropdownMenuItem(
-        value: des['ProvinceID'] as int,
+        value: des,
         child: Text(des['ProvinceName']),
       );
       dropDownItems.add(item);
@@ -141,7 +155,7 @@ class _ClientOrderState extends State<ClientOrder> {
       style: kTextStyle.copyWith(color: kSubTitleColor),
       onChanged: (value) async {
         if (isCheck) {
-          await getDistrict(value!);
+          await getDistrict(value!['ProvinceID'] as int);
 
           setState(() {
             selectedProvince = value;
@@ -151,12 +165,12 @@ class _ClientOrderState extends State<ClientOrder> {
     );
   }
 
-  DropdownButton<int> getDistricts() {
-    List<DropdownMenuItem<int>> dropDownItems = [];
+  DropdownButton<Map<String, dynamic>> getDistricts() {
+    List<DropdownMenuItem<Map<String, dynamic>>> dropDownItems = [];
 
     for (Map<String, dynamic> des in districts) {
       var item = DropdownMenuItem(
-        value: des['DistrictID'] as int,
+        value: des,
         child: Text(des['DistrictName']),
       );
       dropDownItems.add(item);
@@ -169,7 +183,7 @@ class _ClientOrderState extends State<ClientOrder> {
       style: kTextStyle.copyWith(color: kSubTitleColor),
       onChanged: (value) async {
         if (isCheck) {
-          await getWard(value!);
+          await getWard(value!['DistrictID'] as int);
 
           setState(() {
             previousSelectedDistrict = selectedDistrict;
@@ -180,12 +194,12 @@ class _ClientOrderState extends State<ClientOrder> {
     );
   }
 
-  DropdownButton<String> getWards() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
+  DropdownButton<Map<String, dynamic>> getWards() {
+    List<DropdownMenuItem<Map<String, dynamic>>> dropDownItems = [];
 
     for (Map<String, dynamic> des in wards) {
       var item = DropdownMenuItem(
-        value: des['WardCode'] as String,
+        value: des,
         child: Text(des['WardName']),
       );
       dropDownItems.add(item);
@@ -507,10 +521,11 @@ class _ClientOrderState extends State<ClientOrder> {
                         );
                       },
                     ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          child: Row(
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -551,216 +566,261 @@ class _ClientOrderState extends State<ClientOrder> {
                               )
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'Name',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: TextFormField(
-                                keyboardType: TextInputType.name,
-                                cursorColor: kNeutralColor,
-                                textInputAction: TextInputAction.next,
-                                decoration: kInputDecoration.copyWith(
-                                  labelText: 'Receiver name',
-                                  labelStyle: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontSize: 14.0,
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'Name',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.name,
+                                  cursorColor: kNeutralColor,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: kInputDecoration.copyWith(
+                                    labelText: 'Receiver name',
+                                    labelStyle: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    hintText: 'Enter receiver name',
+                                    hintStyle: kTextStyle.copyWith(
+                                      color: kSubTitleColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    focusColor: kNeutralColor,
+                                    border: const OutlineInputBorder(),
                                   ),
-                                  hintText: 'Enter receiver name',
-                                  hintStyle: kTextStyle.copyWith(
-                                    color: kSubTitleColor,
-                                    fontSize: 14.0,
-                                  ),
-                                  focusColor: kNeutralColor,
-                                  border: const OutlineInputBorder(),
+                                  readOnly: !isCheck,
+                                  controller: nameController,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter receiver name';
+                                    }
+
+                                    return null;
+                                  },
                                 ),
-                                readOnly: !isCheck,
-                                controller: nameController,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'Phone',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'Phone',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: TextFormField(
-                                keyboardType: TextInputType.phone,
-                                cursorColor: kNeutralColor,
-                                textInputAction: TextInputAction.next,
-                                decoration: kInputDecoration.copyWith(
-                                  labelText: 'Receiver phone',
-                                  labelStyle: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontSize: 14.0,
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.phone,
+                                  cursorColor: kNeutralColor,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: kInputDecoration.copyWith(
+                                    labelText: 'Receiver phone',
+                                    labelStyle: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    hintText: 'Enter receiver phone',
+                                    hintStyle: kTextStyle.copyWith(
+                                      color: kSubTitleColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    focusColor: kNeutralColor,
+                                    border: const OutlineInputBorder(),
                                   ),
-                                  hintText: 'Enter receiver phone',
-                                  hintStyle: kTextStyle.copyWith(
-                                    color: kSubTitleColor,
-                                    fontSize: 14.0,
-                                  ),
-                                  focusColor: kNeutralColor,
-                                  border: const OutlineInputBorder(),
+                                  readOnly: !isCheck,
+                                  controller: phoneController,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (!isPhone(value, isRequired: true)) {
+                                      return 'Please enter a valid phone number';
+                                    }
+
+                                    return null;
+                                  },
                                 ),
-                                readOnly: !isCheck,
-                                controller: phoneController,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'Province',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'Province',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: FormField(
-                                builder: (FormFieldState<dynamic> field) {
-                                  return InputDecorator(
-                                    decoration: kInputDecoration.copyWith(
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: FormField(
+                                    builder: (FormFieldState<dynamic> field) {
+                                      return InputDecorator(
+                                        decoration: kInputDecoration.copyWith(
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
+                                          ),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: 'Choose a Province',
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                         ),
-                                        borderSide: BorderSide(color: kBorderColorTextField, width: 2),
-                                      ),
-                                      contentPadding: const EdgeInsets.all(7.0),
-                                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                                      labelText: 'Choose a Province',
-                                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: getProvinces(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'District',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: FormField(
-                                builder: (FormFieldState<dynamic> field) {
-                                  return InputDecorator(
-                                    decoration: kInputDecoration.copyWith(
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
+                                        child: DropdownButtonHideUnderline(
+                                          child: getProvinces(),
                                         ),
-                                        borderSide: BorderSide(color: kBorderColorTextField, width: 2),
-                                      ),
-                                      contentPadding: const EdgeInsets.all(7.0),
-                                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                                      labelText: 'Choose a District',
-                                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: getDistricts(),
-                                    ),
-                                  );
-                                },
+                                      );
+                                    },
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: (value) {
+                                      if (selectedProvince == null) {
+                                        return 'Please choose a province';
+                                      }
+
+                                      return null;
+                                    }),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'Ward',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: FormField(
-                                builder: (FormFieldState<dynamic> field) {
-                                  return InputDecorator(
-                                    decoration: kInputDecoration.copyWith(
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'District',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: FormField(
+                                    builder: (FormFieldState<dynamic> field) {
+                                      return InputDecorator(
+                                        decoration: kInputDecoration.copyWith(
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
+                                          ),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: 'Choose a District',
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                         ),
-                                        borderSide: BorderSide(color: kBorderColorTextField, width: 2),
-                                      ),
-                                      contentPadding: const EdgeInsets.all(7.0),
-                                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                                      labelText: 'Choose a Ward',
-                                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: getWards(),
-                                    ),
-                                  );
-                                },
+                                        child: DropdownButtonHideUnderline(
+                                          child: getDistricts(),
+                                        ),
+                                      );
+                                    },
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: (value) {
+                                      if (selectedDistrict == null) {
+                                        return 'Please choose a district';
+                                      }
+
+                                      return null;
+                                    }),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          children: [
-                            Text(
-                              'Address',
-                              style: kTextStyle.copyWith(color: kSubTitleColor),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
-                              child: TextFormField(
-                                keyboardType: TextInputType.streetAddress,
-                                cursorColor: kNeutralColor,
-                                textInputAction: TextInputAction.done,
-                                decoration: kInputDecoration.copyWith(
-                                  labelText: 'Address detail',
-                                  labelStyle: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontSize: 14.0,
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'Ward',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: FormField(
+                                    builder: (FormFieldState<dynamic> field) {
+                                      return InputDecorator(
+                                        decoration: kInputDecoration.copyWith(
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
+                                          ),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: 'Choose a Ward',
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                        ),
+                                        child: DropdownButtonHideUnderline(
+                                          child: getWards(),
+                                        ),
+                                      );
+                                    },
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: (value) {
+                                      if (selectedWard == null) {
+                                        return 'Please choose a ward';
+                                      }
+
+                                      return null;
+                                    }),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              Text(
+                                'Address',
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.streetAddress,
+                                  cursorColor: kNeutralColor,
+                                  textInputAction: TextInputAction.done,
+                                  decoration: kInputDecoration.copyWith(
+                                    labelText: 'Address detail',
+                                    labelStyle: kTextStyle.copyWith(
+                                      color: kNeutralColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    hintText: 'Enter address detail',
+                                    hintStyle: kTextStyle.copyWith(
+                                      color: kSubTitleColor,
+                                      fontSize: 14.0,
+                                    ),
+                                    focusColor: kNeutralColor,
+                                    border: const OutlineInputBorder(),
                                   ),
-                                  hintText: 'Enter address detail',
-                                  hintStyle: kTextStyle.copyWith(
-                                    color: kSubTitleColor,
-                                    fontSize: 14.0,
-                                  ),
-                                  focusColor: kNeutralColor,
-                                  border: const OutlineInputBorder(),
+                                  readOnly: !isCheck,
+                                  controller: addressController,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your address';
+                                    }
+
+                                    return null;
+                                  },
+                                  onEditingComplete: () {
+                                    getProvince();
+                                  },
                                 ),
-                                readOnly: !isCheck,
-                                controller: addressController,
-                                onEditingComplete: () {
-                                  getProvince();
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20.0),
-                      ],
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                        ],
+                      ),
                     ).visible(status != 'Pending'),
                     Text(
                       'Payment Method',
@@ -957,32 +1017,27 @@ class _ClientOrderState extends State<ClientOrder> {
       'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation)),discount',
     )
         .then((order) async {
-      // ignore: use_build_context_synchronously
       Map<String, String> query = GoRouter.of(context).routeInformationProvider.value.uri.queryParameters;
 
       if (query.containsKey('vnp_TxnRef')) {
         if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() && query['vnp_ResponseCode'] == '00') {
           showProcessingPopUp();
-          await PrefUtils().clearVNPayRef();
+          // PrefUtils().clearVNPayRef();
 
-          await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
+          var result = await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
-          // ignore: use_build_context_synchronously
-          context.goNamed(
-            OrderDetailRoute.name,
-            pathParameters: {'orderId': widget.id!},
-          );
+          if (result) {
+            // ignore: use_build_context_synchronously
+            context.goNamed(
+              OrderDetailRoute.name,
+              pathParameters: {'orderId': widget.id!},
+            );
 
-          return null;
+            return null;
+          }
         } else {
           showFailedPopUp();
-          await PrefUtils().clearVNPayRef();
-
-          await getProvince();
         }
-      } else {
-        await PrefUtils().clearVNPayRef();
-        await getProvince();
       }
 
       if (order.status == 'Paid' || order.status == 'Completed' || order.status == 'Cancelled') {
@@ -1026,6 +1081,9 @@ class _ClientOrderState extends State<ClientOrder> {
         });
       }
 
+      // PrefUtils().clearVNPayRef();
+      getProvince();
+
       return order;
     });
   }
@@ -1036,6 +1094,7 @@ class _ClientOrderState extends State<ClientOrder> {
 
     setState(() {
       provinces = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
+      selectedProvince = null;
 
       provinces.sort(((a, b) => a['ProvinceName'].compareTo(b['ProvinceName'])));
 
@@ -1062,7 +1121,7 @@ class _ClientOrderState extends State<ClientOrder> {
       if (result.isNotEmpty) {
         getDistrict(result['ProvinceID']).then(
           (value) => setState(() {
-            selectedProvince = result['ProvinceID'];
+            selectedProvince = result;
           }),
         );
       }
@@ -1110,7 +1169,7 @@ class _ClientOrderState extends State<ClientOrder> {
       if (result.isNotEmpty) {
         getWard(result['DistrictID']).then(
           (value) => setState(() {
-            selectedDistrict = result['DistrictID'];
+            selectedDistrict = result;
           }),
         );
       }
@@ -1153,7 +1212,9 @@ class _ClientOrderState extends State<ClientOrder> {
       }
 
       if (result.isNotEmpty) {
-        selectedWard = result['WardCode'];
+        setState(() {
+          selectedWard = result;
+        });
       }
     });
   }
@@ -1187,6 +1248,7 @@ class _ClientOrderState extends State<ClientOrder> {
 
           items.add({
             'name': orderDetails[j].artwork!.title,
+            'code': orderDetails[j].id.toString(),
             'quantity': orderDetails[j].quantity,
             'weight': size.weight!,
             'length': size.length!,
@@ -1198,9 +1260,11 @@ class _ClientOrderState extends State<ClientOrder> {
         price += orderDetails[j].price! * orderDetails[j].quantity!;
       }
 
-      var artistAddress = orderDetails[currentIndex].artwork!.createdByNavigation!.address!;
-      var fromDistrictId = await getDistrictCode(artistAddress, await getProvinceCode(artistAddress));
-      var fromWardCode = await getWardCode(artistAddress, fromDistrictId);
+      var artist = orderDetails[currentIndex].artwork!.createdByNavigation!;
+      List<String> splitAddress = artist.address!.split(', ');
+      int slitAddressLength = splitAddress.length;
+      var fromDistrictId = await getDistrictCode(splitAddress[slitAddressLength - 2], await getProvinceCode(splitAddress[slitAddressLength - 1]));
+      var fromWardCode = await getWardCode(splitAddress[slitAddressLength - 3], fromDistrictId);
 
       var request = GHNRequest(
         endpoint: ApiConfig.GHNPaths['fee'],
@@ -1209,8 +1273,8 @@ class _ClientOrderState extends State<ClientOrder> {
           'insurance_value': price.toInt(),
           'from_district_id': fromDistrictId,
           'from_ward_code': fromWardCode,
-          'to_ward_code': selectedWard,
-          'to_district_id': selectedDistrict,
+          'to_district_id': selectedDistrict!['DistrictID'],
+          'to_ward_code': selectedWard!['WardCode'],
           'weight': weight,
           'length': length,
           'width': width,
@@ -1229,7 +1293,35 @@ class _ClientOrderState extends State<ClientOrder> {
         );
 
         List<String> shippingOrders = this.shippingOrders;
-        shippingOrders[i] = request.postJsonString!;
+        shippingOrders[i] = jsonEncode({
+          'from_name': artist.name,
+          'from_phone': artist.phone,
+          'from_address': artist.address,
+          'from_ward_code': fromWardCode,
+          'from_ward_name': splitAddress[slitAddressLength - 3],
+          'from_district_name': splitAddress[slitAddressLength - 2],
+          'from_provice_name': splitAddress[slitAddressLength - 1],
+          'to_name': nameController.text.trim(),
+          'to_phone': phoneController.text.trim(),
+          'to_address': addressController.text.trim(),
+          'to_ward_code': selectedWard!['WardCode'],
+          'to_ward_name': selectedWard!['WardName'],
+          'to_district_name': selectedDistrict!['DistrictName'],
+          'return_phone': artist.phone,
+          'return_address': artist.address,
+          'return_ward_name': splitAddress[slitAddressLength - 3],
+          'return_district_name': splitAddress[slitAddressLength - 2],
+          'content': 'Tranh vẽ tay',
+          'weight': weight,
+          'length': length,
+          'width': width,
+          'height': height,
+          'insurance_value': price.toInt(),
+          'service_type_id': weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
+          'payment_type_id': 1,
+          'required_note': requiredNote,
+          'items': items,
+        });
 
         setState(() {
           previousSelectedDistrict = selectedDistrict;
@@ -1247,9 +1339,15 @@ class _ClientOrderState extends State<ClientOrder> {
   void onArtworkDetail(String string) {}
 
   Future<void> onContinue() async {
-    String uri = '${ApiConfig.paymentUrl}${GoRouter.of(context).routeInformationProvider.value.uri.path}';
+    if (status != 'Pending') {
+      if (!_formKey.currentState!.validate()) {
+        return;
+      }
+    }
 
     try {
+      String uri = '${ApiConfig.paymentUrl}${GoRouter.of(context).routeInformationProvider.value.uri.path}';
+
       Order? order = await this.order;
 
       double price = status != 'Deposited'
@@ -1281,10 +1379,68 @@ class _ClientOrderState extends State<ClientOrder> {
     }
   }
 
-  Future<void> updateData(Order order, double total) async {
+  Future<bool> updateData(Order order, double total) async {
     try {
       String status = order.status!;
-      // List<double> shippingFees = [];
+
+      if (status == 'Cart' || status == 'Deposited') {
+        List<String> shippingOrders = List<String>.from(jsonDecode(PrefUtils().getShippingOrders()));
+
+        for (var shippingOrder in shippingOrders) {
+          var request = GHNRequest(
+            endpoint: ApiConfig.GHNPaths['create'],
+            postJsonString: shippingOrder,
+          );
+
+          var respone = await GHNApi().postOne(request);
+          var decodedResponse = jsonDecode(respone.postJsonString!)['data'];
+          var decodedShippingOrder = jsonDecode(shippingOrder);
+
+          var handOver = HandOver(
+            id: decodedResponse['order_code'],
+            name: decodedShippingOrder['to_name'],
+            phone: decodedShippingOrder['to_phone'],
+            pickupAddress: decodedShippingOrder['from_address'],
+            receiveAddress: decodedShippingOrder['to_address'],
+            shipmentPrice: decodedResponse['total_fee'],
+            estimatedDeliveryDate: DateTime.parse(decodedResponse['expected_delivery_time']),
+            handOverDate: DateTime.parse(decodedResponse['expected_delivery_time']),
+            status: 'Pending',
+            orderId: order.id,
+          );
+
+          var decodedItems = List<Map<String, dynamic>>.from(decodedShippingOrder['items']);
+          List<HandOverItem> handOverItems = [];
+
+          for (var i = 0; i < decodedItems.length; i++) {
+            if (i == 0) {
+              handOverItems.add(
+                HandOverItem(
+                  id: Guid.newGuid,
+                  handOverId: handOver.id,
+                  orderDetailId: Guid(decodedItems[i]['code']),
+                ),
+              );
+            } else {
+              if (decodedItems[i]['code'] != decodedItems[i - 1]['code']) {
+                handOverItems.add(
+                  HandOverItem(
+                    id: Guid.newGuid,
+                    handOverId: handOver.id,
+                    orderDetailId: Guid(decodedItems[i]['code']),
+                  ),
+                );
+              }
+            }
+          }
+
+          await HandOverApi().postOne(handOver);
+
+          for (var handOverItem in handOverItems) {
+            await HandOverItemApi().postOne(handOverItem);
+          }
+        }
+      }
 
       Map<String, dynamic> body = {
         'OrderDate': status == 'Cart'
@@ -1319,8 +1475,12 @@ class _ClientOrderState extends State<ClientOrder> {
       if (OrderList.state != null) {
         OrderList.refresh();
       }
+
+      return true;
     } catch (error) {
       Fluttertoast.showToast(msg: 'Update data failed');
     }
+
+    return false;
   }
 }
