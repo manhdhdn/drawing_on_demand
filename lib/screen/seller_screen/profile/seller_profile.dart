@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -43,7 +44,8 @@ class _SellerProfileState extends State<SellerProfile> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar']),
+                    image: NetworkImage(
+                        jsonDecode(PrefUtils().getAccount())['Avatar']),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -52,15 +54,17 @@ class _SellerProfileState extends State<SellerProfile> {
           ),
           title: Text(
             jsonDecode(PrefUtils().getAccount())['Name'],
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           subtitle: RichText(
             text: TextSpan(
-              text: 'Available connect: ',
+              text: AppLocalizations.of(context)!.availableConnect,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               children: [
                 TextSpan(
-                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect'].toString(),
+                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect']
+                      .toString(),
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
               ],
@@ -122,7 +126,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     ),
                   ),
                   title: Text(
-                    'My Profile',
+                    AppLocalizations.of(context)!.myProfile,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -140,7 +144,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     collapsedIconColor: kLightNeutralColor,
                     iconColor: kLightNeutralColor,
                     title: Text(
-                      'Withdraw',
+                      AppLocalizations.of(context)!.withdraw,
                       style: kTextStyle.copyWith(color: kNeutralColor),
                     ),
                     leading: Container(
@@ -164,7 +168,7 @@ class _SellerProfileState extends State<SellerProfile> {
                         horizontalTitleGap: 10,
                         contentPadding: const EdgeInsets.only(left: 60),
                         title: Text(
-                          'Withdraw Amount',
+                          AppLocalizations.of(context)!.withdrawAmount,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: kTextStyle.copyWith(color: kNeutralColor),
@@ -173,15 +177,17 @@ class _SellerProfileState extends State<SellerProfile> {
                           FeatherIcons.chevronRight,
                           color: kLightNeutralColor,
                         ),
-                        onTap: () => const SellerWithdrawMoney().launch(context),
+                        onTap: () =>
+                            const SellerWithdrawMoney().launch(context),
                       ),
                       ListTile(
-                        onTap: () => const SellerWithDrawHistory().launch(context),
+                        onTap: () =>
+                            const SellerWithDrawHistory().launch(context),
                         visualDensity: const VisualDensity(vertical: -3),
                         horizontalTitleGap: 10,
                         contentPadding: const EdgeInsets.only(left: 60),
                         title: Text(
-                          'Withdrawal History',
+                          AppLocalizations.of(context)!.withdrawalHistory,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: kTextStyle.copyWith(color: kNeutralColor),
@@ -238,7 +244,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     ),
                   ),
                   title: Text(
-                    'Customer Centre',
+                    AppLocalizations.of(context)!.customerCentre,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -292,7 +298,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     ),
                   ),
                   title: Text(
-                    'Setting',
+                    AppLocalizations.of(context)!.settings,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -318,7 +324,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     ),
                   ),
                   title: Text(
-                    'Help & Support',
+                    AppLocalizations.of(context)!.helpSupport,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -344,7 +350,7 @@ class _SellerProfileState extends State<SellerProfile> {
                     ),
                   ),
                   title: Text(
-                    'Log Out',
+                    AppLocalizations.of(context)!.logout,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: kTextStyle.copyWith(color: kNeutralColor),

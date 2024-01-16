@@ -158,7 +158,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           width: 304,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
-                            image: const DecorationImage(image: AssetImage('images/banner.png'), fit: BoxFit.cover),
+                            image: const DecorationImage(
+                                image: AssetImage('images/banner.png'),
+                                fit: BoxFit.cover),
                           ),
                         );
                       },
@@ -170,14 +172,18 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         children: [
                           Text(
                             'Categories',
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           GestureDetector(
-                            onTap: () => const ClientAllCategories().launch(context),
+                            onTap: () =>
+                                const ClientAllCategories().launch(context),
                             child: Text(
                               AppLocalizations.of(context)!.viewAll,
-                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(
+                                  color: kLightNeutralColor),
                             ),
                           ),
                         ],
@@ -185,12 +191,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     ).visible(false),
                     HorizontalList(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15.0, right: 15.0),
+                      padding: const EdgeInsets.only(
+                          top: 20, bottom: 20, left: 15.0, right: 15.0),
                       spacing: 10.0,
                       itemCount: catName.length,
                       itemBuilder: (_, i) {
                         return Container(
-                          padding: const EdgeInsets.only(left: 5.0, right: 10.0, top: 5.0, bottom: 5.0),
+                          padding: const EdgeInsets.only(
+                              left: 5.0, right: 10.0, top: 5.0, bottom: 5.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
                             color: kWhite,
@@ -211,7 +219,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 width: 39,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: DecorationImage(image: AssetImage(catIcon[i]), fit: BoxFit.cover),
+                                  image: DecorationImage(
+                                      image: AssetImage(catIcon[i]),
+                                      fit: BoxFit.cover),
                                 ),
                               ),
                               const SizedBox(width: 5.0),
@@ -220,12 +230,15 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 children: [
                                   Text(
                                     catName[i],
-                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kNeutralColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 2.0),
                                   Text(
                                     'Related all categories',
-                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                    style: kTextStyle.copyWith(
+                                        color: kLightNeutralColor),
                                   ),
                                 ],
                               ),
@@ -235,12 +248,15 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       },
                     ).visible(false),
                     Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 10),
                       child: Row(
                         children: [
                           Text(
                             AppLocalizations.of(context)!.popularArtwork,
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -249,7 +265,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             },
                             child: Text(
                               AppLocalizations.of(context)!.viewAll,
-                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(
+                                  color: kLightNeutralColor),
                             ),
                           ),
                         ],
@@ -261,7 +278,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         if (snapshot.hasData) {
                           return HorizontalList(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15.0, right: 15.0),
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
                             itemCount: poppularArtworkTop,
                             itemBuilder: (_, i) {
@@ -269,14 +287,18 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    onArtworkDetail(snapshot.data!.value.elementAt(i).id!.toString());
+                                    onArtworkDetail(snapshot.data!.value
+                                        .elementAt(i)
+                                        .id!
+                                        .toString());
                                   },
                                   child: Container(
                                     height: 120,
                                     decoration: BoxDecoration(
                                       color: kWhite,
                                       borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(color: kBorderColorTextField),
+                                      border: Border.all(
+                                          color: kBorderColorTextField),
                                       boxShadow: const [
                                         BoxShadow(
                                           color: kDarkWhite,
@@ -288,7 +310,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Stack(
                                           alignment: Alignment.topLeft,
@@ -297,81 +320,108 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                               height: 120,
                                               width: 120,
                                               decoration: BoxDecoration(
-                                                borderRadius: const BorderRadius.only(
-                                                  bottomLeft: Radius.circular(8.0),
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(8.0),
                                                   topLeft: Radius.circular(8.0),
                                                 ),
-                                                image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).arts!.first.image!), fit: BoxFit.cover),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(snapshot
+                                                        .data!.value
+                                                        .elementAt(i)
+                                                        .arts!
+                                                        .first
+                                                        .image!),
+                                                    fit: BoxFit.cover),
                                               ),
                                             ),
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
+                                                // GestureDetector(
+                                                //   onTap: () {
+                                                //     setState(() {
+                                                //       isFavorite = !isFavorite;
+                                                //     });
+                                                //   },
+                                                //   child: Padding(
+                                                //     padding:
+                                                //         const EdgeInsets.only(
+                                                //             top: 5.0,
+                                                //             left: 5.0),
+                                                //     child: Container(
+                                                //       height: 25,
+                                                //       width: 25,
+                                                //       decoration:
+                                                //           const BoxDecoration(
+                                                //         color: Colors.white,
+                                                //         shape: BoxShape.circle,
+                                                //         boxShadow: [
+                                                //           BoxShadow(
+                                                //             color:
+                                                //                 Colors.black12,
+                                                //             blurRadius: 10.0,
+                                                //             spreadRadius: 1.0,
+                                                //             offset:
+                                                //                 Offset(0, 2),
+                                                //           ),
+                                                //         ],
+                                                //       ),
+                                                //       child: isFavorite
+                                                //           ? const Center(
+                                                //               child: Icon(
+                                                //                 Icons.favorite,
+                                                //                 color:
+                                                //                     Colors.red,
+                                                //                 size: 16.0,
+                                                //               ),
+                                                //             )
+                                                //           : const Center(
+                                                //               child: Icon(
+                                                //                 Icons
+                                                //                     .favorite_border,
+                                                //                 color:
+                                                //                     kNeutralColor,
+                                                //                 size: 16.0,
+                                                //               ),
+                                                //             ),
+                                                //     ),
+                                                //   ),
+                                                // ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    setState(() {
-                                                      isFavorite = !isFavorite;
-                                                    });
+                                                    onAddToCart(snapshot
+                                                        .data!.value
+                                                        .elementAt(i));
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5.0,
+                                                            left: 5.0),
                                                     child: Container(
                                                       height: 25,
                                                       width: 25,
-                                                      decoration: const BoxDecoration(
+                                                      decoration:
+                                                          const BoxDecoration(
                                                         color: Colors.white,
                                                         shape: BoxShape.circle,
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color: Colors.black12,
+                                                            color:
+                                                                Colors.black12,
                                                             blurRadius: 10.0,
                                                             spreadRadius: 1.0,
-                                                            offset: Offset(0, 2),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: isFavorite
-                                                          ? const Center(
-                                                              child: Icon(
-                                                                Icons.favorite,
-                                                                color: Colors.red,
-                                                                size: 16.0,
-                                                              ),
-                                                            )
-                                                          : const Center(
-                                                              child: Icon(
-                                                                Icons.favorite_border,
-                                                                color: kNeutralColor,
-                                                                size: 16.0,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    onAddToCart(snapshot.data!.value.elementAt(i));
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
-                                                    child: Container(
-                                                      height: 25,
-                                                      width: 25,
-                                                      decoration: const BoxDecoration(
-                                                        color: Colors.white,
-                                                        shape: BoxShape.circle,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black12,
-                                                            blurRadius: 10.0,
-                                                            spreadRadius: 1.0,
-                                                            offset: Offset(0, 2),
+                                                            offset:
+                                                                Offset(0, 2),
                                                           ),
                                                         ],
                                                       ),
                                                       child: const Center(
                                                         child: Icon(
-                                                          Icons.add_shopping_cart_outlined,
+                                                          Icons
+                                                              .add_shopping_cart_outlined,
                                                           color: kNeutralColor,
                                                           size: 16.0,
                                                         ),
@@ -386,23 +436,31 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Flexible(
                                                 child: SizedBox(
                                                   width: 190,
                                                   child: Text(
-                                                    snapshot.data!.value.elementAt(i).title!,
-                                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                    snapshot.data!.value
+                                                        .elementAt(i)
+                                                        .title!,
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                     maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                               ),
                                               const SizedBox(height: 5.0),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
                                                   const Icon(
                                                     IconlyBold.star,
@@ -411,29 +469,45 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
-                                                    getReviewPoint(snapshot.data!.value.elementAt(i).artworkReviews!),
-                                                    style: kTextStyle.copyWith(color: kNeutralColor),
+                                                    getReviewPoint(snapshot
+                                                        .data!.value
+                                                        .elementAt(i)
+                                                        .artworkReviews!),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor),
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
                                                     '(${snapshot.data!.value.elementAt(i).artworkReviews!.length})',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                   ),
                                                   const SizedBox(width: 40),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: AppLocalizations.of(context)!.price,
-                                                      style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                      text: AppLocalizations.of(
+                                                              context)!
+                                                          .price,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kLightNeutralColor),
                                                       children: [
                                                         TextSpan(
-                                                          text: NumberFormat.simpleCurrency(
+                                                          text: NumberFormat
+                                                              .simpleCurrency(
                                                             locale: 'vi_VN',
                                                           ).format(
-                                                            snapshot.data!.value.elementAt(i).price!,
+                                                            snapshot.data!.value
+                                                                .elementAt(i)
+                                                                .price!,
                                                           ),
-                                                          style: kTextStyle.copyWith(
-                                                            color: kPrimaryColor,
-                                                            fontWeight: FontWeight.bold,
+                                                          style: kTextStyle
+                                                              .copyWith(
+                                                            color:
+                                                                kPrimaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         )
                                                       ],
@@ -449,24 +523,46 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                     width: 32,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).createdByNavigation!.avatar!), fit: BoxFit.cover),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              snapshot
+                                                                  .data!.value
+                                                                  .elementAt(i)
+                                                                  .createdByNavigation!
+                                                                  .avatar!),
+                                                          fit: BoxFit.cover),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 5.0),
                                                   Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        snapshot.data!.value.elementAt(i).createdByNavigation!.name!,
+                                                        snapshot.data!.value
+                                                            .elementAt(i)
+                                                            .createdByNavigation!
+                                                            .name!,
                                                         maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            kTextStyle.copyWith(
+                                                                color:
+                                                                    kNeutralColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                       ),
                                                       Text(
                                                         '${AppLocalizations.of(context)!.artistRank} - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
                                                         maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: kTextStyle.copyWith(
+                                                            color:
+                                                                kSubTitleColor),
                                                       ),
                                                     ],
                                                   ),
@@ -497,7 +593,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.topArtist,
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -506,7 +604,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             },
                             child: Text(
                               AppLocalizations.of(context)!.viewAll,
-                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(
+                                  color: kLightNeutralColor),
                             ),
                           ),
                         ],
@@ -518,7 +617,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         if (snapshot.hasData) {
                           return HorizontalList(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15.0, right: 15.0),
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
                             itemCount: artistTop,
                             itemBuilder: (_, i) {
@@ -526,7 +626,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    onArtistDetail(snapshot.data!.value.elementAt(i).id!.toString());
+                                    onArtistDetail(snapshot.data!.value
+                                        .elementAt(i)
+                                        .id!
+                                        .toString());
                                   },
                                   child: Container(
                                     height: 220,
@@ -534,7 +637,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                     decoration: BoxDecoration(
                                       color: kWhite,
                                       borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(color: kBorderColorTextField),
+                                      border: Border.all(
+                                          color: kBorderColorTextField),
                                       boxShadow: const [
                                         BoxShadow(
                                           color: kDarkWhite,
@@ -550,12 +654,17 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                           height: 135,
                                           width: 156,
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.only(
+                                            borderRadius:
+                                                const BorderRadius.only(
                                               topRight: Radius.circular(8.0),
                                               topLeft: Radius.circular(8.0),
                                             ),
                                             image: DecorationImage(
-                                              image: NetworkImage(snapshot.data!.value.elementAt(i).avatar ?? defaultImage),
+                                              image: NetworkImage(snapshot
+                                                      .data!.value
+                                                      .elementAt(i)
+                                                      .avatar ??
+                                                  defaultImage),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -563,17 +672,24 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(6.0),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                snapshot.data!.value.elementAt(i).name!,
-                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                snapshot.data!.value
+                                                    .elementAt(i)
+                                                    .name!,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               const SizedBox(height: 6.0),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
                                                   const Icon(
                                                     IconlyBold.star,
@@ -582,25 +698,38 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
-                                                    getAccountReviewPoint(snapshot.data!.value.elementAt(i).accountReviewAccounts!),
-                                                    style: kTextStyle.copyWith(color: kNeutralColor),
+                                                    getAccountReviewPoint(snapshot
+                                                        .data!.value
+                                                        .elementAt(i)
+                                                        .accountReviewAccounts!),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor),
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
-                                                    '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} review)',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    '(${snapshot.data!.value.elementAt(i).accountReviewAccounts!.length} ${AppLocalizations.of(context)!.review})',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                   ),
                                                 ],
                                               ),
                                               const SizedBox(height: 6.0),
                                               RichText(
                                                 text: TextSpan(
-                                                  text: '${AppLocalizations.of(context)!.artistRank} - ',
-                                                  style: kTextStyle.copyWith(color: kNeutralColor),
+                                                  text:
+                                                      '${AppLocalizations.of(context)!.artistRank} - ',
+                                                  style: kTextStyle.copyWith(
+                                                      color: kNeutralColor),
                                                   children: [
                                                     TextSpan(
-                                                      text: snapshot.data!.value.elementAt(i).rank!.name!,
-                                                      style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                      text: snapshot.data!.value
+                                                          .elementAt(i)
+                                                          .rank!
+                                                          .name!,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kLightNeutralColor),
                                                     )
                                                   ],
                                                 ),
@@ -630,7 +759,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.newArtwork,
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -639,7 +770,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                             },
                             child: Text(
                               AppLocalizations.of(context)!.viewAll,
-                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(
+                                  color: kLightNeutralColor),
                             ),
                           ),
                         ],
@@ -651,7 +783,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         if (snapshot.hasData) {
                           return HorizontalList(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15.0, right: 15.0),
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 15.0, right: 15.0),
                             spacing: 10.0,
                             itemCount: newArtworkTop,
                             itemBuilder: (_, i) {
@@ -659,14 +792,18 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    onArtworkDetail(snapshot.data!.value.elementAt(i).id!.toString());
+                                    onArtworkDetail(snapshot.data!.value
+                                        .elementAt(i)
+                                        .id!
+                                        .toString());
                                   },
                                   child: Container(
                                     height: 120,
                                     decoration: BoxDecoration(
                                       color: kWhite,
                                       borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(color: kBorderColorTextField),
+                                      border: Border.all(
+                                          color: kBorderColorTextField),
                                       boxShadow: const [
                                         BoxShadow(
                                           color: kDarkWhite,
@@ -678,7 +815,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Stack(
                                           alignment: Alignment.topLeft,
@@ -687,11 +825,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                               height: 120,
                                               width: 120,
                                               decoration: BoxDecoration(
-                                                borderRadius: const BorderRadius.only(
-                                                  bottomLeft: Radius.circular(8.0),
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(8.0),
                                                   topLeft: Radius.circular(8.0),
                                                 ),
-                                                image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).arts!.first.image!), fit: BoxFit.cover),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(snapshot
+                                                        .data!.value
+                                                        .elementAt(i)
+                                                        .arts!
+                                                        .first
+                                                        .image!),
+                                                    fit: BoxFit.cover),
                                               ),
                                             ),
                                             Row(
@@ -704,19 +851,25 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                     });
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5.0,
+                                                            left: 5.0),
                                                     child: Container(
                                                       height: 25,
                                                       width: 25,
-                                                      decoration: const BoxDecoration(
+                                                      decoration:
+                                                          const BoxDecoration(
                                                         color: Colors.white,
                                                         shape: BoxShape.circle,
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color: Colors.black12,
+                                                            color:
+                                                                Colors.black12,
                                                             blurRadius: 10.0,
                                                             spreadRadius: 1.0,
-                                                            offset: Offset(0, 2),
+                                                            offset:
+                                                                Offset(0, 2),
                                                           ),
                                                         ],
                                                       ),
@@ -724,14 +877,17 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                           ? const Center(
                                                               child: Icon(
                                                                 Icons.favorite,
-                                                                color: Colors.red,
+                                                                color:
+                                                                    Colors.red,
                                                                 size: 16.0,
                                                               ),
                                                             )
                                                           : const Center(
                                                               child: Icon(
-                                                                Icons.favorite_border,
-                                                                color: kNeutralColor,
+                                                                Icons
+                                                                    .favorite_border,
+                                                                color:
+                                                                    kNeutralColor,
                                                                 size: 16.0,
                                                               ),
                                                             ),
@@ -740,28 +896,37 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    onAddToCart(snapshot.data!.value.elementAt(i));
+                                                    onAddToCart(snapshot
+                                                        .data!.value
+                                                        .elementAt(i));
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5.0,
+                                                            left: 5.0),
                                                     child: Container(
                                                       height: 25,
                                                       width: 25,
-                                                      decoration: const BoxDecoration(
+                                                      decoration:
+                                                          const BoxDecoration(
                                                         color: Colors.white,
                                                         shape: BoxShape.circle,
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color: Colors.black12,
+                                                            color:
+                                                                Colors.black12,
                                                             blurRadius: 10.0,
                                                             spreadRadius: 1.0,
-                                                            offset: Offset(0, 2),
+                                                            offset:
+                                                                Offset(0, 2),
                                                           ),
                                                         ],
                                                       ),
                                                       child: const Center(
                                                         child: Icon(
-                                                          Icons.add_shopping_cart_outlined,
+                                                          Icons
+                                                              .add_shopping_cart_outlined,
                                                           color: kNeutralColor,
                                                           size: 16.0,
                                                         ),
@@ -776,23 +941,31 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Flexible(
                                                 child: SizedBox(
                                                   width: 190,
                                                   child: Text(
-                                                    snapshot.data!.value.elementAt(i).title!,
-                                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                    snapshot.data!.value
+                                                        .elementAt(i)
+                                                        .title!,
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                     maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                               ),
                                               const SizedBox(height: 5.0),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
                                                   const Icon(
                                                     IconlyBold.star,
@@ -801,23 +974,45 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
-                                                    getReviewPoint(snapshot.data!.value.elementAt(i).artworkReviews!),
-                                                    style: kTextStyle.copyWith(color: kNeutralColor),
+                                                    getReviewPoint(snapshot
+                                                        .data!.value
+                                                        .elementAt(i)
+                                                        .artworkReviews!),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kNeutralColor),
                                                   ),
                                                   const SizedBox(width: 2.0),
                                                   Text(
                                                     '(${snapshot.data!.value.elementAt(i).artworkReviews!.length})',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                   ),
                                                   const SizedBox(width: 40),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: AppLocalizations.of(context)!.price,
-                                                      style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                      text: AppLocalizations.of(
+                                                              context)!
+                                                          .price,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kLightNeutralColor),
                                                       children: [
                                                         TextSpan(
-                                                          text: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(i).price!),
-                                                          style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                                                          text: NumberFormat
+                                                                  .simpleCurrency(
+                                                                      locale:
+                                                                          'vi_VN')
+                                                              .format(snapshot
+                                                                  .data!.value
+                                                                  .elementAt(i)
+                                                                  .price!),
+                                                          style: kTextStyle.copyWith(
+                                                              color:
+                                                                  kPrimaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         )
                                                       ],
                                                     ),
@@ -832,24 +1027,46 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                                     width: 32,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      image: DecorationImage(image: NetworkImage(snapshot.data!.value.elementAt(i).createdByNavigation!.avatar!), fit: BoxFit.cover),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              snapshot
+                                                                  .data!.value
+                                                                  .elementAt(i)
+                                                                  .createdByNavigation!
+                                                                  .avatar!),
+                                                          fit: BoxFit.cover),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 5.0),
                                                   Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        snapshot.data!.value.elementAt(i).createdByNavigation!.name!,
+                                                        snapshot.data!.value
+                                                            .elementAt(i)
+                                                            .createdByNavigation!
+                                                            .name!,
                                                         maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            kTextStyle.copyWith(
+                                                                color:
+                                                                    kNeutralColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                       ),
                                                       Text(
-                                                        '${AppLocalizations.of(context)!..artistRank} - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
+                                                        '${AppLocalizations.of(context)!.artistRank} - ${snapshot.data!.value.elementAt(i).createdByNavigation!.rank!.name!}',
                                                         maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: kTextStyle.copyWith(
+                                                            color:
+                                                                kSubTitleColor),
                                                       ),
                                                     ],
                                                   ),
@@ -918,7 +1135,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         return artworks;
       });
     } catch (error) {
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getPopularArtworkFailed);
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.getPopularArtworkFailed);
     }
 
     return null;
@@ -942,11 +1160,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         return artists;
       });
 
-      List<Account> accounts = List<Account>.from(accountRoles.value.map((ar) => ar.account!));
+      List<Account> accounts =
+          List<Account>.from(accountRoles.value.map((ar) => ar.account!));
 
       return Accounts(value: accounts);
     } catch (error) {
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getTopArtistFailed);
+      Fluttertoast.showToast(
+          // ignore: use_build_context_synchronously
+          msg: AppLocalizations.of(context)!.getTopArtistFailed);
     }
 
     return null;
@@ -971,7 +1192,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         return artworks;
       });
     } catch (error) {
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getNewArtworkFaild);
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.getNewArtworkFaild);
     }
 
     return null;

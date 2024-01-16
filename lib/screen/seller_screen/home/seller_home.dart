@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../widgets/constant.dart';
@@ -23,7 +24,13 @@ class SellerHome extends StatelessWidget {
               topRight: Radius.circular(15.0),
               topLeft: Radius.circular(15.0),
             ),
-            boxShadow: [BoxShadow(color: kDarkWhite, blurRadius: 5.0, spreadRadius: 3.0, offset: Offset(0, -2))]),
+            boxShadow: [
+              BoxShadow(
+                  color: kDarkWhite,
+                  blurRadius: 5.0,
+                  spreadRadius: 3.0,
+                  offset: Offset(0, -2))
+            ]),
         child: BottomNavigationBar(
           elevation: 0.0,
           selectedItemColor: kPrimaryColor,
@@ -31,26 +38,26 @@ class SellerHome extends StatelessWidget {
           backgroundColor: kWhite,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(IconlyBold.home),
-              label: "Home",
+              icon: const Icon(IconlyBold.home),
+              label: AppLocalizations.of(context)!.home,
             ),
             BottomNavigationBarItem(
-              icon: Icon(IconlyBold.chat),
-              label: "Message",
+              icon: const Icon(IconlyBold.chat),
+              label: AppLocalizations.of(context)!.message,
             ),
             BottomNavigationBarItem(
-              icon: Icon(IconlyBold.paperPlus),
-              label: "Job Apply",
+              icon: const Icon(IconlyBold.paperPlus),
+              label: AppLocalizations.of(context)!.jobApply,
             ),
             BottomNavigationBarItem(
-              icon: Icon(IconlyBold.document),
-              label: "Orders",
+              icon: const Icon(IconlyBold.document),
+              label: AppLocalizations.of(context)!.orders,
             ),
             BottomNavigationBarItem(
-              icon: Icon(IconlyBold.profile),
-              label: "Profile",
+              icon: const Icon(IconlyBold.profile),
+              label: AppLocalizations.of(context)!.profile,
             ),
           ],
           onTap: (int index) {

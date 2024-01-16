@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -69,8 +70,9 @@ class _ChatScreenState extends State<ChatScreen> {
             elevation: 0.0,
             centerTitle: true,
             title: Text(
-              'Message',
-              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+              AppLocalizations.of(context)!.message,
+              style: kTextStyle.copyWith(
+                  color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
           ),
           body: Padding(
@@ -96,15 +98,23 @@ class _ChatScreenState extends State<ChatScreen> {
                                     children: [
                                       const SizedBox(height: 10.0),
                                       SettingItemWidget(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
                                         title: user.name.validate(),
                                         subTitle: user.lastMessage.validate(),
                                         subTitleTextStyle: TextStyle(
                                           overflow: TextOverflow.ellipsis,
                                           fontFamily: kTextStyle.fontFamily,
-                                          fontWeight: user.isSeen.validate() ? FontWeight.normal : FontWeight.w700,
+                                          fontWeight: user.isSeen.validate()
+                                              ? FontWeight.normal
+                                              : FontWeight.w700,
                                         ),
-                                        leading: Image.network(user.image.validate(), height: 50, width: 50, fit: BoxFit.cover).cornerRadiusWithClipRRect(25),
+                                        leading: Image.network(
+                                                user.image.validate(),
+                                                height: 50,
+                                                width: 50,
+                                                fit: BoxFit.cover)
+                                            .cornerRadiusWithClipRRect(25),
                                         trailing: Column(
                                           children: [
                                             Text(

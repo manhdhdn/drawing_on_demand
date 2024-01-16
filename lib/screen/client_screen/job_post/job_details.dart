@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -55,7 +56,8 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -80,7 +82,8 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -101,7 +104,8 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -122,7 +126,8 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -147,8 +152,9 @@ class _JobDetailsState extends State<JobDetails> {
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
-            'Job Details',
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            AppLocalizations.of(context)!.jobDetails,
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           actions: [
@@ -158,14 +164,14 @@ class _JobDetailsState extends State<JobDetails> {
                 PopupMenuItem(
                   value: 'edit',
                   child: Text(
-                    'Edit',
+                    AppLocalizations.of(context)!.edit,
                     style: kTextStyle.copyWith(color: kNeutralColor),
                   ),
                 ),
                 PopupMenuItem(
                   value: 'cancel',
                   child: Text(
-                    'Cancel',
+                    AppLocalizations.of(context)!.cancel,
                     style: kTextStyle.copyWith(color: kNeutralColor),
                   ),
                 ),
@@ -198,7 +204,7 @@ class _JobDetailsState extends State<JobDetails> {
               children: [
                 Expanded(
                   child: ButtonGlobalWithoutIcon(
-                    buttontext: 'Re-Post',
+                    buttontext: AppLocalizations.of(context)!.rePost,
                     buttonDecoration: kButtonDecoration.copyWith(
                       color: kPrimaryColor,
                     ),
@@ -210,7 +216,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ).visible(status.contains('Cancelled')),
                 Expanded(
                   child: ButtonGlobalWithoutIcon(
-                    buttontext: 'Invite Artists',
+                    buttontext: AppLocalizations.of(context)!.inviteArtists,
                     buttonDecoration: kButtonDecoration.copyWith(
                       color: kPrimaryColor,
                     ),
@@ -219,7 +225,8 @@ class _JobDetailsState extends State<JobDetails> {
                     },
                     buttonTextColor: kWhite,
                   ),
-                ).visible(!status.contains('Cancelled') && !status.contains('Processing')),
+                ).visible(!status.contains('Cancelled') &&
+                    !status.contains('Processing')),
               ],
             ),
           ),
@@ -269,17 +276,22 @@ class _JobDetailsState extends State<JobDetails> {
                             children: [
                               Text(
                                 snapshot.data!.title!,
-                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(
+                                    color: kNeutralColor,
+                                    fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 10.0),
                               ReadMoreText(
                                 snapshot.data!.description!,
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                                 trimLines: 2,
                                 colorClickableText: kPrimaryColor,
                                 trimMode: TrimMode.Line,
-                                trimCollapsedText: '..read more',
-                                trimExpandedText: ' read less',
+                                trimCollapsedText:
+                                    AppLocalizations.of(context)!.readMore,
+                                trimExpandedText:
+                                    AppLocalizations.of(context)!.readLess,
                               ),
                               const SizedBox(height: 15.0),
                               Row(
@@ -288,25 +300,32 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Category',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.category2,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
                                             snapshot.data!.category!.name!,
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),
@@ -323,25 +342,32 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Material',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.material,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
                                             snapshot.data!.material!.name!,
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -358,25 +384,32 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Surface',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.surface,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
                                             snapshot.data!.surface!.name!,
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -395,35 +428,50 @@ class _JobDetailsState extends State<JobDetails> {
                                     children: [
                                       const SizedBox(height: 8.0),
                                       Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             flex: 1,
                                             child: Text(
-                                              'Pieces',
+                                              AppLocalizations.of(context)!
+                                                  .pieces,
                                               style: kTextStyle.copyWith(
-                                                color: index == 0 ? kSubTitleColor : kWhite,
+                                                color: index == 0
+                                                    ? kSubTitleColor
+                                                    : kWhite,
                                               ),
                                             ),
                                           ),
                                           Expanded(
-                                            flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                            flex:
+                                                DodResponsive.isDesktop(context)
+                                                    ? 6
+                                                    : 3,
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   ':',
                                                   style: kTextStyle.copyWith(
-                                                    color: index == 0 ? kSubTitleColor : kWhite,
+                                                    color: index == 0
+                                                        ? kSubTitleColor
+                                                        : kWhite,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 10.0),
                                                 Flexible(
                                                   child: Text(
-                                                    index == 0 ? '${snapshot.data!.pieces!} (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : '   (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    index == 0
+                                                        ? '${snapshot.data!.pieces!} (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
+                                                        : '   (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)',
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                   ),
                                                 ),
@@ -443,25 +491,32 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Quantity',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.quantity,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
                                             snapshot.data!.quantity!.toString(),
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -478,19 +533,25 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Budget',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.budget,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
@@ -498,7 +559,8 @@ class _JobDetailsState extends State<JobDetails> {
                                             NumberFormat.simpleCurrency(
                                               locale: 'vi_VN',
                                             ).format(snapshot.data!.budget),
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -515,25 +577,32 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Status',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.status,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
                                             snapshot.data!.status!,
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -550,25 +619,33 @@ class _JobDetailsState extends State<JobDetails> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      'Created Date',
-                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      AppLocalizations.of(context)!.createDate,
+                                      style: kTextStyle.copyWith(
+                                          color: kSubTitleColor),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                    flex: DodResponsive.isDesktop(context)
+                                        ? 6
+                                        : 3,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           ':',
-                                          style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          style: kTextStyle.copyWith(
+                                              color: kSubTitleColor),
                                         ),
                                         const SizedBox(width: 10.0),
                                         Flexible(
                                           child: Text(
-                                            DateFormat('dd-MM-yyyy').format(snapshot.data!.createdDate!),
-                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                            DateFormat('dd-MM-yyyy').format(
+                                                snapshot.data!.createdDate!),
+                                            style: kTextStyle.copyWith(
+                                                color: kSubTitleColor),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -578,12 +655,15 @@ class _JobDetailsState extends State<JobDetails> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
+                              const SizedBox(height: 8.0)
+                                  .visible(snapshot.data!.image != null),
                               Text(
-                                'Attach file:',
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                AppLocalizations.of(context)!.attachFile,
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                               ).visible(snapshot.data!.image != null),
-                              const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
+                              const SizedBox(height: 8.0)
+                                  .visible(snapshot.data!.image != null),
                               snapshot.data!.image != null
                                   ? ClipRRect(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -605,7 +685,8 @@ class _JobDetailsState extends State<JobDetails> {
                                       height: 70,
                                       decoration: BoxDecoration(
                                         color: kDarkWhite,
-                                        borderRadius: BorderRadius.circular(6.0),
+                                        borderRadius:
+                                            BorderRadius.circular(6.0),
                                       ),
                                       child: Icon(
                                         IconlyBold.document,
@@ -613,9 +694,10 @@ class _JobDetailsState extends State<JobDetails> {
                                         size: 50,
                                       ),
                                     ).visible(snapshot.data!.image != null),
-                              const SizedBox(height: 8.0).visible(snapshot.data!.proposals!.isNotEmpty),
+                              const SizedBox(height: 8.0).visible(
+                                  snapshot.data!.proposals!.isNotEmpty),
                               Text(
-                                'Proposals:',
+                                AppLocalizations.of(context)!.proposals,
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -628,10 +710,12 @@ class _JobDetailsState extends State<JobDetails> {
                                 itemCount: snapshot.data!.proposals!.length,
                                 itemBuilder: (context, index) {
                                   return Theme(
-                                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                                    data: Theme.of(context).copyWith(
+                                        dividerColor: Colors.transparent),
                                     child: ExpansionTile(
                                       initiallyExpanded: true,
-                                      tilePadding: const EdgeInsets.only(bottom: 5.0),
+                                      tilePadding:
+                                          const EdgeInsets.only(bottom: 5.0),
                                       childrenPadding: EdgeInsets.zero,
                                       collapsedIconColor: kLightNeutralColor,
                                       iconColor: kLightNeutralColor,
@@ -639,7 +723,12 @@ class _JobDetailsState extends State<JobDetails> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              onArtistDetail(snapshot.data!.proposals![index].createdByNavigation!.id.toString());
+                                              onArtistDetail(snapshot
+                                                  .data!
+                                                  .proposals![index]
+                                                  .createdByNavigation!
+                                                  .id
+                                                  .toString());
                                             },
                                             child: Row(
                                               children: [
@@ -649,26 +738,48 @@ class _JobDetailsState extends State<JobDetails> {
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     image: DecorationImage(
-                                                      image: NetworkImage(snapshot.data!.proposals![index].createdByNavigation!.avatar ?? defaultImage),
+                                                      image: NetworkImage(snapshot
+                                                              .data!
+                                                              .proposals![index]
+                                                              .createdByNavigation!
+                                                              .avatar ??
+                                                          defaultImage),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 5.0),
                                                 Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      'Artist',
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .artist,
                                                       maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
                                                     ),
                                                     Text(
-                                                      snapshot.data!.proposals![index].createdByNavigation!.name!,
+                                                      snapshot
+                                                          .data!
+                                                          .proposals![index]
+                                                          .createdByNavigation!
+                                                          .name!,
                                                       maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style:
+                                                          kTextStyle.copyWith(
+                                                              color:
+                                                                  kNeutralColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                     ),
                                                   ],
                                                 ),
@@ -678,9 +789,14 @@ class _JobDetailsState extends State<JobDetails> {
                                           const Spacer(),
                                           IconButton(
                                             onPressed: () async {
-                                              if (snapshot.data!.proposals![index].status == 'Pending') {
+                                              if (snapshot
+                                                      .data!
+                                                      .proposals![index]
+                                                      .status ==
+                                                  'Pending') {
                                                 if (await rejectProposalPopUp()) {
-                                                  onReject(snapshot.data!.proposals![index]);
+                                                  onReject(snapshot
+                                                      .data!.proposals![index]);
                                                 }
                                               }
                                             },
@@ -688,12 +804,23 @@ class _JobDetailsState extends State<JobDetails> {
                                               Icons.cancel,
                                               color: Colors.red,
                                             ),
-                                          ).visible(snapshot.data!.proposals![index].status != 'Accepted'),
+                                          ).visible(snapshot.data!
+                                                  .proposals![index].status !=
+                                              'Accepted'),
                                           IconButton(
                                             onPressed: () async {
-                                              if (snapshot.data!.proposals![index].status == 'Pending') {
+                                              if (snapshot
+                                                      .data!
+                                                      .proposals![index]
+                                                      .status ==
+                                                  'Pending') {
                                                 if (await acceptProposalPopUp()) {
-                                                  onAccept(snapshot.data!.sizes!, snapshot.data!.proposals![index], snapshot.data!.proposals!);
+                                                  onAccept(
+                                                      snapshot.data!.sizes!,
+                                                      snapshot.data!
+                                                          .proposals![index],
+                                                      snapshot
+                                                          .data!.proposals!);
                                                 }
                                               }
                                             },
@@ -701,27 +828,36 @@ class _JobDetailsState extends State<JobDetails> {
                                               Icons.check_circle_rounded,
                                               color: kPrimaryColor,
                                             ),
-                                          ).visible(snapshot.data!.proposals![index].status != 'Rejected'),
+                                          ).visible(snapshot.data!
+                                                  .proposals![index].status !=
+                                              'Rejected'),
                                           Text(
-                                            snapshot.data!.proposals![index].status!,
+                                            snapshot.data!.proposals![index]
+                                                .status!,
                                             style: kTextStyle.copyWith(
                                               color: kSubTitleColor,
                                               fontSize: 14,
                                             ),
-                                          ).visible(snapshot.data!.proposals![index].status != 'Pending')
+                                          ).visible(snapshot.data!
+                                                  .proposals![index].status !=
+                                              'Pending')
                                         ],
                                       ),
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(bottom: 10.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
                                           child: GestureDetector(
                                             onTap: () {},
                                             child: Container(
                                               height: context.height() * 0.135,
                                               decoration: BoxDecoration(
                                                 color: kWhite,
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(color: kBorderColorTextField),
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                border: Border.all(
+                                                    color:
+                                                        kBorderColorTextField),
                                                 boxShadow: const [
                                                   BoxShadow(
                                                     color: kDarkWhite,
@@ -732,21 +868,43 @@ class _JobDetailsState extends State<JobDetails> {
                                                 ],
                                               ),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
                                                   Stack(
-                                                    alignment: Alignment.topLeft,
+                                                    alignment:
+                                                        Alignment.topLeft,
                                                     children: [
                                                       Container(
-                                                        height: context.height() * 0.135,
-                                                        width: context.height() * 0.135,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: const BorderRadius.only(
-                                                            bottomLeft: Radius.circular(8.0),
-                                                            topLeft: Radius.circular(8.0),
+                                                        height:
+                                                            context.height() *
+                                                                0.135,
+                                                        width:
+                                                            context.height() *
+                                                                0.135,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    8.0),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    8.0),
                                                           ),
-                                                          image: DecorationImage(
-                                                            image: NetworkImage(snapshot.data!.proposals![index].artwork!.arts!.first.image!),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                                snapshot
+                                                                    .data!
+                                                                    .proposals![
+                                                                        index]
+                                                                    .artwork!
+                                                                    .arts!
+                                                                    .first
+                                                                    .image!),
                                                             fit: BoxFit.cover,
                                                           ),
                                                         ),
@@ -754,54 +912,110 @@ class _JobDetailsState extends State<JobDetails> {
                                                     ],
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5.0),
                                                     child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Flexible(
                                                           flex: 1,
                                                           child: SizedBox(
                                                             child: Text(
-                                                              'Introduce',
-                                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .introduce,
+                                                              style: kTextStyle.copyWith(
+                                                                  color:
+                                                                      kNeutralColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
                                                               maxLines: 1,
-                                                              overflow: TextOverflow.ellipsis,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 5.0),
+                                                        const SizedBox(
+                                                            height: 5.0),
                                                         Flexible(
                                                           flex: 3,
                                                           child: SizedBox(
-                                                            width: DodResponsive.isDesktop(context) ? context.width() / 3 : context.width() / 2,
+                                                            width: DodResponsive
+                                                                    .isDesktop(
+                                                                        context)
+                                                                ? context
+                                                                        .width() /
+                                                                    3
+                                                                : context
+                                                                        .width() /
+                                                                    2,
                                                             child: ReadMoreText(
-                                                              snapshot.data!.proposals![index].introduction!,
-                                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                              snapshot
+                                                                  .data!
+                                                                  .proposals![
+                                                                      index]
+                                                                  .introduction!,
+                                                              style: kTextStyle
+                                                                  .copyWith(
+                                                                      color:
+                                                                          kSubTitleColor),
                                                               trimLines: 3,
-                                                              colorClickableText: kPrimaryColor,
-                                                              trimMode: TrimMode.Line,
-                                                              trimCollapsedText: '..read more',
-                                                              trimExpandedText: ' read less',
+                                                              colorClickableText:
+                                                                  kPrimaryColor,
+                                                              trimMode:
+                                                                  TrimMode.Line,
+                                                              trimCollapsedText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .readMore,
+                                                              trimExpandedText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .readLess,
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 5.0),
+                                                        const SizedBox(
+                                                            height: 5.0),
                                                         Flexible(
                                                           flex: 1,
                                                           child: Row(
                                                             children: [
                                                               Text(
-                                                                'Amount: ',
-                                                                style: kTextStyle.copyWith(
-                                                                  color: kSubTitleColor,
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .amountProposal,
+                                                                style: kTextStyle
+                                                                    .copyWith(
+                                                                  color:
+                                                                      kSubTitleColor,
                                                                 ),
                                                               ),
                                                               Text(
-                                                                NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.proposals![index].artwork!.price),
-                                                                style: kTextStyle.copyWith(
-                                                                  color: kPrimaryColor,
-                                                                  fontWeight: FontWeight.bold,
+                                                                NumberFormat.simpleCurrency(
+                                                                        locale:
+                                                                            'vi_VN')
+                                                                    .format(snapshot
+                                                                        .data!
+                                                                        .proposals![
+                                                                            index]
+                                                                        .artwork!
+                                                                        .price),
+                                                                style: kTextStyle
+                                                                    .copyWith(
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
                                                               ),
                                                             ],
@@ -857,7 +1071,8 @@ class _JobDetailsState extends State<JobDetails> {
         return value;
       });
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get requirement failed');
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.getRequirementFailed);
     }
 
     return null;
@@ -873,7 +1088,8 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   void onInvite() {
-    context.goNamed('${ArtistRoute.name} job', pathParameters: {'jobId': widget.id!});
+    context.goNamed('${ArtistRoute.name} job',
+        pathParameters: {'jobId': widget.id!});
   }
 
   void onArtistDetail(String id) {
@@ -907,7 +1123,8 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
-  void onAccept(List<Size> sizes, Proposal proposal, List<Proposal> proposals) async {
+  void onAccept(
+      List<Size> sizes, Proposal proposal, List<Proposal> proposals) async {
     if (proposal.status == 'Pending') {
       try {
         ProgressDialogUtils.showProgress(context);

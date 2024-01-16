@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -34,13 +35,16 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           leading: IconButton(
             onPressed: () {
-              DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : context.pop();
+              DodResponsive.isDesktop(context)
+                  ? ClientHome.changeProfile(const ClientProfile())
+                  : context.pop();
             },
             icon: const Icon(Icons.arrow_back),
           ),
           title: Text(
-            'My Profile',
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            AppLocalizations.of(context)!.myProfile,
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -48,7 +52,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           padding: const EdgeInsets.all(10.0),
           decoration: const BoxDecoration(color: kWhite),
           child: ButtonGlobalWithIcon(
-            buttontext: 'Edit Profile',
+            buttontext: AppLocalizations.of(context)!.editProfile,
             buttonDecoration: kButtonDecoration.copyWith(
               color: kPrimaryColor,
               borderRadius: BorderRadius.circular(30.0),
@@ -66,7 +70,8 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           padding: const EdgeInsets.only(top: 15.0),
           child: Container(
             height: context.height(),
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+            padding:
+                const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
             width: context.width(),
             decoration: const BoxDecoration(
               color: kWhite,
@@ -90,7 +95,8 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: NetworkImage(
-                              jsonDecode(PrefUtils().getAccount())['Avatar'] ?? defaultImage,
+                              jsonDecode(PrefUtils().getAccount())['Avatar'] ??
+                                  defaultImage,
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -104,13 +110,17 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             jsonDecode(PrefUtils().getAccount())['Name'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                            style: kTextStyle.copyWith(
+                                color: kNeutralColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
                           ),
                           Text(
                             jsonDecode(PrefUtils().getAccount())['Email'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: kTextStyle.copyWith(color: kLightNeutralColor),
+                            style:
+                                kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ],
                       ),
@@ -118,8 +128,9 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                   ),
                   const SizedBox(height: 20.0),
                   Text(
-                    'Client Information',
-                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                    AppLocalizations.of(context)!.clientInformation,
+                    style: kTextStyle.copyWith(
+                        color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 15.0),
                   Row(
@@ -128,7 +139,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Phone Number',
+                          AppLocalizations.of(context)!.phoneNumber,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
@@ -145,8 +156,10 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             const SizedBox(width: 10.0),
                             Flexible(
                               child: Text(
-                                jsonDecode(PrefUtils().getAccount())['Phone'] ?? '',
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                jsonDecode(PrefUtils().getAccount())['Phone'] ??
+                                    '',
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                               ),
@@ -163,7 +176,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Gender',
+                          AppLocalizations.of(context)!.gender,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
@@ -180,8 +193,11 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             const SizedBox(width: 10.0),
                             Flexible(
                               child: Text(
-                                jsonDecode(PrefUtils().getAccount())['Gender'] ?? '',
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                jsonDecode(
+                                        PrefUtils().getAccount())['Gender'] ??
+                                    '',
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                               ),
@@ -198,7 +214,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Address',
+                          AppLocalizations.of(context)!.address,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
@@ -215,8 +231,11 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             const SizedBox(width: 10.0),
                             Flexible(
                               child: Text(
-                                jsonDecode(PrefUtils().getAccount())['Address'] ?? '',
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                jsonDecode(
+                                        PrefUtils().getAccount())['Address'] ??
+                                    '',
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
                               ),
@@ -233,7 +252,7 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Bio',
+                          AppLocalizations.of(context)!.bio,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ),
@@ -250,13 +269,17 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
                             const SizedBox(width: 10.0),
                             Flexible(
                               child: ReadMoreText(
-                                jsonDecode(PrefUtils().getAccount())['Bio'] ?? '',
-                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                jsonDecode(PrefUtils().getAccount())['Bio'] ??
+                                    '',
+                                style:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
                                 trimLines: 4,
                                 colorClickableText: kPrimaryColor,
                                 trimMode: TrimMode.Line,
-                                trimCollapsedText: '..read more',
-                                trimExpandedText: ' read less',
+                                trimCollapsedText:
+                                    AppLocalizations.of(context)!.readMore,
+                                trimExpandedText:
+                                    AppLocalizations.of(context)!.readLess,
                               ),
                             ),
                           ],

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/screen/widgets/nothing_yet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -13,6 +13,7 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/models/order.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/nothing_yet.dart';
 import '../../widgets/responsive.dart';
 
 class OrderList extends StatefulWidget {
@@ -63,8 +64,9 @@ class _OrderListState extends State<OrderList> {
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
-            'Orders',
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            AppLocalizations.of(context)!.orders,
+            style: kTextStyle.copyWith(
+                color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -84,11 +86,23 @@ class _OrderListState extends State<OrderList> {
               future: orders,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Order> pendingOrders = snapshot.data!.value.where(((order) => order.status == 'Pending')).toList();
-                  List<Order> depositedOrders = snapshot.data!.value.where(((order) => order.status == 'Deposited')).toList();
-                  List<Order> paidOrders = snapshot.data!.value.where(((order) => order.status == 'Paid')).toList();
-                  List<Order> completedOrders = snapshot.data!.value.where(((order) => order.status == 'Completed' || order.status == 'Reviewed')).toList();
-                  List<Order> cancelledOrders = snapshot.data!.value.where(((order) => order.status == 'Cancelled')).toList();
+                  List<Order> pendingOrders = snapshot.data!.value
+                      .where(((order) => order.status == 'Pending'))
+                      .toList();
+                  List<Order> depositedOrders = snapshot.data!.value
+                      .where(((order) => order.status == 'Deposited'))
+                      .toList();
+                  List<Order> paidOrders = snapshot.data!.value
+                      .where(((order) => order.status == 'Paid'))
+                      .toList();
+                  List<Order> completedOrders = snapshot.data!.value
+                      .where(((order) =>
+                          order.status == 'Completed' ||
+                          order.status == 'Reviewed'))
+                      .toList();
+                  List<Order> cancelledOrders = snapshot.data!.value
+                      .where(((order) => order.status == 'Cancelled'))
+                      .toList();
 
                   return SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -114,25 +128,41 @@ class _OrderListState extends State<OrderList> {
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30.0),
-                                    color: selectedOrderTab == titleList[i] ? kPrimaryColor : kDarkWhite,
+                                    color: selectedOrderTab == titleList[i]
+                                        ? kPrimaryColor
+                                        : kDarkWhite,
                                   ),
                                   child: Text(
                                     titleList[i],
-                                    style: kTextStyle.copyWith(color: selectedOrderTab == titleList[i] ? kWhite : kNeutralColor),
+                                    style: kTextStyle.copyWith(
+                                        color: selectedOrderTab == titleList[i]
+                                            ? kWhite
+                                            : kNeutralColor),
                                   ),
                                 ),
                               );
                             },
                           ),
                           const SizedBox(height: 15.0),
-                          NothingYet(visible: (selectedOrderTab == 'Pending' && pendingOrders.isEmpty) || (selectedOrderTab == 'Active' && depositedOrders.isEmpty) || (selectedOrderTab == 'Paid' && paidOrders.isEmpty) || (selectedOrderTab == 'Completed' && completedOrders.isEmpty) || (selectedOrderTab == 'Cancelled' && cancelledOrders.isEmpty)),
+                          NothingYet(
+                              visible: (selectedOrderTab == 'Pending' &&
+                                      pendingOrders.isEmpty) ||
+                                  (selectedOrderTab == 'Active' &&
+                                      depositedOrders.isEmpty) ||
+                                  (selectedOrderTab == 'Paid' &&
+                                      paidOrders.isEmpty) ||
+                                  (selectedOrderTab == 'Completed' &&
+                                      completedOrders.isEmpty) ||
+                                  (selectedOrderTab == 'Cancelled' &&
+                                      cancelledOrders.isEmpty)),
                           ListView.builder(
                             padding: EdgeInsets.zero,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: pendingOrders.length,
                             itemBuilder: (_, i) {
-                              List<String> artistsName = getArtistsName(pendingOrders[i].orderDetails!);
+                              List<String> artistsName = getArtistsName(
+                                  pendingOrders[i].orderDetails!);
 
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -146,7 +176,8 @@ class _OrderListState extends State<OrderList> {
                                     decoration: BoxDecoration(
                                       color: kWhite,
                                       borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(color: kBorderColorTextField),
+                                      border: Border.all(
+                                          color: kBorderColorTextField),
                                       boxShadow: const [
                                         BoxShadow(
                                           color: kDarkWhite,
@@ -157,14 +188,17 @@ class _OrderListState extends State<OrderList> {
                                       ],
                                     ),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              'Order ID #${pendingOrders[i].id.toString().split('-').first.toUpperCase()}',
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                              '${AppLocalizations.of(context)!.orderId} #${pendingOrders[i].id.toString().split('-').first.toUpperCase()}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
                                             SlideCountdownSeparated(
@@ -182,11 +216,16 @@ class _OrderListState extends State<OrderList> {
                                                         ))
                                                         .millisecondsSinceEpoch,
                                               ),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                              separatorType:
+                                                  SeparatorType.symbol,
+                                              separatorStyle:
+                                                  kTextStyle.copyWith(
+                                                      color:
+                                                          Colors.transparent),
                                               decoration: BoxDecoration(
                                                 color: kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(3.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
                                               ),
                                             )
                                           ],
@@ -194,13 +233,23 @@ class _OrderListState extends State<OrderList> {
                                         const SizedBox(height: 10.0),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: role == 'Customer' ? artistsName.length : 1,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: role == 'Customer'
+                                              ? artistsName.length
+                                              : 1,
                                           itemBuilder: (_, i) {
                                             List<TextSpan> children = [
                                               TextSpan(
-                                                text: role == 'Customer' ? artistsName[i] : snapshot.data!.value[i].orderedByNavigation!.name,
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                text: role == 'Customer'
+                                                    ? artistsName[i]
+                                                    : snapshot
+                                                        .data!
+                                                        .value[i]
+                                                        .orderedByNavigation!
+                                                        .name,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                             ];
 
@@ -208,22 +257,33 @@ class _OrderListState extends State<OrderList> {
                                               children.addAll([
                                                 TextSpan(
                                                   text: '  |  ',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                                 TextSpan(
-                                                  text: DateFormat('dd-MM-yyyy').format(pendingOrders[i].orderDate!),
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  text: DateFormat('dd-MM-yyyy')
+                                                      .format(pendingOrders[i]
+                                                          .orderDate!),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                               ]);
                                             }
 
                                             return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: role == 'Customer' ? 'Artist: ' : 'Customer: ',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    text: role == 'Customer'
+                                                        ? 'Artist: '
+                                                        : 'Customer: ',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                     children: children,
                                                   ),
                                                 ),
@@ -239,31 +299,41 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Order type',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .orderType,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      pendingOrders[i].orderType!,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      pendingOrders[i]
+                                                          .orderType!,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -274,35 +344,47 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Amount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .amount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      NumberFormat.simpleCurrency(
+                                                      NumberFormat
+                                                          .simpleCurrency(
                                                         locale: 'vi_VN',
                                                       ).format(
-                                                        getSubtotal(pendingOrders[i].orderDetails!),
+                                                        getSubtotal(
+                                                            pendingOrders[i]
+                                                                .orderDetails!),
                                                       ),
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -313,31 +395,41 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Status',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .status,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      'Pending',
-                                                      style: kTextStyle.copyWith(color: kNeutralColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .pending,
+                                                      style: kTextStyle.copyWith(
+                                                          color: kNeutralColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -359,7 +451,8 @@ class _OrderListState extends State<OrderList> {
                             shrinkWrap: true,
                             itemCount: depositedOrders.length,
                             itemBuilder: (_, i) {
-                              List<String> artistsName = getArtistsName(depositedOrders[i].orderDetails!);
+                              List<String> artistsName = getArtistsName(
+                                  depositedOrders[i].orderDetails!);
 
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -370,26 +463,46 @@ class _OrderListState extends State<OrderList> {
                                   child: Container(
                                     padding: const EdgeInsets.all(10.0),
                                     width: context.width(),
-                                    decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kDarkWhite, spreadRadius: 4.0, blurRadius: 4.0, offset: Offset(0, 2))]),
+                                    decoration: BoxDecoration(
+                                        color: kWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                            color: kBorderColorTextField),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: kDarkWhite,
+                                              spreadRadius: 4.0,
+                                              blurRadius: 4.0,
+                                              offset: Offset(0, 2))
+                                        ]),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              'Order ID #${depositedOrders[i].id.toString().split('-').first.toUpperCase()}',
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                              '${AppLocalizations.of(context)!.orderId} #${depositedOrders[i].id.toString().split('-').first.toUpperCase()}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
                                             SlideCountdownSeparated(
                                               showZeroValue: true,
                                               duration: const Duration(days: 3),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                              separatorType:
+                                                  SeparatorType.symbol,
+                                              separatorStyle:
+                                                  kTextStyle.copyWith(
+                                                      color:
+                                                          Colors.transparent),
                                               decoration: BoxDecoration(
                                                 color: kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(3.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
                                               ),
                                             )
                                           ],
@@ -397,13 +510,23 @@ class _OrderListState extends State<OrderList> {
                                         const SizedBox(height: 10.0),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: role == 'Customer' ? artistsName.length : 1,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: role == 'Customer'
+                                              ? artistsName.length
+                                              : 1,
                                           itemBuilder: (_, i) {
                                             List<TextSpan> children = [
                                               TextSpan(
-                                                text: role == 'Customer' ? artistsName[i] : snapshot.data!.value[i].orderedByNavigation!.name,
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                text: role == 'Customer'
+                                                    ? artistsName[i]
+                                                    : snapshot
+                                                        .data!
+                                                        .value[i]
+                                                        .orderedByNavigation!
+                                                        .name,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                             ];
 
@@ -411,22 +534,33 @@ class _OrderListState extends State<OrderList> {
                                               children.addAll([
                                                 TextSpan(
                                                   text: '  |  ',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                                 TextSpan(
-                                                  text: DateFormat('dd-MM-yyyy').format(depositedOrders[i].orderDate!),
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  text: DateFormat('dd-MM-yyyy')
+                                                      .format(depositedOrders[i]
+                                                          .orderDate!),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                               ]);
                                             }
 
                                             return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: role == 'Customer' ? 'Artist: ' : 'Customer: ',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    text: role == 'Customer'
+                                                        ? 'Artist: '
+                                                        : 'Customer: ',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                     children: children,
                                                   ),
                                                 ),
@@ -442,31 +576,41 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Order type',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .orderType,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      depositedOrders[i].orderType!,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      depositedOrders[i]
+                                                          .orderType!,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -477,35 +621,47 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Amount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .amount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      NumberFormat.simpleCurrency(
+                                                      NumberFormat
+                                                          .simpleCurrency(
                                                         locale: 'vi_VN',
                                                       ).format(
-                                                        getSubtotal(depositedOrders[i].orderDetails!),
+                                                        getSubtotal(
+                                                            depositedOrders[i]
+                                                                .orderDetails!),
                                                       ),
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -514,33 +670,45 @@ class _OrderListState extends State<OrderList> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8.0).visible(depositedOrders[i].discount != null && role == 'Customer'),
+                                        const SizedBox(height: 8.0).visible(
+                                            depositedOrders[i].discount !=
+                                                    null &&
+                                                role == 'Customer'),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Discount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .discount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
                                                       '${depositedOrders[i].discount != null ? depositedOrders[i].discount!.discountPercent! * 100 : 0}%',
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -548,34 +716,46 @@ class _OrderListState extends State<OrderList> {
                                               ),
                                             ),
                                           ],
-                                        ).visible(depositedOrders[i].discount != null && role == 'Customer'),
+                                        ).visible(depositedOrders[i].discount !=
+                                                null &&
+                                            role == 'Customer'),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Status',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .status,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      'Active',
-                                                      style: kTextStyle.copyWith(color: kNeutralColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .active,
+                                                      style: kTextStyle.copyWith(
+                                                          color: kNeutralColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -597,7 +777,8 @@ class _OrderListState extends State<OrderList> {
                             shrinkWrap: true,
                             itemCount: paidOrders.length,
                             itemBuilder: (_, i) {
-                              List<String> artistsName = getArtistsName(paidOrders[i].orderDetails!);
+                              List<String> artistsName =
+                                  getArtistsName(paidOrders[i].orderDetails!);
 
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -608,26 +789,46 @@ class _OrderListState extends State<OrderList> {
                                   child: Container(
                                     padding: const EdgeInsets.all(10.0),
                                     width: context.width(),
-                                    decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kDarkWhite, spreadRadius: 4.0, blurRadius: 4.0, offset: Offset(0, 2))]),
+                                    decoration: BoxDecoration(
+                                        color: kWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                            color: kBorderColorTextField),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: kDarkWhite,
+                                              spreadRadius: 4.0,
+                                              blurRadius: 4.0,
+                                              offset: Offset(0, 2))
+                                        ]),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              'Order ID #${paidOrders[i].id.toString().split('-').first.toUpperCase()}',
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                              '${AppLocalizations.of(context)!.orderId} #${paidOrders[i].id.toString().split('-').first.toUpperCase()}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
                                             SlideCountdownSeparated(
                                               showZeroValue: true,
                                               duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                              separatorType:
+                                                  SeparatorType.symbol,
+                                              separatorStyle:
+                                                  kTextStyle.copyWith(
+                                                      color:
+                                                          Colors.transparent),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
                                               ),
                                             )
                                           ],
@@ -635,13 +836,23 @@ class _OrderListState extends State<OrderList> {
                                         const SizedBox(height: 10.0),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: role == 'Customer' ? artistsName.length : 1,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: role == 'Customer'
+                                              ? artistsName.length
+                                              : 1,
                                           itemBuilder: (_, i) {
                                             List<TextSpan> children = [
                                               TextSpan(
-                                                text: role == 'Customer' ? artistsName[i] : snapshot.data!.value[i].orderedByNavigation!.name,
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                text: role == 'Customer'
+                                                    ? artistsName[i]
+                                                    : snapshot
+                                                        .data!
+                                                        .value[i]
+                                                        .orderedByNavigation!
+                                                        .name,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                             ];
 
@@ -649,22 +860,33 @@ class _OrderListState extends State<OrderList> {
                                               children.addAll([
                                                 TextSpan(
                                                   text: '  |  ',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                                 TextSpan(
-                                                  text: DateFormat('dd-MM-yyyy').format(paidOrders[i].orderDate!),
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  text: DateFormat('dd-MM-yyyy')
+                                                      .format(paidOrders[i]
+                                                          .orderDate!),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                               ]);
                                             }
 
                                             return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: role == 'Customer' ? 'Artist: ' : 'Customer: ',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    text: role == 'Customer'
+                                                        ? 'Artist: '
+                                                        : 'Customer: ',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                     children: children,
                                                   ),
                                                 ),
@@ -680,31 +902,40 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Order type',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .orderType,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
                                                       paidOrders[i].orderType!,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -715,31 +946,45 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Amount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .amount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(paidOrders[i].total),
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      NumberFormat
+                                                              .simpleCurrency(
+                                                                  locale:
+                                                                      'vi_VN')
+                                                          .format(paidOrders[i]
+                                                              .total),
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -748,33 +993,43 @@ class _OrderListState extends State<OrderList> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8.0).visible(paidOrders[i].discount != null),
+                                        const SizedBox(height: 8.0).visible(
+                                            paidOrders[i].discount != null),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Discount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .discount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
                                                       '${paidOrders[i].discount != null ? paidOrders[i].discount!.discountPercent! * 100 : 0}%',
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -782,34 +1037,45 @@ class _OrderListState extends State<OrderList> {
                                               ),
                                             ),
                                           ],
-                                        ).visible(paidOrders[i].discount != null),
+                                        ).visible(
+                                            paidOrders[i].discount != null),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Status',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .status,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      'Paid',
-                                                      style: kTextStyle.copyWith(color: kNeutralColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .paid,
+                                                      style: kTextStyle.copyWith(
+                                                          color: kNeutralColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -831,7 +1097,8 @@ class _OrderListState extends State<OrderList> {
                             shrinkWrap: true,
                             itemCount: completedOrders.length,
                             itemBuilder: (_, i) {
-                              List<String> artistsName = getArtistsName(completedOrders[i].orderDetails!);
+                              List<String> artistsName = getArtistsName(
+                                  completedOrders[i].orderDetails!);
 
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -842,26 +1109,46 @@ class _OrderListState extends State<OrderList> {
                                   child: Container(
                                     padding: const EdgeInsets.all(10.0),
                                     width: context.width(),
-                                    decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kDarkWhite, spreadRadius: 4.0, blurRadius: 4.0, offset: Offset(0, 2))]),
+                                    decoration: BoxDecoration(
+                                        color: kWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                            color: kBorderColorTextField),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: kDarkWhite,
+                                              spreadRadius: 4.0,
+                                              blurRadius: 4.0,
+                                              offset: Offset(0, 2))
+                                        ]),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              'Order ID #${completedOrders[i].id.toString().split('-').first.toUpperCase()}',
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                              '${AppLocalizations.of(context)!.orderId} #${completedOrders[i].id.toString().split('-').first.toUpperCase()}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
                                             SlideCountdownSeparated(
                                               showZeroValue: true,
                                               duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                              separatorType:
+                                                  SeparatorType.symbol,
+                                              separatorStyle:
+                                                  kTextStyle.copyWith(
+                                                      color:
+                                                          Colors.transparent),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
                                               ),
                                             )
                                           ],
@@ -869,13 +1156,23 @@ class _OrderListState extends State<OrderList> {
                                         const SizedBox(height: 10.0),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: role == 'Customer' ? artistsName.length : 1,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: role == 'Customer'
+                                              ? artistsName.length
+                                              : 1,
                                           itemBuilder: (_, i) {
                                             List<TextSpan> children = [
                                               TextSpan(
-                                                text: role == 'Customer' ? artistsName[i] : snapshot.data!.value[i].orderedByNavigation!.name,
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                text: role == 'Customer'
+                                                    ? artistsName[i]
+                                                    : snapshot
+                                                        .data!
+                                                        .value[i]
+                                                        .orderedByNavigation!
+                                                        .name,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                             ];
 
@@ -883,22 +1180,33 @@ class _OrderListState extends State<OrderList> {
                                               children.addAll([
                                                 TextSpan(
                                                   text: '  |  ',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                                 TextSpan(
-                                                  text: DateFormat('dd-MM-yyyy').format(completedOrders[i].orderDate!),
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  text: DateFormat('dd-MM-yyyy')
+                                                      .format(completedOrders[i]
+                                                          .orderDate!),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                               ]);
                                             }
 
                                             return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: role == 'Customer' ? 'Artist: ' : 'Customer: ',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    text: role == 'Customer'
+                                                        ? 'Artist: '
+                                                        : 'Customer: ',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                     children: children,
                                                   ),
                                                 ),
@@ -914,31 +1222,41 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Order type',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .orderType,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      completedOrders[i].orderType!,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      completedOrders[i]
+                                                          .orderType!,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -949,31 +1267,46 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Amount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .amount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(completedOrders[i].total),
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      NumberFormat
+                                                              .simpleCurrency(
+                                                                  locale:
+                                                                      'vi_VN')
+                                                          .format(
+                                                              completedOrders[i]
+                                                                  .total),
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -982,33 +1315,44 @@ class _OrderListState extends State<OrderList> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8.0).visible(completedOrders[i].discount != null),
+                                        const SizedBox(height: 8.0).visible(
+                                            completedOrders[i].discount !=
+                                                null),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Discount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .discount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
                                                       '${completedOrders[i].discount != null ? completedOrders[i].discount!.discountPercent! * 100 : 0}%',
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -1016,34 +1360,44 @@ class _OrderListState extends State<OrderList> {
                                               ),
                                             ),
                                           ],
-                                        ).visible(completedOrders[i].discount != null),
+                                        ).visible(completedOrders[i].discount !=
+                                            null),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Status',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .status,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      completedOrders[i].status!,
-                                                      style: kTextStyle.copyWith(color: kNeutralColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      completedOrders[i]
+                                                          .status!,
+                                                      style: kTextStyle.copyWith(
+                                                          color: kNeutralColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -1065,7 +1419,8 @@ class _OrderListState extends State<OrderList> {
                             shrinkWrap: true,
                             itemCount: cancelledOrders.length,
                             itemBuilder: (_, i) {
-                              List<String> artistsName = getArtistsName(cancelledOrders[i].orderDetails!);
+                              List<String> artistsName = getArtistsName(
+                                  cancelledOrders[i].orderDetails!);
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: GestureDetector(
@@ -1075,26 +1430,46 @@ class _OrderListState extends State<OrderList> {
                                   child: Container(
                                     padding: const EdgeInsets.all(10.0),
                                     width: context.width(),
-                                    decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kDarkWhite, spreadRadius: 4.0, blurRadius: 4.0, offset: Offset(0, 2))]),
+                                    decoration: BoxDecoration(
+                                        color: kWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                            color: kBorderColorTextField),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: kDarkWhite,
+                                              spreadRadius: 4.0,
+                                              blurRadius: 4.0,
+                                              offset: Offset(0, 2))
+                                        ]),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              'Order ID #${cancelledOrders[i].id.toString().split('-').first.toUpperCase()}',
-                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                              '${AppLocalizations.of(context)!.orderId} #${cancelledOrders[i].id.toString().split('-').first.toUpperCase()}',
+                                              style: kTextStyle.copyWith(
+                                                  color: kNeutralColor,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
                                             SlideCountdownSeparated(
                                               showZeroValue: true,
                                               duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                              separatorType:
+                                                  SeparatorType.symbol,
+                                              separatorStyle:
+                                                  kTextStyle.copyWith(
+                                                      color:
+                                                          Colors.transparent),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
                                               ),
                                             )
                                           ],
@@ -1102,13 +1477,23 @@ class _OrderListState extends State<OrderList> {
                                         const SizedBox(height: 10.0),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: role == 'Customer' ? artistsName.length : 1,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: role == 'Customer'
+                                              ? artistsName.length
+                                              : 1,
                                           itemBuilder: (_, i) {
                                             List<TextSpan> children = [
                                               TextSpan(
-                                                text: role == 'Customer' ? artistsName[i] : snapshot.data!.value[i].orderedByNavigation!.name,
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                text: role == 'Customer'
+                                                    ? artistsName[i]
+                                                    : snapshot
+                                                        .data!
+                                                        .value[i]
+                                                        .orderedByNavigation!
+                                                        .name,
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                             ];
 
@@ -1116,22 +1501,33 @@ class _OrderListState extends State<OrderList> {
                                               children.addAll([
                                                 TextSpan(
                                                   text: '  |  ',
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                                 TextSpan(
-                                                  text: DateFormat('dd-MM-yyyy').format(cancelledOrders[i].orderDate!),
-                                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                  text: DateFormat('dd-MM-yyyy')
+                                                      .format(cancelledOrders[i]
+                                                          .orderDate!),
+                                                  style: kTextStyle.copyWith(
+                                                      color:
+                                                          kLightNeutralColor),
                                                 ),
                                               ]);
                                             }
 
                                             return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: role == 'Customer' ? 'Artist: ' : 'Customer: ',
-                                                    style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                    text: role == 'Customer'
+                                                        ? 'Artist: '
+                                                        : 'Customer: ',
+                                                    style: kTextStyle.copyWith(
+                                                        color:
+                                                            kLightNeutralColor),
                                                     children: children,
                                                   ),
                                                 ),
@@ -1147,31 +1543,41 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Order type',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .orderType,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      cancelledOrders[i].orderType!,
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      cancelledOrders[i]
+                                                          .orderType!,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -1182,35 +1588,47 @@ class _OrderListState extends State<OrderList> {
                                         ),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Amount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .amount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      NumberFormat.simpleCurrency(
+                                                      NumberFormat
+                                                          .simpleCurrency(
                                                         locale: 'vi_VN',
                                                       ).format(
-                                                        getSubtotal(cancelledOrders[i].orderDetails!),
+                                                        getSubtotal(
+                                                            cancelledOrders[i]
+                                                                .orderDetails!),
                                                       ),
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -1219,33 +1637,44 @@ class _OrderListState extends State<OrderList> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8.0).visible(cancelledOrders[i].discount != null),
+                                        const SizedBox(height: 8.0).visible(
+                                            cancelledOrders[i].discount !=
+                                                null),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Discount',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .discount,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
                                                       '${cancelledOrders[i].discount != null ? cancelledOrders[i].discount!.discountPercent! * 100 : 0}%',
-                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      style: kTextStyle.copyWith(
+                                                          color:
+                                                              kSubTitleColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -1253,34 +1682,45 @@ class _OrderListState extends State<OrderList> {
                                               ),
                                             ),
                                           ],
-                                        ).visible(cancelledOrders[i].discount != null),
+                                        ).visible(cancelledOrders[i].discount !=
+                                            null),
                                         const SizedBox(height: 8.0),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                'Status',
-                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                AppLocalizations.of(context)!
+                                                    .status,
+                                                style: kTextStyle.copyWith(
+                                                    color: kSubTitleColor),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                    style: kTextStyle.copyWith(
+                                                        color: kSubTitleColor),
                                                   ),
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      'Cancelled',
-                                                      style: kTextStyle.copyWith(color: kNeutralColor),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .cancelled,
+                                                      style: kTextStyle.copyWith(
+                                                          color: kNeutralColor),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     ),
                                                   ),
@@ -1322,12 +1762,16 @@ class _OrderListState extends State<OrderList> {
 
       switch (role) {
         case 'Customer':
-          filter = "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne 'Cart'";
-          expand = 'orderDetails(expand=artwork(expand=createdByNavigation)),discount';
+          filter =
+              "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne 'Cart'";
+          expand =
+              'orderDetails(expand=artwork(expand=createdByNavigation)),discount';
           break;
         case 'Artist':
-          filter = "orderDetails/any(od: od/artwork/createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}) and status ne 'Cart'";
-          expand = 'orderDetails(expand=artwork(expand=createdByNavigation)),discount,orderedByNavigation';
+          filter =
+              "orderDetails/any(od: od/artwork/createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}) and status ne 'Cart'";
+          expand =
+              'orderDetails(expand=artwork(expand=createdByNavigation)),discount,orderedByNavigation';
           break;
         default:
       }
@@ -1339,7 +1783,8 @@ class _OrderListState extends State<OrderList> {
         expand: expand,
       );
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get orders failed');
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.getOrdersFailed);
     }
 
     return null;

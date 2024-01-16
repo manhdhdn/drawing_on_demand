@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constant.dart';
 
@@ -25,7 +26,7 @@ class NothingYet extends StatelessWidget {
         ),
         const SizedBox(height: 20.0),
         Text(
-          'Nothing just yet',
+          AppLocalizations.of(context)!.nothingJustYet,
           textAlign: TextAlign.center,
           style: kTextStyle.copyWith(
               color: kNeutralColor,

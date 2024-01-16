@@ -6,6 +6,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -134,7 +135,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar']),
+                      image: NetworkImage(
+                          jsonDecode(PrefUtils().getAccount())['Avatar']),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -143,10 +145,11 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
             ),
             title: Text(
               jsonDecode(PrefUtils().getAccount())['Name'],
-              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(
+                  color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              'I\'m a Artist',
+              AppLocalizations.of(context)!.imAArtist,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             trailing: GestureDetector(
@@ -207,8 +210,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                         Row(
                           children: [
                             Text(
-                              'Performance',
-                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)!.performance,
+                              style: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             SizedBox(
@@ -294,8 +299,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                         Row(
                           children: [
                             Text(
-                              'Statistics',
-                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)!.statistics,
+                              style: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             SizedBox(
@@ -375,8 +382,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                         Row(
                           children: [
                             Text(
-                              'Earnings',
-                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)!.earnings,
+                              style: kTextStyle.copyWith(
+                                  color: kNeutralColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             SizedBox(
@@ -439,7 +448,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   ),
                   const SizedBox(height: 10.0),
                   Theme(
-                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
                       initiallyExpanded: true,
                       tilePadding: EdgeInsets.zero,
@@ -447,24 +457,39 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                       collapsedIconColor: kLightNeutralColor,
                       iconColor: kLightNeutralColor,
                       title: Text(
-                        'Reach your next level',
-                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                        AppLocalizations.of(context)!.reachYourNextLevel,
+                        style: kTextStyle.copyWith(
+                            color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       children: [
                         FutureBuilder(
                           future: ranks,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              int index = snapshot.data!.value.toList().indexWhere((rank) => rank.name == PrefUtils().getRank());
+                              int index = snapshot.data!.value
+                                  .toList()
+                                  .indexWhere((rank) =>
+                                      rank.name == PrefUtils().getRank());
 
                               Column elements = Column(
                                 children: [
                                   LevelSummary(
-                                    title: snapshot.data!.value.elementAt(index).name!,
-                                    subTitle: 'Fee per order: ${(snapshot.data!.value.elementAt(index).fee! * 100).toStringAsFixed(0)}%\n'
+                                    title: snapshot.data!.value
+                                        .elementAt(index)
+                                        .name!,
+                                    subTitle:
+                                        '${AppLocalizations.of(context)!.feePerOrder} ${(snapshot.data!.value.elementAt(index).fee! * 100).toStringAsFixed(0)}%\n'
                                         'Connect: ${snapshot.data!.value.elementAt(index).connect!}',
-                                    trailing1: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index).income),
-                                    trailing2: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index).income),
+                                    trailing1: NumberFormat.simpleCurrency(
+                                            locale: 'vi_VN')
+                                        .format(snapshot.data!.value
+                                            .elementAt(index)
+                                            .income),
+                                    trailing2: NumberFormat.simpleCurrency(
+                                            locale: 'vi_VN')
+                                        .format(snapshot.data!.value
+                                            .elementAt(index)
+                                            .income),
                                   ),
                                 ],
                               );
@@ -474,11 +499,18 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                   [
                                     const SizedBox(height: 15.0),
                                     LevelSummary(
-                                      title: snapshot.data!.value.elementAt(index + 1).name!,
-                                      subTitle: 'Fee per order: ${(snapshot.data!.value.elementAt(index + 1).fee! * 100).toStringAsFixed(0)}%\n'
+                                      title: snapshot.data!.value
+                                          .elementAt(index + 1)
+                                          .name!,
+                                      subTitle:
+                                          '${AppLocalizations.of(context)!.feePerOrder} ${(snapshot.data!.value.elementAt(index + 1).fee! * 100).toStringAsFixed(0)}%\n'
                                           'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
                                       trailing1: '0',
-                                      trailing2: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index + 1).income),
+                                      trailing2: NumberFormat.simpleCurrency(
+                                              locale: 'vi_VN')
+                                          .format(snapshot.data!.value
+                                              .elementAt(index + 1)
+                                              .income),
                                     ),
                                   ],
                                 );
@@ -502,8 +534,9 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   Row(
                     children: [
                       Text(
-                        'My artworks',
-                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                        AppLocalizations.of(context)!.myArtworks,
+                        style: kTextStyle.copyWith(
+                            color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -511,7 +544,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                           onViewAllArtwork();
                         },
                         child: Text(
-                          'View All',
+                          AppLocalizations.of(context)!.viewAll,
                           style: kTextStyle.copyWith(color: kLightNeutralColor),
                         ),
                       )
@@ -522,7 +555,9 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                     future: artworks,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        int itemCount = snapshot.data!.count! < 10 ? snapshot.data!.count! : 10;
+                        int itemCount = snapshot.data!.count! < 10
+                            ? snapshot.data!.count!
+                            : 10;
 
                         return HorizontalList(
                           spacing: 10.0,
@@ -531,14 +566,18 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                           itemBuilder: (_, index) {
                             return GestureDetector(
                               onTap: () {
-                                onArtworkDetail(snapshot.data!.value.elementAt(index).id.toString());
+                                onArtworkDetail(snapshot.data!.value
+                                    .elementAt(index)
+                                    .id
+                                    .toString());
                               },
                               child: Container(
                                 height: 205,
                                 width: 156,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  border: Border.all(color: kBorderColorTextField),
+                                  border:
+                                      Border.all(color: kBorderColorTextField),
                                   boxShadow: const [
                                     BoxShadow(
                                       color: kDarkWhite,
@@ -557,12 +596,18 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                           height: 100,
                                           width: 156,
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.only(
+                                            borderRadius:
+                                                const BorderRadius.only(
                                               topRight: Radius.circular(8.0),
                                               topLeft: Radius.circular(8.0),
                                             ),
                                             image: DecorationImage(
-                                              image: NetworkImage(snapshot.data!.value.elementAt(index).arts!.first.image!),
+                                              image: NetworkImage(snapshot
+                                                  .data!.value
+                                                  .elementAt(index)
+                                                  .arts!
+                                                  .first
+                                                  .image!),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -572,17 +617,23 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            snapshot.data!.value.elementAt(index).title!,
-                                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                            snapshot.data!.value
+                                                .elementAt(index)
+                                                .title!,
+                                            style: kTextStyle.copyWith(
+                                                color: kNeutralColor,
+                                                fontWeight: FontWeight.bold),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           const SizedBox(height: 5.0),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
                                               const Icon(
                                                 IconlyBold.star,
@@ -591,25 +642,41 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                               ),
                                               const SizedBox(width: 2.0),
                                               Text(
-                                                getReviewPoint(snapshot.data!.value.elementAt(index).artworkReviews!),
-                                                style: kTextStyle.copyWith(color: kNeutralColor),
+                                                getReviewPoint(snapshot
+                                                    .data!.value
+                                                    .elementAt(index)
+                                                    .artworkReviews!),
+                                                style: kTextStyle.copyWith(
+                                                    color: kNeutralColor),
                                               ),
                                               const SizedBox(width: 2.0),
                                               Text(
-                                                '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
-                                                style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                                '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} ${AppLocalizations.of(context)!.review})',
+                                                style: kTextStyle.copyWith(
+                                                    color: kLightNeutralColor),
                                               ),
                                             ],
                                           ),
                                           const SizedBox(height: 5.0),
                                           RichText(
                                             text: TextSpan(
-                                              text: 'Price: ',
-                                              style: kTextStyle.copyWith(color: kLightNeutralColor),
+                                              text:
+                                                  '${AppLocalizations.of(context)!.price}: ',
+                                              style: kTextStyle.copyWith(
+                                                  color: kLightNeutralColor),
                                               children: [
                                                 TextSpan(
-                                                  text: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index).price),
-                                                  style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                                                  text: NumberFormat
+                                                          .simpleCurrency(
+                                                              locale: 'vi_VN')
+                                                      .format(snapshot
+                                                          .data!.value
+                                                          .elementAt(index)
+                                                          .price),
+                                                  style: kTextStyle.copyWith(
+                                                      color: kPrimaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 )
                                               ],
                                             ),
@@ -656,7 +723,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     try {
       return ArtworkApi().gets(
         0,
-        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\' and status ne \'Deleted\'',
+        filter:
+            'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\' and status ne \'Deleted\'',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews',
@@ -716,7 +784,8 @@ class ChartLegend extends StatelessWidget {
             ),
             Text(
               value,
-              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+              style: kTextStyle.copyWith(
+                  color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
           ],
         ),

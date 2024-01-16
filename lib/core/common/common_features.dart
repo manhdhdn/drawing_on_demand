@@ -59,7 +59,8 @@ Future<void> showImportPicturePopUp(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
-        builder: (BuildContext context, void Function(void Function()) setState) {
+        builder:
+            (BuildContext context, void Function(void Function()) setState) {
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
@@ -170,8 +171,10 @@ Future<Order> getCart() async {
     if (PrefUtils().getCartId() == '{}') {
       order = (await OrderApi().gets(
         0,
-        filter: "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
-        expand: 'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+        filter:
+            "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
+        expand:
+            'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
       ))
           .value
           .first;
@@ -209,7 +212,7 @@ void onAddToCart(Artwork artwork) async {
     if (orderDetail.artworkId == artwork.id) {
       increaseQuantity(orderDetail.id.toString(), orderDetail.quantity!);
 
-      Fluttertoast.showToast(msg: 'Add to cart successfully (quantity)');
+      Fluttertoast.showToast(msg: 'Thêm số lượng vào giỏ hàng thành công');
 
       return;
     }
@@ -227,7 +230,7 @@ void onAddToCart(Artwork artwork) async {
 
     await OrderDetailApi().postOne(orderDetail);
 
-    Fluttertoast.showToast(msg: 'Add to cart successfully');
+    Fluttertoast.showToast(msg: 'Thêm tác phẩm mới vào giỏ hàng thành công');
   } catch (error) {
     Fluttertoast.showToast(msg: 'Add to cart failed');
   }
@@ -280,7 +283,8 @@ Future<int> getProvinceCode(String address) async {
     var request = GHNRequest(endpoint: ApiConfig.GHNPaths['province']);
     var respone = await GHNApi().postOne(request);
 
-    var provinces = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
+    var provinces = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -322,7 +326,8 @@ Future<int> getDistrictCode(String address, int provinceId) async {
     );
     var respone = await GHNApi().postOne(request);
 
-    var districts = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
+    var districts = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -364,7 +369,8 @@ Future<String> getWardCode(String address, int districtId) async {
     );
     var respone = await GHNApi().postOne(request);
 
-    var wards = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
+    var wards = List<Map<String, dynamic>>.from(
+        jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -412,11 +418,13 @@ Future<Map<String, dynamic>> getDiscount(Order order) async {
     }
 
     DateTime dateTime = DateTime.now();
-    String dateTimeString = DateFormat("yyyy-MM-ddTHH:mm:ss'Z'").format(dateTime);
+    String dateTimeString =
+        DateFormat("yyyy-MM-ddTHH:mm:ss'Z'").format(dateTime);
 
     Discounts discounts = await DiscountApi().gets(
       0,
-      filter: 'number le $quantity and startDate le $dateTimeString and endDate ge $dateTimeString',
+      filter:
+          'number le $quantity and startDate le $dateTimeString and endDate ge $dateTimeString',
       orderBy: 'discountPercent',
     );
 
