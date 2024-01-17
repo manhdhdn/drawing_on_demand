@@ -34,13 +34,12 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Add Payment Method',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           height: context.height(),
           padding: const EdgeInsets.only(
@@ -92,22 +91,17 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
                             width: 40,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage(imageList[i]),
-                                  fit: BoxFit.cover),
+                              image: DecorationImage(image: AssetImage(imageList[i]), fit: BoxFit.cover),
                             ),
                           ),
                           title: Text(
                             accList[i],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: kTextStyle.copyWith(
-                                color: kNeutralColor,
-                                fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           trailing: Container(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 10, bottom: 10),
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6.0),
@@ -119,8 +113,7 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
                                 'Add',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: kTextStyle.copyWith(
-                                    color: kWhite, fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),

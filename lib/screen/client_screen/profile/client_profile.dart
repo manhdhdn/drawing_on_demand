@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../common/profile/help_and_support.dart';
 import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
@@ -61,13 +62,13 @@ class _ClientProfileState extends State<ClientProfile> {
                 color: kNeutralColor,
                 fontWeight: FontWeight.bold,
               ),
-              maxLines: 1,
+              maxLines: 2,
             ),
-            subtitle: Text(
-              AppLocalizations.of(context)!.iAmACustomer,
-              style: kTextStyle.copyWith(color: kLightNeutralColor),
-              maxLines: 1,
-            ),
+            // subtitle: Text(
+            //   AppLocalizations.of(context)!.iAmACustomer,
+            //   style: kTextStyle.copyWith(color: kLightNeutralColor),
+            //   maxLines: 1,
+            // ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -91,7 +92,9 @@ class _ClientProfileState extends State<ClientProfile> {
                 ),
                 const SizedBox(width: 9.0),
                 GestureDetector(
-                  onTap: () => const ClientNotification().launch(context),
+                  onTap: () {
+                    onNotification();
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
@@ -158,7 +161,9 @@ class _ClientProfileState extends State<ClientProfile> {
                     },
                   ),
                   ListTile(
-                    onTap: () => const ClientDashBoard().launch(context),
+                    onTap: () {
+                      onDashboard();
+                    },
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
                     contentPadding: const EdgeInsets.only(bottom: 15),
@@ -184,70 +189,10 @@ class _ClientProfileState extends State<ClientProfile> {
                       color: kLightNeutralColor,
                     ),
                   ),
-                  // Theme(
-                  //   data: ThemeData(dividerColor: Colors.transparent),
-                  //   child: ExpansionTile(
-                  //     childrenPadding: EdgeInsets.zero,
-                  //     tilePadding: const EdgeInsets.only(bottom: 10),
-                  //     collapsedIconColor: kLightNeutralColor,
-                  //     iconColor: kLightNeutralColor,
-                  //     title: Text(
-                  //       'Deposit',
-                  //       style: kTextStyle.copyWith(color: kNeutralColor),
-                  //     ),
-                  //     leading: Container(
-                  //       padding: const EdgeInsets.all(10.0),
-                  //       decoration: const BoxDecoration(
-                  //         shape: BoxShape.circle,
-                  //         color: Color(0xFFFFEFE0),
-                  //       ),
-                  //       child: const Icon(
-                  //         IconlyBold.wallet,
-                  //         color: Color(0xFFFF7A00),
-                  //       ),
-                  //     ),
-                  //     trailing: const Icon(
-                  //       FeatherIcons.chevronDown,
-                  //       color: kLightNeutralColor,
-                  //     ),
-                  //     children: [
-                  //       ListTile(
-                  //         visualDensity: const VisualDensity(vertical: -3),
-                  //         horizontalTitleGap: 10,
-                  //         contentPadding: const EdgeInsets.only(left: 60),
-                  //         title: Text(
-                  //           'Add Deposit',
-                  //           overflow: TextOverflow.ellipsis,
-                  //           maxLines: 1,
-                  //           style: kTextStyle.copyWith(color: kNeutralColor),
-                  //         ),
-                  //         trailing: const Icon(
-                  //           FeatherIcons.chevronRight,
-                  //           color: kLightNeutralColor,
-                  //         ),
-                  //         onTap: () => const AddDeposit().launch(context),
-                  //       ),
-                  //       ListTile(
-                  //         onTap: () => const DepositHistory().launch(context),
-                  //         visualDensity: const VisualDensity(vertical: -3),
-                  //         horizontalTitleGap: 10,
-                  //         contentPadding: const EdgeInsets.only(left: 60),
-                  //         title: Text(
-                  //           'Deposit History',
-                  //           overflow: TextOverflow.ellipsis,
-                  //           maxLines: 1,
-                  //           style: kTextStyle.copyWith(color: kNeutralColor),
-                  //         ),
-                  //         trailing: const Icon(
-                  //           FeatherIcons.chevronRight,
-                  //           color: kLightNeutralColor,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   // ListTile(
-                  //   onTap: () => const AddPaymentMethod().launch(context),
+                  //   onTap: () {
+                  //     onTransaction();
+                  //   },
                   //   visualDensity: const VisualDensity(vertical: -3),
                   //   horizontalTitleGap: 10,
                   //   contentPadding: const EdgeInsets.only(bottom: 12),
@@ -263,61 +208,7 @@ class _ClientProfileState extends State<ClientProfile> {
                   //     ),
                   //   ),
                   //   title: Text(
-                  //     'Add Payment method',
-                  //     overflow: TextOverflow.ellipsis,
-                  //     maxLines: 1,
-                  //     style: kTextStyle.copyWith(color: kNeutralColor),
-                  //   ),
-                  //   trailing: const Icon(
-                  //     FeatherIcons.chevronRight,
-                  //     color: kLightNeutralColor,
-                  //   ),
-                  // ),
-                  ListTile(
-                    onTap: () => const ClientTransaction().launch(context),
-                    visualDensity: const VisualDensity(vertical: -3),
-                    horizontalTitleGap: 10,
-                    contentPadding: const EdgeInsets.only(bottom: 12),
-                    leading: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFFFE5E3),
-                      ),
-                      child: const Icon(
-                        IconlyBold.ticketStar,
-                        color: Color(0xFFFF3B30),
-                      ),
-                    ),
-                    title: Text(
-                      AppLocalizations.of(context)!.transaction,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: kTextStyle.copyWith(color: kNeutralColor),
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronRight,
-                      color: kLightNeutralColor,
-                    ),
-                  ),
-                  // ListTile(
-                  //   onTap: () => const ClientFavList().launch(context),
-                  //   visualDensity: const VisualDensity(vertical: -3),
-                  //   horizontalTitleGap: 10,
-                  //   contentPadding: const EdgeInsets.only(bottom: 15),
-                  //   leading: Container(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     decoration: const BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       color: Color(0xFFE8E1FF),
-                  //     ),
-                  //     child: const Icon(
-                  //       IconlyBold.heart,
-                  //       color: Color(0xFF7E5BFF),
-                  //     ),
-                  //   ),
-                  //   title: Text(
-                  //     'Favorite',
+                  //     AppLocalizations.of(context)!.transaction,
                   //     overflow: TextOverflow.ellipsis,
                   //     maxLines: 1,
                   //     style: kTextStyle.copyWith(color: kNeutralColor),
@@ -383,33 +274,6 @@ class _ClientProfileState extends State<ClientProfile> {
                       color: kLightNeutralColor,
                     ),
                   ),
-                  // ListTile(
-                  //   onTap: () => const ClientInvite().launch(context),
-                  //   visualDensity: const VisualDensity(vertical: -3),
-                  //   horizontalTitleGap: 10,
-                  //   contentPadding: const EdgeInsets.only(bottom: 15),
-                  //   leading: Container(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     decoration: const BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       color: Color(0xFFE2EED8),
-                  //     ),
-                  //     child: const Icon(
-                  //       IconlyBold.addUser,
-                  //       color: kPrimaryColor,
-                  //     ),
-                  //   ),
-                  //   title: Text(
-                  //     'Invite Friends',
-                  //     overflow: TextOverflow.ellipsis,
-                  //     maxLines: 1,
-                  //     style: kTextStyle.copyWith(color: kNeutralColor),
-                  //   ),
-                  //   trailing: const Icon(
-                  //     FeatherIcons.chevronRight,
-                  //     color: kLightNeutralColor,
-                  //   ),
-                  // ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
@@ -435,6 +299,9 @@ class _ClientProfileState extends State<ClientProfile> {
                       FeatherIcons.chevronRight,
                       color: kLightNeutralColor,
                     ),
+                    onTap: () {
+                      onHelpSupport();
+                    },
                   ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: -3),
@@ -478,12 +345,28 @@ class _ClientProfileState extends State<ClientProfile> {
     context.goNamed(CartRoute.name);
   }
 
+  void onNotification() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+  }
+
   void onProfile() {
     DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfileDetails()) : context.goNamed(ProfileDetailRoute.name);
   }
 
+  void onDashboard() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientDashBoard()) : const ClientDashBoard().launch(context);
+  }
+
+  void onTransaction() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientTransaction()) : const ClientTransaction().launch(context);
+  }
+
   void onSetting() {
     DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
+  }
+
+  void onHelpSupport() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const HelpAndSupport()) : const HelpAndSupport().launch(context);
   }
 
   void onLogout() async {

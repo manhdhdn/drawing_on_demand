@@ -23,13 +23,12 @@ class _SellerNotificationState extends State<SellerNotification> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Notifications',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -49,8 +48,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                   contentPadding: EdgeInsets.zero,
                   leading: Container(
                     padding: const EdgeInsets.all(10.0),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: kDarkWhite),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: kDarkWhite),
                     child: const Icon(FeatherIcons.bell),
                   ),
                   title: Text(
@@ -87,10 +85,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -100,8 +95,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -117,8 +111,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                             '2 min ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                         ListTile(
@@ -134,10 +127,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -147,8 +137,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -164,8 +153,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                             '7 min ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                         ListTile(
@@ -181,10 +169,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -194,8 +179,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -211,8 +195,7 @@ class _SellerNotificationState extends State<SellerNotification> {
                             '1 day ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                       ],

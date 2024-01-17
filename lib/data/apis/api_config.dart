@@ -54,5 +54,6 @@ class ApiConfig {
     'ward': '/master-data/ward',
     'fee': '/v2/shipping-order/fee',
     'create': '/v2/shipping-order/create',
+    'detail': '/v2/shipping-order/detail',
   };
 }

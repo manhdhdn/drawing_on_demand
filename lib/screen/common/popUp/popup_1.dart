@@ -4,6 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -280,7 +281,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
             Row(
               children: [
                 Text(
-                  'Select Image',
+                  AppLocalizations.of(context)!.selectImage,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -307,7 +308,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        'Photo Gallery',
+                        AppLocalizations.of(context)!.gallery,
                         style: kTextStyle.copyWith(color: kLightNeutralColor),
                       ),
                     ],
@@ -327,7 +328,7 @@ class _ImportImagePopUpState extends State<ImportImagePopUp> {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        'Take Photo',
+                        AppLocalizations.of(context)!.takePhoto,
                         style: kTextStyle.copyWith(color: kLightNeutralColor),
                       ),
                     ],
@@ -393,12 +394,12 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'Congratulations!',
+              AppLocalizations.of(context)!.congratulations,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Your profile is successfully completed\nVerify your email address to get started.',
+              '${AppLocalizations.of(context)!.profileCompleted}\n${AppLocalizations.of(context)!.verifyEmailAddress}',
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.center,
             ),
@@ -406,7 +407,7 @@ class _SaveProfilePopUpState extends State<SaveProfilePopUp> {
             Button(
               containerBg: kPrimaryColor,
               borderColor: Colors.transparent,
-              buttonText: 'Done',
+              buttonText: AppLocalizations.of(context)!.done,
               textColor: kWhite,
               onPressed: () {
                 setState(() {
@@ -697,7 +698,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
               Row(
                 children: [
                   Text(
-                    'Why are you Cancel Order?',
+                    AppLocalizations.of(context)!.whyCancelOrder,
                     style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
@@ -719,9 +720,9 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 textInputAction: TextInputAction.next,
                 maxLength: 300,
                 decoration: kInputDecoration.copyWith(
-                  labelText: 'Enter Reason',
+                  labelText: AppLocalizations.of(context)!.enterReason,
                   labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                  hintText: 'Describe why you want to cancel the order',
+                  hintText: AppLocalizations.of(context)!.descReason,
                   hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   focusColor: kNeutralColor,
@@ -730,7 +731,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 controller: reasonController,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
-                    return 'Please enter a reason';
+                    return AppLocalizations.of(context)!.pleaseEnterReason;
                   }
 
                   return null;
@@ -743,7 +744,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                     child: Button(
                       containerBg: kWhite,
                       borderColor: Colors.red,
-                      buttonText: 'Cancel',
+                      buttonText: AppLocalizations.of(context)!.cancel,
                       textColor: Colors.red,
                       onPressed: () {
                         finish(context);
@@ -754,7 +755,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                     child: Button(
                       containerBg: kPrimaryColor,
                       borderColor: Colors.transparent,
-                      buttonText: 'Submit',
+                      buttonText: AppLocalizations.of(context)!.submit,
                       textColor: kWhite,
                       onPressed: () {
                         onCancelOrder();
@@ -802,7 +803,8 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
       // ignore: use_build_context_synchronously
       context.goNamed(OrderRoute.name);
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Cancel order failed');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.cancelOrderFailed);
     }
   }
 }
@@ -933,21 +935,21 @@ class _ReviewSubmittedPopUpState extends State<ReviewSubmittedPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Successfully',
+              AppLocalizations.of(context)!.successfully,
               maxLines: 1,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Thank you so much, you\'ve just publish your review',
+              AppLocalizations.of(context)!.thankyou,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 20.0),
             ButtonGlobalWithoutIcon(
-                buttontext: 'Got it!',
+                buttontext: AppLocalizations.of(context)!.gotIt,
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(30.0),

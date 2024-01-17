@@ -1,6 +1,7 @@
 import 'package:flutter_guid/flutter_guid.dart';
 
 import 'artwork.dart';
+import 'handoveritem.dart';
 
 class OrderDetails {
   int? count;
@@ -28,6 +29,7 @@ class OrderDetail {
   Guid? artworkId;
   Guid? orderId;
   Artwork? artwork;
+  HandOverItem? handOverItem;
 
   OrderDetail({
     this.id,
@@ -45,8 +47,8 @@ class OrderDetail {
     fee = double.tryParse(json['Fee'].toString());
     artworkId = Guid(json['ArtworkId']);
     orderId = Guid(json['OrderId']);
-    artwork =
-        json['Artwork'] != null ? Artwork.fromJson(json['Artwork']) : null;
+    artwork = json['Artwork'] != null ? Artwork.fromJson(json['Artwork']) : null;
+    handOverItem = json['HandOverItem'] != null ? HandOverItem.fromJson(json['HandOverItem']) : null;
   }
 
   Map<String, dynamic> toJson() {

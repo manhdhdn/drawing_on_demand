@@ -33,13 +33,12 @@ class _ClientInviteState extends State<ClientInvite> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Invite',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 10),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,
@@ -64,18 +63,13 @@ class _ClientInviteState extends State<ClientInvite> {
                   width: 120,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage('images/refer.png'),
-                        fit: BoxFit.cover),
+                    image: DecorationImage(image: AssetImage('images/refer.png'), fit: BoxFit.cover),
                   ),
                 ),
                 const SizedBox(height: 30.0),
                 Text(
                   'Refer a friend',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
@@ -104,9 +98,7 @@ class _ClientInviteState extends State<ClientInvite> {
                           children: [
                             Text(
                               'AHDJAEL2021RV1',
-                              style: kTextStyle.copyWith(
-                                  color: kSubTitleColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kSubTitleColor, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ],

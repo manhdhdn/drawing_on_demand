@@ -69,8 +69,7 @@ class _AddDepositState extends State<AddDeposit> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Add Deposit',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -87,7 +86,7 @@ class _AddDepositState extends State<AddDeposit> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           width: context.width(),
@@ -110,8 +109,7 @@ class _AddDepositState extends State<AddDeposit> {
                         borderRadius: BorderRadius.all(
                           Radius.circular(8.0),
                         ),
-                        borderSide:
-                            BorderSide(color: kBorderColorTextField, width: 2),
+                        borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                       ),
                       contentPadding: const EdgeInsets.all(7.0),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -150,11 +148,9 @@ class _AddDepositState extends State<AddDeposit> {
                             contentPadding: const EdgeInsets.all(6.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Currency',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getCurrency()),
+                          child: DropdownButtonHideUnderline(child: getCurrency()),
                         );
                       },
                     ),
@@ -187,16 +183,14 @@ class _AddDepositState extends State<AddDeposit> {
                       flex: 2,
                       child: Text(
                         'Total Payable',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       )),
                   const Expanded(flex: 1, child: Text(':')),
                   Expanded(
                     flex: 2,
                     child: Text(
                       '5010 USD',
-                      style: kTextStyle.copyWith(
-                          color: kSubTitleColor, fontWeight: FontWeight.bold),
+                      style: kTextStyle.copyWith(color: kSubTitleColor, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

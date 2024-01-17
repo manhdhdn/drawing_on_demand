@@ -66,14 +66,14 @@ class _ProcessingPopUpState extends State<ProcessingPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'We’re processing\nyour Order',
+              '${AppLocalizations.of(context)!.processing}\n${AppLocalizations.of(context)!.yourOrder}',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Stay tuned...',
+              AppLocalizations.of(context)!.stayTuned,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -128,14 +128,14 @@ class _FailedPopUpState extends State<FailedPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your payment was\nnot successful',
+              '${AppLocalizations.of(context)!.paymentWas}\n${AppLocalizations.of(context)!.notSuccess}',
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Try again...',
+              AppLocalizations.of(context)!.tryAgain,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
@@ -301,7 +301,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Are You Sure Cancel Your\nJob Post!',
+                  '${AppLocalizations.of(context)!.areCancel}\n${AppLocalizations.of(context)!.jobPosts}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -320,7 +320,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'This action will hide your requirement from artist. Do you want to continue?',
+              AppLocalizations.of(context)!.thisAction,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.start,
             ),
@@ -331,7 +331,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                   child: Button(
                     containerBg: kWhite,
                     borderColor: redColor,
-                    buttonText: 'No',
+                    buttonText: AppLocalizations.of(context)!.no,
                     textColor: Colors.red,
                     onPressed: () {
                       onNo();
@@ -342,7 +342,7 @@ class _CancelJobPopUpState extends State<CancelJobPopUp> {
                   child: Button(
                     containerBg: kPrimaryColor,
                     borderColor: Colors.transparent,
-                    buttonText: 'Yes',
+                    buttonText: AppLocalizations.of(context)!.yes,
                     textColor: kWhite,
                     onPressed: () {
                       setState(() {
@@ -411,7 +411,7 @@ class _AcceptProposalPopUpState extends State<AcceptProposalPopUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Are You Sure Accept\nThis Proposal!',
+                  '${AppLocalizations.of(context)!.areAccept}\n${AppLocalizations.of(context)!.thisProposal}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -430,7 +430,7 @@ class _AcceptProposalPopUpState extends State<AcceptProposalPopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'This action will be permanent and also create an order. Do you want to continue?',
+              AppLocalizations.of(context)!.actionAccept,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.start,
             ),
@@ -441,7 +441,7 @@ class _AcceptProposalPopUpState extends State<AcceptProposalPopUp> {
                   child: Button(
                     containerBg: kWhite,
                     borderColor: redColor,
-                    buttonText: 'No',
+                    buttonText: AppLocalizations.of(context)!.no,
                     textColor: Colors.red,
                     onPressed: () {
                       onNo();
@@ -452,7 +452,7 @@ class _AcceptProposalPopUpState extends State<AcceptProposalPopUp> {
                   child: Button(
                     containerBg: kPrimaryColor,
                     borderColor: Colors.transparent,
-                    buttonText: 'Yes',
+                    buttonText: AppLocalizations.of(context)!.yes,
                     textColor: kWhite,
                     onPressed: () {
                       setState(() {
@@ -504,7 +504,7 @@ class _RejectProposalPopUpState extends State<RejectProposalPopUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Are You Sure Reject\nThis Proposal!',
+                  '${AppLocalizations.of(context)!.areReject}\n${AppLocalizations.of(context)!.thisProposal}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -523,7 +523,7 @@ class _RejectProposalPopUpState extends State<RejectProposalPopUp> {
             ),
             const SizedBox(height: 15.0),
             Text(
-              'This action will be permanent. Do you want to continue?',
+              AppLocalizations.of(context)!.actionReject,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               textAlign: TextAlign.start,
             ),
@@ -534,7 +534,7 @@ class _RejectProposalPopUpState extends State<RejectProposalPopUp> {
                   child: Button(
                     containerBg: kWhite,
                     borderColor: redColor,
-                    buttonText: 'No',
+                    buttonText: AppLocalizations.of(context)!.no,
                     textColor: Colors.red,
                     onPressed: () {
                       onNo();
@@ -545,7 +545,7 @@ class _RejectProposalPopUpState extends State<RejectProposalPopUp> {
                   child: Button(
                     containerBg: kPrimaryColor,
                     borderColor: Colors.transparent,
-                    buttonText: 'Yes',
+                    buttonText: AppLocalizations.of(context)!.yes,
                     textColor: kWhite,
                     onPressed: () {
                       setState(() {
@@ -629,7 +629,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
             Row(
               children: [
                 Text(
-                  'Choose Requirement',
+                  AppLocalizations.of(context)!.chooseRequirement,
                   style: kTextStyle.copyWith(
                     color: kNeutralColor,
                     fontWeight: FontWeight.bold,
@@ -657,7 +657,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
                     ),
                     contentPadding: const EdgeInsets.all(7.0),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelText: 'Requirement',
+                    labelText: AppLocalizations.of(context)!.requirement2,
                     labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   child: DropdownButtonHideUnderline(child: getRequirement()),
@@ -671,7 +671,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
                   child: Button(
                     containerBg: kWhite,
                     borderColor: Colors.red,
-                    buttonText: 'Cancel',
+                    buttonText: AppLocalizations.of(context)!.cancel,
                     textColor: Colors.red,
                     onPressed: () {
                       onCancel();
@@ -682,7 +682,7 @@ class _InvitePopUpState extends State<InvitePopUp> {
                   child: Button(
                     containerBg: kPrimaryColor,
                     borderColor: Colors.transparent,
-                    buttonText: 'Invite',
+                    buttonText: AppLocalizations.of(context)!.invite,
                     textColor: kWhite,
                     onPressed: () {
                       onInvite();
@@ -746,7 +746,7 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
             Row(
               children: [
                 Text(
-                  'Invite Successful',
+                  AppLocalizations.of(context)!.inviteSuccess,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -776,14 +776,14 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your invite has been sent successfully',
+              AppLocalizations.of(context)!.inviteHasSent,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Please wait for Artist\'s response!',
+              AppLocalizations.of(context)!.pleaseWaitResponse,
               maxLines: 1,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -803,7 +803,7 @@ class _InviteSuccessPopUpState extends State<InviteSuccessPopUp> {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
-                    'Got it!',
+                    AppLocalizations.of(context)!.gotIt,
                     style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
@@ -838,7 +838,7 @@ class _AcceptProposalSuccessPopUpState extends State<AcceptProposalSuccessPopUp>
             Row(
               children: [
                 Text(
-                  'Accept Successful',
+                  AppLocalizations.of(context)!.acceptSuccess,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -868,14 +868,14 @@ class _AcceptProposalSuccessPopUpState extends State<AcceptProposalSuccessPopUp>
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Your order has also been created',
+              AppLocalizations.of(context)!.orderHasCreated,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'You can make a deposit now or after the Artist creates the timeline\nTake your time to contact with Artist',
+              '${AppLocalizations.of(context)!.makeDeposit}\n${AppLocalizations.of(context)!.takeContactArtist}',
               maxLines: 3,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -895,7 +895,7 @@ class _AcceptProposalSuccessPopUpState extends State<AcceptProposalSuccessPopUp>
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
-                    'Got it!',
+                    AppLocalizations.of(context)!.gotIt,
                     style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
@@ -930,7 +930,7 @@ class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp>
             Row(
               children: [
                 Text(
-                  'Create Timeline Successful',
+                  AppLocalizations.of(context)!.createTimelineSuccess,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -960,14 +960,14 @@ class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp>
             ),
             const SizedBox(height: 20.0),
             Text(
-              'The timeline for your order has been created',
+              AppLocalizations.of(context)!.timlineHasCreated,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Please wait for Customer make a deposit\nThen working and update the timeline with images',
+              '${AppLocalizations.of(context)!.pleaseWaitCustomer}\n${AppLocalizations.of(context)!.working}',
               maxLines: 3,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -987,7 +987,7 @@ class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp>
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
-                    'Got it!',
+                    AppLocalizations.of(context)!.gotIt,
                     style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
@@ -1052,7 +1052,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                   Row(
                     children: [
                       Text(
-                        'Add Package Details for Delivery',
+                        AppLocalizations.of(context)!.addDelivery,
                         style: kTextStyle.copyWith(
                           color: kNeutralColor,
                           fontWeight: FontWeight.bold,
@@ -1082,7 +1082,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                 const SizedBox(height: 5.0),
                                 RichText(
                                   text: TextSpan(
-                                    text: 'Pieces: ',
+                                    text: '${AppLocalizations.of(context)!.pieces}: ',
                                     style: kTextStyle.copyWith(
                                       color: index == 0 ? kSubTitleColor : kWhite,
                                       fontWeight: FontWeight.bold,
@@ -1135,7 +1135,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                         cursorColor: kNeutralColor,
                                         textInputAction: TextInputAction.next,
                                         decoration: kInputDecoration.copyWith(
-                                          labelText: 'Weight',
+                                          labelText: AppLocalizations.of(context)!.weight,
                                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                           hintText: 'g',
                                           hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -1156,11 +1156,11 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                         autovalidateMode: AutovalidateMode.onUserInteraction,
                                         validator: (value) {
                                           if (!isFloatNumber(value, isRequired: true)) {
-                                            return 'Number is required';
+                                            return AppLocalizations.of(context)!.numberRequire;
                                           }
 
                                           if (int.tryParse(value!)! < 100) {
-                                            return 'Minimum weight is\n100g';
+                                            return '${AppLocalizations.of(context)!.minimumWeight}\n100g';
                                           }
 
                                           return null;
@@ -1174,7 +1174,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                         cursorColor: kNeutralColor,
                                         textInputAction: TextInputAction.next,
                                         decoration: kInputDecoration.copyWith(
-                                          labelText: 'Height',
+                                          labelText: AppLocalizations.of(context)!.height,
                                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                           hintText: 'cm',
                                           hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -1195,11 +1195,11 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                                         autovalidateMode: AutovalidateMode.onUserInteraction,
                                         validator: (value) {
                                           if (!isFloatNumber(value, isRequired: true)) {
-                                            return 'Number is required';
+                                            return AppLocalizations.of(context)!.numberRequire;
                                           }
 
                                           if (int.tryParse(value!)! < 1) {
-                                            return 'Minimum height \nis 1 cm';
+                                            return '${AppLocalizations.of(context)!.minimumHeight} \n${AppLocalizations.of(context)!.is1Cm}';
                                           }
 
                                           return null;
@@ -1222,7 +1222,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                         child: Button(
                           containerBg: kWhite,
                           borderColor: Colors.red,
-                          buttonText: 'Cancel',
+                          buttonText: AppLocalizations.of(context)!.cancel,
                           textColor: Colors.red,
                           onPressed: () {
                             finish(context);
@@ -1233,7 +1233,7 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
                         child: Button(
                           containerBg: kPrimaryColor,
                           borderColor: Colors.transparent,
-                          buttonText: 'Deliver',
+                          buttonText: AppLocalizations.of(context)!.deliver,
                           textColor: kWhite,
                           onPressed: () {
                             onDeliver();
@@ -1323,7 +1323,7 @@ class _VerifyEmailSuccessPopUpState extends State<VerifyEmailSuccessPopUp> {
             Row(
               children: [
                 Text(
-                  'Email Verified Successful',
+                  AppLocalizations.of(context)!.emailVerifiedSuccess,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -1353,14 +1353,14 @@ class _VerifyEmailSuccessPopUpState extends State<VerifyEmailSuccessPopUp> {
             ),
             const SizedBox(height: 20.0),
             Text(
-              'Thank you for verifying your email!',
+              AppLocalizations.of(context)!.thankYouVerify,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Please login to continue',
+              AppLocalizations.of(context)!.pleaseLogin,
               maxLines: 1,
               textAlign: TextAlign.center,
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
@@ -1380,7 +1380,7 @@ class _VerifyEmailSuccessPopUpState extends State<VerifyEmailSuccessPopUp> {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
                 child: Center(
                   child: Text(
-                    'Got it!',
+                    AppLocalizations.of(context)!.gotIt,
                     style: kTextStyle.copyWith(color: kWhite, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),

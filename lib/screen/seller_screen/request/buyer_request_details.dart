@@ -43,8 +43,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           AppLocalizations.of(context)!.details,
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -63,7 +62,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -110,24 +109,18 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                    image: NetworkImage(snapshot.data!
-                                            .createdByNavigation!.avatar ??
-                                        defaultImage),
+                                    image: NetworkImage(snapshot.data!.createdByNavigation!.avatar ?? defaultImage),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               title: Text(
                                 snapshot.data!.createdByNavigation!.name!,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                DateFormat('dd-MM-yyyy')
-                                    .format(snapshot.data!.createdDate!),
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                DateFormat('dd-MM-yyyy').format(snapshot.data!.createdDate!),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                             ),
                             const Divider(
@@ -159,8 +152,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.category!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -168,8 +160,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.material}: ',
+                                text: '${AppLocalizations.of(context)!.material}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -177,8 +168,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.material!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -186,8 +176,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.surface}: ',
+                                text: '${AppLocalizations.of(context)!.surface}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -195,8 +184,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.surface!.name,
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -205,9 +193,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: snapshot.data!.sizes!.isNotEmpty
-                                  ? snapshot.data!.sizes!.length
-                                  : 1,
+                              itemCount: snapshot.data!.sizes!.isNotEmpty ? snapshot.data!.sizes!.length : 1,
                               itemBuilder: (context, index) {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,29 +201,20 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                     const SizedBox(height: 5.0),
                                     RichText(
                                       text: TextSpan(
-                                        text:
-                                            '${AppLocalizations.of(context)!.pieces}: ',
+                                        text: '${AppLocalizations.of(context)!.pieces}: ',
                                         style: kTextStyle.copyWith(
-                                          color: index == 0
-                                              ? kSubTitleColor
-                                              : kWhite,
+                                          color: index == 0 ? kSubTitleColor : kWhite,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         children: [
                                           TextSpan(
-                                            text: snapshot.data!.pieces
-                                                .toString(),
+                                            text: snapshot.data!.pieces.toString(),
                                             style: kTextStyle.copyWith(
-                                              color: index == 0
-                                                  ? kNeutralColor
-                                                  : kWhite,
+                                              color: index == 0 ? kNeutralColor : kWhite,
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: snapshot
-                                                        .data!.sizes!.isNotEmpty
-                                                    ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
-                                                    : null,
+                                                text: snapshot.data!.sizes!.isNotEmpty ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : null,
                                                 style: kTextStyle.copyWith(
                                                   color: kNeutralColor,
                                                   fontWeight: FontWeight.normal,
@@ -255,8 +232,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.quantity}: ',
+                                text: '${AppLocalizations.of(context)!.quantity}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -264,8 +240,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 children: [
                                   TextSpan(
                                     text: snapshot.data!.quantity.toString(),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -273,8 +248,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.budget}: ',
+                                text: '${AppLocalizations.of(context)!.budget}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -284,8 +258,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                     text: NumberFormat.simpleCurrency(
                                       locale: 'vi-VN',
                                     ).format(snapshot.data!.budget),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -293,24 +266,20 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.connectRequire}: ',
+                                text: '${AppLocalizations.of(context)!.connectRequire}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: calculateConnect(
-                                        snapshot.data!.budget!),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    text: calculateConnect(snapshot.data!.budget!),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10.0)
-                                .visible(snapshot.data!.image != null),
+                            const SizedBox(height: 10.0).visible(snapshot.data!.image != null),
                             Text(
                               AppLocalizations.of(context)!.attachFile,
                               style: kTextStyle.copyWith(
@@ -318,8 +287,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ).visible(snapshot.data!.image != null),
-                            const SizedBox(height: 8.0)
-                                .visible(snapshot.data!.image != null),
+                            const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [

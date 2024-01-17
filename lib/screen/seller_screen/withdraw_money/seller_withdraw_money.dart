@@ -71,7 +71,9 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: ButtonGlobalWithoutIcon(
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(color: kWhite),
+        child: ButtonGlobalWithoutIcon(
           buttontext: 'Submit',
           buttonDecoration: kButtonDecoration.copyWith(
             color: kPrimaryColor,
@@ -80,9 +82,11 @@ class _SellerWithdrawMoneyState extends State<SellerWithdrawMoney> {
           onPressed: () {
             withdrawAmountPopUp();
           },
-          buttonTextColor: kWhite),
+          buttonTextColor: kWhite,
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,

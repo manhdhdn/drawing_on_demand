@@ -22,12 +22,11 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'All Categories',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
           decoration: const BoxDecoration(
@@ -54,37 +53,30 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
                           border: Border.all(color: kBorderColorTextField),
                         ),
                         child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(dividerColor: Colors.transparent),
+                          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                           child: ExpansionTile(
                             initiallyExpanded: i == 0 ? true : false,
-                            tilePadding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
+                            tilePadding: const EdgeInsets.only(left: 10.0, right: 10.0),
                             childrenPadding: EdgeInsets.zero,
                             leading: Container(
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: AssetImage(catIcon[i]),
-                                    fit: BoxFit.cover),
+                                image: DecorationImage(image: AssetImage(catIcon[i]), fit: BoxFit.cover),
                               ),
                             ),
                             title: Text(
                               catName[i],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
                               'Related all categories',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: kTextStyle.copyWith(
-                                  color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(color: kLightNeutralColor),
                             ),
                             trailing: const Icon(
                               FeatherIcons.chevronDown,
@@ -99,17 +91,14 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
                                     color: kBorderColorTextField,
                                   ),
                                   ListTile(
-                                    visualDensity:
-                                        const VisualDensity(vertical: -4),
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
+                                    visualDensity: const VisualDensity(vertical: -4),
+                                    contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                     horizontalTitleGap: 10,
                                     title: Text(
                                       'Logo Design',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
                                     trailing: GestureDetector(
                                       // onTap: () => const SellerNotification().launch(context),
@@ -124,17 +113,14 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
                                     color: kBorderColorTextField,
                                   ),
                                   ListTile(
-                                    visualDensity:
-                                        const VisualDensity(vertical: -4),
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
+                                    visualDensity: const VisualDensity(vertical: -4),
+                                    contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                     horizontalTitleGap: 10,
                                     title: Text(
                                       'Brand Style Guides',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
                                     trailing: GestureDetector(
                                       // onTap: () => const SellerNotification().launch(context),
@@ -149,17 +135,14 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
                                     color: kBorderColorTextField,
                                   ),
                                   ListTile(
-                                    visualDensity:
-                                        const VisualDensity(vertical: -4),
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
+                                    visualDensity: const VisualDensity(vertical: -4),
+                                    contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                     horizontalTitleGap: 10,
                                     title: Text(
                                       'Fonts & Typography',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
                                     trailing: GestureDetector(
                                       // onTap: () => const SellerNotification().launch(context),
@@ -174,17 +157,14 @@ class _ClientAllCategoriesState extends State<ClientAllCategories> {
                                     color: kBorderColorTextField,
                                   ),
                                   ListTile(
-                                    visualDensity:
-                                        const VisualDensity(vertical: -4),
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
+                                    visualDensity: const VisualDensity(vertical: -4),
+                                    contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                     horizontalTitleGap: 10,
                                     title: Text(
                                       'Business Cards & Stationery',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
                                     trailing: GestureDetector(
                                       // onTap: () => const SellerNotification().launch(context),

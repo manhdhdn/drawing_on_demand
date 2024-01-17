@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 10),
           child: Container(
             padding: const EdgeInsets.only(
               left: 15.0,
@@ -140,7 +140,9 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const Policy().launch(context),
+                  onTap: () {
+                    onPrivacyPolicy();
+                  },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -163,7 +165,9 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => const AboutUs().launch(context),
+                  onTap: () {
+                    onTermsOfService();
+                  },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -193,7 +197,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  onPushNotification(bool value) {
+  void onPushNotification(bool value) {
     setState(() {
       isNotificationOn = value;
     });
@@ -201,11 +205,19 @@ class _SettingsState extends State<Settings> {
     PrefUtils().setPushNotifications(value);
   }
 
-  onLanguage() {
+  void onLanguage() {
     DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Language()) : context.goNamed(LanguageRoute.name);
   }
 
-  refresh() {
+  void onPrivacyPolicy() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Policy()) : const Policy().launch(context);
+  }
+
+  void onTermsOfService() {
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const AboutUs()) : const AboutUs().launch(context);
+  }
+
+  void refresh() {
     setState(() {
       selectedLanguage = PrefUtils().getLanguage();
     });

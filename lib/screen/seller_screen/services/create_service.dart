@@ -6,6 +6,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
@@ -54,7 +55,7 @@ class _CreateServiceState extends State<CreateService> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Artworks',
+          AppLocalizations.of(context)!.artworks,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -136,7 +137,7 @@ class _CreateServiceState extends State<CreateService> {
                           ),
                           const SizedBox(height: 20.0),
                           Text(
-                            'Nothing just yet',
+                            AppLocalizations.of(context)!.nothingJustYet,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 24.0),
                           ),
                         ],
@@ -219,7 +220,7 @@ class _CreateServiceState extends State<CreateService> {
                                         const SizedBox(height: 5.0),
                                         RichText(
                                           text: TextSpan(
-                                            text: 'Price: ',
+                                            text: '${AppLocalizations.of(context)!.price}: ',
                                             style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
                                               TextSpan(
@@ -232,7 +233,7 @@ class _CreateServiceState extends State<CreateService> {
                                         const SizedBox(height: 10.0),
                                         RichText(
                                           text: TextSpan(
-                                            text: 'In stock: ',
+                                            text: '${AppLocalizations.of(context)!.inStock}: ',
                                             style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
                                               TextSpan(
@@ -248,7 +249,7 @@ class _CreateServiceState extends State<CreateService> {
                                         const SizedBox(height: 5.0),
                                         RichText(
                                           text: TextSpan(
-                                            text: 'Status: ',
+                                            text: '${AppLocalizations.of(context)!.status}: ',
                                             style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
                                               TextSpan(

@@ -21,8 +21,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -45,8 +44,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Write a Review',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -54,16 +52,14 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
             buttontext: 'Published Review',
-            buttonDecoration: kButtonDecoration.copyWith(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(30.0)),
+            buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
             onPressed: () {
               reviewSubmittedPopUp();
             },
             buttonTextColor: kWhite),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -83,8 +79,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
                 const SizedBox(height: 15.0),
                 Text(
                   'Review your experience',
-                  style: kTextStyle.copyWith(
-                      color: kNeutralColor, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5.0),
                 Text(
@@ -109,8 +104,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
                       const SizedBox(height: 10.0),
                       Text(
                         'William Liam',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5.0),
                       Text(
@@ -136,13 +130,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
                   keyboardType: TextInputType.multiline,
                   cursorColor: kNeutralColor,
                   maxLines: 3,
-                  decoration: kInputDecoration.copyWith(
-                      labelText: 'Write a Comment',
-                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                      hintText: 'Share your experience...',
-                      hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                      focusColor: kNeutralColor,
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                  decoration: kInputDecoration.copyWith(labelText: 'Write a Comment', labelStyle: kTextStyle.copyWith(color: kNeutralColor), hintText: 'Share your experience...', hintStyle: kTextStyle.copyWith(color: kLightNeutralColor), focusColor: kNeutralColor, floatingLabelBehavior: FloatingLabelBehavior.always),
                 ),
                 const SizedBox(height: 20.0),
                 Text(

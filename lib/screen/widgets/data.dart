@@ -364,12 +364,17 @@ class DashBoardInfo extends StatelessWidget {
           const SizedBox(height: 5.0),
           Text(
             count,
-            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+              color: kNeutralColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 5.0),
           Text(
             title,
-            style: kTextStyle.copyWith(color: kSubTitleColor),
+            style: kTextStyle.copyWith(
+              color: kSubTitleColor,
+            ),
           ),
         ],
       ),

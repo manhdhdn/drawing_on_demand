@@ -21,8 +21,7 @@ class _ClientFavListState extends State<ClientFavList> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -45,13 +44,12 @@ class _ClientFavListState extends State<ClientFavList> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Favorite List',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,
@@ -170,9 +168,7 @@ class _ClientFavListState extends State<ClientFavList> {
                                       width: 190,
                                       child: Text(
                                         'Mobile UI UX design or app design',
-                                        style: kTextStyle.copyWith(
-                                            color: kNeutralColor,
-                                            fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -190,27 +186,22 @@ class _ClientFavListState extends State<ClientFavList> {
                                       const SizedBox(width: 2.0),
                                       Text(
                                         '5.0',
-                                        style: kTextStyle.copyWith(
-                                            color: kNeutralColor),
+                                        style: kTextStyle.copyWith(color: kNeutralColor),
                                       ),
                                       const SizedBox(width: 2.0),
                                       Text(
                                         '(520)',
-                                        style: kTextStyle.copyWith(
-                                            color: kLightNeutralColor),
+                                        style: kTextStyle.copyWith(color: kLightNeutralColor),
                                       ),
                                       const SizedBox(width: 40),
                                       RichText(
                                         text: TextSpan(
                                           text: 'Price: ',
-                                          style: kTextStyle.copyWith(
-                                              color: kLightNeutralColor),
+                                          style: kTextStyle.copyWith(color: kLightNeutralColor),
                                           children: [
                                             TextSpan(
                                               text: '$currencySign${30}',
-                                              style: kTextStyle.copyWith(
-                                                  color: kPrimaryColor,
-                                                  fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                             )
                                           ],
                                         ),
@@ -225,31 +216,24 @@ class _ClientFavListState extends State<ClientFavList> {
                                         width: 32,
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/profilepic2.png'),
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: AssetImage('images/profilepic2.png'), fit: BoxFit.cover),
                                         ),
                                       ),
                                       const SizedBox(width: 5.0),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'William Liam',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: kTextStyle.copyWith(
-                                                color: kNeutralColor,
-                                                fontWeight: FontWeight.bold),
+                                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             'Seller Level - 1',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
                                           ),
                                         ],
                                       ),

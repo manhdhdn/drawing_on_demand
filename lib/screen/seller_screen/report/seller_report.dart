@@ -45,8 +45,7 @@ class _SellerReportState extends State<SellerReport> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Report',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -77,7 +76,7 @@ class _SellerReportState extends State<SellerReport> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,
@@ -104,16 +103,14 @@ class _SellerReportState extends State<SellerReport> {
                           borderRadius: BorderRadius.all(
                             Radius.circular(8.0),
                           ),
-                          borderSide: BorderSide(
-                              color: kBorderColorTextField, width: 2),
+                          borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                         ),
                         contentPadding: const EdgeInsets.all(7.0),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Why do you want to report?',
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                       ),
-                      child:
-                          DropdownButtonHideUnderline(child: getReportType()),
+                      child: DropdownButtonHideUnderline(child: getReportType()),
                     );
                   },
                 ),

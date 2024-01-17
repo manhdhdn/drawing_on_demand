@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -186,7 +187,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Create New Artwork',
+          AppLocalizations.of(context)!.createNewArwork,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -222,10 +223,10 @@ class _CreateNewServiceState extends State<CreateNewService> {
                         children: [
                           Text(
                             currentIndexPage == 0
-                                ? 'Step 1 of 3'
+                                ? AppLocalizations.of(context)!.oneOf3
                                 : currentIndexPage == 1
-                                    ? 'Step 2 of 3'
-                                    : 'Step 3 of 3',
+                                    ? AppLocalizations.of(context)!.twoOf3
+                                    : AppLocalizations.of(context)!.threeOf3,
                             style: kTextStyle.copyWith(color: kNeutralColor),
                           ),
                           const SizedBox(width: 10.0),
@@ -247,7 +248,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                         children: [
                           const SizedBox(height: 20.0),
                           Text(
-                            'Overview',
+                            AppLocalizations.of(context)!.overview,
                             style: kTextStyle.copyWith(
                               color: kNeutralColor,
                               fontWeight: FontWeight.bold,
@@ -260,9 +261,9 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             textInputAction: TextInputAction.next,
                             maxLength: 60,
                             decoration: kInputDecoration.copyWith(
-                              labelText: 'Title',
+                              labelText: AppLocalizations.of(context)!.title,
                               labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                              hintText: 'Enter requirement title',
+                              hintText: AppLocalizations.of(context)!.enterRequireTitle,
                               hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                               focusColor: kNeutralColor,
                               border: const OutlineInputBorder(),
@@ -271,7 +272,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value!.trim().isEmpty) {
-                                return 'Please enter title';
+                                return AppLocalizations.of(context)!.pleaseEnterTitle;
                               }
 
                               return null;
@@ -290,7 +291,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                   ),
                                   contentPadding: const EdgeInsets.all(7.0),
                                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                                  labelText: 'Choose a Category',
+                                  labelText: AppLocalizations.of(context)!.chooseACategory,
                                   labelStyle: kTextStyle.copyWith(
                                     color: kNeutralColor,
                                     fontWeight: FontWeight.bold,
@@ -313,7 +314,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                   ),
                                   contentPadding: const EdgeInsets.all(7.0),
                                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                                  labelText: 'Choose a Material',
+                                  labelText: AppLocalizations.of(context)!.chooseAMaterial,
                                   labelStyle: kTextStyle.copyWith(
                                     color: kNeutralColor,
                                     fontWeight: FontWeight.bold,
@@ -336,7 +337,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                   ),
                                   contentPadding: const EdgeInsets.all(7.0),
                                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                                  labelText: 'Choose a Surface',
+                                  labelText: AppLocalizations.of(context)!.chooseASurface,
                                   labelStyle: kTextStyle.copyWith(
                                     color: kNeutralColor,
                                     fontWeight: FontWeight.bold,
@@ -352,12 +353,12 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             cursorColor: kNeutralColor,
                             textInputAction: TextInputAction.next,
                             decoration: kInputDecoration.copyWith(
-                              labelText: 'In Stock',
+                              labelText: AppLocalizations.of(context)!.inStock,
                               labelStyle: kTextStyle.copyWith(
                                 color: kNeutralColor,
                                 fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'Enter quantity',
+                              hintText: AppLocalizations.of(context)!.enterQuantity,
                               hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                               focusColor: kNeutralColor,
                               border: const OutlineInputBorder(),
@@ -366,15 +367,15 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (!isNumber(value, isRequired: true)) {
-                                return 'Please enter quantity (number only)';
+                                return AppLocalizations.of(context)!.pleaseEnterQuan;
                               }
 
                               if (int.parse(value!) < 1) {
-                                return 'Minimum quantity is 1';
+                                return AppLocalizations.of(context)!.minimumQuantityIs1;
                               }
 
                               if (int.parse(value) > 1000) {
-                                return 'Maximum quantity is 1000';
+                                return AppLocalizations.of(context)!.maximmQuantityIs1000;
                               }
 
                               return null;
@@ -386,9 +387,9 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             cursorColor: kNeutralColor,
                             textInputAction: TextInputAction.next,
                             decoration: kInputDecoration.copyWith(
-                              labelText: 'Price',
+                              labelText: AppLocalizations.of(context)!.price,
                               labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                              hintText: 'Enter price',
+                              hintText: AppLocalizations.of(context)!.enterPrice,
                               hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                               focusColor: kNeutralColor,
                               border: const OutlineInputBorder(),
@@ -428,11 +429,11 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (!isCurrency(value, isRequired: true)) {
-                                return 'Please enter price (number only)';
+                                return AppLocalizations.of(context)!.pleaseEnterPrice;
                               }
 
                               if (int.parse(value!.replaceAll('.', '')) < 50000) {
-                                return 'Minimum price is ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(50000)}';
+                                return '${AppLocalizations.of(context)!.minimumPrice} ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(50000)}';
                               }
 
                               return null;
@@ -446,12 +447,12 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             maxLength: 700,
                             maxLines: 3,
                             decoration: kInputDecoration.copyWith(
-                              labelText: 'Describe',
+                              labelText: AppLocalizations.of(context)!.describe,
                               labelStyle: kTextStyle.copyWith(
                                 color: kNeutralColor,
                                 fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'Enter a describe for your artwork',
+                              hintText: AppLocalizations.of(context)!.enterDescArtwork,
                               hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                               focusColor: kNeutralColor,
                               floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -461,7 +462,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value!.trim().isEmpty) {
-                                return 'Please enter description';
+                                return AppLocalizations.of(context)!.pleaseEnterDescrip;
                               }
 
                               return null;
@@ -474,7 +475,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                         children: [
                           const SizedBox(height: 20.0),
                           Text(
-                            'Delivery Package',
+                            AppLocalizations.of(context)!.deliverPack,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 20.0),
@@ -490,7 +491,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                   ),
                                   contentPadding: const EdgeInsets.all(7.0),
                                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                                  labelText: 'Pieces',
+                                  labelText: AppLocalizations.of(context)!.pieces,
                                   labelStyle: kTextStyle.copyWith(
                                     color: kNeutralColor,
                                     fontWeight: FontWeight.bold,
@@ -525,7 +526,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           cursorColor: kNeutralColor,
                                           textInputAction: TextInputAction.next,
                                           decoration: kInputDecoration.copyWith(
-                                            labelText: 'Width',
+                                            labelText: AppLocalizations.of(context)!.width,
                                             labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                             hintText: 'cm',
                                             hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -547,11 +548,11 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
                                           validator: (value) {
                                             if (!isFloatNumber(value, isRequired: true)) {
-                                              return 'Please enter width\nNumber only';
+                                              return '${AppLocalizations.of(context)!.pleaseEnterWidth}\n${AppLocalizations.of(context)!.numberOnly}';
                                             }
 
                                             if (int.tryParse(value!)! < 10) {
-                                              return 'Minimum width is 10 cm';
+                                              return AppLocalizations.of(context)!.minimumWidthIs10Cm;
                                             }
 
                                             return null;
@@ -565,7 +566,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           cursorColor: kNeutralColor,
                                           textInputAction: TextInputAction.next,
                                           decoration: kInputDecoration.copyWith(
-                                            labelText: 'Length',
+                                            labelText: AppLocalizations.of(context)!.length,
                                             labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                             hintText: 'cm',
                                             hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -587,11 +588,11 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
                                           validator: (value) {
                                             if (!isFloatNumber(value, isRequired: true)) {
-                                              return 'Please enter length\nNumber only';
+                                              return '${AppLocalizations.of(context)!.pleaseEnterLength}\n${AppLocalizations.of(context)!.numberOnly}';
                                             }
 
                                             if (int.tryParse(value!)! < 10) {
-                                              return 'Minimum length is 10 cm';
+                                              return AppLocalizations.of(context)!.minimumLengthIs10Cm;
                                             }
 
                                             return null;
@@ -616,7 +617,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           cursorColor: kNeutralColor,
                                           textInputAction: TextInputAction.next,
                                           decoration: kInputDecoration.copyWith(
-                                            labelText: 'Weight',
+                                            labelText: AppLocalizations.of(context)!.weight,
                                             labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                             hintText: 'g',
                                             hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -638,11 +639,11 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
                                           validator: (value) {
                                             if (!isFloatNumber(value, isRequired: true)) {
-                                              return 'Please enter weight\nNumber only';
+                                              return '${AppLocalizations.of(context)!.pleaseEnterWeight}\n${AppLocalizations.of(context)!.numberOnly}';
                                             }
 
                                             if (int.tryParse(value!)! < 100) {
-                                              return 'Minimum weight is 100g';
+                                              return '${AppLocalizations.of(context)!.minimumWeight} 100g';
                                             }
 
                                             return null;
@@ -656,7 +657,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           cursorColor: kNeutralColor,
                                           textInputAction: TextInputAction.next,
                                           decoration: kInputDecoration.copyWith(
-                                            labelText: 'Height',
+                                            labelText: AppLocalizations.of(context)!.height,
                                             labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                             hintText: 'cm',
                                             hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
@@ -678,11 +679,11 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                           autovalidateMode: AutovalidateMode.onUserInteraction,
                                           validator: (value) {
                                             if (!isFloatNumber(value, isRequired: true)) {
-                                              return 'Please enter height\nNumber only';
+                                              return '${AppLocalizations.of(context)!.pleaseEnterHeight}\n${AppLocalizations.of(context)!.numberOnly}';
                                             }
 
                                             if (int.tryParse(value!)! < 1) {
-                                              return 'Minimum height is 1 cm';
+                                              return '${AppLocalizations.of(context)!.minimumHeight} ${AppLocalizations.of(context)!.is1Cm}';
                                             }
 
                                             return null;
@@ -703,7 +704,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                         children: [
                           const SizedBox(height: 20.0),
                           Text(
-                            'Image (Up to 3)',
+                            AppLocalizations.of(context)!.imageUp,
                             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 15.0),
@@ -748,7 +749,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                                               ),
                                               const SizedBox(height: 10.0),
                                               Text(
-                                                ' Upload Image ',
+                                                AppLocalizations.of(context)!.uploadImage,
                                                 style: kTextStyle.copyWith(color: kSubTitleColor),
                                               ),
                                               const SizedBox(height: 10.0),
@@ -815,7 +816,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
           children: [
             Expanded(
               child: ButtonGlobalWithoutIcon(
-                buttontext: 'Back',
+                buttontext: AppLocalizations.of(context)!.back,
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: currentIndexPage > 0 ? kWhite : kLightNeutralColor,
                   borderRadius: BorderRadius.circular(30.0),
@@ -834,7 +835,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
             ),
             Expanded(
               child: ButtonGlobalWithoutIcon(
-                buttontext: currentIndexPage < 2 ? 'Next' : 'Create',
+                buttontext: currentIndexPage < 2 ? AppLocalizations.of(context)!.next : AppLocalizations.of(context)!.create,
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(30.0),
@@ -886,7 +887,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
     }
 
     if (arts.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please add at least one image');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.pleaseAddImage);
     }
 
     try {
@@ -956,7 +957,8 @@ class _CreateNewServiceState extends State<CreateNewService> {
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
-      Fluttertoast.showToast(msg: 'Create service failed');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.createServiceFailed);
     }
   }
 }

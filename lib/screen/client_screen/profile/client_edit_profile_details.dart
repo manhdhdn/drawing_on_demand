@@ -66,8 +66,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -86,8 +85,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -106,8 +104,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -130,13 +127,12 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Edit Profile',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           width: context.width(),
@@ -201,10 +197,7 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
                               'Shaidulislam',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                             ),
                             Text(
                               'shaidulislamma@gmail.com',
@@ -259,17 +252,14 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Select Language',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getLanguage()),
+                          child: DropdownButtonHideUnderline(child: getLanguage()),
                         );
                       },
                     ),
@@ -352,17 +342,14 @@ class _ClientEditProfileState extends State<ClientEditProfile> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Select Gender',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getGender()),
+                          child: DropdownButtonHideUnderline(child: getGender()),
                         );
                       },
                     ),

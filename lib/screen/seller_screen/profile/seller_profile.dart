@@ -33,7 +33,7 @@ class _SellerProfileState extends State<SellerProfile> {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: ListTile(
-          contentPadding: EdgeInsets.zero,
+          contentPadding: const EdgeInsets.only(top: 10.0),
           leading: Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: GestureDetector(
@@ -44,8 +44,7 @@ class _SellerProfileState extends State<SellerProfile> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(
-                        jsonDecode(PrefUtils().getAccount())['Avatar']),
+                    image: NetworkImage(jsonDecode(PrefUtils().getAccount())['Avatar']),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -54,8 +53,7 @@ class _SellerProfileState extends State<SellerProfile> {
           ),
           title: Text(
             jsonDecode(PrefUtils().getAccount())['Name'],
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           subtitle: RichText(
             text: TextSpan(
@@ -63,8 +61,7 @@ class _SellerProfileState extends State<SellerProfile> {
               style: kTextStyle.copyWith(color: kLightNeutralColor),
               children: [
                 TextSpan(
-                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect']
-                      .toString(),
+                  text: jsonDecode(PrefUtils().getAccount())['AvailableConnect'].toString(),
                   style: kTextStyle.copyWith(color: kNeutralColor),
                 ),
               ],
@@ -90,7 +87,7 @@ class _SellerProfileState extends State<SellerProfile> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           height: context.height(),
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
@@ -177,12 +174,10 @@ class _SellerProfileState extends State<SellerProfile> {
                           FeatherIcons.chevronRight,
                           color: kLightNeutralColor,
                         ),
-                        onTap: () =>
-                            const SellerWithdrawMoney().launch(context),
+                        onTap: () => const SellerWithdrawMoney().launch(context),
                       ),
                       ListTile(
-                        onTap: () =>
-                            const SellerWithDrawHistory().launch(context),
+                        onTap: () => const SellerWithDrawHistory().launch(context),
                         visualDensity: const VisualDensity(vertical: -3),
                         horizontalTitleGap: 10,
                         contentPadding: const EdgeInsets.only(left: 60),

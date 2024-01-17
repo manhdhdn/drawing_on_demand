@@ -211,7 +211,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             height: context.height(),
             width: context.width(),

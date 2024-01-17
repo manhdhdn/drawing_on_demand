@@ -22,8 +22,7 @@ class _AddPaypalState extends State<AddPaypal> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -46,8 +45,7 @@ class _AddPaypalState extends State<AddPaypal> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Add PayPal',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -62,7 +60,7 @@ class _AddPaypalState extends State<AddPaypal> {
           },
           buttonTextColor: kWhite),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,

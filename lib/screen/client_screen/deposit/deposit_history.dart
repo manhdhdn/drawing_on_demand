@@ -14,11 +14,7 @@ class DepositHistory extends StatefulWidget {
 
 class _DepositHistoryState extends State<DepositHistory> {
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+    final DateTime? picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -38,8 +34,7 @@ class _DepositHistoryState extends State<DepositHistory> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Add Deposit',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -56,7 +51,7 @@ class _DepositHistoryState extends State<DepositHistory> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           width: context.width(),
@@ -75,8 +70,7 @@ class _DepositHistoryState extends State<DepositHistory> {
                 children: [
                   Text(
                     'Deposit',
-                    style: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -130,14 +124,12 @@ class _DepositHistoryState extends State<DepositHistory> {
                     children: [
                       Text(
                         'PayPal',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Text(
                         '$currencySign${5000.00}',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -190,14 +182,12 @@ class _DepositHistoryState extends State<DepositHistory> {
                     children: [
                       Text(
                         'Credit or Debit Card',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Text(
                         '$currencySign${5000.00}',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -250,14 +240,12 @@ class _DepositHistoryState extends State<DepositHistory> {
                     children: [
                       Text(
                         'bkash',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Text(
                         '$currencySign${5000.00}',
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

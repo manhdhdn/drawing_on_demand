@@ -44,7 +44,7 @@ class _LanguageState extends State<Language> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 10),
           child: Container(
             padding: const EdgeInsets.only(
               left: 15.0,

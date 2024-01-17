@@ -96,7 +96,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(
             left: 15.0,

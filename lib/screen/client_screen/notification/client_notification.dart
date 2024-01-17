@@ -1,9 +1,13 @@
 import 'package:badges/badges.dart' as t;
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
+import '../home/client_home.dart';
+import '../profile/client_profile.dart';
 
 class ClientNotification extends StatefulWidget {
   const ClientNotification({Key? key}) : super(key: key);
@@ -21,15 +25,20 @@ class _ClientNotificationState extends State<ClientNotification> {
         backgroundColor: kDarkWhite,
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
+        leading: IconButton(
+          onPressed: () {
+            DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : GoRouter.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: Text(
           'Notifications',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: context.width(),
@@ -49,8 +58,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                   contentPadding: EdgeInsets.zero,
                   leading: Container(
                     padding: const EdgeInsets.all(10.0),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: kDarkWhite),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: kDarkWhite),
                     child: const Icon(FeatherIcons.bell),
                   ),
                   title: Text(
@@ -87,10 +95,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -100,8 +105,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -117,8 +121,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                             '2 min ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                         ListTile(
@@ -134,10 +137,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -147,8 +147,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -164,8 +163,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                             '7 min ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                         ListTile(
@@ -181,10 +179,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kDarkWhite,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/profilepic.png'),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage('images/profilepic.png'), fit: BoxFit.cover),
                                 ),
                               ),
                               const Padding(
@@ -194,8 +189,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                                     elevation: 0,
                                     shape: t.BadgeShape.circle,
                                     badgeColor: kPrimaryColor,
-                                    borderSide:
-                                        BorderSide(color: kWhite, width: 1.0),
+                                    borderSide: BorderSide(color: kWhite, width: 1.0),
                                   ),
                                 ),
                               ),
@@ -211,8 +205,7 @@ class _ClientNotificationState extends State<ClientNotification> {
                             '1 day ago “New Message”',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            style: kTextStyle.copyWith(color: kLightNeutralColor),
                           ),
                         ),
                       ],

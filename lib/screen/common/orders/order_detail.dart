@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:order_tracker_zen/order_tracker_zen.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,10 +15,13 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/api_config.dart';
 import '../../../data/apis/art_api.dart';
+import '../../../data/apis/ghn_api.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/apis/step_api.dart';
 import '../../../data/models/art.dart';
+import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/step.dart' as modal;
@@ -133,6 +139,62 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         );
       },
     );
+  }
+
+  Future<List<TrackerData>> getTrackers(String handOverId) async {
+    List<TrackerData> element = [];
+
+    try {
+      var request = GHNRequest(
+        endpoint: ApiConfig.GHNPaths['detail'],
+        postJsonString: jsonEncode({
+          'order_code': handOverId,
+        }),
+      );
+
+      var response = await GHNApi().postOne(request);
+      var decodedResponse = jsonDecode(response.postJsonString!);
+      var data = decodedResponse['data'];
+
+      element.addAll(
+        [
+          TrackerData(
+            title: 'Order Success',
+            date: '',
+            tracker_details: [
+              TrackerDetails(
+                title: 'The order has been placed',
+                datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['order_date']).add(const Duration(hours: 7))),
+              ),
+              TrackerDetails(
+                title: 'Estimated delivery date',
+                datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['leadtime']).add(const Duration(hours: 7))),
+              ),
+              TrackerDetails(
+                title: 'Receiver',
+                datetime: 'Name: ${data['to_name']}\nPhone: ${data['to_phone']}\nAddress: ${data['to_address']}',
+              ),
+            ],
+          ),
+          TrackerData(
+            title: 'Being Prepared',
+            date: '',
+            tracker_details: [
+              TrackerDetails(
+                title: 'The artist is preparing the order',
+                datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['pickup_time']).add(const Duration(hours: 7))),
+              ),
+            ],
+          ),
+        ],
+      );
+
+      if (data['log'] == null) {}
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get Trackers Failed');
+    }
+
+    return element;
   }
 
   @override
@@ -943,6 +1005,23 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                         );
                                                       },
                                                     ),
+                                                    if (orderDetails[getCartIndex(i, packList)].handOverItem != null)
+                                                      FutureBuilder(
+                                                        future: getTrackers(orderDetails[getCartIndex(i, packList)].handOverItem!.handOverId!),
+                                                        builder: (context, snapshot) {
+                                                          if (snapshot.hasData) {
+                                                            return OrderTrackerZen(
+                                                              tracker_data: snapshot.data!,
+                                                            );
+                                                          }
+
+                                                          return const Center(
+                                                            child: CircularProgressIndicator(
+                                                              color: kPrimaryColor,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     const SizedBox(height: 10.0),
                                                   ],
                                                 ),
@@ -1117,7 +1196,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       return OrderApi()
           .getOne(
         widget.id!,
-        'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation,proposal(expand=requirement(expand=steps)))),discount,orderedByNavigation',
+        'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation,proposal(expand=requirement(expand=steps))),handOverItem),discount,orderedByNavigation',
       )
           .then((order) {
         setState(() {
@@ -1167,7 +1246,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     context.goNamed(ReviewRoute.name, pathParameters: {'id': widget.id!});
   }
 
-  Future<void> onCancelOrder() async {
+  void onCancelOrder() async {
     await cancelOrderPopUp();
 
     OrderList.refresh();
@@ -1194,43 +1273,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   void onArtworkDetail(String id) {
     context.goNamed('${ArtworkDetailRoute.name} order', pathParameters: {'orderId': widget.id!, 'artworkId': id});
-  }
-
-  Future<void> onEditStep(DateTime completedDate, List<Art> arts, Guid artworkId) async {
-    await pickMultipleImages();
-
-    if (images.isNotEmpty) {
-      try {
-        // ignore: use_build_context_synchronously
-        ProgressDialogUtils.showProgress(context);
-
-        for (var art in arts) {
-          await ArtApi().deleteOne(art.id.toString());
-        }
-
-        for (var image in images) {
-          var imageUrl = await uploadImage(image);
-
-          var art = Art(
-            id: Guid.newGuid,
-            image: imageUrl,
-            createdDate: completedDate,
-            artworkId: artworkId,
-          );
-
-          await ArtApi().postOne(art);
-        }
-
-        images.clear();
-
-        refresh();
-
-        // ignore: use_build_context_synchronously
-        ProgressDialogUtils.hideProgress(context);
-      } catch (error) {
-        Fluttertoast.showToast(msg: 'Edit step failed');
-      }
-    }
   }
 
   void onDeliverStep(Guid stepId, Guid artworkId) async {
@@ -1271,6 +1313,43 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         // ignore: use_build_context_synchronously
         ProgressDialogUtils.hideProgress(context);
         Fluttertoast.showToast(msg: 'Deliver step failed');
+      }
+    }
+  }
+
+  void onEditStep(DateTime completedDate, List<Art> arts, Guid artworkId) async {
+    await pickMultipleImages();
+
+    if (images.isNotEmpty) {
+      try {
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.showProgress(context);
+
+        for (var art in arts) {
+          await ArtApi().deleteOne(art.id.toString());
+        }
+
+        for (var image in images) {
+          var imageUrl = await uploadImage(image);
+
+          var art = Art(
+            id: Guid.newGuid,
+            image: imageUrl,
+            createdDate: completedDate,
+            artworkId: artworkId,
+          );
+
+          await ArtApi().postOne(art);
+        }
+
+        images.clear();
+
+        refresh();
+
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+      } catch (error) {
+        Fluttertoast.showToast(msg: 'Edit step failed');
       }
     }
   }

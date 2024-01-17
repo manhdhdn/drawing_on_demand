@@ -4,18 +4,18 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../client_screen/home/client_home.dart';
+import '../../client_screen/profile/client_profile.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
-import 'settings.dart';
 
-class Policy extends StatefulWidget {
-  const Policy({Key? key}) : super(key: key);
+class HelpAndSupport extends StatefulWidget {
+  const HelpAndSupport({Key? key}) : super(key: key);
 
   @override
-  State<Policy> createState() => _PolicyState();
+  State<HelpAndSupport> createState() => _HelpAndSupportState();
 }
 
-class _PolicyState extends State<Policy> {
+class _HelpAndSupportState extends State<HelpAndSupport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +26,12 @@ class _PolicyState extends State<Policy> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         leading: IconButton(
           onPressed: () {
-            DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : GoRouter.of(context).pop();
+            DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientProfile()) : GoRouter.of(context).pop();
           },
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(
-          AppLocalizations.of(context)!.privacyPolicy,
+          AppLocalizations.of(context)!.aboutUs,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -39,7 +39,6 @@ class _PolicyState extends State<Policy> {
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Container(
-          height: context.height(),
           padding: const EdgeInsets.only(
             left: 15.0,
             right: 15.0,
@@ -58,42 +57,32 @@ class _PolicyState extends State<Policy> {
               children: [
                 const SizedBox(height: 15.0),
                 Text(
-                  AppLocalizations.of(context)!.privacyPolicy,
+                  AppLocalizations.of(context)!.introApp,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  AppLocalizations.of(context)!.explainPolicy,
+                  '${AppLocalizations.of(context)!.introDesc1}\n${AppLocalizations.of(context)!.introDesc2}',
                   style: kTextStyle.copyWith(color: kLightNeutralColor),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 15.0),
                 Text(
-                  AppLocalizations.of(context)!.collectData,
+                  'Our History',
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  AppLocalizations.of(context)!.collectDataDetail,
+                  'Food First envisions a world in which all people have access to healthy, ecologically produced, and culturally appropriate food. After 40 years of analysis of the global food system, we know that making this vision a reality involves more than tech nical solutions—it requires political tran sformation. That’s why Food First supports activists, social movements, alliances, and coalitions working for systemic change. Our work—including action-oriented rese arch, publications, and projects—gives you the tools to understand the global food system, build your local food movement, and engage with the global movement for food sovereignty.',
                   style: kTextStyle.copyWith(color: kLightNeutralColor),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 15.0),
                 Text(
-                  AppLocalizations.of(context)!.useData,
+                  'Our History',
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  AppLocalizations.of(context)!.useDataDetail,
-                  style: kTextStyle.copyWith(color: kLightNeutralColor),
-                ),
-                const SizedBox(height: 20.0),
-                Text(
-                  AppLocalizations.of(context)!.discloseInformation,
-                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  AppLocalizations.of(context)!.discloseInformationDetail,
+                  'Food First envisions a world in which all people have access to healthy, ecologically produced, and culturally appropriate food. After 40 years of analysis of the global food system, we know that making this vision a reality involves more than tech nical solutions—it requires political tran sformation. That’s why Food First supports activists, social movements, alliances, and coalitions working for systemic change. Our work—including action-oriented rese arch, publications, and projects—gives you the tools to understand the global food system, build your local food movement, and engage with the global movement for food sovereignty.',
                   style: kTextStyle.copyWith(color: kLightNeutralColor),
                 ),
                 const SizedBox(height: 15.0),

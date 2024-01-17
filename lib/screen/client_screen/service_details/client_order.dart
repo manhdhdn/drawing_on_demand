@@ -268,7 +268,7 @@ class _ClientOrderState extends State<ClientOrder> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             height: context.height(),
             width: context.width(),
@@ -500,7 +500,7 @@ class _ClientOrderState extends State<ClientOrder> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                SizedBox(width: DodResponsive.isDesktop(context) ? 74.0 : 18.0),
+                                                SizedBox(width: DodResponsive.isDesktop(context) ? 69.0 : 18.0),
                                               ],
                                             ),
                                           ).visible(status != 'Pending'),
@@ -1023,11 +1023,12 @@ class _ClientOrderState extends State<ClientOrder> {
       if (query.containsKey('vnp_TxnRef')) {
         if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() && query['vnp_ResponseCode'] == '00') {
           showProcessingPopUp();
-          // PrefUtils().clearVNPayRef();
 
           var result = await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
           if (result) {
+            PrefUtils().clearVNPayRef();
+
             // ignore: use_build_context_synchronously
             context.goNamed(
               OrderDetailRoute.name,
@@ -1082,7 +1083,6 @@ class _ClientOrderState extends State<ClientOrder> {
         });
       }
 
-      // PrefUtils().clearVNPayRef();
       getProvince();
 
       return order;
@@ -1390,9 +1390,12 @@ class _ClientOrderState extends State<ClientOrder> {
         List<String> shippingOrders = List<String>.from(jsonDecode(PrefUtils().getShippingOrders()));
 
         for (var shippingOrder in shippingOrders) {
+          var copy = jsonDecode(shippingOrder);
+          copy['items'].forEach((item) => item.remove("code"));
+
           var request = GHNRequest(
             endpoint: ApiConfig.GHNPaths['create'],
-            postJsonString: shippingOrder,
+            postJsonString: jsonEncode(copy),
           );
 
           var respone = await GHNApi().postOne(request);

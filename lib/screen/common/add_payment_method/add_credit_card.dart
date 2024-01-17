@@ -45,21 +45,19 @@ class _AddCreditCardState extends State<AddCreditCard> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Add Credit or Debit Card',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       bottomNavigationBar: ButtonGlobalWithoutIcon(
           buttontext: 'Save',
-          buttonDecoration: kButtonDecoration.copyWith(
-              borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
+          buttonDecoration: kButtonDecoration.copyWith(borderRadius: BorderRadius.circular(30.0), color: kPrimaryColor),
           onPressed: () {
             const SellerProfile().launch(context);
           },
           buttonTextColor: kWhite),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           height: context.height(),
           padding: const EdgeInsets.only(
@@ -79,8 +77,7 @@ class _AddCreditCardState extends State<AddCreditCard> {
             child: Column(
               children: [
                 CreditCardWidget(
-                  textStyle:
-                      kTextStyle.copyWith(fontSize: 10.0, color: Colors.white),
+                  textStyle: kTextStyle.copyWith(fontSize: 10.0, color: Colors.white),
                   cardNumber: cardNumber,
                   expiryDate: expiryDate,
                   cardHolderName: cardHolderName,
@@ -91,8 +88,7 @@ class _AddCreditCardState extends State<AddCreditCard> {
                   isHolderNameVisible: true,
                   cardBgColor: kPrimaryColor,
                   isSwipeGestureEnabled: true,
-                  onCreditCardWidgetChange:
-                      (CreditCardBrand creditCardBrand) {},
+                  onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
                 ),
                 CreditCardForm(
                   formKey: formKey,

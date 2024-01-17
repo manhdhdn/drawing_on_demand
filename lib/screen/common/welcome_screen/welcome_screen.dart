@@ -419,7 +419,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 },
                                 child: RichText(
                                   text: TextSpan(
-                                    text: AppLocalizations.of(context)!.alreadyHaveAnOffer,
+                                    text: AppLocalizations.of(context)!.alreadyHaveAccount,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                     children: [
                                       TextSpan(

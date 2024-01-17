@@ -23,8 +23,7 @@ class _UpdateTimelineState extends State<UpdateTimeline> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
@@ -44,8 +43,7 @@ class _UpdateTimelineState extends State<UpdateTimeline> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
@@ -83,13 +81,12 @@ class _UpdateTimelineState extends State<UpdateTimeline> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Send Requirements',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: Container(
           padding: const EdgeInsets.all(
             20.0,
@@ -107,8 +104,7 @@ class _UpdateTimelineState extends State<UpdateTimeline> {
             children: [
               Text(
                 'Please give me your file, photo.',
-                style: kTextStyle.copyWith(
-                    color: kNeutralColor, fontWeight: FontWeight.bold),
+                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20.0),
               TextFormField(
