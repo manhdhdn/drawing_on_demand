@@ -185,7 +185,7 @@ class _OrderReviewState extends State<OrderReview> {
                             ),
                             controller: reviewController,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return 'Please enter your review';
                               }
 

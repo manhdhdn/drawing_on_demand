@@ -270,7 +270,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             controller: titleController,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return 'Please enter title';
                               }
 
@@ -460,7 +460,7 @@ class _CreateNewServiceState extends State<CreateNewService> {
                             controller: descriptionController,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return 'Please enter description';
                               }
 

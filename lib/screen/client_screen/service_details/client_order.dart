@@ -106,8 +106,7 @@ class _ClientOrderState extends State<ClientOrder> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
@@ -126,8 +125,7 @@ class _ClientOrderState extends State<ClientOrder> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
@@ -245,8 +243,7 @@ class _ClientOrderState extends State<ClientOrder> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             AppLocalizations.of(context)!.order,
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
         ),
         bottomNavigationBar: Container(
@@ -260,15 +257,11 @@ class _ClientOrderState extends State<ClientOrder> {
             child: ButtonGlobalWithoutIcon(
               buttontext: AppLocalizations.of(context)!.continueOrder,
               buttonDecoration: kButtonDecoration.copyWith(
-                color: !shippingFees.any((shippingFee) => shippingFee == 0)
-                    ? kPrimaryColor
-                    : kLightNeutralColor,
+                color: !shippingFees.any((shippingFee) => shippingFee == 0) ? kPrimaryColor : kLightNeutralColor,
                 borderRadius: BorderRadius.circular(30.0),
               ),
               onPressed: () {
-                !shippingFees.any((shippingFee) => shippingFee == 0)
-                    ? onContinue()
-                    : null;
+                !shippingFees.any((shippingFee) => shippingFee == 0) ? onContinue() : null;
               },
               buttonTextColor: kWhite,
             ),
@@ -302,28 +295,21 @@ class _ClientOrderState extends State<ClientOrder> {
                       future: order,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<OrderDetail> orderDetails =
-                              snapshot.data!.orderDetails!;
+                          List<OrderDetail> orderDetails = snapshot.data!.orderDetails!;
 
-                          orderDetails.sort(((a, b) =>
-                              a.artwork!.createdByNavigation!.email!.compareTo(
-                                  b.artwork!.createdByNavigation!.email!)));
+                          orderDetails.sort(((a, b) => a.artwork!.createdByNavigation!.email!.compareTo(b.artwork!.createdByNavigation!.email!)));
 
                           List<int> packList = [0];
                           int packCount = 0;
 
                           if (orderDetails.isNotEmpty) {
-                            String tempEmail = orderDetails
-                                .first.artwork!.createdByNavigation!.email!;
+                            String tempEmail = orderDetails.first.artwork!.createdByNavigation!.email!;
 
                             for (var orderDetail in orderDetails) {
-                              if (orderDetail
-                                      .artwork!.createdByNavigation!.email ==
-                                  tempEmail) {
+                              if (orderDetail.artwork!.createdByNavigation!.email == tempEmail) {
                                 packList[packCount]++;
                               } else {
-                                tempEmail = orderDetail
-                                    .artwork!.createdByNavigation!.email!;
+                                tempEmail = orderDetail.artwork!.createdByNavigation!.email!;
 
                                 packCount++;
                                 packList.add(1);
@@ -338,30 +324,25 @@ class _ClientOrderState extends State<ClientOrder> {
                                 padding: const EdgeInsets.all(15.0),
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount:
-                                      packList[0] != 0 ? packList.length : 0,
+                                  itemCount: packList[0] != 0 ? packList.length : 0,
                                   physics: const NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.zero,
                                   itemBuilder: (_, i) {
                                     shippingFees.add(0);
                                     shippingOrders.add('');
 
-                                    while (
-                                        shippingFees.length > packList.length) {
+                                    while (shippingFees.length > packList.length) {
                                       shippingFees.removeLast();
                                       shippingOrders.removeLast();
                                     }
 
-                                    createShippingOrder(
-                                        orderDetails, packList, i);
+                                    createShippingOrder(orderDetails, packList, i);
 
                                     return Theme(
-                                      data: Theme.of(context).copyWith(
-                                          dividerColor: Colors.transparent),
+                                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                                       child: ExpansionTile(
                                         initiallyExpanded: true,
-                                        tilePadding:
-                                            const EdgeInsets.only(bottom: 5.0),
+                                        tilePadding: const EdgeInsets.only(bottom: 5.0),
                                         childrenPadding: EdgeInsets.zero,
                                         collapsedIconColor: kLightNeutralColor,
                                         iconColor: kLightNeutralColor,
@@ -373,43 +354,26 @@ class _ClientOrderState extends State<ClientOrder> {
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      orderDetails[getCartIndex(
-                                                              i, packList)]
-                                                          .artwork!
-                                                          .createdByNavigation!
-                                                          .avatar!),
+                                                  image: NetworkImage(orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.avatar!),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
                                             const SizedBox(width: 5.0),
                                             Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  AppLocalizations.of(context)!
-                                                      .artist,
+                                                  AppLocalizations.of(context)!.artist,
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: kTextStyle.copyWith(
-                                                      color: kSubTitleColor),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: kTextStyle.copyWith(color: kSubTitleColor),
                                                 ),
                                                 Text(
-                                                  orderDetails[getCartIndex(
-                                                          i, packList)]
-                                                      .artwork!
-                                                      .createdByNavigation!
-                                                      .name!,
+                                                  orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.name!,
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: kTextStyle.copyWith(
-                                                      color: kNeutralColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                 ),
                                               ],
                                             ),
@@ -419,26 +383,19 @@ class _ClientOrderState extends State<ClientOrder> {
                                           ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: packList[i],
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
+                                            physics: const NeverScrollableScrollPhysics(),
                                             padding: EdgeInsets.zero,
                                             itemBuilder: (_, j) {
                                               return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 10.0),
+                                                padding: const EdgeInsets.only(bottom: 10.0),
                                                 child: GestureDetector(
                                                   onTap: () {},
                                                   child: Container(
-                                                    height: context.height() *
-                                                        0.135,
+                                                    height: context.height() * 0.135,
                                                     decoration: BoxDecoration(
                                                       color: kWhite,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      border: Border.all(
-                                                          color:
-                                                              kBorderColorTextField),
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                      border: Border.all(color: kBorderColorTextField),
                                                       boxShadow: const [
                                                         BoxShadow(
                                                           color: kDarkWhite,
@@ -449,126 +406,66 @@ class _ClientOrderState extends State<ClientOrder> {
                                                       ],
                                                     ),
                                                     child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
                                                       children: [
                                                         Stack(
-                                                          alignment:
-                                                              Alignment.topLeft,
+                                                          alignment: Alignment.topLeft,
                                                           children: [
                                                             Container(
-                                                              height: context
-                                                                      .height() *
-                                                                  0.135,
-                                                              width: context
-                                                                      .height() *
-                                                                  0.135,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          8.0),
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          8.0),
+                                                              height: context.height() * 0.135,
+                                                              width: context.height() * 0.135,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: const BorderRadius.only(
+                                                                  bottomLeft: Radius.circular(8.0),
+                                                                  topLeft: Radius.circular(8.0),
                                                                 ),
-                                                                image: DecorationImage(
-                                                                    image: NetworkImage(orderDetails[j +
-                                                                            getCartIndex(i,
-                                                                                packList)]
-                                                                        .artwork!
-                                                                        .arts!
-                                                                        .first
-                                                                        .image!),
-                                                                    fit: BoxFit
-                                                                        .cover),
+                                                                image: DecorationImage(image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!), fit: BoxFit.cover),
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                         Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(5.0),
+                                                          padding: const EdgeInsets.all(5.0),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            mainAxisSize: MainAxisSize.min,
                                                             children: [
                                                               Flexible(
                                                                 child: SizedBox(
                                                                   width: 190,
                                                                   child: Text(
-                                                                    orderDetails[j +
-                                                                            getCartIndex(i,
-                                                                                packList)]
-                                                                        .artwork!
-                                                                        .title!,
-                                                                    style: kTextStyle.copyWith(
-                                                                        color:
-                                                                            kNeutralColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
+                                                                    orderDetails[j + getCartIndex(i, packList)].artwork!.title!,
+                                                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                                     maxLines: 1,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    overflow: TextOverflow.ellipsis,
                                                                   ),
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 5.0),
+                                                              const SizedBox(height: 5.0),
                                                               Text(
                                                                 '${AppLocalizations.of(context)!.unitPrice}: ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.orderDetails![j + getCartIndex(i, packList)].price)}',
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kSubTitleColor,
+                                                                style: kTextStyle.copyWith(
+                                                                  color: kSubTitleColor,
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 5.0),
+                                                              const SizedBox(height: 5.0),
                                                               SizedBox(
-                                                                width: DodResponsive
-                                                                        .isDesktop(
-                                                                            context)
-                                                                    ? context
-                                                                            .width() *
-                                                                        0.3
-                                                                    : context
-                                                                            .width() *
-                                                                        0.5,
+                                                                width: DodResponsive.isDesktop(context) ? context.width() * 0.3 : context.width() * 0.5,
                                                                 child: Row(
                                                                   children: [
                                                                     Text(
                                                                       '${AppLocalizations.of(context)!.quantity}: ${snapshot.data!.orderDetails![j + getCartIndex(i, packList)].quantity}',
-                                                                      style: kTextStyle
-                                                                          .copyWith(
-                                                                        color:
-                                                                            kSubTitleColor,
+                                                                      style: kTextStyle.copyWith(
+                                                                        color: kSubTitleColor,
                                                                       ),
                                                                     ),
                                                                     const Spacer(),
                                                                     Text(
-                                                                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j + getCartIndex(i, packList)]
-                                                                              .quantity! *
-                                                                          orderDetails[j + getCartIndex(i, packList)]
-                                                                              .price!),
-                                                                      style: kTextStyle
-                                                                          .copyWith(
-                                                                        color:
-                                                                            kPrimaryColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                      NumberFormat.simpleCurrency(locale: 'vi_VN').format(orderDetails[j + getCartIndex(i, packList)].quantity! * orderDetails[j + getCartIndex(i, packList)].price!),
+                                                                      style: kTextStyle.copyWith(
+                                                                        color: kPrimaryColor,
+                                                                        fontWeight: FontWeight.bold,
                                                                       ),
                                                                     ),
                                                                   ],
@@ -586,13 +483,9 @@ class _ClientOrderState extends State<ClientOrder> {
                                           ),
                                           SizedBox(
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.end,
                                               children: [
-                                                SizedBox(
-                                                    width: context.height() *
-                                                            0.135 +
-                                                        6),
+                                                SizedBox(width: context.height() * 0.135 + 6),
                                                 Text(
                                                   '${AppLocalizations.of(context)!.shippingFee}:',
                                                   style: kTextStyle.copyWith(
@@ -601,20 +494,13 @@ class _ClientOrderState extends State<ClientOrder> {
                                                 ),
                                                 const Spacer(),
                                                 Text(
-                                                  NumberFormat.simpleCurrency(
-                                                          locale: 'vi_VN')
-                                                      .format(shippingFees[i]),
+                                                  NumberFormat.simpleCurrency(locale: 'vi_VN').format(shippingFees[i]),
                                                   style: kTextStyle.copyWith(
                                                     color: kPrimaryColor,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                    width:
-                                                        DodResponsive.isDesktop(
-                                                                context)
-                                                            ? 74.0
-                                                            : 18.0),
+                                                SizedBox(width: DodResponsive.isDesktop(context) ? 74.0 : 18.0),
                                               ],
                                             ),
                                           ).visible(status != 'Pending'),
@@ -645,16 +531,13 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.deliveryAddress,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               Row(
                                 children: [
                                   Checkbox(
                                     activeColor: kPrimaryColor,
-                                    visualDensity:
-                                        const VisualDensity(horizontal: -4),
+                                    visualDensity: const VisualDensity(horizontal: -4),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(2.0),
                                     ),
@@ -666,14 +549,9 @@ class _ClientOrderState extends State<ClientOrder> {
 
                                       if (!isCheck) {
                                         setState(() {
-                                          nameController.text = jsonDecode(
-                                              PrefUtils().getAccount())['Name'];
-                                          phoneController.text = jsonDecode(
-                                              PrefUtils()
-                                                  .getAccount())['Phone'];
-                                          addressController.text = jsonDecode(
-                                              PrefUtils()
-                                                  .getAccount())['Address'];
+                                          nameController.text = jsonDecode(PrefUtils().getAccount())['Name'];
+                                          phoneController.text = jsonDecode(PrefUtils().getAccount())['Phone'];
+                                          addressController.text = jsonDecode(PrefUtils().getAccount())['Address'];
                                         });
 
                                         getProvince();
@@ -682,10 +560,8 @@ class _ClientOrderState extends State<ClientOrder> {
                                   ),
                                   const SizedBox(width: 2.0),
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .useThisAddressInstead,
-                                    style: kTextStyle.copyWith(
-                                        color: kSubTitleColor),
+                                    AppLocalizations.of(context)!.useThisAddressInstead,
+                                    style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ],
                               )
@@ -696,27 +572,22 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.name,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: TextFormField(
                                   keyboardType: TextInputType.name,
                                   cursorColor: kNeutralColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: kInputDecoration.copyWith(
-                                    labelText: AppLocalizations.of(context)!
-                                        .receiverName,
+                                    labelText: AppLocalizations.of(context)!.receiverName,
                                     labelStyle: kTextStyle.copyWith(
                                       color: kNeutralColor,
                                       fontSize: 14.0,
                                     ),
-                                    hintText: AppLocalizations.of(context)!
-                                        .enterReceiverName,
+                                    hintText: AppLocalizations.of(context)!.enterReceiverName,
                                     hintStyle: kTextStyle.copyWith(
                                       color: kSubTitleColor,
                                       fontSize: 14.0,
@@ -726,12 +597,10 @@ class _ClientOrderState extends State<ClientOrder> {
                                   ),
                                   readOnly: !isCheck,
                                   controller: nameController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return AppLocalizations.of(context)!
-                                          .enterReceiverName;
+                                    if (value!.trim().isEmpty) {
+                                      return AppLocalizations.of(context)!.enterReceiverName;
                                     }
 
                                     return null;
@@ -745,27 +614,22 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.phone,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: TextFormField(
                                   keyboardType: TextInputType.phone,
                                   cursorColor: kNeutralColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: kInputDecoration.copyWith(
-                                    labelText: AppLocalizations.of(context)!
-                                        .receiverPhone,
+                                    labelText: AppLocalizations.of(context)!.receiverPhone,
                                     labelStyle: kTextStyle.copyWith(
                                       color: kNeutralColor,
                                       fontSize: 14.0,
                                     ),
-                                    hintText: AppLocalizations.of(context)!
-                                        .receiverPhone,
+                                    hintText: AppLocalizations.of(context)!.receiverPhone,
                                     hintStyle: kTextStyle.copyWith(
                                       color: kSubTitleColor,
                                       fontSize: 14.0,
@@ -775,12 +639,10 @@ class _ClientOrderState extends State<ClientOrder> {
                                   ),
                                   readOnly: !isCheck,
                                   controller: phoneController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) {
                                     if (!isPhone(value, isRequired: true)) {
-                                      return AppLocalizations.of(context)!
-                                          .enterReceiverPhone;
+                                      return AppLocalizations.of(context)!.enterReceiverPhone;
                                     }
 
                                     return null;
@@ -794,48 +656,35 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.province,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: FormField(
                                     builder: (FormFieldState<dynamic> field) {
                                       return InputDecorator(
                                         decoration: kInputDecoration.copyWith(
-                                          enabledBorder:
-                                              const OutlineInputBorder(
+                                          enabledBorder: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(8.0),
                                             ),
-                                            borderSide: BorderSide(
-                                                color: kBorderColorTextField,
-                                                width: 2),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                                           ),
-                                          contentPadding:
-                                              const EdgeInsets.all(7.0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          labelText:
-                                              AppLocalizations.of(context)!
-                                                  .chooseAProvince,
-                                          labelStyle: kTextStyle.copyWith(
-                                              color: kNeutralColor),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: AppLocalizations.of(context)!.chooseAProvince,
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                         ),
                                         child: DropdownButtonHideUnderline(
                                           child: getProvinces(),
                                         ),
                                       );
                                     },
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) {
                                       if (selectedProvince == null) {
-                                        return AppLocalizations.of(context)!
-                                            .pleaseChooseProvince;
+                                        return AppLocalizations.of(context)!.pleaseChooseProvince;
                                       }
 
                                       return null;
@@ -848,48 +697,35 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.district,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: FormField(
                                     builder: (FormFieldState<dynamic> field) {
                                       return InputDecorator(
                                         decoration: kInputDecoration.copyWith(
-                                          enabledBorder:
-                                              const OutlineInputBorder(
+                                          enabledBorder: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(8.0),
                                             ),
-                                            borderSide: BorderSide(
-                                                color: kBorderColorTextField,
-                                                width: 2),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                                           ),
-                                          contentPadding:
-                                              const EdgeInsets.all(7.0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          labelText:
-                                              AppLocalizations.of(context)!
-                                                  .chooseADistrict,
-                                          labelStyle: kTextStyle.copyWith(
-                                              color: kNeutralColor),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: AppLocalizations.of(context)!.chooseADistrict,
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                         ),
                                         child: DropdownButtonHideUnderline(
                                           child: getDistricts(),
                                         ),
                                       );
                                     },
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) {
                                       if (selectedDistrict == null) {
-                                        return AppLocalizations.of(context)!
-                                            .pleaseChooseDistrict;
+                                        return AppLocalizations.of(context)!.pleaseChooseDistrict;
                                       }
 
                                       return null;
@@ -902,48 +738,35 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.ward,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: FormField(
                                     builder: (FormFieldState<dynamic> field) {
                                       return InputDecorator(
                                         decoration: kInputDecoration.copyWith(
-                                          enabledBorder:
-                                              const OutlineInputBorder(
+                                          enabledBorder: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(8.0),
                                             ),
-                                            borderSide: BorderSide(
-                                                color: kBorderColorTextField,
-                                                width: 2),
+                                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                                           ),
-                                          contentPadding:
-                                              const EdgeInsets.all(7.0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          labelText:
-                                              AppLocalizations.of(context)!
-                                                  .chooseAWard,
-                                          labelStyle: kTextStyle.copyWith(
-                                              color: kNeutralColor),
+                                          contentPadding: const EdgeInsets.all(7.0),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          labelText: AppLocalizations.of(context)!.chooseAWard,
+                                          labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                         ),
                                         child: DropdownButtonHideUnderline(
                                           child: getWards(),
                                         ),
                                       );
                                     },
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) {
                                       if (selectedWard == null) {
-                                        return AppLocalizations.of(context)!
-                                            .pleaseChooseWard;
+                                        return AppLocalizations.of(context)!.pleaseChooseWard;
                                       }
 
                                       return null;
@@ -956,27 +779,22 @@ class _ClientOrderState extends State<ClientOrder> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.address,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                               const Spacer(),
                               SizedBox(
-                                width: DodResponsive.isDesktop(context)
-                                    ? context.width() * 0.35
-                                    : context.width() * 0.7,
+                                width: DodResponsive.isDesktop(context) ? context.width() * 0.35 : context.width() * 0.7,
                                 child: TextFormField(
                                   keyboardType: TextInputType.streetAddress,
                                   cursorColor: kNeutralColor,
                                   textInputAction: TextInputAction.done,
                                   decoration: kInputDecoration.copyWith(
-                                    labelText: AppLocalizations.of(context)!
-                                        .addressDetail,
+                                    labelText: AppLocalizations.of(context)!.addressDetail,
                                     labelStyle: kTextStyle.copyWith(
                                       color: kNeutralColor,
                                       fontSize: 14.0,
                                     ),
-                                    hintText: AppLocalizations.of(context)!
-                                        .enterAddressDetail,
+                                    hintText: AppLocalizations.of(context)!.enterAddressDetail,
                                     hintStyle: kTextStyle.copyWith(
                                       color: kSubTitleColor,
                                       fontSize: 14.0,
@@ -986,12 +804,10 @@ class _ClientOrderState extends State<ClientOrder> {
                                   ),
                                   readOnly: !isCheck,
                                   controller: addressController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return AppLocalizations.of(context)!
-                                          .pleaseEnterAddress;
+                                    if (value!.trim().isEmpty) {
+                                      return AppLocalizations.of(context)!.pleaseEnterAddress;
                                     }
 
                                     return null;
@@ -1009,8 +825,7 @@ class _ClientOrderState extends State<ClientOrder> {
                     ).visible(status != 'Pending'),
                     Text(
                       AppLocalizations.of(context)!.paymentMethod,
-                      style: kTextStyle.copyWith(
-                          color: kNeutralColor, fontWeight: FontWeight.bold),
+                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20.0),
                     ListView.builder(
@@ -1043,23 +858,16 @@ class _ClientOrderState extends State<ClientOrder> {
                                 width: 50.0,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(imageList[i]),
-                                      fit: BoxFit.cover),
+                                  image: DecorationImage(image: AssetImage(imageList[i]), fit: BoxFit.cover),
                                 ),
                               ),
                               title: Text(
                                 paymentMethod[i],
-                                style:
-                                    kTextStyle.copyWith(color: kNeutralColor),
+                                style: kTextStyle.copyWith(color: kNeutralColor),
                               ),
                               trailing: Icon(
-                                selectedPaymentMethod == i
-                                    ? Icons.radio_button_checked_rounded
-                                    : Icons.radio_button_off_rounded,
-                                color: selectedPaymentMethod == i
-                                    ? kPrimaryColor
-                                    : kSubTitleColor,
+                                selectedPaymentMethod == i ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
+                                color: selectedPaymentMethod == i ? kPrimaryColor : kSubTitleColor,
                               ),
                             ),
                           ),
@@ -1069,8 +877,7 @@ class _ClientOrderState extends State<ClientOrder> {
                     const SizedBox(height: 20.0),
                     Text(
                       AppLocalizations.of(context)!.orderSummary,
-                      style: kTextStyle.copyWith(
-                          color: kNeutralColor, fontWeight: FontWeight.bold),
+                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20.0),
                     Row(
@@ -1081,8 +888,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                         const Spacer(),
                         Text(
-                          NumberFormat.simpleCurrency(locale: 'vi_VN')
-                              .format(total),
+                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(total),
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ],
@@ -1096,10 +902,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                         const Spacer(),
                         Text(
-                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                              shippingFees.length > 1
-                                  ? shippingFees.reduce((a, b) => a + b)
-                                  : shippingFees[0]),
+                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0]),
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                         ),
                       ],
@@ -1117,11 +920,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                         const Spacer(),
                         Text(
-                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                              total +
-                                  (shippingFees.length > 1
-                                      ? shippingFees.reduce((a, b) => a + b)
-                                      : shippingFees[0])),
+                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])),
                           style: kTextStyle.copyWith(
                             color: kNeutralColor,
                             fontWeight: FontWeight.w600,
@@ -1143,12 +942,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                         const Spacer(),
                         Text(
-                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                              -(total +
-                                      (shippingFees.length > 1
-                                          ? shippingFees.reduce((a, b) => a + b)
-                                          : shippingFees[0])) *
-                                  discount),
+                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(-(total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])) * discount),
                           style: kTextStyle.copyWith(
                             color: kNeutralColor,
                             fontWeight: FontWeight.w600,
@@ -1157,8 +951,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                       ],
                     ).visible(discount != 0 && status != 'Pending'),
-                    const SizedBox(height: 10.0)
-                        .visible(discount != 0 && status != 'Pending'),
+                    const SizedBox(height: 10.0).visible(discount != 0 && status != 'Pending'),
                     Row(
                       children: [
                         RichText(
@@ -1173,8 +966,7 @@ class _ClientOrderState extends State<ClientOrder> {
                               status != 'Deposited'
                                   ? status == 'Pending'
                                       ? TextSpan(
-                                          text:
-                                              '(${discount * 100}% of subtotal)',
+                                          text: '(${discount * 100}% of subtotal)',
                                           style: kTextStyle.copyWith(
                                             color: kNeutralColor,
                                             fontWeight: FontWeight.normal,
@@ -1183,8 +975,7 @@ class _ClientOrderState extends State<ClientOrder> {
                                         )
                                       : const TextSpan()
                                   : TextSpan(
-                                      text:
-                                          AppLocalizations.of(context)!.theRest,
+                                      text: AppLocalizations.of(context)!.theRest,
                                       style: kTextStyle.copyWith(
                                         color: kNeutralColor,
                                         fontWeight: FontWeight.normal,
@@ -1196,23 +987,11 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                         const Spacer(),
                         Text(
-                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(
-                              status != 'Deposited'
-                                  ? status == 'Pending'
-                                      ? total * discount
-                                      : (total +
-                                              (shippingFees.length > 1
-                                                  ? shippingFees
-                                                      .reduce((a, b) => a + b)
-                                                  : shippingFees[0])) *
-                                          (1 - discount)
-                                  : ((total +
-                                              (shippingFees.length > 1
-                                                  ? shippingFees
-                                                      .reduce((a, b) => a + b)
-                                                  : shippingFees[0])) *
-                                          (1 - discount)) -
-                                      paid),
+                          NumberFormat.simpleCurrency(locale: 'vi_VN').format(status != 'Deposited'
+                              ? status == 'Pending'
+                                  ? total * discount
+                                  : (total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])) * (1 - discount)
+                              : ((total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])) * (1 - discount)) - paid),
                           style: kTextStyle.copyWith(
                             color: kNeutralColor,
                             fontWeight: FontWeight.bold,
@@ -1221,8 +1000,7 @@ class _ClientOrderState extends State<ClientOrder> {
                         ),
                       ],
                     ).visible(discount != 0 || status == 'Deposited'),
-                    const SizedBox(height: 10.0)
-                        .visible(discount != 0 || status == 'Deposited'),
+                    const SizedBox(height: 10.0).visible(discount != 0 || status == 'Deposited'),
                   ],
                 ),
               ),
@@ -1240,20 +1018,14 @@ class _ClientOrderState extends State<ClientOrder> {
       'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation)),discount',
     )
         .then((order) async {
-      Map<String, String> query = GoRouter.of(context)
-          .routeInformationProvider
-          .value
-          .uri
-          .queryParameters;
+      Map<String, String> query = GoRouter.of(context).routeInformationProvider.value.uri.queryParameters;
 
       if (query.containsKey('vnp_TxnRef')) {
-        if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() &&
-            query['vnp_ResponseCode'] == '00') {
+        if (query['vnp_TxnRef'] == PrefUtils().getVNPayRef() && query['vnp_ResponseCode'] == '00') {
           showProcessingPopUp();
           // PrefUtils().clearVNPayRef();
 
-          var result = await updateData(
-              order, double.tryParse(query['vnp_Amount']!)! / 100);
+          var result = await updateData(order, double.tryParse(query['vnp_Amount']!)! / 100);
 
           if (result) {
             // ignore: use_build_context_synchronously
@@ -1269,9 +1041,7 @@ class _ClientOrderState extends State<ClientOrder> {
         }
       }
 
-      if (order.status == 'Paid' ||
-          order.status == 'Completed' ||
-          order.status == 'Cancelled') {
+      if (order.status == 'Paid' || order.status == 'Completed' || order.status == 'Cancelled') {
         // ignore: use_build_context_synchronously
         GoRouter.of(context).pop();
         return null;
@@ -1291,8 +1061,7 @@ class _ClientOrderState extends State<ClientOrder> {
         // Get discount
         setState(() {
           if (order.status != 'Pending') {
-            this.discount =
-                double.tryParse(discount['discountPercent'].toString())!;
+            this.discount = double.tryParse(discount['discountPercent'].toString())!;
           }
 
           discountId = discount['discountId']?.toString();
@@ -1325,12 +1094,10 @@ class _ClientOrderState extends State<ClientOrder> {
     var respone = await GHNApi().postOne(request);
 
     setState(() {
-      provinces = List<Map<String, dynamic>>.from(
-          jsonDecode(respone.postJsonString!)['data']);
+      provinces = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
       selectedProvince = null;
 
-      provinces
-          .sort(((a, b) => a['ProvinceName'].compareTo(b['ProvinceName'])));
+      provinces.sort(((a, b) => a['ProvinceName'].compareTo(b['ProvinceName'])));
 
       Map<String, dynamic> result = {};
       double matchPoint = 0;
@@ -1343,8 +1110,7 @@ class _ClientOrderState extends State<ClientOrder> {
         }
 
         for (var nameEx in nameExs) {
-          double point = getMatchPoint(
-              addressController.text.trim().split(',').last, nameEx);
+          double point = getMatchPoint(addressController.text.trim().split(',').last, nameEx);
 
           if (matchPoint < point) {
             matchPoint = point;
@@ -1378,8 +1144,7 @@ class _ClientOrderState extends State<ClientOrder> {
       previousSelectedWard = selectedWard;
       selectedWard = null;
 
-      districts = List<Map<String, dynamic>>.from(
-          jsonDecode(respone.postJsonString!)['data']);
+      districts = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
       wards = [];
 
       Map<String, dynamic> result = {};
@@ -1425,8 +1190,7 @@ class _ClientOrderState extends State<ClientOrder> {
       previousSelectedWard = selectedWard;
       selectedWard = null;
 
-      wards = List<Map<String, dynamic>>.from(
-          jsonDecode(respone.postJsonString!)['data']);
+      wards = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
 
       Map<String, dynamic> result = {};
       double matchPoint = 0;
@@ -1456,12 +1220,8 @@ class _ClientOrderState extends State<ClientOrder> {
     });
   }
 
-  Future<void> createShippingOrder(
-      List<OrderDetail> orderDetails, List<int> packList, int i) async {
-    if (selectedDistrict != null &&
-        selectedWard != null &&
-        (previousSelectedDistrict != selectedDistrict ||
-            previousSelectedWard != selectedWard)) {
+  Future<void> createShippingOrder(List<OrderDetail> orderDetails, List<int> packList, int i) async {
+    if (selectedDistrict != null && selectedWard != null && (previousSelectedDistrict != selectedDistrict || previousSelectedWard != selectedWard)) {
       var items = [];
 
       double price = 0;
@@ -1504,17 +1264,13 @@ class _ClientOrderState extends State<ClientOrder> {
       var artist = orderDetails[currentIndex].artwork!.createdByNavigation!;
       List<String> splitAddress = artist.address!.split(', ');
       int slitAddressLength = splitAddress.length;
-      var fromDistrictId = await getDistrictCode(
-          splitAddress[slitAddressLength - 2],
-          await getProvinceCode(splitAddress[slitAddressLength - 1]));
-      var fromWardCode = await getWardCode(
-          splitAddress[slitAddressLength - 3], fromDistrictId);
+      var fromDistrictId = await getDistrictCode(splitAddress[slitAddressLength - 2], await getProvinceCode(splitAddress[slitAddressLength - 1]));
+      var fromWardCode = await getWardCode(splitAddress[slitAddressLength - 3], fromDistrictId);
 
       var request = GHNRequest(
         endpoint: ApiConfig.GHNPaths['fee'],
         postJsonString: jsonEncode({
-          'service_type_id':
-              weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
+          'service_type_id': weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
           'insurance_value': price.toInt(),
           'from_district_id': fromDistrictId,
           'from_ward_code': fromWardCode,
@@ -1562,8 +1318,7 @@ class _ClientOrderState extends State<ClientOrder> {
           'width': width,
           'height': height,
           'insurance_value': price.toInt(),
-          'service_type_id':
-              weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
+          'service_type_id': weight < 20000 ? lightServiceTypeId : heavyServiceTypeId,
           'payment_type_id': 1,
           'required_note': requiredNote,
           'items': items,
@@ -1592,32 +1347,20 @@ class _ClientOrderState extends State<ClientOrder> {
     }
 
     try {
-      String uri =
-          '${ApiConfig.paymentUrl}${GoRouter.of(context).routeInformationProvider.value.uri.path}';
+      String uri = '${ApiConfig.paymentUrl}${GoRouter.of(context).routeInformationProvider.value.uri.path}';
 
       Order? order = await this.order;
 
       double price = status != 'Deposited'
           ? status == 'Pending'
               ? total * discount
-              : (total +
-                      (shippingFees.length > 1
-                          ? shippingFees.reduce((a, b) => a + b)
-                          : shippingFees[0])) *
-                  (1 - discount)
-          : ((total +
-                      (shippingFees.length > 1
-                          ? shippingFees.reduce((a, b) => a + b)
-                          : shippingFees[0])) *
-                  (1 - discount)) -
-              paid;
+              : (total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])) * (1 - discount)
+          : ((total + (shippingFees.length > 1 ? shippingFees.reduce((a, b) => a + b) : shippingFees[0])) * (1 - discount)) - paid;
 
       VNPayRequest request = VNPayRequest(
         orderId: order!.id.toString().split('-').first,
         price: price.toInt(),
-        method: selectedPaymentMethod > 0
-            ? selectedPaymentMethod + 1
-            : selectedPaymentMethod,
+        method: selectedPaymentMethod > 0 ? selectedPaymentMethod + 1 : selectedPaymentMethod,
         lang: PrefUtils().getLanguage() == 'Vietnamese' ? 'vn' : 'en',
         // ignore: use_build_context_synchronously
         returnUrl: uri,
@@ -1644,8 +1387,7 @@ class _ClientOrderState extends State<ClientOrder> {
       String status = order.status!;
 
       if (status == 'Cart' || status == 'Deposited') {
-        List<String> shippingOrders =
-            List<String>.from(jsonDecode(PrefUtils().getShippingOrders()));
+        List<String> shippingOrders = List<String>.from(jsonDecode(PrefUtils().getShippingOrders()));
 
         for (var shippingOrder in shippingOrders) {
           var request = GHNRequest(
@@ -1664,16 +1406,13 @@ class _ClientOrderState extends State<ClientOrder> {
             pickupAddress: decodedShippingOrder['from_address'],
             receiveAddress: decodedShippingOrder['to_address'],
             shipmentPrice: decodedResponse['total_fee'],
-            estimatedDeliveryDate:
-                DateTime.parse(decodedResponse['expected_delivery_time']),
-            handOverDate:
-                DateTime.parse(decodedResponse['expected_delivery_time']),
+            estimatedDeliveryDate: DateTime.parse(decodedResponse['expected_delivery_time']),
+            handOverDate: DateTime.parse(decodedResponse['expected_delivery_time']),
             status: 'Pending',
             orderId: order.id,
           );
 
-          var decodedItems =
-              List<Map<String, dynamic>>.from(decodedShippingOrder['items']);
+          var decodedItems = List<Map<String, dynamic>>.from(decodedShippingOrder['items']);
           List<HandOverItem> handOverItems = [];
 
           for (var i = 0; i < decodedItems.length; i++) {
@@ -1710,23 +1449,17 @@ class _ClientOrderState extends State<ClientOrder> {
         'OrderDate': status == 'Cart'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
             : order.orderDate != null
-                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
-                    .format(order.orderDate!)
+                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(order.orderDate!)
                 : null,
         'DepositDate': status == 'Pending'
             ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
             : order.depositDate != null
-                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
-                    .format(order.depositDate!)
+                ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(order.depositDate!)
                 : null,
-        'CompletedDate': status == 'Cart' || status == 'Deposited'
-            ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now())
-            : null,
+        'CompletedDate': status == 'Cart' || status == 'Deposited' ? DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(DateTime.now()) : null,
         'Status': status == 'Pending' ? 'Deposited' : 'Paid',
         'Total': order.total! + total,
-        'DiscountId': PrefUtils().getDiscountId() == ''
-            ? null
-            : PrefUtils().getDiscountId(),
+        'DiscountId': PrefUtils().getDiscountId() == '' ? null : PrefUtils().getDiscountId(),
       };
 
       await OrderApi().patchOne(widget.id!, body);

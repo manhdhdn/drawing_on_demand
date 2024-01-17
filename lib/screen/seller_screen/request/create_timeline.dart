@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
@@ -77,7 +78,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Create a Timeline',
+          AppLocalizations.of(context)!.createATimeline,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -86,7 +87,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
         padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
-          buttontext: 'Create',
+          buttontext: AppLocalizations.of(context)!.create,
           buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
           onPressed: () {
             onCreate();
@@ -178,13 +179,13 @@ class _CreateTimelineState extends State<CreateTimeline> {
                               trimLines: 2,
                               colorClickableText: kPrimaryColor,
                               trimMode: TrimMode.Line,
-                              trimCollapsedText: '..read more',
-                              trimExpandedText: ' read less',
+                              trimCollapsedText: AppLocalizations.of(context)!.readMore,
+                              trimExpandedText: AppLocalizations.of(context)!.readLess,
                             ),
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text: 'Category: ',
+                                text: '${AppLocalizations.of(context)!.category2}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -200,7 +201,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text: 'Material: ',
+                                text: '${AppLocalizations.of(context)!.material}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -216,7 +217,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text: 'Surface: ',
+                                text: '${AppLocalizations.of(context)!.surface}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -232,7 +233,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text: 'Quantity: ',
+                                text: '${AppLocalizations.of(context)!.quantity}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -257,7 +258,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                     const SizedBox(height: 5.0),
                                     RichText(
                                       text: TextSpan(
-                                        text: 'Pieces: ',
+                                        text: '${AppLocalizations.of(context)!.pieces}: ',
                                         style: kTextStyle.copyWith(
                                           color: index == 0 ? kSubTitleColor : kWhite,
                                           fontWeight: FontWeight.bold,
@@ -290,7 +291,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                       ),
                       const SizedBox(height: 20.0),
                       Text(
-                        'Description',
+                        AppLocalizations.of(context)!.description,
                         style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       Form(
@@ -302,9 +303,9 @@ class _CreateTimelineState extends State<CreateTimeline> {
                               keyboardType: TextInputType.number,
                               cursorColor: kNeutralColor,
                               decoration: kInputDecoration.copyWith(
-                                labelText: 'Total Step',
+                                labelText: AppLocalizations.of(context)!.totalStep,
                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                hintText: 'Enter number of steps',
+                                hintText: AppLocalizations.of(context)!.enterNumberSteps,
                                 hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                 focusColor: kNeutralColor,
                                 border: const OutlineInputBorder(),
@@ -321,15 +322,15 @@ class _CreateTimelineState extends State<CreateTimeline> {
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (!isNumber(value, isRequired: true)) {
-                                  return 'Please enter number of steps\nNumber only';
+                                  return '${AppLocalizations.of(context)!.pleaseEnterNumberSteps}\n${AppLocalizations.of(context)!.numberOnly}';
                                 }
 
                                 if (int.parse(value!) < 1) {
-                                  return 'Timline contains at least 1 step';
+                                  return AppLocalizations.of(context)!.timelineMinStep;
                                 }
 
                                 if (int.parse(value) > 10) {
-                                  return 'Timline contains at most 10 steps';
+                                  return AppLocalizations.of(context)!.timelineMaxStep;
                                 }
 
                                 return null;
@@ -346,7 +347,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                   children: [
                                     const SizedBox(height: 8.0),
                                     Text(
-                                      'Step ${index + 1}',
+                                      '${AppLocalizations.of(context)!.step} ${index + 1}',
                                       style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 8.0),
@@ -356,7 +357,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                         Expanded(
                                           child: DateTimeFormField(
                                             decoration: kInputDecoration.copyWith(
-                                              labelText: 'Start Date',
+                                              labelText: AppLocalizations.of(context)!.startDate,
                                               labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                               focusColor: kNeutralColor,
                                               border: const OutlineInputBorder(),
@@ -375,7 +376,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                             autovalidateMode: AutovalidateMode.onUserInteraction,
                                             validator: (value) {
                                               if (value == null) {
-                                                return 'Please choose start date';
+                                                return AppLocalizations.of(context)!.chooseStartDate;
                                               }
 
                                               return null;
@@ -399,7 +400,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                         Expanded(
                                           child: DateTimeFormField(
                                             decoration: kInputDecoration.copyWith(
-                                              labelText: 'End Date',
+                                              labelText: AppLocalizations.of(context)!.endDate,
                                               labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                               focusColor: kNeutralColor,
                                               border: const OutlineInputBorder(),
@@ -410,7 +411,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                             autovalidateMode: AutovalidateMode.onUserInteraction,
                                             validator: (value) {
                                               if (value == null) {
-                                                return 'Please choose end date';
+                                                return AppLocalizations.of(context)!.chooseEndDate;
                                               }
 
                                               return null;
@@ -438,9 +439,9 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                       maxLength: 300,
                                       maxLines: 3,
                                       decoration: kInputDecoration.copyWith(
-                                        labelText: 'Describe',
+                                        labelText: AppLocalizations.of(context)!.describe,
                                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                        hintText: 'Describe your step',
+                                        hintText: AppLocalizations.of(context)!.describeStep,
                                         hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                         focusColor: kNeutralColor,
                                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -448,8 +449,8 @@ class _CreateTimelineState extends State<CreateTimeline> {
                                       ),
                                       autovalidateMode: AutovalidateMode.onUserInteraction,
                                       validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter describe';
+                                        if (value!.trim().isEmpty) {
+                                          return AppLocalizations.of(context)!.enterDescribe;
                                         }
 
                                         return null;
@@ -490,7 +491,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
     try {
       return RequirementApi().getOne(widget.id!, 'createdByNavigation,category,surface,material,sizes');
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Get requirement failed');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getRequirementFailed);
     }
 
     return null;
@@ -531,7 +532,8 @@ class _CreateTimelineState extends State<CreateTimeline> {
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
-      Fluttertoast.showToast(msg: 'Create timeline failed');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.createTimelineFailed);
     }
   }
 }

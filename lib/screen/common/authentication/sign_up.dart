@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -98,7 +99,7 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Center(
                         child: Text(
-                          'Create a New Account',
+                          AppLocalizations.of(context)!.createANewAccount,
                           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                         ),
                       ),
@@ -108,9 +109,9 @@ class _SignUpState extends State<SignUp> {
                         cursorColor: kNeutralColor,
                         textInputAction: TextInputAction.next,
                         decoration: kInputDecoration.copyWith(
-                          labelText: 'Name',
+                          labelText: AppLocalizations.of(context)!.name,
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Enter your full name',
+                          hintText: AppLocalizations.of(context)!.enterFullName,
                           hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                           focusColor: kNeutralColor,
                           border: const OutlineInputBorder(),
@@ -120,12 +121,12 @@ class _SignUpState extends State<SignUp> {
                         validator: (value) {
                           List<String> result = [];
 
-                          if (value!.isEmpty) {
-                            result.add('Please enter your name');
+                          if (value!.trim().isEmpty) {
+                            result.add(AppLocalizations.of(context)!.pleaseEnterName);
                           }
 
                           if (!isText(value)) {
-                            result.add('Special Character is not allowed');
+                            result.add(AppLocalizations.of(context)!.specialCharacter);
                           }
 
                           return result.isNotEmpty ? result.join('\n') : null;
@@ -139,7 +140,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: kInputDecoration.copyWith(
                           labelText: 'Email',
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Enter your email',
+                          hintText: AppLocalizations.of(context)!.enterEmail,
                           hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                           focusColor: kNeutralColor,
                           border: const OutlineInputBorder(),
@@ -149,12 +150,12 @@ class _SignUpState extends State<SignUp> {
                         validator: (value) {
                           List<String> result = [];
 
-                          if (value!.isEmpty) {
-                            result.add('Please enter your email');
+                          if (value!.trim().isEmpty) {
+                            result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                           }
 
                           if (!isValidEmail(value)) {
-                            result.add('Please enter a valid email address');
+                            result.add(AppLocalizations.of(context)!.validEmail);
                           }
 
                           return result.isNotEmpty ? result.join('\n') : null;
@@ -166,9 +167,9 @@ class _SignUpState extends State<SignUp> {
                         cursorColor: kNeutralColor,
                         textInputAction: TextInputAction.next,
                         decoration: kInputDecoration.copyWith(
-                          labelText: 'Phone',
+                          labelText: AppLocalizations.of(context)!.phone,
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Enter your phone number',
+                          hintText: AppLocalizations.of(context)!.enterPhone,
                           hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                           focusColor: kNeutralColor,
                           border: const OutlineInputBorder(),
@@ -178,12 +179,12 @@ class _SignUpState extends State<SignUp> {
                         validator: (value) {
                           List<String> result = [];
 
-                          if (value!.isEmpty) {
-                            result.add('Please enter your phone number');
+                          if (value!.trim().isEmpty) {
+                            result.add(AppLocalizations.of(context)!.pleaseEnterPhone);
                           }
 
                           if (!isPhone(value)) {
-                            result.add('Please enter a valid phone number');
+                            result.add(AppLocalizations.of(context)!.validPhone);
                           }
 
                           return result.isNotEmpty ? result.join('\n') : null;
@@ -197,9 +198,9 @@ class _SignUpState extends State<SignUp> {
                         textInputAction: TextInputAction.done,
                         decoration: kInputDecoration.copyWith(
                           border: const OutlineInputBorder(),
-                          labelText: 'Password*',
+                          labelText: AppLocalizations.of(context)!.password2,
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                          hintText: 'Please enter new password',
+                          hintText: AppLocalizations.of(context)!.enterPass,
                           hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -218,37 +219,37 @@ class _SignUpState extends State<SignUp> {
                         validator: (value) {
                           List<String> result = [];
 
-                          if (value!.isEmpty) {
-                            result.add('Please enter a password');
+                          if (value!.trim().isEmpty) {
+                            result.add(AppLocalizations.of(context)!.pleaseEnterPassword);
                           } else {
                             // Password contains at least 8 characters
                             if (value.length < 8) {
-                              result.add('At least 8 characters');
+                              result.add(AppLocalizations.of(context)!.atLeast);
                             }
 
                             // Password contains at least one uppercase letter
                             if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                              result.add('At least one uppercase letter');
+                              result.add(AppLocalizations.of(context)!.atOne);
                             }
 
                             // Password contains at least one lowercase letter
                             if (!RegExp(r'[a-z]').hasMatch(value)) {
-                              result.add('At least one lowercase letter');
+                              result.add(AppLocalizations.of(context)!.atLeastOne);
                             }
 
                             // Password contains at least one digit
                             if (!RegExp(r'[0-9]').hasMatch(value)) {
-                              result.add('At least one digit [0-9]');
+                              result.add(AppLocalizations.of(context)!.leastDigit);
                             }
 
                             // Password contains at least one special character
                             if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                              result.add('At least one special character [!@#\$%^&*(),.?":{}|<>]');
+                              result.add('${AppLocalizations.of(context)!.leastSpecialCharacter} [!@#\$%^&*(),.?":{}|<>]');
                             }
 
                             // No whitespaces
                             if (RegExp(r'\s').hasMatch(value)) {
-                              result.add('Password cannot contain whitespaces');
+                              result.add(AppLocalizations.of(context)!.passCannot);
                             }
                           }
 
@@ -257,7 +258,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 10.0),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Checkbox(
                             activeColor: kPrimaryColor,
@@ -274,11 +276,11 @@ class _SignUpState extends State<SignUp> {
                           ),
                           RichText(
                             text: TextSpan(
-                              text: 'Yes, I understand and agree to the ',
+                              text: AppLocalizations.of(context)!.agree,
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                               children: [
                                 TextSpan(
-                                  text: 'Terms of Service.',
+                                  text: AppLocalizations.of(context)!.term,
                                   style: kTextStyle.copyWith(
                                     color: kPrimaryColor,
                                     fontWeight: FontWeight.bold,
@@ -291,7 +293,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 20.0),
                       ButtonGlobalWithoutIcon(
-                        buttontext: 'Sign Up',
+                        buttontext: AppLocalizations.of(context)!.signUp,
                         buttonDecoration: kButtonDecoration.copyWith(
                           color: isCheck ? kPrimaryColor : kLightNeutralColor,
                           borderRadius: BorderRadius.circular(30.0),
@@ -313,7 +315,7 @@ class _SignUpState extends State<SignUp> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                             child: Text(
-                              'Or Sign up with',
+                              AppLocalizations.of(context)!.orSignInWith,
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                             ),
                           ),
@@ -367,11 +369,11 @@ class _SignUpState extends State<SignUp> {
                           },
                           child: RichText(
                             text: TextSpan(
-                              text: 'Already have an account? ',
+                              text: AppLocalizations.of(context)!.alreadyHaveAccount,
                               style: kTextStyle.copyWith(color: kSubTitleColor),
                               children: [
                                 TextSpan(
-                                  text: 'Log In',
+                                  text: AppLocalizations.of(context)!.logIn,
                                   style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -437,7 +439,7 @@ class _SignUpState extends State<SignUp> {
                               children: [
                                 Center(
                                   child: Text(
-                                    'Create a New Account',
+                                    AppLocalizations.of(context)!.createANewAccount,
                                     style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                                   ),
                                 ),
@@ -447,9 +449,9 @@ class _SignUpState extends State<SignUp> {
                                   cursorColor: kNeutralColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: kInputDecoration.copyWith(
-                                    labelText: 'Name',
+                                    labelText: AppLocalizations.of(context)!.name,
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Enter your full name',
+                                    hintText: AppLocalizations.of(context)!.enterFullName,
                                     hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                                     focusColor: kNeutralColor,
                                     border: const OutlineInputBorder(),
@@ -459,12 +461,12 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     List<String> result = [];
 
-                                    if (value!.isEmpty) {
-                                      result.add('Please enter your name');
+                                    if (value!.trim().isEmpty) {
+                                      result.add(AppLocalizations.of(context)!.pleaseEnterName);
                                     }
 
                                     if (!isText(value)) {
-                                      result.add('Special Character is not allowed');
+                                      result.add(AppLocalizations.of(context)!.specialCharacter);
                                     }
 
                                     return result.isNotEmpty ? result.join('\n') : null;
@@ -478,7 +480,7 @@ class _SignUpState extends State<SignUp> {
                                   decoration: kInputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Enter your email',
+                                    hintText: AppLocalizations.of(context)!.enterEmail,
                                     hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                     focusColor: kNeutralColor,
                                     border: const OutlineInputBorder(),
@@ -488,12 +490,12 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     List<String> result = [];
 
-                                    if (value!.isEmpty) {
-                                      result.add('Please enter your email');
+                                    if (value!.trim().isEmpty) {
+                                      result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                                     }
 
                                     if (!isValidEmail(value)) {
-                                      result.add('Please enter a valid email address');
+                                      result.add(AppLocalizations.of(context)!.validEmail);
                                     }
 
                                     return result.isNotEmpty ? result.join('\n') : null;
@@ -505,9 +507,9 @@ class _SignUpState extends State<SignUp> {
                                   cursorColor: kNeutralColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: kInputDecoration.copyWith(
-                                    labelText: 'Phone',
+                                    labelText: AppLocalizations.of(context)!.phone,
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Enter your phone number',
+                                    hintText: AppLocalizations.of(context)!.enterPhone,
                                     hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                                     focusColor: kNeutralColor,
                                     border: const OutlineInputBorder(),
@@ -517,12 +519,12 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     List<String> result = [];
 
-                                    if (value!.isEmpty) {
-                                      result.add('Please enter your phone number');
+                                    if (value!.trim().isEmpty) {
+                                      result.add(AppLocalizations.of(context)!.pleaseEnterPhone);
                                     }
 
                                     if (!isPhone(value)) {
-                                      result.add('Please enter a valid phone number');
+                                      result.add(AppLocalizations.of(context)!.validPhone);
                                     }
 
                                     return result.isNotEmpty ? result.join('\n') : null;
@@ -536,9 +538,9 @@ class _SignUpState extends State<SignUp> {
                                   textInputAction: TextInputAction.done,
                                   decoration: kInputDecoration.copyWith(
                                     border: const OutlineInputBorder(),
-                                    labelText: 'Password*',
+                                    labelText: AppLocalizations.of(context)!.password2,
                                     labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                    hintText: 'Please enter new password',
+                                    hintText: AppLocalizations.of(context)!.enterPass,
                                     hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                                     suffixIcon: IconButton(
                                       onPressed: () {
@@ -557,37 +559,37 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     List<String> result = [];
 
-                                    if (value!.isEmpty) {
-                                      result.add('Please enter a password');
+                                    if (value!.trim().isEmpty) {
+                                      result.add(AppLocalizations.of(context)!.enterPass);
                                     } else {
                                       // Password contains at least 8 characters
                                       if (value.length < 8) {
-                                        result.add('At least 8 characters');
+                                        result.add(AppLocalizations.of(context)!.atLeast);
                                       }
 
                                       // Password contains at least one uppercase letter
                                       if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                        result.add('At least one uppercase letter');
+                                        result.add(AppLocalizations.of(context)!.atOne);
                                       }
 
                                       // Password contains at least one lowercase letter
                                       if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                        result.add('At least one lowercase letter');
+                                        result.add(AppLocalizations.of(context)!.atLeastOne);
                                       }
 
                                       // Password contains at least one digit
                                       if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                        result.add('At least one digit [0-9]');
+                                        result.add(AppLocalizations.of(context)!.leastDigit);
                                       }
 
                                       // Password contains at least one special character
                                       if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                                        result.add('At least one special character [!@#\$%^&*(),.?":{}|<>]');
+                                        result.add('${AppLocalizations.of(context)!.leastSpecialCharacter} [!@#\$%^&*(),.?":{}|<>]');
                                       }
 
                                       // No whitespaces
                                       if (RegExp(r'\s').hasMatch(value)) {
-                                        result.add('Password cannot contain whitespaces');
+                                        result.add(AppLocalizations.of(context)!.passCannot);
                                       }
                                     }
 
@@ -596,7 +598,8 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Checkbox(
                                       activeColor: kPrimaryColor,
@@ -613,11 +616,11 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     RichText(
                                       text: TextSpan(
-                                        text: 'Yes, I understand and agree to the ',
+                                        text: AppLocalizations.of(context)!.agree,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                         children: [
                                           TextSpan(
-                                            text: 'Terms of Service.',
+                                            text: AppLocalizations.of(context)!.term,
                                             style: kTextStyle.copyWith(
                                               color: kPrimaryColor,
                                               fontWeight: FontWeight.bold,
@@ -630,7 +633,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 const SizedBox(height: 20.0),
                                 ButtonGlobalWithoutIcon(
-                                  buttontext: 'Sign Up',
+                                  buttontext: AppLocalizations.of(context)!.signUp,
                                   buttonDecoration: kButtonDecoration.copyWith(
                                     color: isCheck ? kPrimaryColor : kLightNeutralColor,
                                     borderRadius: BorderRadius.circular(30.0),
@@ -652,7 +655,7 @@ class _SignUpState extends State<SignUp> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                                       child: Text(
-                                        'Or Sign up with',
+                                        AppLocalizations.of(context)!.orSignInWith,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
                                     ),
@@ -706,11 +709,11 @@ class _SignUpState extends State<SignUp> {
                                     },
                                     child: RichText(
                                       text: TextSpan(
-                                        text: 'Already have an account? ',
+                                        text: AppLocalizations.of(context)!.alreadyHaveAccount,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                         children: [
                                           TextSpan(
-                                            text: 'Log In',
+                                            text: AppLocalizations.of(context)!.logIn,
                                             style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -783,7 +786,8 @@ class _SignUpState extends State<SignUp> {
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
-      Fluttertoast.showToast(msg: 'Account already exists');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.accountAlreadyExists);
     }
   }
 }

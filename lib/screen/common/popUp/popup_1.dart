@@ -729,7 +729,7 @@ class _CancelReasonPopUpState extends State<CancelReasonPopUp> {
                 ),
                 controller: reasonController,
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value!.trim().isEmpty) {
                     return 'Please enter a reason';
                   }
 

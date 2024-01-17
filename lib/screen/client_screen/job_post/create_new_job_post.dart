@@ -206,8 +206,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             AppLocalizations.of(context)!.createNewRequirement,
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -248,8 +247,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       decoration: kInputDecoration.copyWith(
                         labelText: AppLocalizations.of(context)!.title,
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                        hintText:
-                            AppLocalizations.of(context)!.enterRequirementTitle,
+                        hintText: AppLocalizations.of(context)!.enterRequirementTitle,
                         hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                         focusColor: kNeutralColor,
                         border: const OutlineInputBorder(),
@@ -257,7 +255,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       controller: titleController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value!.trim().isEmpty) {
                           return AppLocalizations.of(context)!.pleaseEnterTitle;
                         }
 
@@ -273,20 +271,17 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText:
-                                AppLocalizations.of(context)!.chooseACategory,
+                            labelText: AppLocalizations.of(context)!.chooseACategory,
                             labelStyle: kTextStyle.copyWith(
                               color: kNeutralColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: DropdownButtonHideUnderline(
-                              child: getCategories()),
+                          child: DropdownButtonHideUnderline(child: getCategories()),
                         );
                       },
                     ),
@@ -299,20 +294,17 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText:
-                                AppLocalizations.of(context)!.chooseAMaterial,
+                            labelText: AppLocalizations.of(context)!.chooseAMaterial,
                             labelStyle: kTextStyle.copyWith(
                               color: kNeutralColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: DropdownButtonHideUnderline(
-                              child: getMaterials()),
+                          child: DropdownButtonHideUnderline(child: getMaterials()),
                         );
                       },
                     ),
@@ -325,20 +317,17 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText:
-                                AppLocalizations.of(context)!.chooseASurface,
+                            labelText: AppLocalizations.of(context)!.chooseASurface,
                             labelStyle: kTextStyle.copyWith(
                               color: kNeutralColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getSurfaces()),
+                          child: DropdownButtonHideUnderline(child: getSurfaces()),
                         );
                       },
                     ),
@@ -351,8 +340,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -362,8 +350,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getPieces()),
+                          child: DropdownButtonHideUnderline(child: getPieces()),
                         );
                       },
                     ),
@@ -392,13 +379,10 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                     cursorColor: kNeutralColor,
                                     textInputAction: TextInputAction.next,
                                     decoration: kInputDecoration.copyWith(
-                                      labelText:
-                                          AppLocalizations.of(context)!.width,
-                                      labelStyle: kTextStyle.copyWith(
-                                          color: kNeutralColor),
+                                      labelText: AppLocalizations.of(context)!.width,
+                                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                       hintText: 'cm',
-                                      hintStyle: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                       focusColor: kNeutralColor,
                                       border: const OutlineInputBorder(),
                                     ),
@@ -413,17 +397,14 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                         });
                                       }
                                     },
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) {
-                                      if (!isFloatNumber(value,
-                                          isRequired: true)) {
+                                      if (!isFloatNumber(value, isRequired: true)) {
                                         return '${AppLocalizations.of(context)!.pleaseEnterWidth}\n${AppLocalizations.of(context)!.numberOnly}';
                                       }
 
                                       if (int.tryParse(value!)! < 10) {
-                                        return AppLocalizations.of(context)!
-                                            .minimumWidthIs10Cm;
+                                        return AppLocalizations.of(context)!.minimumWidthIs10Cm;
                                       }
 
                                       return null;
@@ -437,13 +418,10 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                     cursorColor: kNeutralColor,
                                     textInputAction: TextInputAction.next,
                                     decoration: kInputDecoration.copyWith(
-                                      labelText:
-                                          AppLocalizations.of(context)!.length,
-                                      labelStyle: kTextStyle.copyWith(
-                                          color: kNeutralColor),
+                                      labelText: AppLocalizations.of(context)!.length,
+                                      labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                                       hintText: 'cm',
-                                      hintStyle: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                       focusColor: kNeutralColor,
                                       border: const OutlineInputBorder(),
                                     ),
@@ -458,17 +436,14 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                         });
                                       }
                                     },
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) {
-                                      if (!isFloatNumber(value,
-                                          isRequired: true)) {
+                                      if (!isFloatNumber(value, isRequired: true)) {
                                         return '${AppLocalizations.of(context)!.pleaseEnterLength}\n${AppLocalizations.of(context)!.numberOnly}';
                                       }
 
                                       if (int.tryParse(value!)! < 10) {
-                                        return AppLocalizations.of(context)!
-                                            .minimumLengthIs10Cm;
+                                        return AppLocalizations.of(context)!.minimumLengthIs10Cm;
                                       }
 
                                       return null;
@@ -487,8 +462,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       cursorColor: kNeutralColor,
                       textInputAction: TextInputAction.next,
                       decoration: kInputDecoration.copyWith(
-                        labelText:
-                            AppLocalizations.of(context)!.numberOfDrawings,
+                        labelText: AppLocalizations.of(context)!.numberOfDrawings,
                         labelStyle: kTextStyle.copyWith(
                           color: kNeutralColor,
                           fontWeight: FontWeight.bold,
@@ -511,13 +485,11 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                         }
 
                         if (int.parse(value!) < 1) {
-                          return AppLocalizations.of(context)!
-                              .minimumQuantityIs1;
+                          return AppLocalizations.of(context)!.minimumQuantityIs1;
                         }
 
                         if (int.parse(value) > 3) {
-                          return AppLocalizations.of(context)!
-                              .maximumQuantityIs3;
+                          return AppLocalizations.of(context)!.maximumQuantityIs3;
                         }
 
                         return null;
@@ -531,8 +503,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                       decoration: kInputDecoration.copyWith(
                         labelText: AppLocalizations.of(context)!.budget,
                         labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                        hintText:
-                            AppLocalizations.of(context)!.howMuchYouCanPay,
+                        hintText: AppLocalizations.of(context)!.howMuchYouCanPay,
                         hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                         focusColor: kNeutralColor,
                         border: const OutlineInputBorder(),
@@ -555,8 +526,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
 
                             if (count == 3) {
                               count = 0;
-                              budgetWithDot =
-                                  '.${budgetString[i]}$budgetWithDot';
+                              budgetWithDot = '.${budgetString[i]}$budgetWithDot';
                             } else {
                               budgetWithDot = budgetString[i] + budgetWithDot;
                             }
@@ -596,8 +566,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                           color: kNeutralColor,
                           fontWeight: FontWeight.bold,
                         ),
-                        hintText:
-                            AppLocalizations.of(context)!.iNeedAnArtistFor,
+                        hintText: AppLocalizations.of(context)!.iNeedAnArtistFor,
                         hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                         focusColor: kNeutralColor,
                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -614,8 +583,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               ),
-                              borderSide: BorderSide(
-                                  color: kBorderColorTextField, width: 2),
+                              borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                             ),
                             contentPadding: const EdgeInsets.all(7.0),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -625,8 +593,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child:
-                              DropdownButtonHideUnderline(child: getStatus()),
+                          child: DropdownButtonHideUnderline(child: getStatus()),
                         );
                       },
                     ),
@@ -659,8 +626,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                     const SizedBox(height: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.uploadImage,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                     ),
                                     const SizedBox(height: 10.0),
                                   ],
@@ -670,8 +636,7 @@ class _CreateNewJobPostState extends State<CreateNewJobPost> {
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       return ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                                        borderRadius: BorderRadius.circular(10.0),
                                         child: Stack(
                                           alignment: Alignment.topRight,
                                           children: [

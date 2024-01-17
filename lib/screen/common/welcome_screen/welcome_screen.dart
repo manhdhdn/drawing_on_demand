@@ -1,8 +1,8 @@
-import 'package:drawing_on_demand/app_routes/named_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -93,11 +93,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          'I\'m a Customer',
+                          AppLocalizations.of(context)!.customer,
                           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          'Looking for help with a project.',
+                          AppLocalizations.of(context)!.lookingForHelp,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -154,11 +154,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          'I\'m a Artist',
+                          AppLocalizations.of(context)!.artist,
                           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          'Looking for my favorite work ',
+                          AppLocalizations.of(context)!.lookingForWork,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -189,7 +189,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   const SizedBox(height: 15.0),
                   ButtonGlobalWithoutIcon(
-                    buttontext: 'Create an Account',
+                    buttontext: AppLocalizations.of(context)!.createAnAccount,
                     buttonDecoration: kButtonDecoration.copyWith(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.circular(30.0),
@@ -207,11 +207,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       },
                       child: RichText(
                         text: TextSpan(
-                          text: 'Already have an account? ',
+                          text: AppLocalizations.of(context)!.alreadyHaveAccount,
                           style: kTextStyle.copyWith(color: kSubTitleColor),
                           children: [
                             TextSpan(
-                              text: 'Log In',
+                              text: AppLocalizations.of(context)!.logIn,
                               style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -305,11 +305,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   ),
                                   contentPadding: EdgeInsets.zero,
                                   title: Text(
-                                    'I\'m a Customer',
+                                    AppLocalizations.of(context)!.customer,
                                     style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
-                                    'Looking for help with a project.',
+                                    AppLocalizations.of(context)!.lookingForHelp,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -366,11 +366,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   ),
                                   contentPadding: EdgeInsets.zero,
                                   title: Text(
-                                    'I\'m a Artist',
+                                    AppLocalizations.of(context)!.artist,
                                     style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
-                                    'Looking for my favorite work ',
+                                    AppLocalizations.of(context)!.lookingForWork,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -401,7 +401,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ),
                             const SizedBox(height: 15.0),
                             ButtonGlobalWithoutIcon(
-                              buttontext: 'Create an Account',
+                              buttontext: AppLocalizations.of(context)!.createAnAccount,
                               buttonDecoration: kButtonDecoration.copyWith(
                                 color: kPrimaryColor,
                                 borderRadius: BorderRadius.circular(30.0),
@@ -419,11 +419,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 },
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'Already have an account? ',
+                                    text: AppLocalizations.of(context)!.alreadyHaveAnOffer,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                     children: [
                                       TextSpan(
-                                        text: 'Log In',
+                                        text: AppLocalizations.of(context)!.logIn,
                                         style: kTextStyle.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                       ),
                                     ],

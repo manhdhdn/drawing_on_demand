@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -59,7 +60,7 @@ class _OtpVerificationState extends State<OtpVerification> {
         toolbarHeight: 80,
         centerTitle: true,
         title: Text(
-          'Verification',
+          AppLocalizations.of(context)!.verification,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
       ),
@@ -71,7 +72,7 @@ class _OtpVerificationState extends State<OtpVerification> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'We’ve send the code to your phone',
+                AppLocalizations.of(context)!.sendCode,
                 style: kTextStyle.copyWith(color: kSubTitleColor),
               ),
               Text(
@@ -96,12 +97,12 @@ class _OtpVerificationState extends State<OtpVerification> {
                 showCursor: false,
                 pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a code';
+                  if (value!.trim().isEmpty) {
+                    return AppLocalizations.of(context)!.enterCode;
                   }
 
                   if (value.length < 6) {
-                    return 'Please enter a valid code';
+                    return AppLocalizations.of(context)!.validCode;
                   }
 
                   verifyCode(value);
@@ -132,7 +133,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Didn’t receive code? ',
+                    AppLocalizations.of(context)!.receieCode,
                     style: kTextStyle.copyWith(color: kSubTitleColor),
                   ),
                   GestureDetector(
@@ -140,7 +141,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                       onResend();
                     },
                     child: Text(
-                      'Resend Code',
+                      AppLocalizations.of(context)!.resendCode,
                       style: kTextStyle.copyWith(color: kPrimaryColor),
                     ),
                   ),
@@ -194,7 +195,8 @@ class _OtpVerificationState extends State<OtpVerification> {
     } catch (error) {
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
-      Fluttertoast.showToast(msg: 'Invalid code');
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.invalidCode);
     }
   }
 
@@ -204,7 +206,7 @@ class _OtpVerificationState extends State<OtpVerification> {
         duration = const Duration(minutes: 1);
       });
     } else {
-      Fluttertoast.showToast(msg: 'Please wait for at least 30 seconds before resend code');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.pleaseWait);
     }
   }
 }

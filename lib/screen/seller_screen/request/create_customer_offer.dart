@@ -66,8 +66,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           AppLocalizations.of(context)!.createACustomOffer,
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -76,8 +75,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
           buttontext: AppLocalizations.of(context)!.submitOffer,
-          buttonDecoration: kButtonDecoration.copyWith(
-              color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
+          buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
           onPressed: () {
             onSubmitOffer();
           },
@@ -136,9 +134,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      snapshot.data!.createdByNavigation!
-                                              .avatar ??
-                                          defaultImage,
+                                      snapshot.data!.createdByNavigation!.avatar ?? defaultImage,
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -146,15 +142,11 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                               ),
                               title: Text(
                                 snapshot.data!.createdByNavigation!.name!,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                DateFormat('dd-MM-yyyy')
-                                    .format(snapshot.data!.createdDate!),
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                DateFormat('dd-MM-yyyy').format(snapshot.data!.createdDate!),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                             ),
                             const Divider(
@@ -165,28 +157,22 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                             const SizedBox(height: 10.0),
                             Text(
                               snapshot.data!.title!,
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 5.0),
                             ReadMoreText(
                               snapshot.data!.description!,
-                              style: kTextStyle.copyWith(
-                                  color: kLightNeutralColor),
+                              style: kTextStyle.copyWith(color: kLightNeutralColor),
                               trimLines: 2,
                               colorClickableText: kPrimaryColor,
                               trimMode: TrimMode.Line,
-                              trimCollapsedText:
-                                  AppLocalizations.of(context)!.readMore,
-                              trimExpandedText:
-                                  AppLocalizations.of(context)!.readLess,
+                              trimCollapsedText: AppLocalizations.of(context)!.readMore,
+                              trimExpandedText: AppLocalizations.of(context)!.readLess,
                             ),
                             const SizedBox(height: 10.0),
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.budget}: ',
+                                text: '${AppLocalizations.of(context)!.budget}: ',
                                 style: kTextStyle.copyWith(
                                   color: kSubTitleColor,
                                   fontWeight: FontWeight.bold,
@@ -196,8 +182,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                     text: NumberFormat.simpleCurrency(
                                       locale: 'vi-VN',
                                     ).format(snapshot.data!.budget),
-                                    style: kTextStyle.copyWith(
-                                        color: kNeutralColor),
+                                    style: kTextStyle.copyWith(color: kNeutralColor),
                                   ),
                                 ],
                               ),
@@ -208,8 +193,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                       const SizedBox(height: 20.0),
                       Text(
                         AppLocalizations.of(context)!.description,
-                        style: kTextStyle.copyWith(
-                            color: kNeutralColor, fontWeight: FontWeight.bold),
+                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                       ),
                       Form(
                         key: _formKey,
@@ -223,22 +207,17 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                 maxLength: 300,
                                 maxLines: 3,
                                 decoration: kInputDecoration.copyWith(
-                                  hintText: AppLocalizations.of(context)!
-                                      .iFitYourRequest,
-                                  hintStyle: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
+                                  hintText: AppLocalizations.of(context)!.iFitYourRequest,
+                                  hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                   focusColor: kNeutralColor,
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
                                   border: const OutlineInputBorder(),
                                 ),
                                 controller: introduceController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return AppLocalizations.of(context)!
-                                        .pleaseEnterDescrip;
+                                  if (value!.trim().isEmpty) {
+                                    return AppLocalizations.of(context)!.pleaseEnterDescrip;
                                   }
 
                                   return null;
@@ -248,24 +227,18 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                               keyboardType: TextInputType.number,
                               cursorColor: kNeutralColor,
                               decoration: kInputDecoration.copyWith(
-                                labelText: AppLocalizations.of(context)!
-                                    .totalOfferAmount,
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
-                                hintText:
-                                    AppLocalizations.of(context)!.enterAmount,
-                                hintStyle:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                labelText: AppLocalizations.of(context)!.totalOfferAmount,
+                                labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                hintText: AppLocalizations.of(context)!.enterAmount,
+                                hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                 focusColor: kNeutralColor,
                                 border: const OutlineInputBorder(),
                               ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               controller: budgetController,
                               onChanged: (value) {
                                 if (isCurrency(value, isRequired: true)) {
-                                  int budget =
-                                      int.tryParse(value.replaceAll('.', ''))!;
+                                  int budget = int.tryParse(value.replaceAll('.', ''))!;
 
                                   if (budget > snapshot.data!.budget!) {
                                     budget = snapshot.data!.budget!.toInt();
@@ -275,23 +248,18 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                   int count = 0;
                                   String budgetWithDot = '';
 
-                                  for (int i = budgetString.length - 1;
-                                      i > 0;
-                                      i--) {
+                                  for (int i = budgetString.length - 1; i > 0; i--) {
                                     count++;
 
                                     if (count == 3) {
                                       count = 0;
-                                      budgetWithDot =
-                                          '.${budgetString[i]}$budgetWithDot';
+                                      budgetWithDot = '.${budgetString[i]}$budgetWithDot';
                                     } else {
-                                      budgetWithDot =
-                                          budgetString[i] + budgetWithDot;
+                                      budgetWithDot = budgetString[i] + budgetWithDot;
                                     }
                                   }
 
-                                  budgetWithDot =
-                                      budgetString[0] + budgetWithDot;
+                                  budgetWithDot = budgetString[0] + budgetWithDot;
 
                                   setState(() {
                                     budgetController.text = budgetWithDot;
@@ -304,8 +272,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                   return '${AppLocalizations.of(context)!.pleaseEnterBudget}\n${AppLocalizations.of(context)!.numberOnly}';
                                 }
 
-                                if (int.parse(value!.replaceAll('.', '')) <
-                                    100000) {
+                                if (int.parse(value!.replaceAll('.', '')) < 100000) {
                                   return '${AppLocalizations.of(context)!.minimumAmountIs} ${NumberFormat.simpleCurrency(locale: 'vi_VN').format(100000)}';
                                 }
 
@@ -334,19 +301,17 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                             ),
                             child: images.isEmpty
                                 ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const Icon(
                                         IconlyBold.image,
                                         color: kLightNeutralColor,
+                                        size: 50.0,
                                       ),
                                       const SizedBox(height: 10.0),
                                       Text(
-                                        AppLocalizations.of(context)!
-                                            .uploadImage,
-                                        style: kTextStyle.copyWith(
-                                            color: kSubTitleColor),
+                                        AppLocalizations.of(context)!.uploadImage,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
                                       const SizedBox(height: 10.0),
                                     ],
@@ -356,14 +321,12 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                          borderRadius: BorderRadius.circular(10.0),
                                           child: Stack(
                                             alignment: Alignment.topRight,
                                             children: [
                                               Image.memory(
                                                 snapshot.data!,
-                                                scale: 5,
                                               ),
                                               GestureDetector(
                                                 onTap: () {
@@ -413,8 +376,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
     try {
       return RequirementApi().getOne(widget.id!, 'createdByNavigation');
     } catch (error) {
-      Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.getRequirementFailed);
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getRequirementFailed);
     }
 
     return null;
@@ -489,8 +451,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
       var proposals = await ProposalApi().gets(
         0,
         count: 'true',
-        filter:
-            'requirementId eq ${widget.id} and createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
+        filter: 'requirementId eq ${widget.id} and createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}',
       );
 
       if (proposals.count != 0) {

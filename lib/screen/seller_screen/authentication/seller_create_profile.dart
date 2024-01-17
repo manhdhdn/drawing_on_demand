@@ -1,8 +1,6 @@
 // import 'package:country_code_picker/country_code_picker.dart';
 import 'dart:convert';
 
-import 'package:drawing_on_demand/data/apis/account_api.dart';
-import 'package:drawing_on_demand/data/models/certificate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -11,11 +9,13 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/account_api.dart';
 import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/api_config.dart';
 import '../../../data/apis/certificate_api.dart';
@@ -24,6 +24,7 @@ import '../../../data/apis/rank_api.dart';
 import '../../../data/apis/role_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/account_role.dart';
+import '../../../data/models/certificate.dart';
 import '../../../data/models/ghn_request.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -249,7 +250,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
         toolbarHeight: 80,
         centerTitle: true,
         title: Text(
-          'Setup Profile',
+          AppLocalizations.of(context)!.setupProfile,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
       ),
@@ -259,7 +260,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
           children: [
             Expanded(
               child: ButtonGlobalWithoutIcon(
-                buttontext: 'Back',
+                buttontext: AppLocalizations.of(context)!.back,
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: currentIndexPage == 0 ? kLightNeutralColor : kWhite,
                   borderRadius: BorderRadius.circular(30.0),
@@ -278,7 +279,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
             ),
             Expanded(
               child: ButtonGlobalWithoutIcon(
-                buttontext: currentIndexPage < 2 ? 'Continue' : 'Save Profile',
+                buttontext: currentIndexPage < 2 ? AppLocalizations.of(context)!.continueSetup : AppLocalizations.of(context)!.saveProfile,
                 buttonDecoration: kButtonDecoration.copyWith(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(30.0),
@@ -321,10 +322,10 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                       children: [
                         Text(
                           currentIndexPage == 0
-                              ? 'Step 1 of 3'
+                              ? AppLocalizations.of(context)!.oneOf3
                               : currentIndexPage == 1
-                                  ? 'Step 2 of 3'
-                                  : 'Step 3 of 3',
+                                  ? AppLocalizations.of(context)!.twoOf3
+                                  : AppLocalizations.of(context)!.threeOf3,
                           style: kTextStyle.copyWith(color: kNeutralColor),
                         ),
                         const SizedBox(width: 10.0),
@@ -346,7 +347,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Upload Your Photo',
+                          AppLocalizations.of(context)!.uploadPhoto,
                           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 10.0),
@@ -428,7 +429,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelText: 'Choose a Province',
+                                labelText: AppLocalizations.of(context)!.chooseAProvince,
                                 labelStyle: kTextStyle.copyWith(
                                   color: kNeutralColor,
                                   fontWeight: FontWeight.bold,
@@ -441,7 +442,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           },
                           validator: (value) {
                             if (selectedProvince == null) {
-                              return 'Please choose a province';
+                              return AppLocalizations.of(context)!.pleaseChooseProvince;
                             }
 
                             return null;
@@ -460,7 +461,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelText: 'Choose a District',
+                                labelText: AppLocalizations.of(context)!.chooseADistrict,
                                 labelStyle: kTextStyle.copyWith(
                                   color: kNeutralColor,
                                   fontWeight: FontWeight.bold,
@@ -473,7 +474,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           },
                           validator: (value) {
                             if (selectedDistrict == null) {
-                              return 'Please choose a district';
+                              return AppLocalizations.of(context)!.pleaseChooseDistrict;
                             }
 
                             return null;
@@ -492,7 +493,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelText: 'Choose a Ward',
+                                labelText: AppLocalizations.of(context)!.chooseAWard,
                                 labelStyle: kTextStyle.copyWith(
                                   color: kNeutralColor,
                                   fontWeight: FontWeight.bold,
@@ -505,7 +506,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           },
                           validator: (value) {
                             if (selectedWard == null) {
-                              return 'Please choose a ward';
+                              return AppLocalizations.of(context)!.pleaseChooseWard;
                             }
 
                             return null;
@@ -517,9 +518,9 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           cursorColor: kNeutralColor,
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
-                            labelText: 'Street Address',
+                            labelText: AppLocalizations.of(context)!.streetAddress,
                             labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                            hintText: 'Enter street address',
+                            hintText: AppLocalizations.of(context)!.enterStreet,
                             hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
@@ -527,8 +528,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           controller: addressController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter street address';
+                            if (value!.trim().isEmpty) {
+                              return AppLocalizations.of(context)!.pleaseEnterStreet;
                             }
 
                             return null;
@@ -547,7 +548,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelText: 'Select Gender',
+                                labelText: AppLocalizations.of(context)!.selectGender,
                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               child: DropdownButtonHideUnderline(child: getGender()),
@@ -561,7 +562,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                         Row(
                           children: [
                             Text(
-                              'Education',
+                              AppLocalizations.of(context)!.education,
                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
@@ -577,7 +578,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                   const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                                   const SizedBox(width: 5.0),
                                   Text(
-                                    'Add Education',
+                                    AppLocalizations.of(context)!.addEdu,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ],
@@ -611,9 +612,9 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               cursorColor: kNeutralColor,
                                               textInputAction: TextInputAction.next,
                                               decoration: kInputDecoration.copyWith(
-                                                labelText: 'School name',
+                                                labelText: AppLocalizations.of(context)!.schoolName,
                                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                                hintText: 'Enter school name',
+                                                hintText: AppLocalizations.of(context)!.enterSchoolName,
                                                 hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                                 focusColor: kNeutralColor,
                                                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -631,8 +632,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               },
                                               autovalidateMode: AutovalidateMode.onUserInteraction,
                                               validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter school name';
+                                                if (value!.trim().isEmpty) {
+                                                  return AppLocalizations.of(context)!.pleaseEnterSchool;
                                                 }
 
                                                 return null;
@@ -653,9 +654,9 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               maxLength: 300,
                                               maxLines: 3,
                                               decoration: kInputDecoration.copyWith(
-                                                labelText: 'Description',
+                                                labelText: AppLocalizations.of(context)!.description,
                                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                                hintText: 'Enter description',
+                                                hintText: AppLocalizations.of(context)!.enterDescribe,
                                                 hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                                 focusColor: kNeutralColor,
                                                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -673,8 +674,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               },
                                               autovalidateMode: AutovalidateMode.onUserInteraction,
                                               validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter description';
+                                                if (value!.trim().isEmpty) {
+                                                  return AppLocalizations.of(context)!.pleaseEnterDescrip;
                                                 }
 
                                                 return null;
@@ -708,7 +709,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                         Row(
                           children: [
                             Text(
-                              'Certification',
+                              AppLocalizations.of(context)!.certification,
                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
@@ -725,7 +726,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                   const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                                   const SizedBox(width: 5.0),
                                   Text(
-                                    'Add Certification',
+                                    AppLocalizations.of(context)!.addCer,
                                     style: kTextStyle.copyWith(color: kSubTitleColor),
                                   ),
                                 ],
@@ -760,9 +761,9 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               cursorColor: kNeutralColor,
                                               textInputAction: TextInputAction.next,
                                               decoration: kInputDecoration.copyWith(
-                                                labelText: 'Certification name',
+                                                labelText: AppLocalizations.of(context)!.cerName,
                                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                                hintText: 'Enter certification name',
+                                                hintText: AppLocalizations.of(context)!.enterCerName,
                                                 hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                                 focusColor: kNeutralColor,
                                                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -780,8 +781,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               },
                                               autovalidateMode: AutovalidateMode.onUserInteraction,
                                               validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter certification name';
+                                                if (value!.trim().isEmpty) {
+                                                  return AppLocalizations.of(context)!.pleaseEnterCer;
                                                 }
 
                                                 return null;
@@ -802,9 +803,9 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               maxLength: 300,
                                               maxLines: 3,
                                               decoration: kInputDecoration.copyWith(
-                                                labelText: 'Description',
+                                                labelText: AppLocalizations.of(context)!.description,
                                                 labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                                                hintText: 'Enter description',
+                                                hintText: AppLocalizations.of(context)!.enterDescribe,
                                                 hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                                                 focusColor: kNeutralColor,
                                                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -822,8 +823,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                               },
                                               autovalidateMode: AutovalidateMode.onUserInteraction,
                                               validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter description';
+                                                if (value!.trim().isEmpty) {
+                                                  return AppLocalizations.of(context)!.pleaseEnterDescrip;
                                                 }
 
                                                 return null;
@@ -881,7 +882,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                                                     ),
                                                     const SizedBox(height: 10.0),
                                                     Text(
-                                                      ' Upload Image ',
+                                                      AppLocalizations.of(context)!.uploadImage,
                                                       style: kTextStyle.copyWith(color: kSubTitleColor),
                                                     ),
                                                     const SizedBox(height: 10.0),
@@ -938,7 +939,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'About you',
+                          AppLocalizations.of(context)!.aboutYou,
                           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 15.0),
@@ -949,7 +950,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           cursorColor: kNeutralColor,
                           textInputAction: TextInputAction.newline,
                           decoration: kInputDecoration.copyWith(
-                            hintText: 'Write a brief description about you..',
+                            hintText: AppLocalizations.of(context)!.writeAboutYou,
                             hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
@@ -957,8 +958,8 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
                           controller: bioController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please write a bio';
+                            if (value!.trim().isEmpty) {
+                              return AppLocalizations.of(context)!.pleaseEnterBio;
                             }
 
                             return null;
@@ -1110,11 +1111,11 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
     }
 
     if (certificateNames.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please add at least one certification');
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.pleaseAddCer);
       return;
     } else {
       if (certificateImages.any((image) => image.path.isEmpty)) {
-        Fluttertoast.showToast(msg: 'Please complete all certification information');
+        Fluttertoast.showToast(msg: AppLocalizations.of(context)!.pleaseCompleteCer);
         return;
       }
     }

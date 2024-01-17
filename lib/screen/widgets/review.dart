@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constant.dart';
 
@@ -66,7 +67,7 @@ class _ReviewState extends State<Review> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Total ${widget.total} reviews',
+                    '${AppLocalizations.of(context)!.totalReviews}: ${widget.total}',
                     style: kTextStyle.copyWith(
                       color: kNeutralColor,
                     ),
@@ -203,13 +204,11 @@ class ReviewDetails extends StatelessWidget {
 
   const ReviewDetails({
     Key? key,
-    this.avatar =
-        'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf',
+    this.avatar = 'https://firebasestorage.googleapis.com/v0/b/drawing-on-demand.appspot.com/o/images%2Fdrawing_on_demand.jpg?alt=media&token=c1801df1-f2d7-485d-8715-9e7aed83c3cf',
     this.name = 'Truc Nhu',
     this.star = 5,
     this.date = '03-11-2023',
-    this.comment =
-        'Nibh nibh quis dolor in. Etiam cras nisi, turpis quisque diam',
+    this.comment = 'Nibh nibh quis dolor in. Etiam cras nisi, turpis quisque diam',
   }) : super(key: key);
 
   ListView getStars() {
@@ -232,17 +231,7 @@ class ReviewDetails extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10.0),
       width: context.width(),
-      decoration: BoxDecoration(
-          color: kWhite,
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: kBorderColorTextField),
-          boxShadow: const [
-            BoxShadow(
-                color: kBorderColorTextField,
-                spreadRadius: 1.0,
-                blurRadius: 5.0,
-                offset: Offset(0, 3))
-          ]),
+      decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kBorderColorTextField, spreadRadius: 1.0, blurRadius: 5.0, offset: Offset(0, 3))]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -269,8 +258,7 @@ class ReviewDetails extends StatelessWidget {
                 children: [
                   Text(
                     name!,
-                    style: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5.0),
                   SizedBox(
@@ -294,7 +282,7 @@ class ReviewDetails extends StatelessWidget {
           ),
           const SizedBox(height: 10.0),
           Text(
-            'Review',
+            AppLocalizations.of(context)!.review,
             style: kTextStyle.copyWith(color: kLightNeutralColor),
           ),
         ],
@@ -313,17 +301,7 @@ class ReviewDetails2 extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10.0),
       width: context.width(),
-      decoration: BoxDecoration(
-          color: kWhite,
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: kBorderColorTextField),
-          boxShadow: const [
-            BoxShadow(
-                color: kBorderColorTextField,
-                spreadRadius: 1.0,
-                blurRadius: 5.0,
-                offset: Offset(0, 3))
-          ]),
+      decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kBorderColorTextField, spreadRadius: 1.0, blurRadius: 5.0, offset: Offset(0, 3))]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -348,8 +326,7 @@ class ReviewDetails2 extends StatelessWidget {
                 children: [
                   Text(
                     'Abdul Korim',
-                    style: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
@@ -390,8 +367,7 @@ class ReviewDetails2 extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
                   border: Border.all(color: kBorderColorTextField),
-                  image: const DecorationImage(
-                      image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
+                  image: const DecorationImage(image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(width: 10.0),
@@ -401,8 +377,7 @@ class ReviewDetails2 extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
                   border: Border.all(color: kBorderColorTextField),
-                  image: const DecorationImage(
-                      image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
+                  image: const DecorationImage(image: AssetImage('images/pic2.png'), fit: BoxFit.cover),
                 ),
               ),
             ],

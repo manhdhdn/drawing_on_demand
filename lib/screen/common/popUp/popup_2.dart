@@ -39,7 +39,7 @@ class _ProcessingPopUpState extends State<ProcessingPopUp> {
   }
 
   void init() async {
-    await Future.delayed(const Duration(seconds: 2), () {
+    await Future.delayed(const Duration(seconds: 3), () {
       finish(context);
     });
   }

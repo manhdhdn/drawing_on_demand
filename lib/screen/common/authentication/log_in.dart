@@ -152,7 +152,7 @@ class _LoginState extends State<Login> {
                         validator: (value) {
                           List<String> result = [];
 
-                          if (value!.isEmpty) {
+                          if (value!.trim().isEmpty) {
                             result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                           }
 
@@ -191,7 +191,7 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value!.trim().isEmpty) {
                             return AppLocalizations.of(context)!.pleaseEnterPassword;
                           }
 
@@ -391,7 +391,7 @@ class _LoginState extends State<Login> {
                                   validator: (value) {
                                     List<String> result = [];
 
-                                    if (value!.isEmpty) {
+                                    if (value!.trim().isEmpty) {
                                       result.add(AppLocalizations.of(context)!.pleaseEnterEmail);
                                     }
 
@@ -430,7 +430,7 @@ class _LoginState extends State<Login> {
                                   controller: passwordController,
                                   autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value!.trim().isEmpty) {
                                       return AppLocalizations.of(context)!.pleaseEnterPassword;
                                     }
 
