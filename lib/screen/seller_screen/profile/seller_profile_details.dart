@@ -82,6 +82,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 3) : const EdgeInsets.symmetric(horizontal: 40.0),
               child: const InvitePopUp(),
             );
           },
@@ -157,7 +158,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
             height: context.height(),

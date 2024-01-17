@@ -140,7 +140,11 @@ class _PopularServicesState extends State<PopularServices> {
                                       borderRadius: BorderRadius.circular(40.0),
                                     ),
                                     child: Text(
-                                      serviceList[i],
+                                      serviceList[i] == 'All'
+                                          ? AppLocalizations.of(context)!.all
+                                          : serviceList[i] == 'Popular'
+                                              ? AppLocalizations.of(context)!.popular
+                                              : AppLocalizations.of(context)!.newAw,
                                       style: kTextStyle.copyWith(
                                         color: widget.tab == serviceList[i] ? kWhite : kNeutralColor,
                                       ),
@@ -200,47 +204,6 @@ class _PopularServicesState extends State<PopularServices> {
                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        isFavorite = !isFavorite;
-                                                      });
-                                                    },
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(top: 5.0, left: 5.0),
-                                                      child: Container(
-                                                        height: 25,
-                                                        width: 25,
-                                                        decoration: const BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape: BoxShape.circle,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.black12,
-                                                              blurRadius: 10.0,
-                                                              spreadRadius: 1.0,
-                                                              offset: Offset(0, 2),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: isFavorite
-                                                            ? const Center(
-                                                                child: Icon(
-                                                                  Icons.favorite,
-                                                                  color: Colors.red,
-                                                                  size: 16.0,
-                                                                ),
-                                                              )
-                                                            : const Center(
-                                                                child: Icon(
-                                                                  Icons.favorite_border,
-                                                                  color: kNeutralColor,
-                                                                  size: 16.0,
-                                                                ),
-                                                              ),
-                                                      ),
-                                                    ),
-                                                  ),
                                                   GestureDetector(
                                                     onTap: () {
                                                       onAddToCart(snapshot.data!.value.elementAt(i));

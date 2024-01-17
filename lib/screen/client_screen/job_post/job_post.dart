@@ -121,7 +121,13 @@ class _JobPostState extends State<JobPost> {
                                       borderRadius: BorderRadius.circular(40.0),
                                     ),
                                     child: Text(
-                                      serviceList[i],
+                                      serviceList[i] == 'All'
+                                          ? AppLocalizations.of(context)!.all
+                                          : serviceList[i] == 'Public'
+                                              ? AppLocalizations.of(context)!.public
+                                              : serviceList[i] == 'Private'
+                                                  ? AppLocalizations.of(context)!.private
+                                                  : AppLocalizations.of(context)!.cancelled,
                                       style: kTextStyle.copyWith(
                                         color: selectedServiceList == serviceList[i] ? kWhite : kNeutralColor,
                                       ),

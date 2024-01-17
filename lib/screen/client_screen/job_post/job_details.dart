@@ -56,8 +56,7 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -82,8 +81,7 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -104,8 +102,7 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -126,8 +123,7 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -153,8 +149,7 @@ class _JobDetailsState extends State<JobDetails> {
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
             AppLocalizations.of(context)!.jobDetails,
-            style: kTextStyle.copyWith(
-                color: kNeutralColor, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           actions: [
@@ -225,829 +220,628 @@ class _JobDetailsState extends State<JobDetails> {
                     },
                     buttonTextColor: kWhite,
                   ),
-                ).visible(!status.contains('Cancelled') &&
-                    !status.contains('Processing')),
+                ).visible(!status.contains('Cancelled') && !status.contains('Processing')),
               ],
             ),
           ),
         ),
-        body: Container(
-          width: context.width(),
-          height: context.height(),
-          decoration: const BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              topRight: Radius.circular(30.0),
-            ),
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
-                right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Container(
+            width: context.width(),
+            height: context.height(),
+            decoration: const BoxDecoration(
+              color: kWhite,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 15.0),
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    width: context.width(),
-                    decoration: BoxDecoration(
-                      color: kWhite,
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: kBorderColorTextField),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: kDarkWhite,
-                          spreadRadius: 4.0,
-                          blurRadius: 4.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: FutureBuilder(
-                      future: requirement,
-                      builder: ((context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!.title!,
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 10.0),
-                              ReadMoreText(
-                                snapshot.data!.description!,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
-                                trimLines: 2,
-                                colorClickableText: kPrimaryColor,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText:
-                                    AppLocalizations.of(context)!.readMore,
-                                trimExpandedText:
-                                    AppLocalizations.of(context)!.readLess,
-                              ),
-                              const SizedBox(height: 15.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.category2,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
+            ),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                  right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15.0),
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      width: context.width(),
+                      decoration: BoxDecoration(
+                        color: kWhite,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: kBorderColorTextField),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: kDarkWhite,
+                            spreadRadius: 4.0,
+                            blurRadius: 4.0,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: FutureBuilder(
+                        future: requirement,
+                        builder: ((context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!.title!,
+                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 10.0),
+                                ReadMoreText(
+                                  snapshot.data!.description!,
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
+                                  trimLines: 2,
+                                  colorClickableText: kPrimaryColor,
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: AppLocalizations.of(context)!.readMore,
+                                  trimExpandedText: AppLocalizations.of(context)!.readLess,
+                                ),
+                                const SizedBox(height: 15.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.category2,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data!.category!.name!,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.material,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data!.material!.name!,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.surface,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data!.surface!.name!,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data!.pieces,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      const SizedBox(height: 8.0),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Expanded(
-                                            flex: 1,
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
                                             child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .pieces,
-                                              style: kTextStyle.copyWith(
-                                                color: index == 0
-                                                    ? kSubTitleColor
-                                                    : kWhite,
+                                              snapshot.data!.category!.name!,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.material,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              snapshot.data!.material!.name!,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.surface,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              snapshot.data!.surface!.name!,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot.data!.pieces,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        const SizedBox(height: 8.0),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                AppLocalizations.of(context)!.pieces,
+                                                style: kTextStyle.copyWith(
+                                                  color: index == 0 ? kSubTitleColor : kWhite,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex:
-                                                DodResponsive.isDesktop(context)
-                                                    ? 6
-                                                    : 3,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  ':',
-                                                  style: kTextStyle.copyWith(
-                                                    color: index == 0
-                                                        ? kSubTitleColor
-                                                        : kWhite,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10.0),
-                                                Flexible(
-                                                  child: Text(
-                                                    index == 0
-                                                        ? '${snapshot.data!.pieces!} (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
-                                                        : '   (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)',
+                                            Expanded(
+                                              flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    ':',
                                                     style: kTextStyle.copyWith(
-                                                        color: kSubTitleColor),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.quantity,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data!.quantity!.toString(),
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.budget,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            NumberFormat.simpleCurrency(
-                                              locale: 'vi_VN',
-                                            ).format(snapshot.data!.budget),
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.status,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data!.status!,
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.createDate,
-                                      style: kTextStyle.copyWith(
-                                          color: kSubTitleColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: DodResponsive.isDesktop(context)
-                                        ? 6
-                                        : 3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          ':',
-                                          style: kTextStyle.copyWith(
-                                              color: kSubTitleColor),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Flexible(
-                                          child: Text(
-                                            DateFormat('dd-MM-yyyy').format(
-                                                snapshot.data!.createdDate!),
-                                            style: kTextStyle.copyWith(
-                                                color: kSubTitleColor),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0)
-                                  .visible(snapshot.data!.image != null),
-                              Text(
-                                AppLocalizations.of(context)!.attachFile,
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
-                              ).visible(snapshot.data!.image != null),
-                              const SizedBox(height: 8.0)
-                                  .visible(snapshot.data!.image != null),
-                              snapshot.data!.image != null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          maxHeight: 390,
-                                          maxWidth: 390,
-                                        ),
-                                        child: PhotoView(
-                                          imageProvider: NetworkImage(
-                                            snapshot.data!.image!,
-                                          ),
-                                          tightMode: true,
-                                        ),
-                                      ),
-                                    )
-                                  : Container(
-                                      width: 100,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        color: kDarkWhite,
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                      ),
-                                      child: Icon(
-                                        IconlyBold.document,
-                                        color: kNeutralColor.withOpacity(0.7),
-                                        size: 50,
-                                      ),
-                                    ).visible(snapshot.data!.image != null),
-                              const SizedBox(height: 8.0).visible(
-                                  snapshot.data!.proposals!.isNotEmpty),
-                              Text(
-                                AppLocalizations.of(context)!.proposals,
-                                style: kTextStyle.copyWith(
-                                  color: kSubTitleColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ).visible(snapshot.data!.proposals!.isNotEmpty),
-                              const SizedBox(height: 8.0),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data!.proposals!.length,
-                                itemBuilder: (context, index) {
-                                  return Theme(
-                                    data: Theme.of(context).copyWith(
-                                        dividerColor: Colors.transparent),
-                                    child: ExpansionTile(
-                                      initiallyExpanded: true,
-                                      tilePadding:
-                                          const EdgeInsets.only(bottom: 5.0),
-                                      childrenPadding: EdgeInsets.zero,
-                                      collapsedIconColor: kLightNeutralColor,
-                                      iconColor: kLightNeutralColor,
-                                      title: Row(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              onArtistDetail(snapshot
-                                                  .data!
-                                                  .proposals![index]
-                                                  .createdByNavigation!
-                                                  .id
-                                                  .toString());
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 32,
-                                                  width: 32,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(snapshot
-                                                              .data!
-                                                              .proposals![index]
-                                                              .createdByNavigation!
-                                                              .avatar ??
-                                                          defaultImage),
-                                                      fit: BoxFit.cover,
+                                                      color: index == 0 ? kSubTitleColor : kWhite,
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(width: 5.0),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)!
-                                                          .artist,
+                                                  const SizedBox(width: 10.0),
+                                                  Flexible(
+                                                    child: Text(
+                                                      index == 0 ? '${snapshot.data!.pieces!} (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : '   (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)',
+                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                      overflow: TextOverflow.ellipsis,
                                                       maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: kTextStyle.copyWith(
-                                                          color:
-                                                              kSubTitleColor),
                                                     ),
-                                                    Text(
-                                                      snapshot
-                                                          .data!
-                                                          .proposals![index]
-                                                          .createdByNavigation!
-                                                          .name!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style:
-                                                          kTextStyle.copyWith(
-                                                              color:
-                                                                  kNeutralColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (snapshot
-                                                      .data!
-                                                      .proposals![index]
-                                                      .status ==
-                                                  'Pending') {
-                                                if (await rejectProposalPopUp()) {
-                                                  onReject(snapshot
-                                                      .data!.proposals![index]);
-                                                }
-                                              }
-                                            },
-                                            icon: const Icon(
-                                              Icons.cancel,
-                                              color: Colors.red,
-                                            ),
-                                          ).visible(snapshot.data!
-                                                  .proposals![index].status !=
-                                              'Accepted'),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (snapshot
-                                                      .data!
-                                                      .proposals![index]
-                                                      .status ==
-                                                  'Pending') {
-                                                if (await acceptProposalPopUp()) {
-                                                  onAccept(
-                                                      snapshot.data!.sizes!,
-                                                      snapshot.data!
-                                                          .proposals![index],
-                                                      snapshot
-                                                          .data!.proposals!);
-                                                }
-                                              }
-                                            },
-                                            icon: const Icon(
-                                              Icons.check_circle_rounded,
-                                              color: kPrimaryColor,
-                                            ),
-                                          ).visible(snapshot.data!
-                                                  .proposals![index].status !=
-                                              'Rejected'),
-                                          Text(
-                                            snapshot.data!.proposals![index]
-                                                .status!,
-                                            style: kTextStyle.copyWith(
-                                              color: kSubTitleColor,
-                                              fontSize: 14,
-                                            ),
-                                          ).visible(snapshot.data!
-                                                  .proposals![index].status !=
-                                              'Pending')
-                                        ],
-                                      ),
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: GestureDetector(
-                                            onTap: () {},
-                                            child: Container(
-                                              height: context.height() * 0.135,
-                                              decoration: BoxDecoration(
-                                                color: kWhite,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                    color:
-                                                        kBorderColorTextField),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: kDarkWhite,
-                                                    blurRadius: 5.0,
-                                                    spreadRadius: 2.0,
-                                                    offset: Offset(0, 5),
                                                   ),
                                                 ],
                                               ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.quantity,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              snapshot.data!.quantity!.toString(),
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.budget,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              NumberFormat.simpleCurrency(
+                                                locale: 'vi_VN',
+                                              ).format(snapshot.data!.budget),
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.status,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              snapshot.data!.status! == 'Public'
+                                                  ? AppLocalizations.of(context)!.public
+                                                  : snapshot.data!.status! == 'Private'
+                                                      ? AppLocalizations.of(context)!.private
+                                                      : AppLocalizations.of(context)!.cancelled,
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.createDate,
+                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: DodResponsive.isDesktop(context) ? 6 : 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ':',
+                                            style: kTextStyle.copyWith(color: kSubTitleColor),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Flexible(
+                                            child: Text(
+                                              DateFormat('dd-MM-yyyy').format(snapshot.data!.createdDate!),
+                                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
+                                Text(
+                                  AppLocalizations.of(context)!.attachFile,
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
+                                ).visible(snapshot.data!.image != null),
+                                const SizedBox(height: 8.0).visible(snapshot.data!.image != null),
+                                snapshot.data!.image != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            maxHeight: 390,
+                                            maxWidth: 390,
+                                          ),
+                                          child: PhotoView(
+                                            imageProvider: NetworkImage(
+                                              snapshot.data!.image!,
+                                            ),
+                                            tightMode: true,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 100,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color: kDarkWhite,
+                                          borderRadius: BorderRadius.circular(6.0),
+                                        ),
+                                        child: Icon(
+                                          IconlyBold.document,
+                                          color: kNeutralColor.withOpacity(0.7),
+                                          size: 50,
+                                        ),
+                                      ).visible(snapshot.data!.image != null),
+                                const SizedBox(height: 8.0).visible(snapshot.data!.proposals!.isNotEmpty),
+                                Text(
+                                  AppLocalizations.of(context)!.proposals,
+                                  style: kTextStyle.copyWith(
+                                    color: kSubTitleColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ).visible(snapshot.data!.proposals!.isNotEmpty),
+                                const SizedBox(height: 8.0),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot.data!.proposals!.length,
+                                  itemBuilder: (context, index) {
+                                    return Theme(
+                                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                                      child: ExpansionTile(
+                                        initiallyExpanded: true,
+                                        tilePadding: const EdgeInsets.only(bottom: 5.0),
+                                        childrenPadding: EdgeInsets.zero,
+                                        collapsedIconColor: kLightNeutralColor,
+                                        iconColor: kLightNeutralColor,
+                                        title: Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                onArtistDetail(snapshot.data!.proposals![index].createdByNavigation!.id.toString());
+                                              },
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
                                                 children: [
-                                                  Stack(
-                                                    alignment:
-                                                        Alignment.topLeft,
+                                                  Container(
+                                                    height: 32,
+                                                    width: 32,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(snapshot.data!.proposals![index].createdByNavigation!.avatar ?? defaultImage),
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 5.0),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Container(
-                                                        height:
-                                                            context.height() *
-                                                                0.135,
-                                                        width:
-                                                            context.height() *
-                                                                0.135,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                          ),
-                                                          image:
-                                                              DecorationImage(
-                                                            image: NetworkImage(
-                                                                snapshot
-                                                                    .data!
-                                                                    .proposals![
-                                                                        index]
-                                                                    .artwork!
-                                                                    .arts!
-                                                                    .first
-                                                                    .image!),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
+                                                      Text(
+                                                        AppLocalizations.of(context)!.artist,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                      ),
+                                                      Text(
+                                                        snapshot.data!.proposals![index].createdByNavigation!.name!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                       ),
                                                     ],
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 5.0),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                ],
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            IconButton(
+                                              onPressed: () async {
+                                                if (snapshot.data!.proposals![index].status == 'Pending') {
+                                                  if (await rejectProposalPopUp()) {
+                                                    onReject(snapshot.data!.proposals![index]);
+                                                  }
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.cancel,
+                                                color: Colors.red,
+                                              ),
+                                            ).visible(snapshot.data!.proposals![index].status != 'Accepted'),
+                                            IconButton(
+                                              onPressed: () async {
+                                                if (snapshot.data!.proposals![index].status == 'Pending') {
+                                                  if (await acceptProposalPopUp()) {
+                                                    onAccept(snapshot.data!.sizes!, snapshot.data!.proposals![index], snapshot.data!.proposals!);
+                                                  }
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.check_circle_rounded,
+                                                color: kPrimaryColor,
+                                              ),
+                                            ).visible(snapshot.data!.proposals![index].status != 'Rejected'),
+                                            Text(
+                                              snapshot.data!.proposals![index].status!,
+                                              style: kTextStyle.copyWith(
+                                                color: kSubTitleColor,
+                                                fontSize: 14,
+                                              ),
+                                            ).visible(snapshot.data!.proposals![index].status != 'Pending')
+                                          ],
+                                        ),
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 10.0),
+                                            child: GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                height: context.height() * 0.135,
+                                                decoration: BoxDecoration(
+                                                  color: kWhite,
+                                                  borderRadius: BorderRadius.circular(8.0),
+                                                  border: Border.all(color: kBorderColorTextField),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: kDarkWhite,
+                                                      blurRadius: 5.0,
+                                                      spreadRadius: 2.0,
+                                                      offset: Offset(0, 5),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Stack(
+                                                      alignment: Alignment.topLeft,
                                                       children: [
-                                                        Flexible(
-                                                          flex: 1,
-                                                          child: SizedBox(
-                                                            child: Text(
-                                                              AppLocalizations.of(
-                                                                      context)!
-                                                                  .introduce,
-                                                              style: kTextStyle.copyWith(
-                                                                  color:
-                                                                      kNeutralColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                        Container(
+                                                          height: context.height() * 0.135,
+                                                          width: context.height() * 0.135,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.only(
+                                                              bottomLeft: Radius.circular(8.0),
+                                                              topLeft: Radius.circular(8.0),
                                                             ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 5.0),
-                                                        Flexible(
-                                                          flex: 3,
-                                                          child: SizedBox(
-                                                            width: DodResponsive
-                                                                    .isDesktop(
-                                                                        context)
-                                                                ? context
-                                                                        .width() /
-                                                                    3
-                                                                : context
-                                                                        .width() /
-                                                                    2,
-                                                            child: ReadMoreText(
-                                                              snapshot
-                                                                  .data!
-                                                                  .proposals![
-                                                                      index]
-                                                                  .introduction!,
-                                                              style: kTextStyle
-                                                                  .copyWith(
-                                                                      color:
-                                                                          kSubTitleColor),
-                                                              trimLines: 3,
-                                                              colorClickableText:
-                                                                  kPrimaryColor,
-                                                              trimMode:
-                                                                  TrimMode.Line,
-                                                              trimCollapsedText:
-                                                                  AppLocalizations.of(
-                                                                          context)!
-                                                                      .readMore,
-                                                              trimExpandedText:
-                                                                  AppLocalizations.of(
-                                                                          context)!
-                                                                      .readLess,
+                                                            image: DecorationImage(
+                                                              image: NetworkImage(snapshot.data!.proposals![index].artwork!.arts!.first.image!),
+                                                              fit: BoxFit.cover,
                                                             ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 5.0),
-                                                        Flexible(
-                                                          flex: 1,
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .amountProposal,
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kSubTitleColor,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                NumberFormat.simpleCurrency(
-                                                                        locale:
-                                                                            'vi_VN')
-                                                                    .format(snapshot
-                                                                        .data!
-                                                                        .proposals![
-                                                                            index]
-                                                                        .artwork!
-                                                                        .price),
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kPrimaryColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ],
                                                           ),
                                                         ),
                                                       ],
                                                     ),
-                                                  ),
-                                                ],
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 5.0),
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Flexible(
+                                                            flex: 1,
+                                                            child: SizedBox(
+                                                              child: Text(
+                                                                AppLocalizations.of(context)!.introduce,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 5.0),
+                                                          Flexible(
+                                                            flex: 3,
+                                                            child: SizedBox(
+                                                              width: DodResponsive.isDesktop(context) ? context.width() / 3 : context.width() / 2,
+                                                              child: ReadMoreText(
+                                                                snapshot.data!.proposals![index].introduction!,
+                                                                style: kTextStyle.copyWith(color: kSubTitleColor),
+                                                                trimLines: 3,
+                                                                colorClickableText: kPrimaryColor,
+                                                                trimMode: TrimMode.Line,
+                                                                trimCollapsedText: AppLocalizations.of(context)!.readMore,
+                                                                trimExpandedText: AppLocalizations.of(context)!.readLess,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 5.0),
+                                                          Flexible(
+                                                            flex: 1,
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  AppLocalizations.of(context)!.amountProposal,
+                                                                  style: kTextStyle.copyWith(
+                                                                    color: kSubTitleColor,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.proposals![index].artwork!.price),
+                                                                  style: kTextStyle.copyWith(
+                                                                    color: kPrimaryColor,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(height: 10.0),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        }
+                                          const SizedBox(height: 10.0),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          }
 
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: kPrimaryColor,
-                          ),
-                        );
-                      }),
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: kPrimaryColor,
+                            ),
+                          );
+                        }),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -1071,8 +865,7 @@ class _JobDetailsState extends State<JobDetails> {
         return value;
       });
     } catch (error) {
-      Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.getRequirementFailed);
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getRequirementFailed);
     }
 
     return null;
@@ -1088,8 +881,7 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   void onInvite() {
-    context.goNamed('${ArtistRoute.name} job',
-        pathParameters: {'jobId': widget.id!});
+    context.goNamed('${ArtistRoute.name} job', pathParameters: {'jobId': widget.id!});
   }
 
   void onArtistDetail(String id) {
@@ -1123,8 +915,7 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
-  void onAccept(
-      List<Size> sizes, Proposal proposal, List<Proposal> proposals) async {
+  void onAccept(List<Size> sizes, Proposal proposal, List<Proposal> proposals) async {
     if (proposal.status == 'Pending') {
       try {
         ProgressDialogUtils.showProgress(context);

@@ -103,7 +103,7 @@ List<String> period = [
   'Last Month',
   'This Month',
 ];
-String selectedPeriod = 'Last Month';
+String selectedPeriod = 'This Month';
 
 //__________statistics_period___________________________________________________
 List<String> staticsPeriod = [
@@ -111,14 +111,14 @@ List<String> staticsPeriod = [
   'This Month',
 ];
 
-String selectedStaticsPeriod = 'Last Month';
+String selectedStaticsPeriod = 'This Month';
 
 //__________statistics_period___________________________________________________
 List<String> earningPeriod = [
   'Last Month',
   'This Month',
 ];
-String selectedEarningPeriod = 'Last Month';
+String selectedEarningPeriod = 'This Month';
 
 Map<String, double> dataMap = {
   "Impressions": 5,

@@ -130,7 +130,7 @@ class _TopSellerState extends State<TopSeller> {
                                 borderRadius: BorderRadius.circular(40.0),
                               ),
                               child: Text(
-                                serviceList[i],
+                                serviceList[i] == 'All' ? AppLocalizations.of(context)!.all : AppLocalizations.of(context)!.topArtist,
                                 style: kTextStyle.copyWith(
                                   color: selectedTopSeller == serviceList[i] ? kWhite : kNeutralColor,
                                 ),

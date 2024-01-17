@@ -12,6 +12,7 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
+import '../../../data/apis/order_api.dart';
 import '../../../data/apis/rank_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/rank.dart';
@@ -667,6 +668,18 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     }
 
     return null;
+  }
+
+  void getStatistics() async {
+    try {
+      await OrderApi().gets(
+        0,
+        filter: "orderDetails/any(od: od/artwork/createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}) and status ne 'Cart'",
+        expand: 'orderDetails(expand=artwork)',
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get statistics failed');
+    }
   }
 
   void onViewAllArtwork() {
