@@ -29,6 +29,7 @@ import '../../../data/models/ghn_request.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/responsive.dart';
 
 class SellerCreateProfile extends StatefulWidget {
   const SellerCreateProfile({Key? key}) : super(key: key);
@@ -184,6 +185,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -203,6 +205,7 @@ class _SellerCreateProfileState extends State<SellerCreateProfile> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

@@ -16,7 +16,6 @@ import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../widgets/responsive.dart';
-import '../message/function/chat_function.dart';
 import '../popUp/popup_2.dart';
 import 'forgot_password.dart';
 
@@ -49,6 +48,8 @@ class _LoginState extends State<Login> {
         verifyEmailSuccessPopUp();
       }
     });
+
+    PrefUtils().clearSignUpInfor();
   }
 
   @override
@@ -66,6 +67,7 @@ class _LoginState extends State<Login> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
@@ -665,12 +667,6 @@ class _LoginState extends State<Login> {
 
   void onLogedIn() {
     MyApp.refreshRoutes(context);
-
-    ChatFunction.updateUserData({
-      'isOnline': true,
-    });
-
-    context.goNamed(HomeRoute.name);
   }
 
   void onCreateNewAccount() {

@@ -233,12 +233,19 @@ class Summary2 extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RichText(
-            text: TextSpan(text: title1, style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold), children: [
-              TextSpan(
-                text: title2,
-                style: kTextStyle.copyWith(color: kLightNeutralColor, fontSize: 12.0),
-              )
-            ]),
+            text: TextSpan(
+              text: title1,
+              style: kTextStyle.copyWith(
+                color: kNeutralColor,
+                fontWeight: FontWeight.bold,
+              ),
+              children: [
+                TextSpan(
+                  text: title2,
+                  style: kTextStyle.copyWith(color: kLightNeutralColor, fontSize: 12.0),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 10.0),
           Text(

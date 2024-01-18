@@ -15,6 +15,7 @@ import '../../common/orders/order_detail.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 
 class CreateTimeline extends StatefulWidget {
   final String? id;
@@ -44,6 +45,7 @@ class _CreateTimelineState extends State<CreateTimeline> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

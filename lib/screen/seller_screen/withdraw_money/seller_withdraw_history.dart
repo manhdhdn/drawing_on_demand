@@ -1,8 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/payment_api.dart';
+import '../../../data/models/payment.dart';
 import '../../widgets/constant.dart';
-import '../../common/popUp/popup_1.dart';
 
 class SellerWithDrawHistory extends StatefulWidget {
   const SellerWithDrawHistory({Key? key}) : super(key: key);
@@ -12,24 +18,13 @@ class SellerWithDrawHistory extends StatefulWidget {
 }
 
 class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
-  //__________withdraw_amount_popup________________________________________________
-  void withdrawHistoryPopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const WithdrawHistoryPopUp(),
-            );
-          },
-        );
-      },
-    );
+  List<Payment> payments = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    getHistory();
   }
 
   @override
@@ -41,7 +36,7 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Withdraw Money',
+          AppLocalizations.of(context)!.withdrawHistory,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -69,57 +64,12 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
                 const SizedBox(height: 20),
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: 10,
+                  itemCount: payments.length,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(bottom: 10.0),
                   itemBuilder: (_, i) {
                     return Column(
                       children: [
-                        GestureDetector(
-                          onTap: () => withdrawHistoryPopUp(),
-                          child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: kWhite,
-                              borderRadius: BorderRadius.circular(6.0),
-                              border: Border.all(color: kBorderColorTextField),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: kDarkWhite,
-                                  blurRadius: 5.0,
-                                  spreadRadius: 2.0,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Withdrawal Completed',
-                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '$currencySign 5,000',
-                                      style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8.0),
-                                Text(
-                                  '10 Jun 2023',
-                                  style: kTextStyle.copyWith(color: kLightNeutralColor),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
                         Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
@@ -142,19 +92,25 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
                               Row(
                                 children: [
                                   Text(
-                                    'Withdrawal Initiated',
-                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                    '${AppLocalizations.of(context)!.withdrawHis} ${payments[i].status == 'Pending' ? AppLocalizations.of(context)!.intiated : AppLocalizations.of(context)!.completed2}',
+                                    style: kTextStyle.copyWith(
+                                      color: payments[i].status == 'Pending' ? kNeutralColor : kPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   const Spacer(),
                                   Text(
-                                    '$currencySign 5,000',
-                                    style: kTextStyle.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                                    NumberFormat.simpleCurrency(locale: 'vi-VN').format(payments[i].tranferContent.toInt()),
+                                    style: kTextStyle.copyWith(
+                                      color: payments[i].status == 'Pending' ? kNeutralColor : kPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                '10 Jun 2023',
+                                DateFormat('dd-MM-yyyy HH:mm').format(payments[i].transactionId!),
                                 style: kTextStyle.copyWith(color: kLightNeutralColor),
                                 maxLines: 2,
                               ),
@@ -172,5 +128,27 @@ class _SellerWithDrawHistoryState extends State<SellerWithDrawHistory> {
         ),
       ),
     );
+  }
+
+  void getHistory() async {
+    try {
+      var payments = await PaymentApi().gets(
+        0,
+        filter: 'signature eq \'${jsonDecode(PrefUtils().getAccount())['Id']}\'',
+        orderBy: 'transactionId desc',
+      );
+
+      setState(() {
+        this.payments.add(payments.value.first);
+
+        for (var i = 1; i < payments.value.length; i++) {
+          if (payments.value[i].transactionId != payments.value[i - 1].transactionId) {
+            this.payments.add(payments.value[i]);
+          }
+        }
+      });
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Get history failed');
+    }
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import '../../widgets/responsive.dart';
 
 class ClientCreateProfile extends StatefulWidget {
   const ClientCreateProfile({Key? key}) : super(key: key);
@@ -67,9 +69,9 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -88,9 +90,9 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -121,8 +123,7 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
         centerTitle: true,
         title: Text(
           'Create Profile',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -138,8 +139,7 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
                 children: [
                   Text(
                     'Upload Your Photo',
-                    style: kTextStyle.copyWith(
-                        color: kNeutralColor, fontWeight: FontWeight.bold),
+                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10.0),
                   Center(
@@ -153,8 +153,7 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
                             shape: BoxShape.circle,
                             border: Border.all(color: kPrimaryColor),
                           ),
-                          child: const Icon(IconlyBold.profile,
-                              color: kBorderColorTextField, size: 68),
+                          child: const Icon(IconlyBold.profile, color: kBorderColorTextField, size: 68),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -289,16 +288,14 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
                             borderRadius: BorderRadius.all(
                               Radius.circular(8.0),
                             ),
-                            borderSide: BorderSide(
-                                color: kBorderColorTextField, width: 2),
+                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                           ),
                           contentPadding: const EdgeInsets.all(7.0),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Select Language',
                           labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                         ),
-                        child:
-                            DropdownButtonHideUnderline(child: getLanguage()),
+                        child: DropdownButtonHideUnderline(child: getLanguage()),
                       );
                     },
                   ),
@@ -311,8 +308,7 @@ class _ClientCreateProfileState extends State<ClientCreateProfile> {
                             borderRadius: BorderRadius.all(
                               Radius.circular(8.0),
                             ),
-                            borderSide: BorderSide(
-                                color: kBorderColorTextField, width: 2),
+                            borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                           ),
                           contentPadding: const EdgeInsets.all(7.0),
                           floatingLabelBehavior: FloatingLabelBehavior.always,

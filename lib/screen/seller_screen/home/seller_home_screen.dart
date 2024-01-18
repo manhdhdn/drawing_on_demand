@@ -11,10 +11,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../data/apis/account_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/order_api.dart';
 import '../../../data/apis/rank_api.dart';
+import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
+import '../../../data/models/order.dart';
 import '../../../data/models/rank.dart';
 import '../../widgets/chart.dart';
 import '../../widgets/constant.dart';
@@ -22,13 +25,27 @@ import '../../widgets/data.dart';
 import '../notification/seller_notification.dart';
 
 class SellerHomeScreen extends StatefulWidget {
+  static dynamic state;
+
   const SellerHomeScreen({Key? key}) : super(key: key);
 
   @override
   State<SellerHomeScreen> createState() => _SellerHomeScreenState();
+
+  static refresh() {
+    if (state != null) {
+      state.refresh();
+    }
+  }
 }
 
 class _SellerHomeScreenState extends State<SellerHomeScreen> {
+  List<Order> orders = [];
+  Account account = Account(
+    accountReviewAccounts: [],
+  );
+  int availableArtworks = 0;
+
   late Future<Ranks?> ranks;
   late Future<Artworks?> artworks;
 
@@ -36,8 +53,11 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
   void initState() {
     super.initState();
 
+    SellerHomeScreen.state = this;
+
     ranks = getRanks();
     artworks = getArtworks();
+    getStatistics();
   }
 
   DropdownButton<String> getPerformancePeriod() {
@@ -60,56 +80,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
       onChanged: (value) {
         setState(() {
           selectedPeriod = value!;
-        });
-      },
-    );
-  }
-
-  DropdownButton<String> getStatisticsPeriod() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in staticsPeriod) {
-      var item = DropdownMenuItem(
-        value: des,
-        child: Text(
-          des,
-          style: kTextStyle.copyWith(color: kSubTitleColor),
-        ),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      icon: const Icon(FeatherIcons.chevronDown),
-      items: dropDownItems,
-      value: selectedStaticsPeriod,
-      style: kTextStyle.copyWith(color: kSubTitleColor),
-      onChanged: (value) {
-        setState(() {
-          selectedStaticsPeriod = value!;
-        });
-      },
-    );
-  }
-
-  DropdownButton<String> getEarningPeriod() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String des in earningPeriod) {
-      var item = DropdownMenuItem(
-        value: des,
-        child: Text(
-          des,
-          style: kTextStyle.copyWith(color: kSubTitleColor),
-        ),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      icon: const Icon(FeatherIcons.chevronDown),
-      items: dropDownItems,
-      value: selectedEarningPeriod,
-      style: kTextStyle.copyWith(color: kSubTitleColor),
-      onChanged: (value) {
-        setState(() {
-          selectedEarningPeriod = value!;
         });
       },
     );
@@ -146,10 +116,6 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
             title: Text(
               jsonDecode(PrefUtils().getAccount())['Name'],
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              AppLocalizations.of(context)!.imAArtist,
-              style: kTextStyle.copyWith(color: kLightNeutralColor),
             ),
             trailing: GestureDetector(
               onTap: () => const SellerNotification().launch(context),
@@ -213,58 +179,58 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
-                              child: Container(
-                                padding: const EdgeInsets.all(5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  border: Border.all(color: kLightNeutralColor),
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: getPerformancePeriod(),
-                                ),
-                              ),
+                              // child: Container(
+                              //   padding: const EdgeInsets.all(5.0),
+                              //   decoration: BoxDecoration(
+                              //     borderRadius: BorderRadius.circular(30.0),
+                              //     border: Border.all(color: kLightNeutralColor),
+                              //   ),
+                              //   child: DropdownButtonHideUnderline(
+                              //     child: getPerformancePeriod(),
+                              //   ),
+                              // ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 15.0),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '80 Orders',
-                                subtitle: 'Order Completions',
+                                title: '${orders.where((order) => order.status == 'Completed' || order.status == 'Reviewed').length}  ${AppLocalizations.of(context)!.orders}',
+                                subtitle: AppLocalizations.of(context)!.orderCompletions,
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: Summary2(
-                                title1: '5.0/',
+                                title1: '${getAccountReviewPoint(account.accountReviewAccounts!)}/',
                                 title2: '5.0',
-                                subtitle: 'Positive Ratings',
+                                subtitle: AppLocalizations.of(context)!.positiveRatings,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10.0),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '100% On time',
-                                subtitle: 'On-Time-Delivery',
+                                title: '$availableArtworks ${AppLocalizations.of(context)!.artworks}',
+                                subtitle: AppLocalizations.of(context)!.artworkAvailable,
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: 'Gigs 6 of 7',
-                                subtitle: 'Total Gig',
+                                title: '${AppLocalizations.of(context)!.gigs} ${orders.where((order) => order.orderType == 'Requirement' && (order.status == 'Paid' || order.status == 'Completed' || order.status == 'Reviewed')).length} of ${orders.where((order) => order.orderType == 'Requirement').length}',
+                                subtitle: AppLocalizations.of(context)!.totalGig,
                               ),
                             ),
                           ],
@@ -300,19 +266,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            SizedBox(
-                              height: 30,
-                              child: Container(
-                                padding: const EdgeInsets.all(5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  border: Border.all(color: kLightNeutralColor),
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: getStatisticsPeriod(),
-                                ),
-                              ),
-                            ),
+                            const SizedBox(height: 30),
                           ],
                         ),
                         const SizedBox(height: 15.0),
@@ -323,28 +277,32 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                             Expanded(
                               flex: 1,
                               child: RecordStatistics(
-                                dataMap: dataMap,
+                                dataMap: {
+                                  "Completed": orders.where((order) => order.status == 'Completed' || order.status == 'Reviewed').length.toDouble(),
+                                  "Active": orders.where((order) => order.status == 'Pending' || order.status == 'Deposited' || order.status == 'Paid').length.toDouble(),
+                                  "Cancelled": orders.where((order) => order.status == 'Cancelled').length.toDouble(),
+                                },
                                 colorList: colorList,
                               ),
                             ),
-                            const Expanded(
+                            Expanded(
                               flex: 1,
                               child: Column(
                                 children: [
                                   ChartLegend(
-                                    iconColor: Color(0xFF69B22A),
-                                    title: 'Impressions',
-                                    value: '5.3K',
+                                    iconColor: const Color(0xFF69B22A),
+                                    title: AppLocalizations.of(context)!.completed,
+                                    value: '${orders.where((order) => order.status == 'Completed' || order.status == 'Reviewed').length}',
                                   ),
                                   ChartLegend(
-                                    iconColor: Color(0xFF144BD6),
-                                    title: 'Interaction',
-                                    value: '3.5K',
+                                    iconColor: const Color(0xFF144BD6),
+                                    title: AppLocalizations.of(context)!.active,
+                                    value: '${orders.where((order) => order.status == 'Pending' || order.status == 'Deposited' || order.status == 'Paid').length}',
                                   ),
                                   ChartLegend(
-                                    iconColor: Color(0xFFFF3B30),
-                                    title: 'Reached-Out',
-                                    value: '2.3K',
+                                    iconColor: const Color(0xFFFF3B30),
+                                    title: AppLocalizations.of(context)!.cancelled,
+                                    value: '${orders.where((order) => order.status == 'Cancelled').length}',
                                   ),
                                 ],
                               ),
@@ -381,57 +339,45 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            SizedBox(
-                              height: 30,
-                              child: Container(
-                                padding: const EdgeInsets.all(5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  border: Border.all(color: kLightNeutralColor),
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: getEarningPeriod(),
-                                ),
-                              ),
-                            ),
+                            const SizedBox(height: 30),
                           ],
                         ),
                         const SizedBox(height: 15.0),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '$currencySign${500.00}',
-                                subtitle: 'Total Earnings',
+                                title: getBalance(orders),
+                                subtitle: AppLocalizations.of(context)!.totalErnings,
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '$currencySign${300.00}',
-                                subtitle: 'Withdraw Earnings',
+                                title: getBalance(orders.where((order) => (order.status == 'Completed' || order.status == 'Reviewed' || order.status == 'Cancelled') && order.payments!.any((payment) => payment.signature == jsonDecode(PrefUtils().getAccount())['Id'] && payment.status == 'Completed')).toList()),
+                                subtitle: AppLocalizations.of(context)!.withdrawEarnings,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10.0),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '$currencySign${300.00}',
-                                subtitle: 'Current Balance',
+                                title: getBalance(orders.where((order) => (order.status == 'Completed' || order.status == 'Reviewed' || order.status == 'Cancelled') && !order.payments!.any((payment) => payment.signature == jsonDecode(PrefUtils().getAccount())['Id'] && payment.status == 'Completed')).toList()),
+                                subtitle: AppLocalizations.of(context)!.currentBalance,
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: Summary(
-                                title: '$currencySign${300.00}',
-                                subtitle: 'Active Orders',
+                                title: getBalance(orders.where((order) => order.status == 'Pending' || order.status == 'Deposited' || order.status == 'Paid').toList()),
+                                subtitle: AppLocalizations.of(context)!.activeOrders,
                               ),
                             ),
                           ],
@@ -479,7 +425,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                       title: snapshot.data!.value.elementAt(index + 1).name!,
                                       subTitle: '${AppLocalizations.of(context)!.feePerOrder} ${(snapshot.data!.value.elementAt(index + 1).fee! * 100).toStringAsFixed(0)}%\n'
                                           'Connect: ${snapshot.data!.value.elementAt(index + 1).connect!}',
-                                      trailing1: '0',
+                                      trailing1: getBalanceWithoutFee(orders.where((order) => (order.status == 'Completed' || order.status == 'Reviewed' || order.status == 'Cancelled')).toList()),
                                       trailing2: NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.value.elementAt(index + 1).income),
                                     ),
                                   ],
@@ -656,13 +602,19 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
 
   Future<Artworks?> getArtworks() async {
     try {
-      return ArtworkApi().gets(
+      return ArtworkApi()
+          .gets(
         0,
-        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status ne \'Proposed\' and status ne \'Deleted\'',
+        filter: 'createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq \'Available\'',
         count: 'true',
         orderBy: 'createdDate desc',
         expand: 'arts,artworkReviews',
-      );
+      )
+          .then((artwork) {
+        availableArtworks = artwork.count!;
+
+        return artwork;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get artworks failed');
     }
@@ -672,11 +624,22 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
 
   void getStatistics() async {
     try {
-      await OrderApi().gets(
+      orders = (await OrderApi().gets(
         0,
         filter: "orderDetails/any(od: od/artwork/createdBy eq ${jsonDecode(PrefUtils().getAccount())['Id']}) and status ne 'Cart'",
-        expand: 'orderDetails(expand=artwork)',
+        expand: 'orderDetails(expand=artwork(expand=createdByNavigation)),payments',
+      ))
+          .value;
+
+      account = await AccountApi().getOne(
+        jsonDecode(PrefUtils().getAccount())['Id'],
+        'accountReviewAccounts',
       );
+
+      setState(() {
+        orders = orders;
+        account = account;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get statistics failed');
     }
@@ -691,6 +654,12 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
       '${ArtworkDetailRoute.name} out',
       pathParameters: {'artworkId': id},
     );
+  }
+
+  void refresh() {
+    setState(() {
+      artworks = getArtworks();
+    });
   }
 }
 

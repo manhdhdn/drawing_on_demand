@@ -19,7 +19,7 @@ import '../../../data/models/artwork.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../notification/client_notification.dart';
-import '../search/search.dart';
+// import '../search/search.dart';
 import 'client_all_categories.dart';
 
 class ClientHomeScreen extends StatefulWidget {
@@ -79,10 +79,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 onTap: () {
-                  showSearch(
-                    context: context,
-                    delegate: CustomSearchDelegate(),
-                  );
+                  // showSearch(
+                  //   context: context,
+                  //   delegate: CustomSearchDelegate(),
+                  // );
                 },
               ),
             ),
@@ -309,56 +309,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                // GestureDetector(
-                                                //   onTap: () {
-                                                //     setState(() {
-                                                //       isFavorite = !isFavorite;
-                                                //     });
-                                                //   },
-                                                //   child: Padding(
-                                                //     padding:
-                                                //         const EdgeInsets.only(
-                                                //             top: 5.0,
-                                                //             left: 5.0),
-                                                //     child: Container(
-                                                //       height: 25,
-                                                //       width: 25,
-                                                //       decoration:
-                                                //           const BoxDecoration(
-                                                //         color: Colors.white,
-                                                //         shape: BoxShape.circle,
-                                                //         boxShadow: [
-                                                //           BoxShadow(
-                                                //             color:
-                                                //                 Colors.black12,
-                                                //             blurRadius: 10.0,
-                                                //             spreadRadius: 1.0,
-                                                //             offset:
-                                                //                 Offset(0, 2),
-                                                //           ),
-                                                //         ],
-                                                //       ),
-                                                //       child: isFavorite
-                                                //           ? const Center(
-                                                //               child: Icon(
-                                                //                 Icons.favorite,
-                                                //                 color:
-                                                //                     Colors.red,
-                                                //                 size: 16.0,
-                                                //               ),
-                                                //             )
-                                                //           : const Center(
-                                                //               child: Icon(
-                                                //                 Icons
-                                                //                     .favorite_border,
-                                                //                 color:
-                                                //                     kNeutralColor,
-                                                //                 size: 16.0,
-                                                //               ),
-                                                //             ),
-                                                //     ),
-                                                //   ),
-                                                // ),
                                                 GestureDetector(
                                                   onTap: () {
                                                     onAddToCart(snapshot.data!.value.elementAt(i));
@@ -708,47 +658,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isFavorite = !isFavorite;
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
-                                                    child: Container(
-                                                      height: 25,
-                                                      width: 25,
-                                                      decoration: const BoxDecoration(
-                                                        color: Colors.white,
-                                                        shape: BoxShape.circle,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black12,
-                                                            blurRadius: 10.0,
-                                                            spreadRadius: 1.0,
-                                                            offset: Offset(0, 2),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: isFavorite
-                                                          ? const Center(
-                                                              child: Icon(
-                                                                Icons.favorite,
-                                                                color: Colors.red,
-                                                                size: 16.0,
-                                                              ),
-                                                            )
-                                                          : const Center(
-                                                              child: Icon(
-                                                                Icons.favorite_border,
-                                                                color: kNeutralColor,
-                                                                size: 16.0,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
                                                 GestureDetector(
                                                   onTap: () {
                                                     onAddToCart(snapshot.data!.value.elementAt(i));

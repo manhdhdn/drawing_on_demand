@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'account.dart';
 import 'discount.dart';
+import 'payment.dart';
 
 class Orders {
   int? count;
@@ -36,6 +37,7 @@ class Order {
   Discount? discount;
   List<OrderDetail>? orderDetails;
   Account? orderedByNavigation;
+  List<Payment>? payments;
 
   Order({
     this.id,
@@ -69,6 +71,13 @@ class Order {
           )
         : null;
     orderedByNavigation = json['OrderedByNavigation'] != null ? Account.fromJson(json['OrderedByNavigation']) : null;
+    payments = json['Payments'] != null
+        ? List<Payment>.from(
+            json['Payments'].map(
+              (x) => Payment.fromJson(x),
+            ),
+          )
+        : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -8,8 +10,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/order_api.dart';
-import '../../seller_screen/profile/seller_profile.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
@@ -1108,7 +1110,9 @@ class _VerifyPopUpState extends State<VerifyPopUp> {
 }
 
 class WithdrawAmountPopUp extends StatefulWidget {
-  const WithdrawAmountPopUp({Key? key}) : super(key: key);
+  final String amount;
+
+  const WithdrawAmountPopUp({Key? key, required this.amount}) : super(key: key);
 
   @override
   State<WithdrawAmountPopUp> createState() => _WithdrawAmountPopUpState();
@@ -1128,7 +1132,7 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
             Row(
               children: [
                 Text(
-                  'Withdraw Amount',
+                  AppLocalizations.of(context)!.withdrawRequire,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -1140,7 +1144,7 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
             ),
             const SizedBox(height: 2.0),
             Text(
-              'Review your withdrawal details',
+              AppLocalizations.of(context)!.reviewWithdraw,
               style: kTextStyle.copyWith(color: kSubTitleColor),
             ),
             const SizedBox(height: 5.0),
@@ -1148,16 +1152,30 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
               thickness: 1.0,
               color: kBorderColorTextField,
             ),
+            const SizedBox(height: 5.0),
+            Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.withdrawNote,
+                    style: kTextStyle.copyWith(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 20.0),
             Row(
               children: [
                 Text(
-                  'Transfer To',
+                  AppLocalizations.of(context)!.tranferTo,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 const Spacer(),
                 Text(
-                  'PayPal',
+                  'VNPay',
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
               ],
@@ -1166,12 +1184,12 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
             Row(
               children: [
                 Text(
-                  'Account',
+                  AppLocalizations.of(context)!.account,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 const Spacer(),
                 Text(
-                  'ibne*****@gmail.com',
+                  jsonDecode(PrefUtils().getAccount())['Phone'],
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
               ],
@@ -1180,12 +1198,12 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
             Row(
               children: [
                 Text(
-                  'Amount',
+                  AppLocalizations.of(context)!.amount,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 const Spacer(),
                 Text(
-                  '$currencySign 5,000',
+                  widget.amount,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
               ],
@@ -1197,10 +1215,10 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
                   child: Button(
                     containerBg: kWhite,
                     borderColor: redColor,
-                    buttonText: 'Cancel',
+                    buttonText: AppLocalizations.of(context)!.cancel,
                     textColor: redColor,
                     onPressed: () {
-                      finish(context);
+                      GoRouter.of(context).pop(false);
                     },
                   ),
                 ),
@@ -1208,11 +1226,10 @@ class _WithdrawAmountPopUpState extends State<WithdrawAmountPopUp> {
                   child: Button(
                     containerBg: kPrimaryColor,
                     borderColor: Colors.transparent,
-                    buttonText: 'Confirm',
+                    buttonText: AppLocalizations.of(context)!.confirm,
                     textColor: kWhite,
                     onPressed: () {
-                      finish(context);
-                      const SellerProfile().launch(context);
+                      GoRouter.of(context).pop(true);
                     },
                   ),
                 ),

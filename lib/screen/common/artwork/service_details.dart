@@ -12,6 +12,7 @@ import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/artwork_review.dart';
+import '../../seller_screen/home/seller_home_screen.dart';
 import '../../seller_screen/services/create_service.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
@@ -27,8 +28,7 @@ class ServiceDetails extends StatefulWidget {
   State<ServiceDetails> createState() => _ServiceDetailsState();
 }
 
-class _ServiceDetailsState extends State<ServiceDetails>
-    with TickerProviderStateMixin {
+class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStateMixin {
   late Future<Artwork?> artwork;
 
   ScrollController? _scrollController;
@@ -50,9 +50,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
   }
 
   bool get _isShrink {
-    return _scrollController != null &&
-        _scrollController!.hasClients &&
-        _scrollController!.offset > (height - kToolbarHeight);
+    return _scrollController != null && _scrollController!.hasClients && _scrollController!.offset > (height - kToolbarHeight);
   }
 
   List<PopupMenuItem> getListMenuItems() {
@@ -71,9 +69,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
           onPause();
         },
         child: Text(
-          status == 'Paused'
-              ? AppLocalizations.of(context)!.resume
-              : AppLocalizations.of(context)!.pause,
+          status == 'Paused' ? AppLocalizations.of(context)!.resume : AppLocalizations.of(context)!.pause,
           style: kTextStyle.copyWith(color: kNeutralColor),
         ),
       ),
@@ -82,9 +78,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
           onDelete();
         },
         child: Text(
-          status == 'Deleted'
-              ? AppLocalizations.of(context)!.restore
-              : AppLocalizations.of(context)!.delete,
+          status == 'Deleted' ? AppLocalizations.of(context)!.restore : AppLocalizations.of(context)!.delete,
           style: kTextStyle.copyWith(color: kNeutralColor),
         ),
       ),
@@ -106,14 +100,11 @@ class _ServiceDetailsState extends State<ServiceDetails>
         return Column(
           children: [
             ReviewDetails(
-              avatar:
-                  artworkReviews.elementAt(index).createdByNavigation!.avatar,
+              avatar: artworkReviews.elementAt(index).createdByNavigation!.avatar,
               name: artworkReviews.elementAt(index).createdByNavigation!.name,
               star: artworkReviews.elementAt(index).star,
               comment: artworkReviews.elementAt(index).comment,
-              date: DateFormat('dd-MM-yyyy')
-                  .format(artworkReviews.elementAt(index).createdDate!)
-                  .toString(),
+              date: DateFormat('dd-MM-yyyy').format(artworkReviews.elementAt(index).createdDate!).toString(),
             ),
             const SizedBox(height: 10.0),
           ],
@@ -216,7 +207,10 @@ class _ServiceDetailsState extends State<ServiceDetails>
                       forceElevated: innerBoxIsScrolled,
                       leading: _isShrink
                           ? GestureDetector(
-                              onTap: () => Navigator.pop(context),
+                              onTap: () {
+                                context.pop();
+                                SellerHomeScreen.refresh();
+                              },
                               child: const Icon(
                                 Icons.arrow_back,
                                 color: kNeutralColor,
@@ -225,7 +219,10 @@ class _ServiceDetailsState extends State<ServiceDetails>
                           : Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
+                                onTap: () {
+                                  context.pop();
+                                  SellerHomeScreen.refresh();
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(5.0),
                                   decoration: const BoxDecoration(
@@ -239,8 +236,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                 ),
                               ),
                             ),
-                      actions: PrefUtils().getRole() == 'Artist' &&
-                              status != 'Proposed'
+                      actions: PrefUtils().getRole() == 'Artist' && status != 'Proposed'
                           ? _isShrink
                               ? [
                                   Padding(
@@ -248,11 +244,9 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                     child: Container(
                                       padding: const EdgeInsets.all(5.0),
                                       child: PopupMenuButton(
-                                        itemBuilder: (BuildContext bc) =>
-                                            getListMenuItems(),
+                                        itemBuilder: (BuildContext bc) => getListMenuItems(),
                                         onSelected: (value) {
-                                          Navigator.pushNamed(
-                                              context, '$value');
+                                          Navigator.pushNamed(context, '$value');
                                         },
                                         child: const Icon(
                                           FeatherIcons.moreVertical,
@@ -272,11 +266,9 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                         color: kWhite,
                                       ),
                                       child: PopupMenuButton(
-                                        itemBuilder: (BuildContext bc) =>
-                                            getListMenuItems(),
+                                        itemBuilder: (BuildContext bc) => getListMenuItems(),
                                         onSelected: (value) {
-                                          Navigator.pushNamed(
-                                              context, '$value');
+                                          Navigator.pushNamed(context, '$value');
                                         },
                                         child: const Icon(
                                           FeatherIcons.moreVertical,
@@ -294,8 +286,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                             future: artwork,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                snapshot.data!.arts!.sort(((a, b) =>
-                                    a.createdDate!.compareTo(b.createdDate!)));
+                                snapshot.data!.arts!.sort(((a, b) => a.createdDate!.compareTo(b.createdDate!)));
 
                                 return CarouselSlider.builder(
                                   carouselController: _controller,
@@ -324,10 +315,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                     return Container(
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: NetworkImage(snapshot
-                                              .data!.arts!
-                                              .elementAt(index)
-                                              .image!),
+                                          image: NetworkImage(snapshot.data!.arts!.elementAt(index).image!),
                                           fit: BoxFit.fitHeight,
                                         ),
                                       ),
@@ -385,8 +373,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                 (BuildContext context, int index) {
                                   return Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.all(15.0),
@@ -399,8 +386,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                           ),
                                         ),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               snapshot.data!.title!,
@@ -425,19 +411,15 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                                 RichText(
                                                   text: TextSpan(
                                                     text: getReviewPoint(
-                                                      snapshot.data!
-                                                          .artworkReviews!,
+                                                      snapshot.data!.artworkReviews!,
                                                     ),
                                                     style: kTextStyle.copyWith(
                                                       color: kNeutralColor,
                                                     ),
                                                     children: [
                                                       TextSpan(
-                                                        text:
-                                                            ' (${snapshot.data!.artworkReviews!.length} ${AppLocalizations.of(context)!.review})',
-                                                        style: kTextStyle.copyWith(
-                                                            color:
-                                                                kLightNeutralColor),
+                                                        text: ' (${snapshot.data!.artworkReviews!.length} ${AppLocalizations.of(context)!.review})',
+                                                        style: kTextStyle.copyWith(color: kLightNeutralColor),
                                                       )
                                                     ],
                                                   ),
@@ -461,32 +443,25 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                                     onAddToCart(snapshot.data!);
                                                   },
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5.0,
-                                                            left: 5.0),
+                                                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
                                                     child: Container(
                                                       height: 25,
                                                       width: 25,
-                                                      decoration:
-                                                          const BoxDecoration(
+                                                      decoration: const BoxDecoration(
                                                         color: Colors.white,
                                                         shape: BoxShape.circle,
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color:
-                                                                Colors.black12,
+                                                            color: Colors.black12,
                                                             blurRadius: 10.0,
                                                             spreadRadius: 1.0,
-                                                            offset:
-                                                                Offset(0, 2),
+                                                            offset: Offset(0, 2),
                                                           ),
                                                         ],
                                                       ),
                                                       child: const Center(
                                                         child: Icon(
-                                                          Icons
-                                                              .add_shopping_cart_outlined,
+                                                          Icons.add_shopping_cart_outlined,
                                                           color: kNeutralColor,
                                                           size: 16.0,
                                                         ),
@@ -501,36 +476,24 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                               horizontalTitleGap: 10,
                                               leading: CircleAvatar(
                                                 radius: 22.0,
-                                                backgroundImage: NetworkImage(
-                                                    snapshot
-                                                        .data!
-                                                        .createdByNavigation!
-                                                        .avatar!),
+                                                backgroundImage: NetworkImage(snapshot.data!.createdByNavigation!.avatar!),
                                               ),
                                               title: Text(
-                                                snapshot.data!
-                                                    .createdByNavigation!.name!,
+                                                snapshot.data!.createdByNavigation!.name!,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: kTextStyle.copyWith(
-                                                    color: kNeutralColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                               ),
                                               subtitle: RichText(
                                                 text: TextSpan(
-                                                  text:
-                                                      '${AppLocalizations.of(context)!.artistRank} - ${snapshot.data!.createdByNavigation!.rank!.name} ',
+                                                  text: '${AppLocalizations.of(context)!.artistRank} - ${snapshot.data!.createdByNavigation!.rank!.name} ',
                                                   style: kTextStyle.copyWith(
                                                     color: kNeutralColor,
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: AppLocalizations.of(
-                                                              context)!
-                                                          .viewProfile,
-                                                      style:
-                                                          kTextStyle.copyWith(
+                                                      text: AppLocalizations.of(context)!.viewProfile,
+                                                      style: kTextStyle.copyWith(
                                                         color: kPrimaryColor,
                                                       ),
                                                     )
@@ -544,83 +507,49 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                             ),
                                             const SizedBox(height: 5.0),
                                             Text(
-                                              AppLocalizations.of(context)!
-                                                  .details,
+                                              AppLocalizations.of(context)!.details,
                                               maxLines: 1,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor,
-                                                  fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 5.0),
                                             ReadMoreText(
                                               snapshot.data!.description!,
-                                              style: kTextStyle.copyWith(
-                                                  color: kLightNeutralColor),
+                                              style: kTextStyle.copyWith(color: kLightNeutralColor),
                                               trimLines: 3,
                                               colorClickableText: kPrimaryColor,
                                               trimMode: TrimMode.Line,
-                                              trimCollapsedText:
-                                                  AppLocalizations.of(context)!
-                                                      .readMore,
-                                              trimExpandedText:
-                                                  AppLocalizations.of(context)!
-                                                      .readLess,
+                                              trimCollapsedText: AppLocalizations.of(context)!.readMore,
+                                              trimExpandedText: AppLocalizations.of(context)!.readLess,
                                             ),
                                             const SizedBox(height: 10.0),
                                             ListView.builder(
                                               shrinkWrap: true,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              itemCount: snapshot
-                                                      .data!.sizes!.isNotEmpty
-                                                  ? snapshot.data!.sizes!.length
-                                                  : 1,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemCount: snapshot.data!.sizes!.isNotEmpty ? snapshot.data!.sizes!.length : 1,
                                               itemBuilder: (context, index) {
                                                 return Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     const SizedBox(height: 5.0),
                                                     RichText(
                                                       text: TextSpan(
-                                                        text:
-                                                            AppLocalizations.of(
-                                                                    context)!
-                                                                .piecesDetail,
-                                                        style:
-                                                            kTextStyle.copyWith(
-                                                          color: index == 0
-                                                              ? kSubTitleColor
-                                                              : kWhite,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                        text: AppLocalizations.of(context)!.piecesDetail,
+                                                        style: kTextStyle.copyWith(
+                                                          color: index == 0 ? kSubTitleColor : kWhite,
+                                                          fontWeight: FontWeight.bold,
                                                         ),
                                                         children: [
                                                           TextSpan(
-                                                            text: snapshot
-                                                                .data!.pieces
-                                                                .toString(),
-                                                            style: kTextStyle
-                                                                .copyWith(
-                                                              color: index == 0
-                                                                  ? kNeutralColor
-                                                                  : kWhite,
+                                                            text: snapshot.data!.pieces.toString(),
+                                                            style: kTextStyle.copyWith(
+                                                              color: index == 0 ? kNeutralColor : kWhite,
                                                             ),
                                                             children: [
                                                               TextSpan(
-                                                                text: snapshot
-                                                                        .data!
-                                                                        .sizes!
-                                                                        .isNotEmpty
-                                                                    ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)'
-                                                                    : null,
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kNeutralColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
+                                                                text: snapshot.data!.sizes!.isNotEmpty ? ' (${snapshot.data!.sizes![index].width} cm x ${snapshot.data!.sizes![index].length} cm)' : null,
+                                                                style: kTextStyle.copyWith(
+                                                                  color: kNeutralColor,
+                                                                  fontWeight: FontWeight.normal,
                                                                 ),
                                                               ),
                                                             ],
@@ -634,26 +563,20 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                             ),
                                             const SizedBox(height: 15.0),
                                             Text(
-                                              AppLocalizations.of(context)!
-                                                  .price,
+                                              AppLocalizations.of(context)!.price,
                                               maxLines: 1,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor,
-                                                  fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 5.0),
                                             Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'vi_VN')
-                                                  .format(snapshot.data!.price),
+                                              NumberFormat.simpleCurrency(locale: 'vi_VN').format(snapshot.data!.price),
                                               style: kTextStyle.copyWith(
                                                 color: kLightNeutralColor,
                                               ),
                                             ),
                                             const SizedBox(height: 15.0),
                                             Text(
-                                              AppLocalizations.of(context)!
-                                                  .artworkSpecifics,
+                                              AppLocalizations.of(context)!.artworkSpecifics,
                                               maxLines: 1,
                                               style: kTextStyle.copyWith(
                                                 color: kNeutralColor,
@@ -664,61 +587,38 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                             Container(
                                               decoration: BoxDecoration(
                                                 color: kWhite,
-                                                border: Border.all(
-                                                    color:
-                                                        kBorderColorTextField),
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                border: Border.all(color: kBorderColorTextField),
+                                                borderRadius: BorderRadius.circular(8.0),
                                               ),
                                               child: Column(
                                                 children: [
                                                   TabBar(
-                                                    unselectedLabelColor:
-                                                        kNeutralColor,
-                                                    indicatorSize:
-                                                        TabBarIndicatorSize.tab,
-                                                    indicator:
-                                                        const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      8.0),
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      8.0),
-                                                            ),
-                                                            color:
-                                                                kPrimaryColor),
+                                                    unselectedLabelColor: kNeutralColor,
+                                                    indicatorSize: TabBarIndicatorSize.tab,
+                                                    indicator: const BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
+                                                          topRight: Radius.circular(8.0),
+                                                          topLeft: Radius.circular(8.0),
+                                                        ),
+                                                        color: kPrimaryColor),
                                                     controller: tabController,
                                                     labelColor: kWhite,
                                                     tabs: [
                                                       Tab(
-                                                        text:
-                                                            AppLocalizations.of(
-                                                                    context)!
-                                                                .category,
+                                                        text: AppLocalizations.of(context)!.category,
                                                       ),
                                                       Tab(
-                                                        text:
-                                                            AppLocalizations.of(
-                                                                    context)!
-                                                                .surface,
+                                                        text: AppLocalizations.of(context)!.surface,
                                                       ),
                                                       Tab(
-                                                        text:
-                                                            AppLocalizations.of(
-                                                                    context)!
-                                                                .material,
+                                                        text: AppLocalizations.of(context)!.material,
                                                       ),
                                                     ],
                                                   ),
                                                   const Divider(
                                                     height: 0,
                                                     thickness: 1.0,
-                                                    color:
-                                                        kBorderColorTextField,
+                                                    color: kBorderColorTextField,
                                                   ),
                                                   SizedBox(
                                                     height: 180,
@@ -726,139 +626,73 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                                       controller: tabController,
                                                       children: [
                                                         Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
+                                                          padding: const EdgeInsets.all(10.0),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const SizedBox(
-                                                                  height: 5.0),
+                                                              const SizedBox(height: 5.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .category!
-                                                                    .name!,
-                                                                style: kTextStyle.copyWith(
-                                                                    color:
-                                                                        kNeutralColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                snapshot.data!.category!.name!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               const Divider(
                                                                 height: 0,
                                                                 thickness: 1.0,
-                                                                color:
-                                                                    kBorderColorTextField,
+                                                                color: kBorderColorTextField,
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .category!
-                                                                    .description!,
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                        color:
-                                                                            kNeutralColor),
+                                                                snapshot.data!.category!.description!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                         Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
+                                                          padding: const EdgeInsets.all(10.0),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const SizedBox(
-                                                                  height: 5.0),
+                                                              const SizedBox(height: 5.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .surface!
-                                                                    .name!,
-                                                                style: kTextStyle.copyWith(
-                                                                    color:
-                                                                        kNeutralColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                snapshot.data!.surface!.name!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               const Divider(
                                                                 height: 0,
                                                                 thickness: 1.0,
-                                                                color:
-                                                                    kBorderColorTextField,
+                                                                color: kBorderColorTextField,
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .surface!
-                                                                    .description!,
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                        color:
-                                                                            kNeutralColor),
+                                                                snapshot.data!.surface!.description!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                         Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
+                                                          padding: const EdgeInsets.all(10.0),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const SizedBox(
-                                                                  height: 5.0),
+                                                              const SizedBox(height: 5.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .material!
-                                                                    .name!,
-                                                                style: kTextStyle.copyWith(
-                                                                    color:
-                                                                        kNeutralColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                snapshot.data!.material!.name!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               const Divider(
                                                                 height: 0,
                                                                 thickness: 1.0,
-                                                                color:
-                                                                    kBorderColorTextField,
+                                                                color: kBorderColorTextField,
                                                               ),
-                                                              const SizedBox(
-                                                                  height: 15.0),
+                                                              const SizedBox(height: 15.0),
                                                               Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .material!
-                                                                    .description!,
-                                                                style: kTextStyle
-                                                                    .copyWith(
-                                                                        color:
-                                                                            kNeutralColor),
+                                                                snapshot.data!.material!.description!,
+                                                                style: kTextStyle.copyWith(color: kNeutralColor),
                                                               ),
                                                             ],
                                                           ),
@@ -871,65 +705,34 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                             ),
                                             const SizedBox(height: 15.0),
                                             Text(
-                                              AppLocalizations.of(context)!
-                                                  .reviews,
+                                              AppLocalizations.of(context)!.reviews,
                                               maxLines: 1,
-                                              style: kTextStyle.copyWith(
-                                                  color: kNeutralColor,
-                                                  fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 15.0),
                                             Review(
-                                              rating: getReviewPoint(snapshot
-                                                  .data!.artworkReviews!),
-                                              total: snapshot
-                                                  .data!.artworkReviews!.length,
-                                              five: snapshot
-                                                  .data!.artworkReviews!
-                                                  .where((awr) => awr.star == 5)
-                                                  .length,
-                                              four: snapshot
-                                                  .data!.artworkReviews!
-                                                  .where((awr) => awr.star == 4)
-                                                  .length,
-                                              three: snapshot
-                                                  .data!.artworkReviews!
-                                                  .where((awr) => awr.star == 3)
-                                                  .length,
-                                              two: snapshot
-                                                  .data!.artworkReviews!
-                                                  .where((awr) => awr.star == 2)
-                                                  .length,
-                                              one: snapshot
-                                                  .data!.artworkReviews!
-                                                  .where((awr) => awr.star == 1)
-                                                  .length,
+                                              rating: getReviewPoint(snapshot.data!.artworkReviews!),
+                                              total: snapshot.data!.artworkReviews!.length,
+                                              five: snapshot.data!.artworkReviews!.where((awr) => awr.star == 5).length,
+                                              four: snapshot.data!.artworkReviews!.where((awr) => awr.star == 4).length,
+                                              three: snapshot.data!.artworkReviews!.where((awr) => awr.star == 3).length,
+                                              two: snapshot.data!.artworkReviews!.where((awr) => awr.star == 2).length,
+                                              one: snapshot.data!.artworkReviews!.where((awr) => awr.star == 1).length,
                                             ),
                                             const SizedBox(height: 15.0),
-                                            getReviews(
-                                                snapshot.data!.artworkReviews!),
+                                            getReviews(snapshot.data!.artworkReviews!),
                                             const SizedBox(height: 10.0),
                                             Container(
                                               height: 40.0,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30.0),
-                                                  border: Border.all(
-                                                      color: kSubTitleColor)),
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), border: Border.all(color: kSubTitleColor)),
                                               child: GestureDetector(
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      AppLocalizations.of(
-                                                              context)!
-                                                          .viewAllReviews,
+                                                      AppLocalizations.of(context)!.viewAllReviews,
                                                       maxLines: 1,
-                                                      style: kTextStyle.copyWith(
-                                                          color:
-                                                              kSubTitleColor),
+                                                      style: kTextStyle.copyWith(color: kSubTitleColor),
                                                     ),
                                                     const Icon(
                                                       FeatherIcons.chevronDown,
@@ -938,13 +741,10 @@ class _ServiceDetailsState extends State<ServiceDetails>
                                                   ],
                                                 ),
                                                 onTap: () {
-                                                  onViewAllReview(snapshot.data!
-                                                      .artworkReviews!.length);
+                                                  onViewAllReview(snapshot.data!.artworkReviews!.length);
                                                 },
                                               ),
-                                            ).visible(snapshot.data!
-                                                    .artworkReviews!.length >
-                                                totalReview)
+                                            ).visible(snapshot.data!.artworkReviews!.length > totalReview)
                                           ],
                                         ),
                                       ),
@@ -992,8 +792,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
         },
       );
     } catch (error) {
-      Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.getArtworkFailed);
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.getArtworkFailed);
     }
 
     return null;
@@ -1030,9 +829,7 @@ class _ServiceDetailsState extends State<ServiceDetails>
       {'Status': status},
     );
 
-    Fluttertoast.showToast(
-        msg:
-            'Artwork has been ${status == 'Deleted' ? 'deleted' : 'restored'}');
+    Fluttertoast.showToast(msg: 'Artwork has been ${status == 'Deleted' ? 'deleted' : 'restored'}');
 
     CreateService.refresh();
   }

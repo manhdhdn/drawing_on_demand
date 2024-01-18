@@ -114,7 +114,13 @@ class _CreateServiceState extends State<CreateService> {
                                   borderRadius: BorderRadius.circular(40.0),
                                 ),
                                 child: Text(
-                                  serviceList[i],
+                                  serviceList[i] == 'All'
+                                      ? AppLocalizations.of(context)!.all
+                                      : serviceList[i] == 'Available'
+                                          ? AppLocalizations.of(context)!.available
+                                          : serviceList[i] == 'Paused'
+                                              ? AppLocalizations.of(context)!.paused
+                                              : AppLocalizations.of(context)!.deleted,
                                   style: kTextStyle.copyWith(
                                     color: selectedArtworkCreateTab == serviceList[i] ? kWhite : kNeutralColor,
                                   ),
@@ -212,7 +218,7 @@ class _CreateServiceState extends State<CreateService> {
                                             ),
                                             const SizedBox(width: 2.0),
                                             Text(
-                                              '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} review)',
+                                              '(${snapshot.data!.value.elementAt(index).artworkReviews!.length} ${AppLocalizations.of(context)!.review})',
                                               style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             ),
                                           ],
@@ -253,7 +259,13 @@ class _CreateServiceState extends State<CreateService> {
                                             style: kTextStyle.copyWith(color: kLightNeutralColor),
                                             children: [
                                               TextSpan(
-                                                text: snapshot.data!.value[index].status,
+                                                text: snapshot.data!.value[index].status == 'Available'
+                                                    ? AppLocalizations.of(context)!.available
+                                                    : snapshot.data!.value[index].status == 'Paused'
+                                                        ? AppLocalizations.of(context)!.paused
+                                                        : snapshot.data!.value[index].status == 'Deleted'
+                                                            ? AppLocalizations.of(context)!.deleted
+                                                            : snapshot.data!.value[index].status,
                                                 style: kTextStyle.copyWith(
                                                   color: kSubTitleColor,
                                                   fontWeight: FontWeight.bold,

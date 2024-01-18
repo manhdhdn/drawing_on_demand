@@ -11,6 +11,7 @@ import '../../../data/models/account_review.dart';
 import '../../../data/models/order.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/responsive.dart';
 import 'order_list.dart';
 
 class OrderReview extends StatefulWidget {
@@ -41,6 +42,7 @@ class _OrderReviewState extends State<OrderReview> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

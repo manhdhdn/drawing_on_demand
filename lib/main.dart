@@ -70,6 +70,7 @@ class _MyAppState extends State<MyApp> {
       key: notifierKey,
       create: (_) => ChatProvider(),
       child: MaterialApp.router(
+        key: notifierKey,
         title: dod,
         localizationsDelegates: const [
           AppLocalizations.delegate,

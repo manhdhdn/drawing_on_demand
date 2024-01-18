@@ -60,6 +60,7 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -79,10 +80,10 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 3) : const EdgeInsets.symmetric(horizontal: 40.0),
               child: const InvitePopUp(),
             );
           },
@@ -561,34 +562,32 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    setState(() {
-                                                      isFavorite = !isFavorite;
-                                                    });
+                                                    onAddToCart(snapshot.data!.value.elementAt(index));
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(5.0),
+                                                    padding: const EdgeInsets.only(top: 5.0, right: 5.0),
                                                     child: Container(
-                                                      height: 30,
-                                                      width: 30,
+                                                      height: 25,
+                                                      width: 25,
                                                       decoration: const BoxDecoration(
                                                         color: Colors.white,
                                                         shape: BoxShape.circle,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.black12,
+                                                            blurRadius: 10.0,
+                                                            spreadRadius: 1.0,
+                                                            offset: Offset(0, 2),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      child: isFavorite
-                                                          ? const Center(
-                                                              child: Icon(
-                                                                Icons.favorite,
-                                                                color: Colors.red,
-                                                                size: 18.0,
-                                                              ),
-                                                            )
-                                                          : const Center(
-                                                              child: Icon(
-                                                                Icons.favorite_border,
-                                                                color: kNeutralColor,
-                                                                size: 18.0,
-                                                              ),
-                                                            ),
+                                                      child: const Center(
+                                                        child: Icon(
+                                                          Icons.add_shopping_cart_outlined,
+                                                          color: kNeutralColor,
+                                                          size: 16.0,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

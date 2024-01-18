@@ -29,6 +29,7 @@ import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/responsive.dart';
+import '../message/function/chat_function.dart';
 import '../popUp/popup_2.dart';
 import 'order_list.dart';
 
@@ -52,7 +53,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   String role = PrefUtils().getRole();
 
   String status = 'Cancelled';
-  String accountId = '';
+  List<String> accountIds = [];
   String artworkId = '';
 
   String requirementId = '';
@@ -92,10 +93,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: CancelReasonPopUp(id: widget.id, accountId: accountId),
+              child: CancelReasonPopUp(id: widget.id),
             );
           },
         );
@@ -111,6 +113,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -130,6 +133,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -159,29 +163,36 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       element.addAll(
         [
           TrackerData(
-            title: 'Order Success',
+            // ignore: use_build_context_synchronously
+            title: AppLocalizations.of(context)!.orderSuccess,
             date: '',
             tracker_details: [
               TrackerDetails(
-                title: 'The order has been placed',
+                // ignore: use_build_context_synchronously
+                title: AppLocalizations.of(context)!.orderHasPlaced,
                 datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['order_date']).add(const Duration(hours: 7))),
               ),
               TrackerDetails(
-                title: 'Estimated delivery date',
+                // ignore: use_build_context_synchronously
+                title: AppLocalizations.of(context)!.estimatedDelivery,
                 datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['leadtime']).add(const Duration(hours: 7))),
               ),
               TrackerDetails(
-                title: 'Receiver',
-                datetime: 'Name: ${data['to_name']}\nPhone: ${data['to_phone']}\nAddress: ${data['to_address']}',
+                // ignore: use_build_context_synchronously
+                title: AppLocalizations.of(context)!.receiver,
+                // ignore: use_build_context_synchronously
+                datetime: '${AppLocalizations.of(context)!.name}: ${data['to_name']}\n${AppLocalizations.of(context)!.phone}: ${data['to_phone']}\n${AppLocalizations.of(context)!.address}: ${data['to_address']}',
               ),
             ],
           ),
           TrackerData(
-            title: 'Being Prepared',
+            // ignore: use_build_context_synchronously
+            title: AppLocalizations.of(context)!.beingPrepared,
             date: '',
             tracker_details: [
               TrackerDetails(
-                title: 'The artist is preparing the order',
+                // ignore: use_build_context_synchronously
+                title: AppLocalizations.of(context)!.artistPrepared,
                 datetime: DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(data['pickup_time']).add(const Duration(hours: 7))),
               ),
             ],
@@ -251,7 +262,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         onReview();
                       },
                       buttonTextColor: kWhite,
-                    ),
+                    ).visible(PrefUtils().getRole() == 'Customer'),
                   )
                 : status == 'Pending' || status == 'Deposited'
                     ? Container(
@@ -596,7 +607,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           const SizedBox(width: 10.0),
                                           Flexible(
                                             child: Text(
-                                              status == 'Deposited' ? 'Active' : status,
+                                              status == 'Deposited'
+                                                  ? AppLocalizations.of(context)!.active
+                                                  : status == 'Pending'
+                                                      ? AppLocalizations.of(context)!.pending
+                                                      : status == 'Paid'
+                                                          ? AppLocalizations.of(context)!.paid
+                                                          : status == 'Completed'
+                                                              ? AppLocalizations.of(context)!.completed
+                                                              : status == 'Reviewed'
+                                                                  ? AppLocalizations.of(context)!.reviewed
+                                                                  : AppLocalizations.of(context)!.cancelled,
                                               style: kTextStyle.copyWith(color: kNeutralColor),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
@@ -1026,7 +1047,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                         ),
                                                       const SizedBox(height: 10.0),
                                                     ],
-                                                  ).visible(PrefUtils().getRole() == 'Customer' || (PrefUtils().getRole() == 'Artist' && orderDetails[getCartIndex(i, packList)].artwork!.createdByNavigation!.id.toString() == jsonDecode(PrefUtils().getAccount())['Id'])),
+                                                  ),
                                                 );
                                               },
                                             ),
@@ -1204,7 +1225,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           .then((order) {
         setState(() {
           status = order.status!;
-          accountId = role == 'Customer' ? order.orderDetails!.first.artwork!.createdByNavigation!.id.toString() : order.orderedByNavigation!.id.toString();
+          if (role == 'Customer') {
+            for (var orderDetail in order.orderDetails!) {
+              if (!accountIds.contains(orderDetail.artwork!.createdByNavigation!.id.toString())) {
+                accountIds.add(orderDetail.artwork!.createdByNavigation!.id.toString());
+              }
+            }
+          } else {
+            accountIds.add(order.orderedByNavigation!.id.toString());
+          }
 
           if (order.orderType == 'Requirement') {
             requirementId = order.orderDetails!.first.artwork!.proposal!.requirement!.id.toString();
@@ -1261,7 +1290,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   void onChat() {
-    context.goNamed(ChatRoute.name, pathParameters: {'id': accountId});
+    for (var accountId in accountIds) {
+      ChatFunction.createChat(
+        senderId: jsonDecode(PrefUtils().getAccount())['Id'],
+        receiverId: accountId,
+        orderId: widget.id!.split('-').first.toUpperCase(),
+      );
+    }
+
+    context.goNamed(MessageRoute.name);
   }
 
   void onCreateTimeline() {

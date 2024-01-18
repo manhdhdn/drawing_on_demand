@@ -291,16 +291,18 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                SizedBox(
-                                  width: context.width() * 0.85,
-                                  height: context.width() * 0.85 * 0.7,
-                                  child: PhotoView(
-                                    backgroundDecoration: BoxDecoration(
-                                      color: kDarkWhite,
-                                      borderRadius: BorderRadius.circular(6.0),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 359,
+                                      maxWidth: 359,
                                     ),
-                                    imageProvider: NetworkImage(
-                                      snapshot.data!.image ?? defaultImage,
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        snapshot.data!.image!,
+                                      ),
+                                      tightMode: true,
                                     ),
                                   ),
                                 ),

@@ -4,6 +4,7 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/responsive.dart';
 
 class SellerFavList extends StatefulWidget {
   const SellerFavList({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _SellerFavListState extends State<SellerFavList> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

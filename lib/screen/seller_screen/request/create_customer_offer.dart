@@ -22,6 +22,7 @@ import '../../../data/models/proposal.dart';
 import '../../../data/models/requirement.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
+import 'seller_buyer_request.dart';
 
 class CreateCustomerOffer extends StatefulWidget {
   final String? id;
@@ -432,6 +433,8 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
       await ArtApi().postOne(art);
       await ProposalApi().postOne(proposal);
 
+      SellerBuyerReq.refresh();
+
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
       // ignore: use_build_context_synchronously
@@ -461,9 +464,7 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
       }
     } catch (error) {
       // ignore: use_build_context_synchronously
-      Fluttertoast.showToast(
-          // ignore: use_build_context_synchronously
-          msg: AppLocalizations.of(context)!.checkOfferFailed);
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.checkOfferFailed);
     }
 
     return true;

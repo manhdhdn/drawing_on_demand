@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:drawing_on_demand/data/apis/size_api.dart';
-import 'package:drawing_on_demand/data/models/proposal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -18,11 +16,12 @@ import '../../../data/apis/order_api.dart';
 import '../../../data/apis/order_detail_api.dart';
 import '../../../data/apis/proposal_api.dart';
 import '../../../data/apis/requirement_api.dart';
+import '../../../data/apis/size_api.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
+import '../../../data/models/proposal.dart';
 import '../../../data/models/requirement.dart';
 import '../../../data/models/size.dart';
-import '../../common/message/function/chat_function.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
@@ -58,6 +57,7 @@ class _JobDetailsState extends State<JobDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -83,6 +83,7 @@ class _JobDetailsState extends State<JobDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -104,6 +105,7 @@ class _JobDetailsState extends State<JobDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -125,6 +127,7 @@ class _JobDetailsState extends State<JobDetails> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -596,8 +599,8 @@ class _JobDetailsState extends State<JobDetails> {
                                         borderRadius: BorderRadius.circular(10.0),
                                         child: ConstrainedBox(
                                           constraints: const BoxConstraints(
-                                            maxHeight: 390,
-                                            maxWidth: 390,
+                                            maxHeight: 359,
+                                            maxWidth: 359,
                                           ),
                                           child: PhotoView(
                                             imageProvider: NetworkImage(
@@ -968,12 +971,6 @@ class _JobDetailsState extends State<JobDetails> {
         });
 
         JobPost.refresh();
-
-        ChatFunction.createChat(
-          senderId: jsonDecode(PrefUtils().getAccount())['Id'],
-          receiverId: proposal.createdByNavigation!.id.toString(),
-          orderId: order.id.toString().split('-').first.toUpperCase(),
-        );
 
         // ignore: use_build_context_synchronously
         ProgressDialogUtils.hideProgress(context);

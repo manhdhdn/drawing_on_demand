@@ -218,7 +218,11 @@ class _JobPostState extends State<JobPost> {
                                               padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10, right: 10),
                                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: kDarkWhite),
                                               child: Text(
-                                                snapshot.data!.value.elementAt(index).status!,
+                                                snapshot.data!.value.elementAt(index).status! == 'Public'
+                                                    ? AppLocalizations.of(context)!.public
+                                                    : snapshot.data!.value.elementAt(index).status! == 'Private'
+                                                        ? AppLocalizations.of(context)!.private
+                                                        : AppLocalizations.of(context)!.cancelled,
                                                 style: kTextStyle.copyWith(color: kNeutralColor),
                                               ),
                                             ),

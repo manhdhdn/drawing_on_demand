@@ -131,6 +131,7 @@ class _ClientDashBoardState extends State<ClientDashBoard> {
           for (var order in orders.value) {
             switch (order.status) {
               case 'Deposited':
+                totalTransactions += order.total!;
                 totalDeposited += order.total!;
                 break;
               case 'Paid':

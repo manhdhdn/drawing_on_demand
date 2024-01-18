@@ -10,6 +10,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../main.dart';
 import '../../common/profile/help_and_support.dart';
 import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
@@ -17,7 +19,6 @@ import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
 import '../home/client_home.dart';
 import '../notification/client_notification.dart';
-import '../report/client_report.dart';
 import '../transaction/transaction.dart';
 import 'client_profile_details.dart';
 
@@ -189,37 +190,10 @@ class _ClientProfileState extends State<ClientProfile> {
                       color: kLightNeutralColor,
                     ),
                   ),
-                  // ListTile(
-                  //   onTap: () {
-                  //     onTransaction();
-                  //   },
-                  //   visualDensity: const VisualDensity(vertical: -3),
-                  //   horizontalTitleGap: 10,
-                  //   contentPadding: const EdgeInsets.only(bottom: 12),
-                  //   leading: Container(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     decoration: const BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       color: Color(0xFFFFE5E3),
-                  //     ),
-                  //     child: const Icon(
-                  //       IconlyBold.ticketStar,
-                  //       color: Color(0xFFFF3B30),
-                  //     ),
-                  //   ),
-                  //   title: Text(
-                  //     AppLocalizations.of(context)!.transaction,
-                  //     overflow: TextOverflow.ellipsis,
-                  //     maxLines: 1,
-                  //     style: kTextStyle.copyWith(color: kNeutralColor),
-                  //   ),
-                  //   trailing: const Icon(
-                  //     FeatherIcons.chevronRight,
-                  //     color: kLightNeutralColor,
-                  //   ),
-                  // ),
                   ListTile(
-                    onTap: () => const ClientReport().launch(context),
+                    onTap: () {
+                      onArtistCentre();
+                    },
                     visualDensity: const VisualDensity(vertical: -3),
                     horizontalTitleGap: 10,
                     contentPadding: const EdgeInsets.only(bottom: 15),
@@ -355,6 +329,23 @@ class _ClientProfileState extends State<ClientProfile> {
 
   void onDashboard() {
     DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientDashBoard()) : const ClientDashBoard().launch(context);
+  }
+
+  void onArtistCentre() async {
+    try {
+      ProgressDialogUtils.showProgress(context);
+
+      await PrefUtils().setRole('Artist');
+
+      Future.delayed(const Duration(seconds: 1), () {
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+        MyApp.refreshRoutes(context);
+      });
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+    }
   }
 
   void onTransaction() {

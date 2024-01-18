@@ -10,9 +10,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../main.dart';
 import '../../widgets/constant.dart';
 import '../notification/seller_notification.dart';
-import '../report/seller_report.dart';
 import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
 
@@ -223,7 +224,9 @@ class _SellerProfileState extends State<SellerProfile> {
                 //   ),
                 // ),
                 ListTile(
-                  onTap: () => const SellerReport().launch(context),
+                  onTap: () {
+                    onChangeToCustomer();
+                  },
                   visualDensity: const VisualDensity(vertical: -3),
                   horizontalTitleGap: 10,
                   contentPadding: const EdgeInsets.only(bottom: 15),
@@ -370,6 +373,23 @@ class _SellerProfileState extends State<SellerProfile> {
     context.goNamed(ArtistProfileDetailRoute.name, pathParameters: {
       'id': jsonDecode(PrefUtils().getAccount())['Id'].toString(),
     });
+  }
+
+  void onChangeToCustomer() async {
+    try {
+      ProgressDialogUtils.showProgress(context);
+
+      await PrefUtils().setRole('Customer');
+
+      Future.delayed(const Duration(seconds: 1), () {
+        // ignore: use_build_context_synchronously
+        ProgressDialogUtils.hideProgress(context);
+        MyApp.refreshRoutes(context);
+      });
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
+    }
   }
 
   void onSetting() {

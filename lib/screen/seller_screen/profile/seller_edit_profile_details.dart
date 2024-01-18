@@ -10,6 +10,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
 import '../../common/popUp/popup_1.dart';
+import '../../widgets/responsive.dart';
 
 class SellerEditProfile extends StatefulWidget {
   const SellerEditProfile({Key? key}) : super(key: key);
@@ -99,9 +100,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -120,9 +121,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -141,9 +142,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -162,9 +163,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -186,8 +187,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
           'Edit Profile',
-          style: kTextStyle.copyWith(
-              color: kNeutralColor, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -288,17 +288,13 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                                   'Shaidulislam',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: kTextStyle.copyWith(
-                                      color: kNeutralColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
+                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                                 ),
                                 Text(
                                   'shaidulislamma@gmail.com',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: kTextStyle.copyWith(
-                                      color: kSubTitleColor),
+                                  style: kTextStyle.copyWith(color: kSubTitleColor),
                                 ),
                               ],
                             ),
@@ -311,11 +307,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'User Name',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter user name',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -327,8 +321,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             hintText: 'Enter Phone No.',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                             // prefixIcon: CountryCodePicker(
@@ -348,11 +341,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'Country',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter Country Name',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -364,11 +355,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'Street Address (won’t show on profile)',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter street address',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -380,11 +369,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'City',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter city',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -396,11 +383,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'State',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter state',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -412,11 +397,9 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
                             labelText: 'ZIP/Postal Code',
-                            labelStyle:
-                                kTextStyle.copyWith(color: kNeutralColor),
+                            labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                             hintText: 'Enter zip/post code',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kSubTitleColor),
+                            hintStyle: kTextStyle.copyWith(color: kSubTitleColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -430,18 +413,14 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
                                   ),
-                                  borderSide: BorderSide(
-                                      color: kBorderColorTextField, width: 2),
+                                  borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
                                 labelText: 'Select Language',
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
+                                labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                               ),
-                              child: DropdownButtonHideUnderline(
-                                  child: getLanguage()),
+                              child: DropdownButtonHideUnderline(child: getLanguage()),
                             );
                           },
                         ),
@@ -454,18 +433,14 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
                                   ),
-                                  borderSide: BorderSide(
-                                      color: kBorderColorTextField, width: 2),
+                                  borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                                 ),
                                 contentPadding: const EdgeInsets.all(7.0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
                                 labelText: 'Select Gender',
-                                labelStyle:
-                                    kTextStyle.copyWith(color: kNeutralColor),
+                                labelStyle: kTextStyle.copyWith(color: kNeutralColor),
                               ),
-                              child: DropdownButtonHideUnderline(
-                                  child: getGender()),
+                              child: DropdownButtonHideUnderline(child: getGender()),
                             );
                           },
                         ),
@@ -483,18 +458,14 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                             children: [
                               Text(
                                 'Languages',
-                                style: kTextStyle.copyWith(
-                                    color: kNeutralColor,
-                                    fontWeight: FontWeight.bold),
+                                style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                               ),
                               const Spacer(),
-                              const Icon(FeatherIcons.plusCircle,
-                                  color: kSubTitleColor, size: 18.0),
+                              const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                               const SizedBox(width: 5.0),
                               Text(
                                 'Add New',
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                             ],
                           ),
@@ -514,13 +485,10 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           children: [
                             Text(
                               'Skills',
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            const Icon(FeatherIcons.plusCircle,
-                                color: kSubTitleColor, size: 18.0),
+                            const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                             const SizedBox(width: 5.0),
                             GestureDetector(
                               onTap: () {
@@ -530,8 +498,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                               },
                               child: Text(
                                 'Add New',
-                                style:
-                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                style: kTextStyle.copyWith(color: kSubTitleColor),
                               ),
                             ),
                           ],
@@ -551,13 +518,10 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           children: [
                             Text(
                               'Education',
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            const Icon(FeatherIcons.plusCircle,
-                                color: kSubTitleColor, size: 18.0),
+                            const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                             const SizedBox(width: 5.0),
                             Text(
                               'Add Education',
@@ -568,21 +532,17 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                         const SizedBox(height: 20.0),
                         const InfoShowCase2(
                           title: 'B.Sc. - grapich design',
-                          subTitle:
-                              'Khilgaon model university, Bangladesh,, Bangladesh, Graduated 2018',
+                          subTitle: 'Khilgaon model university, Bangladesh,, Bangladesh, Graduated 2018',
                         ),
                         const SizedBox(height: 30.0),
                         Row(
                           children: [
                             Text(
                               'Certification',
-                              style: kTextStyle.copyWith(
-                                  color: kNeutralColor,
-                                  fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            const Icon(FeatherIcons.plusCircle,
-                                color: kSubTitleColor, size: 18.0),
+                            const Icon(FeatherIcons.plusCircle, color: kSubTitleColor, size: 18.0),
                             const SizedBox(width: 5.0),
                             Text(
                               'Add Certification',
@@ -602,9 +562,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                       children: [
                         Text(
                           'About Us',
-                          style: kTextStyle.copyWith(
-                              color: kNeutralColor,
-                              fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 15.0),
                         TextFormField(
@@ -613,10 +571,8 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           cursorColor: kNeutralColor,
                           textInputAction: TextInputAction.next,
                           decoration: kInputDecoration.copyWith(
-                            hintText:
-                                'Hello there, This is Ibne Riead! A professional UI/UX Design experience with 2+ years in this field. I specialize in Mobile Apps and Website Design. I always try to meet the needs of my client. Be always in touch and give a first-class project. Have a good project? Let us know',
-                            hintStyle:
-                                kTextStyle.copyWith(color: kLightNeutralColor),
+                            hintText: 'Hello there, This is Ibne Riead! A professional UI/UX Design experience with 2+ years in this field. I specialize in Mobile Apps and Website Design. I always try to meet the needs of my client. Be always in touch and give a first-class project. Have a good project? Let us know',
+                            hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
                             focusColor: kNeutralColor,
                             border: const OutlineInputBorder(),
                           ),
@@ -638,11 +594,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
           ),
           onPressed: () {
             currentIndexPage < 2;
-            currentIndexPage < 2
-                ? pageController.nextPage(
-                    duration: const Duration(microseconds: 3000),
-                    curve: Curves.bounceInOut)
-                : const SellerProfileDetails().launch(context);
+            currentIndexPage < 2 ? pageController.nextPage(duration: const Duration(microseconds: 3000), curve: Curves.bounceInOut) : const SellerProfileDetails().launch(context);
           },
           buttonTextColor: kWhite),
     );

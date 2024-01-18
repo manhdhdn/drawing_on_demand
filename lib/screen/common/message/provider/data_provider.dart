@@ -28,6 +28,7 @@ class ChatProvider extends ChangeNotifier {
   List<UserModel> getChatedUsers() {
     FirebaseFirestore.instance.collection('users').doc(jsonDecode(PrefUtils().getAccount())['Id']).collection('chats').snapshots(includeMetadataChanges: true).listen((users) {
       this.users = users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+      this.users.sort(((a, b) => b.lastActive!.compareTo(a.lastActive!)));
 
       notifyListeners();
     });

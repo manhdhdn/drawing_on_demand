@@ -252,47 +252,6 @@ class _CartScreenState extends State<CartScreen> {
                                                             image: DecorationImage(image: NetworkImage(orderDetails[j + getCartIndex(i, packList)].artwork!.arts!.first.image!), fit: BoxFit.cover),
                                                           ),
                                                         ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              isFavorite = !isFavorite;
-                                                            });
-                                                          },
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(5.0),
-                                                            child: Container(
-                                                              height: 25,
-                                                              width: 25,
-                                                              decoration: const BoxDecoration(
-                                                                color: Colors.white,
-                                                                shape: BoxShape.circle,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors.black12,
-                                                                    blurRadius: 10.0,
-                                                                    spreadRadius: 1.0,
-                                                                    offset: Offset(0, 2),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: isFavorite
-                                                                  ? const Center(
-                                                                      child: Icon(
-                                                                        Icons.favorite,
-                                                                        color: Colors.red,
-                                                                        size: 16.0,
-                                                                      ),
-                                                                    )
-                                                                  : const Center(
-                                                                      child: Icon(
-                                                                        Icons.favorite_border,
-                                                                        color: kNeutralColor,
-                                                                        size: 16.0,
-                                                                      ),
-                                                                    ),
-                                                            ),
-                                                          ),
-                                                        ),
                                                       ],
                                                     ),
                                                     Padding(
@@ -442,6 +401,25 @@ class _CartScreenState extends State<CartScreen> {
     context.goNamed('${ArtworkDetailRoute.name} cart', pathParameters: {'artworkId': id});
   }
 
+  void onOrderNow() async {
+    var order = await cart;
+
+    for (var orderDetail in order!.orderDetails!) {
+      if (orderDetail.artwork!.inStock! < orderDetail.quantity!) {
+        // ignore: use_build_context_synchronously
+        Fluttertoast.showToast(msg: '${orderDetail.artwork!.title} ${AppLocalizations.of(context)!.outOfStock}');
+        return;
+      }
+    }
+
+    // ignore: use_build_context_synchronously
+    context.goNamed(CheckoutRoute.name, pathParameters: {'id': PrefUtils().getCartId()});
+  }
+
+  Future<void> onRemove(String id) async {
+    await OrderDetailApi().deleteOne(id);
+  }
+
   void refresh() {
     setState(() {
       cart = getCart().then((order) {
@@ -458,13 +436,5 @@ class _CartScreenState extends State<CartScreen> {
         return order;
       });
     });
-  }
-
-  void onOrderNow() {
-    context.goNamed(CheckoutRoute.name, pathParameters: {'id': PrefUtils().getCartId()});
-  }
-
-  Future<void> onRemove(String id) async {
-    await OrderDetailApi().deleteOne(id);
   }
 }

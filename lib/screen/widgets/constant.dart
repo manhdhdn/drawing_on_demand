@@ -100,31 +100,11 @@ String selectedSkillLevel = 'Expert';
 
 //__________performance_period___________________________________________________
 List<String> period = [
+  'All',
   'Last Month',
   'This Month',
 ];
 String selectedPeriod = 'This Month';
-
-//__________statistics_period___________________________________________________
-List<String> staticsPeriod = [
-  'Last Month',
-  'This Month',
-];
-
-String selectedStaticsPeriod = 'This Month';
-
-//__________statistics_period___________________________________________________
-List<String> earningPeriod = [
-  'Last Month',
-  'This Month',
-];
-String selectedEarningPeriod = 'This Month';
-
-Map<String, double> dataMap = {
-  "Impressions": 5,
-  "Interaction": 3,
-  "Reached-Out": 2,
-};
 
 List<TitleModel> list = [
   TitleModel("DodResponsive design", false),

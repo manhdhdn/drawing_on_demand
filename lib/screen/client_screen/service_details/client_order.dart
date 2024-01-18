@@ -14,6 +14,7 @@ import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/api_config.dart';
+import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/ghn_api.dart';
 import '../../../data/apis/handover_api.dart';
 import '../../../data/apis/handoveritem_api.dart';
@@ -108,6 +109,7 @@ class _ClientOrderState extends State<ClientOrder> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
@@ -127,6 +129,7 @@ class _ClientOrderState extends State<ClientOrder> {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
             return Dialog(
+              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
@@ -1466,6 +1469,21 @@ class _ClientOrderState extends State<ClientOrder> {
       };
 
       await OrderApi().patchOne(widget.id!, body);
+
+      for (var orderDetail in order.orderDetails!) {
+        Map<String, dynamic> body = {
+          'InStock': orderDetail.artwork!.inStock! - orderDetail.quantity!,
+        };
+
+        if (orderDetail.artwork!.inStock! - orderDetail.quantity! == 0) {
+          body['Status'] = 'Paused';
+        }
+
+        await ArtworkApi().patchOne(
+          orderDetail.artwork!.id.toString(),
+          body,
+        );
+      }
 
       if (status == 'Cart') {
         await PrefUtils().clearCartId();

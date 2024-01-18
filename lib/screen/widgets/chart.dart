@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecordStatistics extends StatelessWidget {
   const RecordStatistics({
@@ -23,7 +24,7 @@ class RecordStatistics extends StatelessWidget {
       initialAngleInDegree: 0,
       chartType: ChartType.ring,
       ringStrokeWidth: 12,
-      centerText: "Statistics\nRecord ",
+      centerText: AppLocalizations.of(context)!.statisRecord,
       legendOptions: const LegendOptions(
         showLegendsInRow: false,
         legendPosition: LegendPosition.right,

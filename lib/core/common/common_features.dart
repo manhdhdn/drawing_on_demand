@@ -27,6 +27,7 @@ import '../../data/models/order_detail.dart';
 import '../../screen/common/message/function/chat_function.dart';
 import '../../screen/common/popUp/popup_1.dart';
 import '../../screen/widgets/constant.dart';
+import '../../screen/widgets/responsive.dart';
 import '../utils/pref_utils.dart';
 
 Future<void> logout(BuildContext context) async {
@@ -59,9 +60,9 @@ Future<void> showImportPicturePopUp(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
-        builder:
-            (BuildContext context, void Function(void Function()) setState) {
+        builder: (BuildContext context, void Function(void Function()) setState) {
           return Dialog(
+            insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -145,7 +146,7 @@ String getReviewPoint(List<ArtworkReview> artworkReviews) {
     point = point / artworkReviews.length;
   }
 
-  return NumberFormat('0.0').format(point);
+  return NumberFormat('0.0', 'en_US').format(point);
 }
 
 String getAccountReviewPoint(List<AccountReview> accountReviews) {
@@ -161,7 +162,7 @@ String getAccountReviewPoint(List<AccountReview> accountReviews) {
     point = point / accountReviews.length;
   }
 
-  return NumberFormat('0.0').format(point);
+  return NumberFormat('0.0', 'en_US').format(point);
 }
 
 Future<Order> getCart() async {
@@ -171,10 +172,8 @@ Future<Order> getCart() async {
     if (PrefUtils().getCartId() == '{}') {
       order = (await OrderApi().gets(
         0,
-        filter:
-            "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
-        expand:
-            'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
+        filter: "orderedBy eq ${jsonDecode(PrefUtils().getAccount())['Id']} and status eq 'Cart'",
+        expand: 'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation))',
       ))
           .value
           .first;
@@ -283,8 +282,7 @@ Future<int> getProvinceCode(String address) async {
     var request = GHNRequest(endpoint: ApiConfig.GHNPaths['province']);
     var respone = await GHNApi().postOne(request);
 
-    var provinces = List<Map<String, dynamic>>.from(
-        jsonDecode(respone.postJsonString!)['data']);
+    var provinces = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -326,8 +324,7 @@ Future<int> getDistrictCode(String address, int provinceId) async {
     );
     var respone = await GHNApi().postOne(request);
 
-    var districts = List<Map<String, dynamic>>.from(
-        jsonDecode(respone.postJsonString!)['data']);
+    var districts = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -369,8 +366,7 @@ Future<String> getWardCode(String address, int districtId) async {
     );
     var respone = await GHNApi().postOne(request);
 
-    var wards = List<Map<String, dynamic>>.from(
-        jsonDecode(respone.postJsonString!)['data']);
+    var wards = List<Map<String, dynamic>>.from(jsonDecode(respone.postJsonString!)['data']);
 
     Map<String, dynamic> result = {};
     double matchPoint = 0;
@@ -418,13 +414,11 @@ Future<Map<String, dynamic>> getDiscount(Order order) async {
     }
 
     DateTime dateTime = DateTime.now();
-    String dateTimeString =
-        DateFormat("yyyy-MM-ddTHH:mm:ss'Z'").format(dateTime);
+    String dateTimeString = DateFormat("yyyy-MM-ddTHH:mm:ss'Z'").format(dateTime);
 
     Discounts discounts = await DiscountApi().gets(
       0,
-      filter:
-          'number le $quantity and startDate le $dateTimeString and endDate ge $dateTimeString',
+      filter: 'number le $quantity and startDate le $dateTimeString and endDate ge $dateTimeString',
       orderBy: 'discountPercent',
     );
 
@@ -443,8 +437,50 @@ List<String> getArtistsName(List<OrderDetail> orderDetails) {
   List<String> artistsNames = [];
 
   for (var orderDetail in orderDetails) {
-    artistsNames.add(orderDetail.artwork!.createdByNavigation!.name!);
+    if (!artistsNames.contains(orderDetail.artwork!.createdByNavigation!.name!)) {
+      artistsNames.add(orderDetail.artwork!.createdByNavigation!.name!);
+    }
   }
 
   return artistsNames;
+}
+
+String getBalance(List<Order> orders) {
+  double balance = 0;
+
+  for (var order in orders) {
+    for (var orderDetail in order.orderDetails!) {
+      if (orderDetail.artwork!.createdByNavigation!.id == jsonDecode(PrefUtils().getAccount())['Id']) {
+        if (order.status != 'Cancelled') {
+          balance += orderDetail.price! * orderDetail.quantity! * (1 - orderDetail.fee!);
+        } else {
+          if (order.depositDate != null) {
+            balance += (orderDetail.price! * orderDetail.quantity!) * 0.3 * (1 - orderDetail.fee!);
+          }
+        }
+      }
+    }
+  }
+
+  return NumberFormat.simpleCurrency(locale: 'vi-VN').format(balance);
+}
+
+String getBalanceWithoutFee(List<Order> orders) {
+  double balance = 0;
+
+  for (var order in orders) {
+    for (var orderDetail in order.orderDetails!) {
+      if (orderDetail.artwork!.createdByNavigation!.id == jsonDecode(PrefUtils().getAccount())['Id']) {
+        if (order.status != 'Cancelled') {
+          balance += orderDetail.price! * orderDetail.quantity!;
+        } else {
+          if (order.depositDate != null) {
+            balance += (orderDetail.price! * orderDetail.quantity!) * 0.3;
+          }
+        }
+      }
+    }
+  }
+
+  return NumberFormat.simpleCurrency(locale: 'vi-VN').format(balance);
 }

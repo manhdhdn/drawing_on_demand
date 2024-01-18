@@ -102,7 +102,7 @@ class _OrderListState extends State<OrderList> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           HorizontalList(
-                            padding: const EdgeInsets.only(top: 15.0),
+                            padding: const EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                             itemCount: titleList.length,
                             itemBuilder: (_, i) {
                               return GestureDetector(
@@ -118,7 +118,15 @@ class _OrderListState extends State<OrderList> {
                                     color: selectedOrderTab == titleList[i] ? kPrimaryColor : kDarkWhite,
                                   ),
                                   child: Text(
-                                    titleList[i],
+                                    titleList[i] == 'Pending'
+                                        ? AppLocalizations.of(context)!.pending
+                                        : titleList[i] == 'Active'
+                                            ? AppLocalizations.of(context)!.active
+                                            : titleList[i] == 'Paid'
+                                                ? AppLocalizations.of(context)!.paid
+                                                : titleList[i] == 'Completed'
+                                                    ? AppLocalizations.of(context)!.completed
+                                                    : AppLocalizations.of(context)!.cancelled,
                                     style: kTextStyle.copyWith(color: selectedOrderTab == titleList[i] ? kWhite : kNeutralColor),
                                   ),
                                 ),
@@ -1042,7 +1050,7 @@ class _OrderListState extends State<OrderList> {
                                                   const SizedBox(width: 10.0),
                                                   Flexible(
                                                     child: Text(
-                                                      completedOrders[i].status!,
+                                                      completedOrders[i].status! == 'Completed' ? AppLocalizations.of(context)!.completed : AppLocalizations.of(context)!.reviewed,
                                                       style: kTextStyle.copyWith(color: kNeutralColor),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 1,
