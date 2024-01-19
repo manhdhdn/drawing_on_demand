@@ -26,6 +26,8 @@ import '../../../data/models/handoveritem.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/vnpay_request.dart';
+import '../../../data/notifications/firebase_api.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../common/orders/order_list.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
@@ -1021,6 +1023,12 @@ class _ClientOrderState extends State<ClientOrder> {
       'orderDetails(expand=artwork(expand=arts,sizes,createdByNavigation)),discount',
     )
         .then((order) async {
+      if (order.status == 'Paid' || order.status == 'Completed' || order.status == 'Cancelled') {
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).pop();
+        return null;
+      }
+
       Map<String, String> query = GoRouter.of(context).routeInformationProvider.value.uri.queryParameters;
 
       if (query.containsKey('vnp_TxnRef')) {
@@ -1043,12 +1051,6 @@ class _ClientOrderState extends State<ClientOrder> {
         } else {
           showFailedPopUp();
         }
-      }
-
-      if (order.status == 'Paid' || order.status == 'Completed' || order.status == 'Cancelled') {
-        // ignore: use_build_context_synchronously
-        GoRouter.of(context).pop();
-        return null;
       }
 
       if (order.discountId != null) {
@@ -1470,6 +1472,13 @@ class _ClientOrderState extends State<ClientOrder> {
 
       await OrderApi().patchOne(widget.id!, body);
 
+      if (status == 'Cart') {
+        await PrefUtils().clearCartId();
+      }
+
+      await PrefUtils().clearShippingOrders();
+      await PrefUtils().clearDiscountId();
+
       for (var orderDetail in order.orderDetails!) {
         Map<String, dynamic> body = {
           'InStock': orderDetail.artwork!.inStock! - orderDetail.quantity!,
@@ -1483,14 +1492,21 @@ class _ClientOrderState extends State<ClientOrder> {
           orderDetail.artwork!.id.toString(),
           body,
         );
-      }
 
-      if (status == 'Cart') {
-        await PrefUtils().clearCartId();
-      }
+        // ignore: use_build_context_synchronously
+        var user = await ChatFunction.getUserData(orderDetail.artwork!.createdBy.toString());
 
-      await PrefUtils().clearShippingOrders();
-      await PrefUtils().clearDiscountId();
+        await FirebaseApi().sendNotification(
+          // ignore: use_build_context_synchronously
+          title: '${AppLocalizations.of(context)!.orderTitleNotify} ${orderDetail.artwork!.title}',
+          // ignore: use_build_context_synchronously
+          body: AppLocalizations.of(context)!.orderNotification,
+          receiverDeviceId: user.deviceId!,
+          pageName: OrderDetailRoute.name,
+          pathName: 'orderId',
+          referenceId: order.id.toString(),
+        );
+      }
 
       setState(() {
         selectedOrderTab = status == 'Pending' ? 'Active' : 'Paid';

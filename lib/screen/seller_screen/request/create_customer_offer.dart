@@ -8,6 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
@@ -20,6 +21,8 @@ import '../../../data/models/art.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/proposal.dart';
 import '../../../data/models/requirement.dart';
+import '../../../data/notifications/firebase_api.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import 'seller_buyer_request.dart';
@@ -437,6 +440,20 @@ class _CreateCustomerOfferState extends State<CreateCustomerOffer> {
 
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
+
+      var user = await ChatFunction.getUserData(requirement.createdBy.toString());
+
+      FirebaseApi().sendNotification(
+        // ignore: use_build_context_synchronously
+        title: '${AppLocalizations.of(context)!.proposalTitleNotify} ${requirement.title}',
+        // ignore: use_build_context_synchronously
+        body: AppLocalizations.of(context)!.inviteBodyNotify,
+        receiverDeviceId: user.deviceId!,
+        pageName: JobDetailRoute.name,
+        pathName: 'jobId',
+        referenceId: requirement.id.toString(),
+      );
+
       // ignore: use_build_context_synchronously
       context.pop();
     } catch (error) {

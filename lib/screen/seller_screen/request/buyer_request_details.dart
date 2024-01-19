@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -6,6 +9,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/apis/rank_api.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/models/requirement.dart';
@@ -24,6 +28,7 @@ class BuyerRequestDetails extends StatefulWidget {
 class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
   late Future<Requirement?> requirement;
 
+  bool canOffer = false;
   int maxConnect = 0;
 
   @override
@@ -53,10 +58,10 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         child: ButtonGlobalWithoutIcon(
           buttontext: AppLocalizations.of(context)!.sendOffer,
           buttonDecoration: kButtonDecoration.copyWith(
-            color: kPrimaryColor,
+            color: canOffer ? kPrimaryColor : kLightNeutralColor,
           ),
           onPressed: () {
-            onOffer();
+            canOffer ? onOffer() : null;
           },
           buttonTextColor: kWhite,
         ),
@@ -300,7 +305,7 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
                                     ),
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        snapshot.data!.image!,
+                                        snapshot.data!.image ?? defaultImage,
                                       ),
                                       tightMode: true,
                                     ),
@@ -334,10 +339,18 @@ class _BuyerRequestDetailsState extends State<BuyerRequestDetails> {
         maxConnect = ranks.value.last.connect!;
       });
 
-      return RequirementApi().getOne(
+      return RequirementApi()
+          .getOne(
         widget.id!,
-        'createdByNavigation,category,surface,material,sizes',
-      );
+        'createdByNavigation,category,surface,material,sizes,proposals',
+      )
+          .then((requirement) {
+        setState(() {
+          canOffer = !requirement.proposals!.any((proposal) => proposal.createdBy == Guid(jsonDecode(PrefUtils().getAccount())['Id']));
+        });
+
+        return requirement;
+      });
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get requirement detail failed');
     }

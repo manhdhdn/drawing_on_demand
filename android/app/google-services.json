@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "680472686977",
+    "firebase_url": "https://drawing-on-demand-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "drawing-on-demand",
+    "storage_bucket": "drawing-on-demand.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680472686977:android:7ae66c2cd3bb475c46b880",
+        "android_client_info": {
+          "package_name": "com.mycompany.drawingondemand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680472686977-r5n9dh37rtsvfi6decj77g225i1futll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.drawingondemand",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "680472686977-6n5n8bf4bsjjpjojj2mndpqi932orplk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeVpMnAQBfqIZxX3035QH7wNJMm9ijQ-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680472686977-6n5n8bf4bsjjpjojj2mndpqi932orplk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "680472686977-0knd29r3c4f585kf96tsei27esufbihn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.drawingondemand"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

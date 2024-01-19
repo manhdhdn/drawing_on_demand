@@ -75,6 +75,8 @@ dependencies:
   date_field: ^4.0.0
   syncfusion_flutter_datepicker: 23.2.6
   order_tracker_zen: ^1.0.0+4
+  firebase_messaging: ^14.7.10
+  flutter_local_notifications: ^16.3.0
 
 flutter_launcher_icons:
   image_path: "images/icon.png"

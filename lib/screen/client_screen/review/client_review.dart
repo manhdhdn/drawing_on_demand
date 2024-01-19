@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../common/popUp/popup_1.dart';
 import '../../widgets/constant.dart';
@@ -45,7 +46,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
         elevation: 0,
         iconTheme: const IconThemeData(color: kNeutralColor),
         title: Text(
-          'Write a Review',
+          AppLocalizations.of(context)!.writeReview,
           style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -53,7 +54,7 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(color: kWhite),
         child: ButtonGlobalWithoutIcon(
-            buttontext: 'Published Review',
+            buttontext: AppLocalizations.of(context)!.publicReview,
             buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
             onPressed: () {
               reviewSubmittedPopUp();
@@ -80,12 +81,12 @@ class _ClientOrderReviewState extends State<ClientOrderReview> {
               children: [
                 const SizedBox(height: 15.0),
                 Text(
-                  'Review your experience',
+                  AppLocalizations.of(context)!.reviewExperience,
                   style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5.0),
                 Text(
-                  'How would you rate your overall experience with this buyer?',
+                  AppLocalizations.of(context)!.reviewQues,
                   style: kTextStyle.copyWith(color: kSubTitleColor),
                 ),
                 const SizedBox(height: 20.0),

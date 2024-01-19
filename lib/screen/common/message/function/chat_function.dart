@@ -20,21 +20,16 @@ class ChatFunction {
       isSeen: false,
       lastActive: DateTime.now(),
       isOnline: true,
+      deviceId: PrefUtils().getDeviceId(),
     );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .set(user.toJson());
+    await FirebaseFirestore.instance.collection('users').doc(uid).set(user.toJson());
   }
 
   // Update user
   static Future<void> updateUserData(Map<String, dynamic> data) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(jsonDecode(PrefUtils().getAccount())['Id'])
-          .update(data);
+      await FirebaseFirestore.instance.collection('users').doc(jsonDecode(PrefUtils().getAccount())['Id']).update(data);
     } catch (error) {
       createUser(
         name: jsonDecode(PrefUtils().getAccount())['Name'],
@@ -48,48 +43,20 @@ class ChatFunction {
     required dynamic receiverId,
     required String orderId,
   }) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .set(
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(receiverId)
-              .get()
-              .then((value) => value.data()!),
+    await FirebaseFirestore.instance.collection('users').doc(senderId).collection('chats').doc(receiverId).set(
+          await FirebaseFirestore.instance.collection('users').doc(receiverId).get().then((value) => value.data()!),
         );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .update({
+    await FirebaseFirestore.instance.collection('users').doc(senderId).collection('chats').doc(receiverId).update({
       'lastMessage': 'Artist on order #$orderId',
       'isSeen': false,
     });
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
-        .set(
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(senderId)
-              .get()
-              .then((value) => value.data()!),
+    await FirebaseFirestore.instance.collection('users').doc(receiverId).collection('chats').doc(senderId).set(
+          await FirebaseFirestore.instance.collection('users').doc(senderId).get().then((value) => value.data()!),
         );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
-        .update({
+    await FirebaseFirestore.instance.collection('users').doc(receiverId).collection('chats').doc(senderId).update({
       'lastMessage': 'Customer on order #$orderId',
       'isSeen': false,
     });
@@ -99,42 +66,26 @@ class ChatFunction {
     required dynamic senderId,
     required dynamic receiverId,
   }) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .update(
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(receiverId)
-              .get()
-              .then((value) {
+    await FirebaseFirestore.instance.collection('users').doc(senderId).collection('chats').doc(receiverId).update(
+          await FirebaseFirestore.instance.collection('users').doc(receiverId).get().then((value) {
             var data = value.data()!;
             var newData = {
               'image': data['image'],
               'name': data['name'],
+              'deviceId': data['deviceId'],
             };
 
             return newData;
           }),
         );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
-        .update(
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(senderId)
-              .get()
-              .then((value) {
+    await FirebaseFirestore.instance.collection('users').doc(receiverId).collection('chats').doc(senderId).update(
+          await FirebaseFirestore.instance.collection('users').doc(senderId).get().then((value) {
             var data = value.data()!;
             var newData = {
               'image': data['image'],
               'name': data['name'],
+              'deviceId': data['deviceId'],
             };
 
             return newData;
@@ -163,42 +114,28 @@ class ChatFunction {
     dynamic senderId,
     dynamic receiverId,
   ) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .update({
+    await FirebaseFirestore.instance.collection('users').doc(senderId).collection('chats').doc(receiverId).update({
       'lastMessage': message.content,
       'lastActive': DateTime.now(),
       'isSeen': true,
     });
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        .add(message.toJson());
+    await FirebaseFirestore.instance.collection('users').doc(senderId).collection('chats').doc(receiverId).collection('messages').add(message.toJson());
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
-        .update({
+    await FirebaseFirestore.instance.collection('users').doc(receiverId).collection('chats').doc(senderId).update({
       'lastMessage': message.content,
       'lastActive': DateTime.now(),
       'isSeen': false,
     });
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(senderId)
-        .collection('messages')
-        .add(message.toJson());
+    await FirebaseFirestore.instance.collection('users').doc(receiverId).collection('chats').doc(senderId).collection('messages').add(message.toJson());
+  }
+
+  static Future<UserModel> getUserData(dynamic accountId) async {
+    var snapshot = await FirebaseFirestore.instance.collection('users').doc(accountId).get();
+    var data = snapshot.data();
+    var user = UserModel.fromJson(data!);
+
+    return user;
   }
 }

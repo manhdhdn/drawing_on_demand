@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drawing_on_demand/screen/widgets/button_global.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../data/apis/account_review_api.dart';
@@ -80,7 +81,7 @@ class _OrderReviewState extends State<OrderReview> {
           elevation: 0,
           iconTheme: const IconThemeData(color: kNeutralColor),
           title: Text(
-            'Write a Review',
+            AppLocalizations.of(context)!.writeReview,
             style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -88,13 +89,19 @@ class _OrderReviewState extends State<OrderReview> {
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(10.0),
           decoration: const BoxDecoration(color: kWhite),
-          child: ButtonGlobalWithoutIcon(
-              buttontext: 'Publish Review',
-              buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
-              onPressed: () {
-                onSubmit();
-              },
-              buttonTextColor: kWhite),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+              right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+            ),
+            child: ButtonGlobalWithoutIcon(
+                buttontext: AppLocalizations.of(context)!.publicReview,
+                buttonDecoration: kButtonDecoration.copyWith(color: kPrimaryColor, borderRadius: BorderRadius.circular(30.0)),
+                onPressed: () {
+                  onSubmit();
+                },
+                buttonTextColor: kWhite),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 20.0),
@@ -117,87 +124,93 @@ class _OrderReviewState extends State<OrderReview> {
 
                   return SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 15.0),
-                          Text(
-                            'Review your experience',
-                            style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            'How would you rate your overall experience with this artist?',
-                            style: kTextStyle.copyWith(color: kSubTitleColor),
-                          ),
-                          const SizedBox(height: 20.0),
-                          Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(account.avatar!),
-                                      fit: BoxFit.cover,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                        right: DodResponsive.isDesktop(context) ? 150.0 : 0.0,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15.0),
+                            Text(
+                              AppLocalizations.of(context)!.reviewExperience,
+                              style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              AppLocalizations.of(context)!.reviewQues,
+                              style: kTextStyle.copyWith(color: kSubTitleColor),
+                            ),
+                            const SizedBox(height: 20.0),
+                            Center(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: NetworkImage(account.avatar!),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 10.0),
-                                Text(
-                                  account.name!,
-                                  style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    account.name!,
+                                    style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Select Rating',
-                            style: kTextStyle.copyWith(color: kNeutralColor),
-                          ),
-                          const SizedBox(height: 5.0),
-                          RatingBarWidget(
-                            itemCount: 5,
-                            rating: star,
-                            activeColor: ratingBarColor,
-                            inActiveColor: kBorderColorTextField,
-                            onRatingChanged: (rating) {
-                              setState(() {
-                                star = rating;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 20.0),
-                          TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            cursorColor: kNeutralColor,
-                            maxLines: 3,
-                            decoration: kInputDecoration.copyWith(
-                              border: const OutlineInputBorder(),
-                              labelText: 'Write a Comment',
-                              labelStyle: kTextStyle.copyWith(color: kNeutralColor),
-                              hintText: 'Share your experience...',
-                              hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
-                              focusColor: kNeutralColor,
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                            Text(
+                              AppLocalizations.of(context)!.selectRating,
+                              style: kTextStyle.copyWith(color: kNeutralColor),
                             ),
-                            controller: reviewController,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return 'Please enter your review';
-                              }
+                            const SizedBox(height: 5.0),
+                            RatingBarWidget(
+                              itemCount: 5,
+                              rating: star,
+                              activeColor: ratingBarColor,
+                              inActiveColor: kBorderColorTextField,
+                              onRatingChanged: (rating) {
+                                setState(() {
+                                  star = rating;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              keyboardType: TextInputType.multiline,
+                              cursorColor: kNeutralColor,
+                              maxLines: 3,
+                              decoration: kInputDecoration.copyWith(
+                                border: const OutlineInputBorder(),
+                                labelText: AppLocalizations.of(context)!.writeComment,
+                                labelStyle: kTextStyle.copyWith(color: kNeutralColor),
+                                hintText: AppLocalizations.of(context)!.shareExperience,
+                                hintStyle: kTextStyle.copyWith(color: kLightNeutralColor),
+                                focusColor: kNeutralColor,
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                              ),
+                              controller: reviewController,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AppLocalizations.of(context)!.pleaseEnterReview;
+                                }
 
-                              return null;
-                            },
-                            onChanged: (value) {
-                              _formKey.currentState!.validate();
-                            },
-                          ),
-                        ],
+                                return null;
+                              },
+                              onChanged: (value) {
+                                _formKey.currentState!.validate();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

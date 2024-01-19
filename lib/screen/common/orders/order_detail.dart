@@ -25,6 +25,7 @@ import '../../../data/models/ghn_request.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/order_detail.dart';
 import '../../../data/models/step.dart' as modal;
+import '../../../data/notifications/firebase_api.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_1.dart';
@@ -137,7 +138,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: DeliveryPopUp(id: artworkId),
+              child: DeliveryPopUp(
+                id: artworkId,
+                order: order,
+              ),
             );
           },
         );
@@ -394,7 +398,29 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         color: kPrimaryColor,
                                         borderRadius: BorderRadius.circular(3.0),
                                       ),
-                                    )
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        onCompleteOrder();
+                                      },
+                                      child: Container(
+                                        width: 100,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: kPrimaryColor,
+                                          borderRadius: BorderRadius.circular(30.0),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            AppLocalizations.of(context)!.received,
+                                            style: kTextStyle.copyWith(
+                                              color: kNeutralColor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ).visible(PrefUtils().getRole() == 'Customer' && status == 'Paid'),
                                   ],
                                 ),
                                 const SizedBox(height: 10.0),
@@ -555,7 +581,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: Text(
-                                        AppLocalizations.of(context)!.completed,
+                                        AppLocalizations.of(context)!.checkOut,
                                         style: kTextStyle.copyWith(color: kSubTitleColor),
                                       ),
                                     ),
@@ -1396,6 +1422,37 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   void onCompleteArtwork() {
     deliveryPopUp();
+  }
+
+  void onCompleteOrder() async {
+    try {
+      await OrderApi().patchOne(widget.id!, {
+        'Status': 'Completed',
+      });
+
+      refresh();
+
+      OrderList.refresh();
+
+      var order = await this.order;
+
+      for (var accountId in accountIds) {
+        var user = await ChatFunction.getUserData(accountId);
+
+        FirebaseApi().sendNotification(
+          // ignore: use_build_context_synchronously
+          title: '${AppLocalizations.of(context)!.order} ${order!.id.toString().split('-').first.toUpperCase()} ${AppLocalizations.of(context)!.orderCompletions}',
+          // ignore: use_build_context_synchronously
+          body: '${AppLocalizations.of(context)!.orderCompletedNot} ${getBalacnceArtist([order], accountId)}',
+          receiverDeviceId: user.deviceId!,
+          pageName: OrderDetailRoute.name,
+          pathName: 'orderId',
+          referenceId: widget.id!,
+        );
+      }
+    } catch (error) {
+      //
+    }
   }
 
   void refresh() {

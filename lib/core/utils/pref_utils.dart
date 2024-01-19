@@ -86,7 +86,7 @@ class PrefUtils {
     try {
       return _sharedPreferences!.getBool('pushNotifications')!;
     } catch (error) {
-      return false;
+      return true;
     }
   }
 
@@ -208,5 +208,17 @@ class PrefUtils {
 
   Future<bool> clearSignInInfor() async {
     return _sharedPreferences!.remove('signInInfor');
+  }
+
+  Future<bool> setDeviceId(String value) {
+    return _sharedPreferences!.setString('deviceId', value);
+  }
+
+  String getDeviceId() {
+    try {
+      return _sharedPreferences!.getString('deviceId')!;
+    } catch (error) {
+      return '';
+    }
   }
 }

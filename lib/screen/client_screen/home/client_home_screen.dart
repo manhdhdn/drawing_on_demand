@@ -38,6 +38,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   int newArtworkTop = 10;
   int artistTop = 10;
 
+  List<String> bannerVN = [
+    'images/banner_vn_1.png',
+    'images/banner_vn_2.png',
+    'images/banner_vn_3.png',
+    'images/banner_vn_4.png',
+  ];
+
+  List<String> bannerEN = [
+    'images/banner_en_1.png',
+    'images/banner_en_2.png',
+    'images/banner_en_3.png',
+    'images/banner_en_4.png',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -156,11 +170,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       itemCount: PrefUtils().getAccount() != '{}' ? 3 : 4,
                       itemBuilder: (_, i) {
                         return Container(
-                          height: 140,
+                          height: 152,
                           width: 304,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
-                            image: const DecorationImage(image: AssetImage('images/banner.png'), fit: BoxFit.cover),
+                            image: DecorationImage(
+                              image: AssetImage(PrefUtils().getLanguage() == 'Vietnamese' ? bannerVN[i] : bannerEN[i]),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         );
                       },

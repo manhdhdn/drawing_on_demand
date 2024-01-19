@@ -11,21 +11,23 @@ import 'package:provider/provider.dart';
 import 'app_routes/go_routes.dart';
 import 'app_routes/named_routes.dart';
 import 'core/utils/pref_utils.dart';
+import 'data/notifications/firebase_api.dart';
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
+import 'screen/common/message/function/chat_function.dart';
 import 'screen/common/message/provider/data_provider.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   usePathUrlStrategy();
   await PrefUtils().init();
-
   await findSystemLocale();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotifications();
 
   runApp(const MyApp());
-
-  // RendererBinding.instance.ensureSemantics();
 }
 
 class MyApp extends StatefulWidget {
@@ -51,7 +53,7 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Key notifierKey = GlobalKey();
 
   Locale locale = const Locale('vi');
@@ -61,7 +63,36 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addObserver(this);
     setLanguage();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        ChatFunction.updateUserData({
+          'lastActive': DateTime.now(),
+          'isOnline': true,
+        });
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        ChatFunction.updateUserData({
+          'lastActive': DateTime.now(),
+          'isOnline': false,
+        });
+        break;
+      default:
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -70,7 +101,6 @@ class _MyAppState extends State<MyApp> {
       key: notifierKey,
       create: (_) => ChatProvider(),
       child: MaterialApp.router(
-        key: notifierKey,
         title: dod,
         localizationsDelegates: const [
           AppLocalizations.delegate,

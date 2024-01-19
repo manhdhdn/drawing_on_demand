@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../data/apis/account_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/invite_api.dart';
@@ -19,6 +20,8 @@ import '../../../data/models/account_review.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/category.dart';
 import '../../../data/models/invite.dart';
+import '../../../data/notifications/firebase_api.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
@@ -95,6 +98,8 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
   }
 
   ListView getReviews(List<AccountReview> artworkReviews) {
+    artworkReviews.sort(((a, b) => b.createdDate!.compareTo(a.createdDate!)));
+
     return ListView.builder(
       itemCount: totalReview,
       shrinkWrap: true,
@@ -257,7 +262,8 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
                                   AppLocalizations.of(context)!.editProfile,
                                   style: kTextStyle.copyWith(color: kSubTitleColor),
                                 ),
-                              ).visible(PrefUtils().getRole() == 'Artist'),
+                                // ).visible(PrefUtils().getRole() == 'Artist'),
+                              ).visible(false),
                             ],
                           ),
                           const SizedBox(height: 15.0),
@@ -809,6 +815,9 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
 
   Future<void> createInvite(String jobId) async {
     if (!(await isInvited(jobId))) {
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.showProgress(context);
+
       Invite invite = Invite(
         id: Guid.newGuid,
         createdDate: DateTime.now(),
@@ -819,7 +828,22 @@ class _SellerProfileDetailsState extends State<SellerProfileDetails> {
 
       await InviteApi().postOne(invite);
 
+      // ignore: use_build_context_synchronously
+      ProgressDialogUtils.hideProgress(context);
       showInviteSuccessPopUp();
+
+      var user = await ChatFunction.getUserData(widget.id);
+
+      FirebaseApi().sendNotification(
+        // ignore: use_build_context_synchronously
+        title: AppLocalizations.of(context)!.inviteTitleNotify,
+        // ignore: use_build_context_synchronously
+        body: AppLocalizations.of(context)!.inviteBodyNotify,
+        receiverDeviceId: user.deviceId!,
+        pageName: JobDetailRoute.name,
+        pathName: 'jobId',
+        referenceId: jobId,
+      );
     } else {
       throw Exception();
     }

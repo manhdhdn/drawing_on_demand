@@ -125,10 +125,6 @@ class _SellerBuyerReqState extends State<SellerBuyerReq> {
                       onTap: () {
                         setState(() {
                           selectedJobApplyTab = listTab[i];
-
-                          if (selectedJobApplyTab == 'Public' || selectedJobApplyTab == 'Offered') {
-                            requirements = getRequirements();
-                          }
                         });
                       },
                       child: Container(

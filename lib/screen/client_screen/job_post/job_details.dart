@@ -22,6 +22,8 @@ import '../../../data/models/order_detail.dart';
 import '../../../data/models/proposal.dart';
 import '../../../data/models/requirement.dart';
 import '../../../data/models/size.dart';
+import '../../../data/notifications/firebase_api.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../common/popUp/popup_2.dart';
@@ -604,7 +606,7 @@ class _JobDetailsState extends State<JobDetails> {
                                           ),
                                           child: PhotoView(
                                             imageProvider: NetworkImage(
-                                              snapshot.data!.image!,
+                                              snapshot.data!.image ?? defaultImage,
                                             ),
                                             tightMode: true,
                                           ),
@@ -623,7 +625,7 @@ class _JobDetailsState extends State<JobDetails> {
                                           size: 50,
                                         ),
                                       ).visible(snapshot.data!.image != null),
-                                const SizedBox(height: 8.0).visible(snapshot.data!.proposals!.isNotEmpty),
+                                const SizedBox(height: 20.0).visible(snapshot.data!.proposals!.isNotEmpty),
                                 Text(
                                   AppLocalizations.of(context)!.proposals,
                                   style: kTextStyle.copyWith(
@@ -907,11 +909,25 @@ class _JobDetailsState extends State<JobDetails> {
         });
 
         setState(() {
-          requirement = getData();
+          this.requirement = getData();
         });
 
         // ignore: use_build_context_synchronously
         ProgressDialogUtils.hideProgress(context);
+        var requirement = await this.requirement;
+
+        var user = await ChatFunction.getUserData(proposal.createdBy.toString());
+
+        FirebaseApi().sendNotification(
+          // ignore: use_build_context_synchronously
+          title: '${AppLocalizations.of(context)!.rejectTilteNot1} ${requirement!.title} ${AppLocalizations.of(context)!.rejectTitleNot2}',
+          // ignore: use_build_context_synchronously
+          body: AppLocalizations.of(context)!.rejectBodyNot,
+          receiverDeviceId: user.deviceId!,
+          pageName: JobDetailRoute.name,
+          pathName: 'jobId',
+          referenceId: widget.id!,
+        );
       } catch (error) {
         Fluttertoast.showToast(msg: 'Reject failed');
       }
@@ -923,17 +939,7 @@ class _JobDetailsState extends State<JobDetails> {
       try {
         ProgressDialogUtils.showProgress(context);
 
-        for (var proposalIL in proposals) {
-          if (proposal.id != proposalIL.id) {
-            await ProposalApi().patchOne(proposalIL.id.toString(), {
-              'Status': 'Rejected',
-            });
-          } else {
-            await ProposalApi().patchOne(proposalIL.id.toString(), {
-              'Status': 'Accepted',
-            });
-          }
-        }
+        var requirement = await this.requirement;
 
         for (var size in sizes) {
           await SizeApi().patchOne(size.id.toString(), {
@@ -967,7 +973,7 @@ class _JobDetailsState extends State<JobDetails> {
         await OrderDetailApi().postOne(orderDetail);
 
         setState(() {
-          requirement = getData();
+          this.requirement = getData();
         });
 
         JobPost.refresh();
@@ -976,6 +982,44 @@ class _JobDetailsState extends State<JobDetails> {
         ProgressDialogUtils.hideProgress(context);
 
         acceptProposalSuccessPopUp();
+
+        for (var proposalIL in proposals) {
+          if (proposal.id != proposalIL.id) {
+            await ProposalApi().patchOne(proposalIL.id.toString(), {
+              'Status': 'Rejected',
+            });
+
+            var user = await ChatFunction.getUserData(proposal.createdBy.toString());
+
+            FirebaseApi().sendNotification(
+              // ignore: use_build_context_synchronously
+              title: '${AppLocalizations.of(context)!.rejectTilteNot1} ${requirement!.title} ${AppLocalizations.of(context)!.rejectTitleNot2}',
+              // ignore: use_build_context_synchronously
+              body: AppLocalizations.of(context)!.rejectBodyNot,
+              receiverDeviceId: user.deviceId!,
+              pageName: JobDetailRoute.name,
+              pathName: 'jobId',
+              referenceId: widget.id!,
+            );
+          } else {
+            await ProposalApi().patchOne(proposalIL.id.toString(), {
+              'Status': 'Accepted',
+            });
+
+            var user = await ChatFunction.getUserData(proposal.createdBy.toString());
+
+            FirebaseApi().sendNotification(
+              // ignore: use_build_context_synchronously
+              title: '${AppLocalizations.of(context)!.rejectTilteNot1} ${requirement!.title} ${AppLocalizations.of(context)!.acceptTitleNot}',
+              // ignore: use_build_context_synchronously
+              body: AppLocalizations.of(context)!.acceptBodyNot,
+              receiverDeviceId: user.deviceId!,
+              pageName: OrderDetailRoute.name,
+              pathName: 'orderId',
+              referenceId: order.id.toString(),
+            );
+          }
+        }
       } catch (error) {
         // ignore: use_build_context_synchronously
         ProgressDialogUtils.hideProgress(context);

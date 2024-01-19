@@ -5,12 +5,15 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/apis/step_api.dart';
 import '../../../data/models/requirement.dart';
 import '../../../data/models/step.dart' as model;
+import '../../../data/notifications/firebase_api.dart';
+import '../../common/message/function/chat_function.dart';
 import '../../common/orders/order_detail.dart';
 import '../../common/popUp/popup_2.dart';
 import '../../widgets/button_global.dart';
@@ -524,6 +527,21 @@ class _CreateTimelineState extends State<CreateTimeline> {
 
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
+
+      var requirement = await this.requirement;
+
+      var user = await ChatFunction.getUserData(requirement!.createdBy.toString());
+
+      FirebaseApi().sendNotification(
+        // ignore: use_build_context_synchronously
+        title: '${AppLocalizations.of(context)!.timelineTitleNot} ${requirement.title}',
+        // ignore: use_build_context_synchronously
+        body: AppLocalizations.of(context)!.inviteBodyNotify,
+        receiverDeviceId: user.deviceId!,
+        pageName: OrderDetailRoute.name,
+        pathName: 'orderId',
+        referenceId: widget.id!,
+      );
 
       OrderDetailScreen.refresh();
 

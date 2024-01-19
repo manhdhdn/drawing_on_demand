@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../data/notifications/firebase_api.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../popUp/popup_1.dart';
@@ -49,26 +50,6 @@ class _ChatInboxState extends State<ChatInbox> {
     );
   }
 
-  void showAddFilePopUp() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
-            return Dialog(
-              insetPadding: DodResponsive.isDesktop(context) ? EdgeInsets.symmetric(horizontal: context.width() / 2.7) : const EdgeInsets.symmetric(horizontal: 40.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: const ImportDocumentPopUp(),
-            );
-          },
-        );
-      },
-    );
-  }
-
   TextEditingController messageController = TextEditingController();
   FocusNode msgFocus = FocusNode();
 
@@ -90,11 +71,6 @@ class _ChatInboxState extends State<ChatInbox> {
     Provider.of<ChatProvider>(context, listen: false)
       ..getMessages(widget.receiverId)
       ..getUser(widget.receiverId);
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
   }
 
   @override
@@ -339,11 +315,7 @@ class _ChatInboxState extends State<ChatInbox> {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showAddFilePopUp();
-                      });
-                    },
+                    onTap: () {},
                     child: Container(
                         padding: const EdgeInsets.all(10.0),
                         decoration: const BoxDecoration(shape: BoxShape.circle, color: kDarkWhite),
@@ -409,12 +381,23 @@ class _ChatInboxState extends State<ChatInbox> {
     );
   }
 
-  void onSend() {
+  void onSend() async {
     String message = messageController.text.trim();
     messageController.clear();
 
     if (message.isNotEmpty) {
       addMessage(message);
+
+      var user = await ChatFunction.getUserData(widget.receiverId);
+
+      FirebaseApi().sendNotification(
+        title: jsonDecode(PrefUtils().getAccount())['Name'],
+        body: message,
+        receiverDeviceId: user.deviceId!,
+        pageName: ChatRoute.name,
+        pathName: 'id',
+        referenceId: jsonDecode(PrefUtils().getAccount())['Id'],
+      );
     }
   }
 }

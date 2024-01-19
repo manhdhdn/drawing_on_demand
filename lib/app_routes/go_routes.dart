@@ -42,8 +42,8 @@ import 'named_routes.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-get rootNavigatorState => _rootNavigatorKey.currentState;
-get shellNavigatorState => _shellNavigatorKey.currentState;
+get rootNavigatorContext => _rootNavigatorKey.currentContext;
+get shellNavigatorContext => _shellNavigatorKey.currentContext;
 
 class AppRoutes {
   static const String defaultTag = HomeRoute.tag;

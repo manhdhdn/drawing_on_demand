@@ -9,13 +9,7 @@ class ChatModel {
   bool? isCheckList;
   Color? color;
 
-  ChatModel(
-      {this.title,
-      this.subTitle,
-      this.image,
-      this.color,
-      this.isCheckList = false,
-      this.icon});
+  ChatModel({this.title, this.subTitle, this.image, this.color, this.isCheckList = false, this.icon});
 }
 
 class InboxData {
@@ -34,6 +28,7 @@ class UserModel {
   bool? isSeen;
   DateTime? lastActive;
   bool? isOnline;
+  String? deviceId;
 
   UserModel({
     this.uid,
@@ -43,6 +38,7 @@ class UserModel {
     this.isSeen,
     this.lastActive,
     this.isOnline = false,
+    this.deviceId,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -53,6 +49,7 @@ class UserModel {
         isSeen: json['isSeen'] ?? false,
         lastActive: json['lastActive'].toDate(),
         isOnline: json['isOnline'] ?? false,
+        deviceId: json['deviceId'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,6 +60,7 @@ class UserModel {
         'isSeen': isSeen,
         'lastActive': Timestamp.fromDate(lastActive!),
         'isOnline': isOnline,
+        'deviceId': deviceId,
       };
 }
 

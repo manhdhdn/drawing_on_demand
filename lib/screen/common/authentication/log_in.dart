@@ -16,6 +16,7 @@ import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../widgets/responsive.dart';
+import '../message/function/chat_function.dart';
 import '../popUp/popup_2.dart';
 import 'forgot_password.dart';
 
@@ -667,6 +668,12 @@ class _LoginState extends State<Login> {
 
   void onLogedIn() {
     MyApp.refreshRoutes(context);
+
+    ChatFunction.updateUserData({
+      'lastActive': DateTime.now(),
+      'isOnline': true,
+      'deviceId': PrefUtils().getDeviceId(),
+    });
   }
 
   void onCreateNewAccount() {

@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
+// import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
-import '../../widgets/button_global.dart';
+// import '../../widgets/button_global.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../home/client_home.dart';
-import 'client_edit_profile_details.dart';
+// import 'client_edit_profile_details.dart';
 import 'client_profile.dart';
 
 class ClientProfileDetails extends StatefulWidget {
@@ -45,24 +45,24 @@ class _ClientProfileDetailsState extends State<ClientProfileDetails> {
           ),
           centerTitle: true,
         ),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(10.0),
-          decoration: const BoxDecoration(color: kWhite),
-          child: ButtonGlobalWithIcon(
-            buttontext: AppLocalizations.of(context)!.editProfile,
-            buttonDecoration: kButtonDecoration.copyWith(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            onPressed: () {
-              setState(() {
-                const ClientEditProfile().launch(context);
-              });
-            },
-            buttonTextColor: kWhite,
-            buttonIcon: IconlyBold.edit,
-          ),
-        ),
+        // bottomNavigationBar: Container(
+        //   padding: const EdgeInsets.all(10.0),
+        //   decoration: const BoxDecoration(color: kWhite),
+        //   child: ButtonGlobalWithIcon(
+        //     buttontext: AppLocalizations.of(context)!.editProfile,
+        //     buttonDecoration: kButtonDecoration.copyWith(
+        //       color: kPrimaryColor,
+        //       borderRadius: BorderRadius.circular(30.0),
+        //     ),
+        //     onPressed: () {
+        //       setState(() {
+        //         const ClientEditProfile().launch(context);
+        //       });
+        //     },
+        //     buttonTextColor: kWhite,
+        //     buttonIcon: IconlyBold.edit,
+        //   ),
+        // ),
         body: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: Container(

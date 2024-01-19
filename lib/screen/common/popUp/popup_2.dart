@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../app_routes/named_routes.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../core/utils/validation_function.dart';
@@ -16,11 +17,14 @@ import '../../../data/apis/artwork_api.dart';
 import '../../../data/apis/requirement_api.dart';
 import '../../../data/apis/size_api.dart';
 import '../../../data/models/artwork.dart';
+import '../../../data/models/order.dart';
 import '../../../data/models/requirement.dart';
 import '../../../data/models/size.dart' as model;
+import '../../../data/notifications/firebase_api.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/icons.dart';
 import '../../client_screen/home/client_home_screen.dart';
+import '../message/function/chat_function.dart';
 import '../orders/order_detail.dart';
 
 class ProcessingPopUp extends StatefulWidget {
@@ -1003,8 +1007,9 @@ class _CreateTimelineSuccessPopUpState extends State<CreateTimelineSuccessPopUp>
 
 class DeliveryPopUp extends StatefulWidget {
   final String? id;
+  final Future<Order?> order;
 
-  const DeliveryPopUp({Key? key, this.id}) : super(key: key);
+  const DeliveryPopUp({Key? key, this.id, required this.order}) : super(key: key);
 
   @override
   State<DeliveryPopUp> createState() => _DeliveryPopUpState();
@@ -1293,6 +1298,22 @@ class _DeliveryPopUpState extends State<DeliveryPopUp> {
 
       // ignore: use_build_context_synchronously
       ProgressDialogUtils.hideProgress(context);
+
+      var order = await widget.order;
+      var requirement = order!.orderDetails!.first.artwork!.proposal!.requirement;
+
+      var user = await ChatFunction.getUserData(order.orderedBy.toString());
+
+      FirebaseApi().sendNotification(
+        // ignore: use_build_context_synchronously
+        title: '${requirement!.title} ${AppLocalizations.of(context)!.orderCompletions}',
+        // ignore: use_build_context_synchronously
+        body: AppLocalizations.of(context)!.deliverBodyNot,
+        receiverDeviceId: user.deviceId!,
+        pageName: OrderDetailRoute.name,
+        pathName: 'orderId',
+        referenceId: order.id.toString(),
+      );
 
       // ignore: use_build_context_synchronously
       finish(context);

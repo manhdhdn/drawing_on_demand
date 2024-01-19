@@ -465,6 +465,26 @@ String getBalance(List<Order> orders) {
   return NumberFormat.simpleCurrency(locale: 'vi-VN').format(balance);
 }
 
+String getBalacnceArtist(List<Order> orders, String accountId) {
+  double balance = 0;
+
+  for (var order in orders) {
+    for (var orderDetail in order.orderDetails!) {
+      if (orderDetail.artwork!.createdByNavigation!.id.toString() == accountId) {
+        if (order.status != 'Cancelled') {
+          balance += orderDetail.price! * orderDetail.quantity! * (1 - orderDetail.fee!);
+        } else {
+          if (order.depositDate != null) {
+            balance += (orderDetail.price! * orderDetail.quantity!) * 0.3 * (1 - orderDetail.fee!);
+          }
+        }
+      }
+    }
+  }
+
+  return NumberFormat.simpleCurrency(locale: 'vi-VN').format(balance);
+}
+
 String getBalanceWithoutFee(List<Order> orders) {
   double balance = 0;
 

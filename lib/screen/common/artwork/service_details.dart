@@ -92,6 +92,8 @@ class _ServiceDetailsState extends State<ServiceDetails> with TickerProviderStat
   }
 
   ListView getReviews(List<ArtworkReview> artworkReviews) {
+    artworkReviews.sort(((a, b) => b.createdDate!.compareTo(a.createdDate!)));
+
     return ListView.builder(
       itemCount: totalReview,
       shrinkWrap: true,
