@@ -16,11 +16,13 @@ import '../../../data/apis/account_role_api.dart';
 import '../../../data/apis/artwork_api.dart';
 import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
+import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
-import '../notification/client_notification.dart';
+// import '../notification/client_notification.dart';
 // import '../search/search.dart';
 import 'client_all_categories.dart';
+import 'client_home.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key? key}) : super(key: key);
@@ -126,7 +128,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     ),
                     const SizedBox(width: 9.0),
                     GestureDetector(
-                      onTap: () => const ClientNotification().launch(context),
+                      onTap: () {
+                        onNotification();
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
@@ -914,6 +918,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     }
 
     return null;
+  }
+
+  void onNotification() {
+    // DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
   }
 
   void onArtworkDetail(String id) {

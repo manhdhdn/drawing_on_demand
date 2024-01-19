@@ -451,5 +451,7 @@
     "shareExperience": "Chia sẻ trải nghiệm của bạn...",
     "publicReview": "Gửi đánh giá",
     "pleaseEnterReview": "Vui lòng nhập đánh giá",
-    "orderCompletedNot": "Bạn nhận được"
+    "orderCompletedNot": "Bạn nhận được",
+    "checkArtist": "Bạn không phải là Họa sĩ",
+    "waitAccept": "Vui lòng chờ xác thực"
 }

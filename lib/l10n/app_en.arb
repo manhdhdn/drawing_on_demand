@@ -451,5 +451,7 @@
     "shareExperience": "Share your experience...",
     "publicReview": "Published Review",
     "pleaseEnterReview": "Please enter your review",
-    "orderCompletedNot": "You receive"
+    "orderCompletedNot": "You receive",
+    "checkArtist": "You are not a Artist",
+    "waitAccept": "Please wait for confirmation"
 }

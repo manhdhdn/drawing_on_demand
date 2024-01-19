@@ -11,6 +11,7 @@ import '../../../app_routes/named_routes.dart';
 import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
+import '../../../data/apis/account_api.dart';
 import '../../../main.dart';
 import '../../common/profile/help_and_support.dart';
 import '../../common/setting/settings.dart';
@@ -18,7 +19,7 @@ import '../../widgets/constant.dart';
 import '../../widgets/responsive.dart';
 import '../dashboard/client_dashboard.dart';
 import '../home/client_home.dart';
-import '../notification/client_notification.dart';
+// import '../notification/client_notification.dart';
 import '../transaction/transaction.dart';
 import 'client_profile_details.dart';
 
@@ -320,7 +321,8 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onNotification() {
-    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+    // DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
   }
 
   void onProfile() {
@@ -332,7 +334,21 @@ class _ClientProfileState extends State<ClientProfile> {
   }
 
   void onArtistCentre() async {
+    if (PrefUtils().getRank() == '{}') {
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.checkArtist);
+      return;
+    }
+
+    var account = await AccountApi().getOne(jsonDecode(PrefUtils().getAccount())['Id'], 'accountRoles');
+
+    if (account.accountRoles!.any((accountRole) => accountRole.status == 'Pending')) {
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.waitAccept);
+      return;
+    }
+
     try {
+      // ignore: use_build_context_synchronously
       ProgressDialogUtils.showProgress(context);
 
       await PrefUtils().setRole('Artist');

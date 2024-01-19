@@ -12,8 +12,11 @@ import '../../../core/common/common_features.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../core/utils/progress_dialog_utils.dart';
 import '../../../main.dart';
+import '../../client_screen/home/client_home.dart';
+import '../../common/setting/settings.dart';
 import '../../widgets/constant.dart';
-import '../notification/seller_notification.dart';
+import '../../widgets/responsive.dart';
+// import '../notification/seller_notification.dart';
 import '../withdraw_money/seller_withdraw_history.dart';
 import '../withdraw_money/seller_withdraw_money.dart';
 
@@ -69,7 +72,9 @@ class _SellerProfileState extends State<SellerProfile> {
             ),
           ),
           trailing: GestureDetector(
-            onTap: () => const SellerNotification().launch(context),
+            onTap: () {
+              onNotification();
+            },
             child: Container(
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
@@ -367,6 +372,11 @@ class _SellerProfileState extends State<SellerProfile> {
         ),
       ),
     );
+  }
+
+  void onNotification() {
+    // DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
   }
 
   void onProfile() {

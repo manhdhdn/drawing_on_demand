@@ -19,10 +19,13 @@ import '../../../data/models/account.dart';
 import '../../../data/models/artwork.dart';
 import '../../../data/models/order.dart';
 import '../../../data/models/rank.dart';
+import '../../client_screen/home/client_home.dart';
+import '../../common/setting/settings.dart';
 import '../../widgets/chart.dart';
 import '../../widgets/constant.dart';
 import '../../widgets/data.dart';
-import '../notification/seller_notification.dart';
+import '../../widgets/responsive.dart';
+// import '../notification/seller_notification.dart';
 
 class SellerHomeScreen extends StatefulWidget {
   static dynamic state;
@@ -118,7 +121,9 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
             ),
             trailing: GestureDetector(
-              onTap: () => const SellerNotification().launch(context),
+              onTap: () {
+                onNotification();
+              },
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
@@ -643,6 +648,11 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     } catch (error) {
       Fluttertoast.showToast(msg: 'Get statistics failed');
     }
+  }
+
+  void onNotification() {
+    // DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const ClientNotification()) : const ClientNotification().launch(context);
+    DodResponsive.isDesktop(context) ? ClientHome.changeProfile(const Settings()) : context.goNamed(SettingRoute.name);
   }
 
   void onViewAllArtwork() {
