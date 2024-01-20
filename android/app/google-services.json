@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "680472686977-u5h1coeo05nq5cpnh5plbp853dnv15vd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.drawingondemand",
+            "certificate_hash": "a0d5d6b63407d3907d3b3f2eb2db06dd7c86700e"
+          }
+        },
+        {
           "client_id": "680472686977-6n5n8bf4bsjjpjojj2mndpqi932orplk.apps.googleusercontent.com",
           "client_type": 3
         }
