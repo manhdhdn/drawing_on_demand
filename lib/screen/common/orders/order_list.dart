@@ -379,7 +379,19 @@ class _OrderListState extends State<OrderList> {
                                   child: Container(
                                     padding: const EdgeInsets.all(10.0),
                                     width: context.width(),
-                                    decoration: BoxDecoration(color: kWhite, borderRadius: BorderRadius.circular(8.0), border: Border.all(color: kBorderColorTextField), boxShadow: const [BoxShadow(color: kDarkWhite, spreadRadius: 4.0, blurRadius: 4.0, offset: Offset(0, 2))]),
+                                    decoration: BoxDecoration(
+                                      color: kWhite,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(color: kBorderColorTextField),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: kDarkWhite,
+                                          spreadRadius: 4.0,
+                                          blurRadius: 4.0,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
@@ -391,16 +403,16 @@ class _OrderListState extends State<OrderList> {
                                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
-                                            SlideCountdownSeparated(
-                                              showZeroValue: true,
-                                              duration: const Duration(days: 3),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
-                                              decoration: BoxDecoration(
-                                                color: kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(3.0),
-                                              ),
-                                            )
+                                            // SlideCountdownSeparated(
+                                            //   showZeroValue: true,
+                                            //   duration: const Duration(days: 3),
+                                            //   separatorType: SeparatorType.symbol,
+                                            //   separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                            //   decoration: BoxDecoration(
+                                            //     color: kPrimaryColor,
+                                            //     borderRadius: BorderRadius.circular(3.0),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                         const SizedBox(height: 10.0),
@@ -629,16 +641,16 @@ class _OrderListState extends State<OrderList> {
                                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
-                                            SlideCountdownSeparated(
-                                              showZeroValue: true,
-                                              duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
-                                              ),
-                                            )
+                                            // SlideCountdownSeparated(
+                                            //   showZeroValue: true,
+                                            //   duration: const Duration(days: 0),
+                                            //   separatorType: SeparatorType.symbol,
+                                            //   separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                            //   decoration: BoxDecoration(
+                                            //     color: const Color(0xFFBFBFBF),
+                                            //     borderRadius: BorderRadius.circular(3.0),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                         const SizedBox(height: 10.0),
@@ -863,16 +875,16 @@ class _OrderListState extends State<OrderList> {
                                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
-                                            SlideCountdownSeparated(
-                                              showZeroValue: true,
-                                              duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
-                                              ),
-                                            )
+                                            // SlideCountdownSeparated(
+                                            //   showZeroValue: true,
+                                            //   duration: const Duration(days: 0),
+                                            //   separatorType: SeparatorType.symbol,
+                                            //   separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                            //   decoration: BoxDecoration(
+                                            //     color: const Color(0xFFBFBFBF),
+                                            //     borderRadius: BorderRadius.circular(3.0),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                         const SizedBox(height: 10.0),
@@ -1096,16 +1108,16 @@ class _OrderListState extends State<OrderList> {
                                               style: kTextStyle.copyWith(color: kNeutralColor, fontWeight: FontWeight.bold),
                                             ),
                                             const Spacer(),
-                                            SlideCountdownSeparated(
-                                              showZeroValue: true,
-                                              duration: const Duration(days: 0),
-                                              separatorType: SeparatorType.symbol,
-                                              separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFFBFBFBF),
-                                                borderRadius: BorderRadius.circular(3.0),
-                                              ),
-                                            )
+                                            // SlideCountdownSeparated(
+                                            //   showZeroValue: true,
+                                            //   duration: const Duration(days: 0),
+                                            //   separatorType: SeparatorType.symbol,
+                                            //   separatorStyle: kTextStyle.copyWith(color: Colors.transparent),
+                                            //   decoration: BoxDecoration(
+                                            //     color: const Color(0xFFBFBFBF),
+                                            //     borderRadius: BorderRadius.circular(3.0),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                         const SizedBox(height: 10.0),

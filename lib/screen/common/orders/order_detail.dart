@@ -382,14 +382,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       duration: Duration(
                                           milliseconds: status == 'Pending'
                                               ? snapshot.data!.orderDate!
-                                                      .add(const Duration(
-                                                        days: 2,
-                                                      ))
+                                                      .add(
+                                                        const Duration(days: 2),
+                                                      )
                                                       .millisecondsSinceEpoch -
                                                   DateTime.now()
-                                                      .add(const Duration(
-                                                        hours: 7,
-                                                      ))
+                                                      .add(
+                                                        const Duration(hours: 7),
+                                                      )
                                                       .millisecondsSinceEpoch
                                               : 0),
                                       separatorType: SeparatorType.symbol,

@@ -25,7 +25,7 @@ void main() async {
   await findSystemLocale();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseApi().initNotifications();
+  FirebaseApi().initNotifications();
 
   runApp(const MyApp());
 }
